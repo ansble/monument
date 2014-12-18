@@ -1,11 +1,28 @@
 {
-  "name": "eventRouting",
+  "name": "monumentjs",
   "version": "1.0.0",
-  "description": "",
+  "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "gulp test"
   },
-  "author": "",
-  "license": "mit"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/designfrontier/monumentjs"
+  },
+  "bugs": {
+    "url": "https://github.com/designfrontier/monumentjs/issues"
+  },
+  "author": "Daniel Sellers <daniel@designfrontier.net>",
+  "license": "MIT",
+  "keywords": [
+    "nodejs",
+    "events",
+    "routing",
+    "isomorphic",
+    "browser",
+    "event",
+    "eda"
+  ],
 }
