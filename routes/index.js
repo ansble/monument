@@ -1,5 +1,11 @@
-var normalizedPath = path.join(__dirname);
+var path = require('path')
+	, normalizedPath = path.join(__dirname)
+	, fs = require('fs');
 
-require("fs").readdirSync(normalizedPath).forEach(function(file) {
-  require("./" + file);
+fs.readdirSync(normalizedPath).forEach(function(file) {
+  if(file !== 'index.js'){
+  	require("./" + file);
+  }
 });
+
+module.exports = {};

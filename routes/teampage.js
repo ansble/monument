@@ -1,4 +1,4 @@
-var emitter = require('./emitter.js');
+var emitter = require('../emitter.js');
 
 emitter.on('route:/team:get', function (connection) {
 	connection.res.end('welcome to the team page!');

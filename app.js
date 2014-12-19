@@ -2,8 +2,8 @@ var routes = require('./routes.json')
 	, emitter = require('./emitter.js')
 	, http = require('http');
 
-	require('./homepage.js');
-	require('./teampage.js');
+//setup the routes
+require('./routes/');
 
 http.createServer(function (req, res) {
 
