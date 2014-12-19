@@ -6,13 +6,14 @@ var path = require('path')
 
 	, server;
 
+//load in all the route handlers
 fs.readdirSync(normalizedPath).forEach(function(file) {
   if(file !== 'index.js'){
   	require("./" + file);
   }
 });
 
-//need to recieve the http/https object, the routes.json file
+
 server = function(serverType, routesJson){
 
 	return serverType.createServer(function (req, res) {
