@@ -7,5 +7,3 @@ fs.readdirSync(normalizedPath).forEach(function(file) {
   	require("./" + file);
   }
 });
-
-module.exports = {};
