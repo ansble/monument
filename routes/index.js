@@ -8,16 +8,14 @@ var path = require('path')
 
 //load in all the route handlers
 fs.readdirSync(normalizedPath).forEach(function(file) {
-  if(file !== 'index.js'){
-  	require("./" + file);
-  }
+	if(file !== 'index.js'){
+		require("./" + file);
+	}
 });
-
 
 server = function(serverType, routesJson){
 
 	return serverType.createServer(function (req, res) {
-
 		if(routesJson[req.url] && routesJson[req.url].indexOf(req.method.toLowerCase()) !== -1){
 			emitter.emit('route:' + req.url + ':' + req.method.toLowerCase(), {req: req, res: res});
 		} else {
