@@ -16,10 +16,12 @@ fs.readdirSync(normalizedPath).forEach(function (file) {
 });
 
 //load in all the static routes
-fs.readdirSync('./public').forEach(function (file) {
-	if(fs.statSync('./public/' + file).isDirectory()){
-		publicFolders.push(file);
-	}
+fs.exists('./public', function () {
+	fs.readdirSync('./public').forEach(function (file) {
+		if(fs.statSync('./public/' + file).isDirectory()){
+			publicFolders.push(file);
+		}
+	});
 });
 
 server = function (serverType, routesJson) {
@@ -31,7 +33,9 @@ server = function (serverType, routesJson) {
 			fs.exists('./public' + req.url, function (exists) {
 				if(exists){
 					fs.createReadStream('./public' + req.url).pipe(res);
+					emitter.emit('static:served', req.url);
 				} else {
+					emitter.emit('static:missing', req.url);
 					//replace with the error route
 					res.writeHead(404, {'Content-Type': 'text/plain'});
 					res.end('file not found');
