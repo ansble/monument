@@ -24,5 +24,8 @@
     "browser",
     "event",
     "eda"
-  ]
+  ],
+  "dependencies": {
+    "dot": "^1.0.3"
+  }
 }
