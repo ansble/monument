@@ -4,6 +4,8 @@ var path = require('path')
 	, http = require('http')
 	, emitter = require('../emitter.js')
 
+	, mimetype = require('../mimetype.js')
+
 	, publicFolders = []
 
 	, server
@@ -18,7 +20,12 @@ var path = require('path')
 			if(routeVariables){
 				//generate the regex for laters and
 				//	store the verbs and variables belonging to the route
-				wildCardRoutes[route.replace(/:[a-zA-Z]+/g, '([^\/]+)')] = {verbs: routes[route], variables:routeVariables, eventId: route};
+				wildCardRoutes[route] = {
+											verbs: routes[route]
+											, variables: routeVariables
+											, eventId: route
+											, regex: new RegExp(route.replace(/:[a-zA-Z]+/g, '([^\/]+)'))
+										};
 			} else {
 				standardRoutes[route] = routes[route];
 			}
@@ -28,13 +35,12 @@ var path = require('path')
 	}
 
 	, isRoute = function (req, routesJson) {
-		return routesJson[req.url] && routesJson[req.url].indexOf(req.method.toLowerCase()) !== -1;
+		return !!(routesJson[req.url] && routesJson[req.url].indexOf(req.method.toLowerCase()) !== -1);
 	}
 
 	, isWildCardRoute = function (req, routesJson) {
 		var matchedRoutes = Object.keys(routesJson).filter(function (route) {
-					var routeRegex = new RegExp(route);
-					return !!(req.url.match(routeRegex));
+					return !!(req.url.match(routesJson[route].regex));
 				})
 			, matchesVerb;
 
@@ -49,20 +55,15 @@ var path = require('path')
 
 	, parseWildCardRoute = function (req, routesJson) {
 		var matchedRoute = Object.keys(routesJson).filter(function (route) {
-				var routeRegex = new RegExp(route);
-				return !!(req.url.match(routeRegex));
+				return !!(req.url.match(routesJson[route].regex));
 			})[0]
 
-			, routeRegex = new RegExp(matchedRoute)
-			, matches = req.url.match(routeRegex)
-			
+			, matches = req.url.match(routesJson[matchedRoute].regex)			
 			, values = {}
 			, routeInfo = routesJson[matchedRoute];
 
-		matches.shift();
-
 		for(i = 0; i < routeInfo.variables.length; i++){
-			values[routeInfo.variables[i].substring(1)] = matches[i];
+			values[routeInfo.variables[i].substring(1)] = matches[i + 1]; //offset by one to avoid the whole match which is at array[0]
 		}
 
 		return {route: routeInfo, values: values};
@@ -86,26 +87,29 @@ fs.exists('./public', function () {
 
 server = function (serverType, routesJson) {
 	var routesObj = parseRoutes(routesJson);
-
+	//TODO: queryparam parsing needed!
 	return serverType.createServer(function (req, res) {
+		var method = req.method.toLowerCase()
+			, connection = {req: req, res: res};
+
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(req.url.split('/')[1]) !== -1) {
 			//static assets y'all
 			//read in the file and stream it to the client
 			fs.exists('./public' + req.url, function (exists) {
 				if(exists){
+					//return with the correct heders for the file type
+					res.writeHead(200, {'Content-Type': mimetype(req.url.split('.').pop())});
 					fs.createReadStream('./public' + req.url).pipe(res);
 					emitter.emit('static:served', req.url);
 				} else {
 					emitter.emit('static:missing', req.url);
-					//replace with the error route
-					res.writeHead(404, {'Content-Type': 'text/plain'});
-					res.end('file not found');
+					emitter.emit('error:404', connection);
 				}
 			});
 		} else if (isRoute(req, routesObj.standard)) {
 			//matches a route in the routes.json
-			emitter.emit('route:' + req.url + ':' + req.method.toLowerCase(), {req: req, res: res});
+			emitter.emit('route:' + req.url + ':' + method, connection);
 
 		} else if (isWildCardRoute(req, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(req, routesObj.wildcard);
@@ -114,11 +118,9 @@ server = function (serverType, routesJson) {
 			
 			//emit the event for the url minus params and include the params
 			//	in the req.params object
-			emitter.emit('route:' + routeInfo.route.eventId + ':' + req.method.toLowerCase(), {req: req, res: res});
+			emitter.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
 		} else {
-			//todo replace with the error route...
-			res.writeHead(404, {'Content-Type': 'text/plain'});
-			res.end('file not found');
+			emitter.emit('error:404', connection);
 		}
 	});
 }
