@@ -88,6 +88,9 @@ fs.exists('./public', function () {
 server = function (serverType, routesJson) {
 	var routesObj = parseRoutes(routesJson);
 	//TODO: queryparam parsing needed!
+	//  to make this easier start using require(url) and then referene req.path
+	//	and req.query instead of req.url
+
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
 			, connection = {req: req, res: res};
