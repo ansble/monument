@@ -1,14 +1,18 @@
 var path = require('path')
 	, normalizedPath = path.join(__dirname)
 	, fs = require('fs')
-	, http = require('http')
 	, emitter = require('../emitter.js')
+	, url = require('url')
 
 	, mimetype = require('../mimetype.js')
 
 	, publicFolders = []
 
 	, server
+
+	, parsePath = function (req) {
+		return url.parse(req.url, true);
+	}
 
 	, parseRoutes = function (routes) {
 		var wildCardRoutes = {}
@@ -35,12 +39,12 @@ var path = require('path')
 	}
 
 	, isRoute = function (req, routesJson) {
-		return !!(routesJson[req.url] && routesJson[req.url].indexOf(req.method.toLowerCase()) !== -1);
+		return !!(routesJson[req.pathname] && routesJson[req.pathname].indexOf(req.method.toLowerCase()) !== -1);
 	}
 
 	, isWildCardRoute = function (req, routesJson) {
 		var matchedRoutes = Object.keys(routesJson).filter(function (route) {
-					return !!(req.url.match(routesJson[route].regex));
+					return !!(req.pathname.match(routesJson[route].regex));
 				})
 			, matchesVerb;
 
@@ -55,10 +59,10 @@ var path = require('path')
 
 	, parseWildCardRoute = function (req, routesJson) {
 		var matchedRoute = Object.keys(routesJson).filter(function (route) {
-				return !!(req.url.match(routesJson[route].regex));
+				return !!(req.pathname.match(routesJson[route].regex));
 			})[0]
 
-			, matches = req.url.match(routesJson[matchedRoute].regex)			
+			, matches = req.pathname.match(routesJson[matchedRoute].regex)			
 			, values = {}
 			, routeInfo = routesJson[matchedRoute];
 
@@ -87,32 +91,36 @@ fs.exists('./public', function () {
 
 server = function (serverType, routesJson) {
 	var routesObj = parseRoutes(routesJson);
-	//TODO: queryparam parsing needed!
-	//  to make this easier start using require(url) and then referene req.path
-	//	and req.query instead of req.url
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
-			, connection = {req: req, res: res};
+			, connection = {req: req, res: res}
+			, path = parsePath(req);
+
+		//parse out queryparams
+		req.query = path.query;
+
+		//parse out pathname
+		req.pathname = path.pathname;
 
 		//match the first part of the url... for public stuff
-		if (publicFolders.indexOf(req.url.split('/')[1]) !== -1) {
+		if (publicFolders.indexOf(req.pathname.split('/')[1]) !== -1) {
 			//static assets y'all
 			//read in the file and stream it to the client
-			fs.exists('./public' + req.url, function (exists) {
+			fs.exists('./public' + req.pathname, function (exists) {
 				if(exists){
 					//return with the correct heders for the file type
-					res.writeHead(200, {'Content-Type': mimetype(req.url.split('.').pop())});
-					fs.createReadStream('./public' + req.url).pipe(res);
-					emitter.emit('static:served', req.url);
+					res.writeHead(200, {'Content-Type': mimetype(req.pathname.split('.').pop())});
+					fs.createReadStream('./public' + req.pathname).pipe(res);
+					emitter.emit('static:served', req.pathname);
 				} else {
-					emitter.emit('static:missing', req.url);
+					emitter.emit('static:missing', req.pathname);
 					emitter.emit('error:404', connection);
 				}
 			});
 		} else if (isRoute(req, routesObj.standard)) {
 			//matches a route in the routes.json
-			emitter.emit('route:' + req.url + ':' + method, connection);
+			emitter.emit('route:' + req.pathname + ':' + method, connection);
 
 		} else if (isWildCardRoute(req, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(req, routesObj.wildcard);
