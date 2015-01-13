@@ -1,6 +1,6 @@
 {
   "name": "monumentjs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "app.js",
   "scripts": {
@@ -24,5 +24,8 @@
     "browser",
     "event",
     "eda"
-  ]
+  ],
+  "dependencies": {
+    "dot": "^1.0.3"
+  }
 }
