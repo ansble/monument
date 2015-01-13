@@ -4,7 +4,7 @@ var path = require('path')
 	, emitter = require('../emitter.js')
 	, url = require('url')
 
-	, mimetype = require('../mimetype.js')
+	, mime = require('mime')
 
 	, publicFolders = []
 
@@ -110,7 +110,7 @@ server = function (serverType, routesJson) {
 			fs.exists('./public' + req.pathname, function (exists) {
 				if(exists){
 					//return with the correct heders for the file type
-					res.writeHead(200, {'Content-Type': mimetype(req.pathname.split('.').pop())});
+					res.writeHead(200, {'Content-Type': mime.lookup(req.pathname)});
 					fs.createReadStream('./public' + req.pathname).pipe(res);
 					emitter.emit('static:served', req.pathname);
 				} else {
