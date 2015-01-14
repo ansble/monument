@@ -75,25 +75,19 @@ var path = require('path')
 
 	, setupStaticRoutes = function (routePathIn, publicPathIn) {
 		var routePath = path.join(process.cwd(), routePathIn)
-			, publicPath
-
-		if(publicPathIn){
-			publicPath = path.join(process.cwd(), publicPathIn);
-		} else {
-			publicPath = path.join(process.cwd(), './public');
-		}
+			, publicPath = publicPathIn
 
 		//load in all the route handlers
 		fs.readdirSync(routePath).forEach(function (file) {
 			if(file !== 'index.js'){
-				require("./" + file);
+				require(path.join(routePath, file));
 			}
 		});
 
 		//load in all the static routes
 		fs.exists(publicPath, function () {
 			fs.readdirSync(publicPath).forEach(function (file) {
-				if(fs.statSync(publicPath + file).isDirectory()){
+				if(fs.statSync(path.join(publicPath, file)).isDirectory()){
 					publicFolders.push(file);
 				}
 			});
@@ -102,9 +96,10 @@ var path = require('path')
 
 
 server = function (serverType, routesJson, routePath) {
-	var routesObj = parseRoutes(routesJson);
+	var routesObj = parseRoutes(routesJson)
+		, publicPath = path.join(process.cwd() + path.normalize('./public'));
 
-	setupStaticRoutes(routePath);
+	setupStaticRoutes(routePath, publicPath);
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
@@ -121,11 +116,11 @@ server = function (serverType, routesJson, routePath) {
 		if (publicFolders.indexOf(req.pathname.split('/')[1]) !== -1) {
 			//static assets y'all
 			//read in the file and stream it to the client
-			fs.exists('./public' + req.pathname, function (exists) {
+			fs.exists(path.join(publicPath, req.pathname), function (exists) {
 				if(exists){
 					//return with the correct heders for the file type
 					res.writeHead(200, {'Content-Type': mime.lookup(req.pathname)});
-					fs.createReadStream('./public' + req.pathname).pipe(res);
+					fs.createReadStream(path.join(publicPath, req.pathname)).pipe(res);
 					emitter.emit('static:served', req.pathname);
 				} else {
 					emitter.emit('static:missing', req.pathname);
