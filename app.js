@@ -1,6 +1,7 @@
 var routes = require('./routes.json')
 	, http = require('http')
 	, dot = require('dot')
+	, path = require('path')
 
 	, pkg = require('./package.json')
 
