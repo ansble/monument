@@ -97,11 +97,11 @@ var path = require('path')
 	};
 
 
-server = function (serverType, routesJson, routePath) {
+server = function (serverType, routesJson, config) {
 	var routesObj = parseRoutes(routesJson)
-		, publicPath = path.join(process.cwd(), './public');
+		, publicPath = path.join(process.cwd(), config.publicPath || './public');
 
-	setupStaticRoutes(routePath, publicPath);
+	setupStaticRoutes(config.routePath, publicPath);
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()

@@ -11,7 +11,7 @@ var routes = require('./routes.json')
 	, wrapper = function (config) {
 		var port = config.port || 3000;
 
-		server = require('./routes/index.js')(http, routes, config.routePath);
+		server = require('./routes/index.js')(http, routes, config);
 
 		server.listen(port);
 
