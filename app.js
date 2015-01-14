@@ -10,7 +10,7 @@ var routes = require('./routes.json')
 	, wrapper = function (config) {
 		var port = config.port || 3000;
 
-		server = require(config.routePath)(http, routes);
+		server = require(path.normalize(process.cwd() + config.routePath))(http, routes);
 
 		server.listen(port);
 
