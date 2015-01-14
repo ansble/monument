@@ -74,13 +74,13 @@ var path = require('path')
 	}
 
 	, setupStaticRoutes = function (routePathIn, publicPathIn) {
-		var routePath = path.join(process.cwd() + path.normalize(routePathIn))
+		var routePath = path.join(process.cwd(), routePathIn)
 			, publicPath
 
 		if(!publicPathIn){
-			publicPath = path.join(process.cwd() + path.normalize(publicPathIn));
+			publicPath = path.join(process.cwd(), publicPathIn);
 		} else {
-			publicPath = path.join(process.cwd() + path.normalize('./public'));
+			publicPath = path.join(process.cwd(), './public');
 		}
 
 		//load in all the route handlers
