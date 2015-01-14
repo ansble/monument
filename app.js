@@ -1,6 +1,8 @@
 var routes = require('./routes.json')
 	, http = require('http')
 
+	, pkg = require('./package.json')
+
 	//setup the routes and server
 	//	pass in the http or https object and the routes.json
 	//	then listen below on port/address you want to
@@ -9,11 +11,11 @@ var routes = require('./routes.json')
 	, wrapper = function (config) {
 		var port = config.port || 3000;
 
-		server = require(config.routePath)(http, routes);
+		server = require('./routes/index.js')(http, routes, config);
 
 		server.listen(port);
 
-		console.log('monumentjs running at http://127.0.0.1:' + port + '/');
+		console.log('monumentjs v' + pkg.version +' up and running on port: ' + port);
 	};
 
-module.exports = {server: wrapper};
+module.exports = {server: wrapper, events: require('./emitter.js')};

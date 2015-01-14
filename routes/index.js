@@ -71,26 +71,37 @@ var path = require('path')
 		}
 
 		return {route: routeInfo, values: values};
+	}
+
+	, setupStaticRoutes = function (routePathIn, publicPathIn) {
+		var routePath = path.join(process.cwd(), routePathIn)
+			, publicPath = publicPathIn
+
+		//load in all the route handlers
+		fs.readdirSync(routePath).forEach(function (file) {
+			if(file !== 'index.js'){
+				require(path.join(routePath, file));
+			}
+		});
+
+		//load in all the static routes
+		fs.exists(publicPath, function (exists) {
+			if(exists){
+				fs.readdirSync(publicPath).forEach(function (file) {
+					if(fs.statSync(path.join(publicPath, file)).isDirectory()){
+						publicFolders.push(file);
+					}
+				});
+			}
+		});
 	};
 
-//load in all the route handlers
-fs.readdirSync(normalizedPath).forEach(function (file) {
-	if(file !== 'index.js'){
-		require("./" + file);
-	}
-});
 
-//load in all the static routes
-fs.exists('./public', function () {
-	fs.readdirSync('./public').forEach(function (file) {
-		if(fs.statSync('./public/' + file).isDirectory()){
-			publicFolders.push(file);
-		}
-	});
-});
+server = function (serverType, routesJson, config) {
+	var routesObj = parseRoutes(routesJson)
+		, publicPath = path.join(process.cwd(), config.publicPath || './public');
 
-server = function (serverType, routesJson) {
-	var routesObj = parseRoutes(routesJson);
+	setupStaticRoutes(config.routePath, publicPath);
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
@@ -107,11 +118,11 @@ server = function (serverType, routesJson) {
 		if (publicFolders.indexOf(req.pathname.split('/')[1]) !== -1) {
 			//static assets y'all
 			//read in the file and stream it to the client
-			fs.exists('./public' + req.pathname, function (exists) {
+			fs.exists(path.join(publicPath, req.pathname), function (exists) {
 				if(exists){
 					//return with the correct heders for the file type
 					res.writeHead(200, {'Content-Type': mime.lookup(req.pathname)});
-					fs.createReadStream('./public' + req.pathname).pipe(res);
+					fs.createReadStream(path.join(publicPath, req.pathname)).pipe(res);
 					emitter.emit('static:served', req.pathname);
 				} else {
 					emitter.emit('static:missing', req.pathname);
