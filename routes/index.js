@@ -77,7 +77,7 @@ var path = require('path')
 		var routePath = path.join(process.cwd(), routePathIn)
 			, publicPath
 
-		if(!publicPathIn){
+		if(publicPathIn){
 			publicPath = path.join(process.cwd(), publicPathIn);
 		} else {
 			publicPath = path.join(process.cwd(), './public');
