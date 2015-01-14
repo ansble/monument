@@ -97,7 +97,7 @@ var path = require('path')
 
 server = function (serverType, routesJson, routePath) {
 	var routesObj = parseRoutes(routesJson)
-		, publicPath = path.join(process.cwd() + path.normalize('./public'));
+		, publicPath = path.join(process.cwd(), './public');
 
 	setupStaticRoutes(routePath, publicPath);
 
