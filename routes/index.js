@@ -71,26 +71,40 @@ var path = require('path')
 		}
 
 		return {route: routeInfo, values: values};
+	}
+
+	, setupStaticRoutes = function (routePathIn, publicPathIn) {
+		var routePath = path.join(process.cwd() + path.normalize(routePathIn))
+			, publicPath
+
+		if(!publicPathIn){
+			publicPath = path.join(process.cwd() + path.normalize(publicPathIn));
+		} else {
+			publicPath = path.join(process.cwd() + path.normalize('./public'));
+		}
+
+		//load in all the route handlers
+		fs.readdirSync(routePath).forEach(function (file) {
+			if(file !== 'index.js'){
+				require("./" + file);
+			}
+		});
+
+		//load in all the static routes
+		fs.exists(publicPath, function () {
+			fs.readdirSync(publicPath).forEach(function (file) {
+				if(fs.statSync(publicPath + file).isDirectory()){
+					publicFolders.push(file);
+				}
+			});
+		});
 	};
 
-//load in all the route handlers
-fs.readdirSync(normalizedPath).forEach(function (file) {
-	if(file !== 'index.js'){
-		require("./" + file);
-	}
-});
 
-//load in all the static routes
-fs.exists('./public', function () {
-	fs.readdirSync('./public').forEach(function (file) {
-		if(fs.statSync('./public/' + file).isDirectory()){
-			publicFolders.push(file);
-		}
-	});
-});
-
-server = function (serverType, routesJson) {
+server = function (serverType, routesJson, routePath) {
 	var routesObj = parseRoutes(routesJson);
+
+	setupStaticRoutes(routePath);
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()

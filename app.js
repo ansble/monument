@@ -1,6 +1,5 @@
 var routes = require('./routes.json')
 	, http = require('http')
-	, path = require('path')
 
 	//setup the routes and server
 	//	pass in the http or https object and the routes.json
@@ -10,7 +9,7 @@ var routes = require('./routes.json')
 	, wrapper = function (config) {
 		var port = config.port || 3000;
 
-		server = require(path.join(process.cwd(), config.routePath))(http, routes);
+		server = require('./routes/index.js')(http, routes, config.routePath);
 
 		server.listen(port);
 
