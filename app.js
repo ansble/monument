@@ -11,10 +11,11 @@ var routes = require('./routes.json')
 	, server
 
 	, wrapper = function (config) {
-		var port = config.port || 3000;
+		var port = config.port || 3000
+			, templatePath = config.templatePath || './templates';
 
 		//compile the templates!
-		dot.process({path: path.join(process.cwd(), config.templatePath)});
+		dot.process({path: path.join(process.cwd(), templatePath)});
 
 		server = require('./routes/index.js')(http, routes, config);
 
