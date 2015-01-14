@@ -85,12 +85,14 @@ var path = require('path')
 		});
 
 		//load in all the static routes
-		fs.exists(publicPath, function () {
-			fs.readdirSync(publicPath).forEach(function (file) {
-				if(fs.statSync(path.join(publicPath, file)).isDirectory()){
-					publicFolders.push(file);
-				}
-			});
+		fs.exists(publicPath, function (exists) {
+			if(exists){
+				fs.readdirSync(publicPath).forEach(function (file) {
+					if(fs.statSync(path.join(publicPath, file)).isDirectory()){
+						publicFolders.push(file);
+					}
+				});
+			}
 		});
 	};
 
