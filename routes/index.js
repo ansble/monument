@@ -1,5 +1,4 @@
 var path = require('path')
-	, normalizedPath = path.join(__dirname)
 	, fs = require('fs')
 	, emitter = require('../emitter.js')
 	, url = require('url')

@@ -1,5 +1,6 @@
 var routes = require('./routes.json')
 	, http = require('http')
+	, dot = require('dot')
 
 	, pkg = require('./package.json')
 
@@ -10,6 +11,9 @@ var routes = require('./routes.json')
 
 	, wrapper = function (config) {
 		var port = config.port || 3000;
+
+		//compile the templates!
+		dot.process({path: path.join(process.cwd(), config.templatePath)});
 
 		server = require('./routes/index.js')(http, routes, config);
 
