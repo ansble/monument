@@ -1,5 +1,6 @@
 var routes = require('./routes.json')
 	, http = require('http')
+	, path = require('path')
 
 	//setup the routes and server
 	//	pass in the http or https object and the routes.json
