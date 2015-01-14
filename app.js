@@ -18,4 +18,4 @@ var routes = require('./routes.json')
 		console.log('monumentjs v' + pkg.version +' up and running on port: ' + port);
 	};
 
-module.exports = {server: wrapper};
+module.exports = {server: wrapper, events: require('../emitter.js')};
