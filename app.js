@@ -1,17 +1,27 @@
 var routes = require('./routes.json')
-	, emitter = require('./emitter.js')
-	, http = require('http');
+	, http = require('http')
+	, dot = require('dot')
+	, path = require('path')
 
-	require('./homepage.js');
-	require('./teampage.js');
+	, pkg = require('./package.json')
 
-http.createServer(function (req, res) {
+	//setup the routes and server
+	//	pass in the http or https object and the routes.json
+	//	then listen below on port/address you want to
+	, server
 
-	if(routes[req.url] && routes[req.url].indexOf(req.method.toLowerCase()) !== -1){
-		emitter.emit('route:' + req.url + ':' + req.method.toLowerCase(), {req: req, res: res});
-	} else {
-		res.writeHead(404, {'Content-Type': 'text/plain'});
-		res.end('Route not found');
-	}
-}).listen(3000, '127.0.0.1');
-console.log('Server running at http://127.0.0.1:3000/');
+	, wrapper = function (config) {
+		var port = config.port || 3000
+			, templatePath = config.templatePath || './templates';
+
+		//compile the templates!
+		dot.process({path: path.join(process.cwd(), templatePath)});
+
+		server = require('./routes/index.js')(http, routes, config);
+
+		server.listen(port);
+
+		console.log('monumentjs v' + pkg.version +' up and running on port: ' + port);
+	};
+
+module.exports = {server: wrapper, events: require('./emitter.js')};
