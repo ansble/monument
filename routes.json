@@ -2,5 +2,6 @@
 	"base": "",
 	"/": ["get"],
 	"/team": ["get"],
-	"/news": ["get"]
+	"/news": ["get"],
+	"/news/:id": ["get"]
 }
