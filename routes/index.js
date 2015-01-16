@@ -2,6 +2,7 @@ var path = require('path')
 	, fs = require('fs')
 	, emitter = require('../emitter.js')
 	, url = require('url')
+	, path = require('path')
 
 	, mime = require('mime')
 
@@ -105,13 +106,13 @@ server = function (serverType, routesJson, config) {
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
 			, connection = {req: req, res: res}
-			, path = parsePath(req);
+			, pathParsed = parsePath(req);
 
 		//parse out queryparams
 		req.query = path.query;
 
 		//parse out pathname
-		req.pathname = path.pathname;
+		req.pathname = pathParsed.pathname;
 
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(req.pathname.split('/')[1]) !== -1) {
