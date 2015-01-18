@@ -98,7 +98,8 @@ var path = require('path')
 
 server = function (serverType, routesJson, config) {
 	var routesObj = parseRoutes(routesJson)
-		, publicPath = path.join(process.cwd(), config.publicPath || './public');
+		, publicPath = path.join(process.cwd(), config.publicPath || './public')
+		, maxAge = config.maxAge || 31536000;
 
 	setupStaticRoutes(config.routePath, publicPath);
 
@@ -122,7 +123,7 @@ server = function (serverType, routesJson, config) {
 					//return with the correct heders for the file type
 					res.writeHead(200, {
 						'Content-Type': mime.lookup(req.pathname),
-						'Cache-Control': 'maxage=31536000'
+						'Cache-Control': 'maxage=' + maxage
 					});
 					fs.createReadStream(path.join(publicPath, req.pathname)).pipe(res);
 					emitter.emit('static:served', req.pathname);
