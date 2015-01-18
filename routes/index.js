@@ -99,7 +99,8 @@ var path = require('path')
 server = function (serverType, routesJson, config) {
 	var routesObj = parseRoutes(routesJson)
 		, publicPath = path.join(process.cwd(), config.publicPath || './public')
-		, maxAge = config.maxAge || 31536000;
+		, maxAge = config.maxAge || 31536000
+		, routeJSONPath = config.routesPath || '/routes';
 
 	setupStaticRoutes(config.routePath, publicPath);
 
@@ -144,7 +145,7 @@ server = function (serverType, routesJson, config) {
 			//emit the event for the url minus params and include the params
 			//	in the req.params object
 			emitter.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
-		} else if(req.pathname === '/routes'){
+		} else if(req.pathname === routeJSONPath){
 			res.writeHead(200, {
 				'Content-Type': mime.lookup('routes.json')
 			});
