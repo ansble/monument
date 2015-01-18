@@ -1,4 +1,4 @@
-var routes = require('./routes.json')
+var routes
 	, http = require('http')
 	, dot = require('dot')
 	, path = require('path')
@@ -12,7 +12,11 @@ var routes = require('./routes.json')
 
 	, wrapper = function (config) {
 		var port = config.port || 3000
-			, templatePath = config.templatePath || './templates';
+			, templatePath = config.templatePath || './templates'
+			, routePath = config.routePath || './routes.json'
+			, routes = require(path.join(process.cwd(), routePath));
+
+			console.log(path.join(process.cwd(), routePath));
 
 		//compile the templates!
 		dot.process({path: path.join(process.cwd(), templatePath)});

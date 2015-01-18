@@ -2,7 +2,6 @@ var path = require('path')
 	, fs = require('fs')
 	, emitter = require('../emitter.js')
 	, url = require('url')
-	, path = require('path')
 
 	, mime = require('mime')
 
