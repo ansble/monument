@@ -120,7 +120,10 @@ server = function (serverType, routesJson, config) {
 			fs.exists(path.join(publicPath, req.pathname), function (exists) {
 				if(exists){
 					//return with the correct heders for the file type
-					res.writeHead(200, {'Content-Type': mime.lookup(req.pathname)});
+					res.writeHead(200, {
+						'Content-Type': mime.lookup(req.pathname),
+						'Cache-Control': 'maxage=31536000'
+					});
 					fs.createReadStream(path.join(publicPath, req.pathname)).pipe(res);
 					emitter.emit('static:served', req.pathname);
 				} else {
