@@ -123,7 +123,7 @@ server = function (serverType, routesJson, config) {
 					//return with the correct heders for the file type
 					res.writeHead(200, {
 						'Content-Type': mime.lookup(req.pathname),
-						'Cache-Control': 'maxage=' + maxage
+						'Cache-Control': 'maxage=' + maxAge
 					});
 					fs.createReadStream(path.join(publicPath, req.pathname)).pipe(res);
 					emitter.emit('static:served', req.pathname);
@@ -144,6 +144,11 @@ server = function (serverType, routesJson, config) {
 			//emit the event for the url minus params and include the params
 			//	in the req.params object
 			emitter.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
+		} else if(req.pathname === '/routes'){
+			res.writeHead(200, {
+				'Content-Type': mime.lookup('routes.json')
+			});
+			fs.createReadStream(path.join(process.cwd(), './routes.json')).pipe(res);
 		} else {
 			emitter.emit('error:404', connection);
 		}
