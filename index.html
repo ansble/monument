@@ -39,7 +39,7 @@
 </p>
 <p>
   <h4>Use the CLI tools!</h4>
-  <code>npm install -g generator-monument-cli</code>
+  <code>npm install -g yo generator-monument-cli</code>
   <p>Then you can yo monument-cli to lay down new projects and a bunch more. Check out the <a href="https://github.com/ansble/monument-cli">docs over here</a></p>
 </p>
 
@@ -51,6 +51,64 @@
 <li>isomorphic routing - The routing is completely event based, this means that a route document (JSON) can be shared between the server side code and the front end code, allowing true isomorphic routing. Handlers can be shared as well... but since they likely are a little different in their needs that might not be as common as we would like.</li>
 </ul>
       </section>
+<section>
+  <h2>Building your first application</h2>
+  <p>This is a quick walk through of building a simple application with monument that will get you from nothing to up and running. So here we go!</p>
+  <h3>Install the CLI tools</h3>
+  <p>The CLI tools are designed to automate many of the redundant tasks in the workflow for building a monument application. So you're going to want to grab them right up front. <code>npm install -g yo generator-monument-cli</code>.</p>
+  <p>The CLI is based on <a href="http://http://yeoman.io/">yeoman</a> so it is installed by that npm install as well.</p>
+  <h3>Create your project base</h3>
+  <p>First create a folder for your project, then navigate a terminal (cmd) into it. A quick <code>yo generator-cli</code> will start the project laydown process.</p>
+  <p>Yeoman will ask you a few questions(What is the name of your project?, What version shall we start with?, And what are you about to build?) and then lay down a base project with those answers.</p>
+  <p>Your project should now look like this:</p>
+  <pre><code>    project/
+        routes/
+            main.js
+        templates/
+            main.jst
+        .bowerrc
+        .editorconfig
+        .jshintrc
+        README.md
+        app.js
+        bower.json
+        package.json
+        routes.json
+</code></pre>
+<h3>Create your routes</h3>
+<p>Creating routes is a pain generally. Thanks to the decoupled way that monument applications are created we can take all the pain out of it.</p>
+<p>The routes.json file contains all the allowed routes and their verbs inside it. (It is also served up from /routes on your server so the front end can consume it easily) The base routes.json looks like this when you open it:</p>
+<pre><code>
+  {
+    "/": ["get"]
+  }
+</code></pre>
+<p>Adding routes is simple. We'll look at two examples, an about page and a profile page. The about page will only eer be accessed with a GET verb so adding it consists of adding <code> "/about": ["get"]</code> to our obejct. The profile page is going to be a little more complicated, so here are the changes and then we'll discuss them.</p>
+<pre><code>
+  {
+    "/": ["get"]
+    , "/about": ["get"]
+    , "/profile": ["get", "post"]
+    , "/profile/:id": ["get", "put", "delete"]
+  }
+</code></pre>
+<p>The first <code>/profile</code> accepts both <code>get</code> and <code>post</code> so that you can open a blank profile and then post a new profile to be added to the collection. The <code>/profile/:id</code> is a wildcard route. Anything that lands in the <code>:id</code> slot will be added to the request as a variable named <code>id</code>. Which should feel fairly familiar hopefully. That URL is then allowed to have <code>put</code> for updates, <code>get</code> for viewing, and <code>delete</code> for removal.</p>
+<p>The last step in adding route is to use the CLI to stub out the handlers for each route. A quick <code>yo monument-cli:routes</code> lays down stubs for any route/verb combination that has not yet been created in the <code>/routes</code> folder. It creates a file for each toplevel route and adds the sub route handlers to it.</p>
+<p>This process can also be used to stub out new route handlers instead of writing them by hand throughout project development</p>
+<h3>Write your first route handler</h3>
+<p>Once you have laid down your route stubs they will all basically look like this:</p>
+<pre><code>
+  events.on('route:/profile:get', function (connection) {
+    connection.res.end('route /profile now responding to get requests');
+  });
+</code></pre>
+<h4>The route event</h4>
+<p>Route events are structured like this: <code>route:PATH:VERB</code> and atr triggered by the routing code. All you have to do is respond to them. The function that handles the route recieves a connection object that has two members: <code>req</code>, and <code>res</code>. The Request and Response. Making it easy to access request variables and respond correctly to the request.</p>
+<p>Variables from the request are stored in <code>connection.req.query</code>, an object containing query params, <code>connection.req.body</code>, an object containing the body of the request, and <code>connection.req.params</code> for url parameters.</p>
+<h4>An important thought...</h4>
+<p>You can do anything you need to within the function passed to <code>events.on</code> but you should avoid adding permenant event listeners. Pretty much any event listening that needs to happen inside of the handler should be <code>events.once</code>. This is because each instance of that handler corresponds to a single request and once you are done with that request all the events need to be unbound or they will eventually eat up your memory footprint.</p>
+<p>So either manually unbind them or use the built in <code>events.once</code> as it will unbind itself after the first time it triggers.</p>
+</section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/ansble">ansble</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
