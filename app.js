@@ -74,7 +74,7 @@ var routes
 
 		server.listen(port);
 
-		console.log('monumentjs v' + pkg.version +' up and running on port: ' + port);
+		console.log('monument v' + pkg.version +' up and running on port: ' + port);
 	};
 
 module.exports = {
