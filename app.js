@@ -66,7 +66,7 @@ var routes
 		//compile the templates!
 		dot.process({path: path.join(process.cwd(), templatePath)});
 
-		server = require('./routes/index.js')(http, routes, config);
+		server = require('./routes/index.js').server(http, routes, config);
 
 		server.listen(port);
 

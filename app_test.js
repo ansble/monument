@@ -1,6 +1,6 @@
 var assert = require('chai').assert
 	, app = require('./app')
-	Events = require('events').EventEmitter;
+	, Events = require('events').EventEmitter;
 
 describe('The main monument tests', function(){
 	it('should be correctly defined', function(){
@@ -21,5 +21,11 @@ describe('The main monument tests', function(){
 
 	describe('Wrapper Tests', function () {
 		it('should return a server when run');
+	});
+
+	describe('Emitter Tests', function () {
+		it('should be an instance of the Events', function () {
+			assert.instanceOf(app.events, Events);
+		});
 	});
 });
