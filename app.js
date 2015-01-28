@@ -65,8 +65,6 @@ var routes
 			, routePath = config.routePath || './routes.json'
 			, routes = require(path.join(process.cwd(), routePath));
 
-			console.log(path.join(process.cwd(), routePath));
-
 		//compile the templates!
 		dot.process({path: path.join(process.cwd(), templatePath)});
 
