@@ -48,7 +48,7 @@ gulp.task('release', ['test'], function(){
 		
 		console.log('Updating the history.md file');
 
-		fs.writeFile('./history.md', '### - ' + newVersion + ' *' + new Date().toLocaleString() + '*\n' + stdout);
+		fs.writeFile('./history.md', '### - ' + newVersion + ' *' + new Date().toLocaleString() + '*\n\n' + stdout + '\n\n\n' + history);
 		
 		cp.exec('git log --all --format="%aN <%aE>" | sort -u', function (err, stdout, stderr) {
 			//write out the Authors file with all contributors
@@ -58,13 +58,22 @@ gulp.task('release', ['test'], function(){
 
 			cp.exec('git add .', function () {
 				cp.exec('git commit -m "preparing for release of v' + newVersion + '"', function () {
+					console.log('commited the automated updates');
+					//run npm version
+					cp.exec('npm version ' + options.type, function(){
+						console.log('npm version to rev for release');
+						cp.exec('npm publish', function(){
+							console.log('pushing to origin');
+
+							cp.exec('git push origin master', function(){});
+							cp.exec('git push origin v' + newVersion, function(){
+								console.log(chalk.green('DONE! Congrats on the Release!'));
+							});
+						});
+					});
 
 				});
 			});
 		});
-		//run npm version
-		// cp.exec('npm version ' + options.type, function(){
-			//now update the history.md file
-		// });
 	});
 });
