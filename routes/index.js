@@ -156,4 +156,10 @@ server = function (serverType, routesJson, config) {
 	});
 }
 
-module.exports = server;
+module.exports = {
+					server: server
+					, parseWildCardRoute: parseWildCardRoute
+					, isWildCardRoute: isWildCardRoute
+					, parseRoutes: parseRoutes
+					, parsePath: parsePath
+				};

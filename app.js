@@ -37,8 +37,6 @@ var routes
 	}
 
 	, parser = function (req, callback, scope) {//parse out the body
-		var busboy;
-
 		getRawBody(req, {
 		    length: req.headers['content-length'],
 		    limit: '1mb',
@@ -65,12 +63,10 @@ var routes
 			, routePath = config.routePath || './routes.json'
 			, routes = require(path.join(process.cwd(), routePath));
 
-			console.log(path.join(process.cwd(), routePath));
-
 		//compile the templates!
 		dot.process({path: path.join(process.cwd(), templatePath)});
 
-		server = require('./routes/index.js')(http, routes, config);
+		server = require('./routes/index.js').server(http, routes, config);
 
 		server.listen(port);
 
