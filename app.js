@@ -37,8 +37,6 @@ var routes
 	}
 
 	, parser = function (req, callback, scope) {//parse out the body
-		var busboy;
-
 		getRawBody(req, {
 		    length: req.headers['content-length'],
 		    limit: '1mb',
