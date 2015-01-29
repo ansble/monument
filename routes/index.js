@@ -9,8 +9,8 @@ var path = require('path')
 
 	, server
 
-	, parsePath = function (req) {
-		return url.parse(req.url, true);
+	, parsePath = function (urlIn) {
+		return url.parse(urlIn, true);
 	}
 
 	, parseRoutes = function (routes) {
@@ -37,18 +37,18 @@ var path = require('path')
 		return {wildcard: wildCardRoutes, standard: standardRoutes};
 	}
 
-	, isRoute = function (req, routesJson) {
-		return !!(routesJson[req.pathname] && routesJson[req.pathname].indexOf(req.method.toLowerCase()) !== -1);
+	, isRoute = function (pathname, method, routesJson) {
+		return !!(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1);
 	}
 
-	, isWildCardRoute = function (req, routesJson) {
+	, isWildCardRoute = function (pathname, method, routesJson) {
 		var matchedRoutes = Object.keys(routesJson).filter(function (route) {
-					return !!(req.pathname.match(routesJson[route].regex));
+					return !!(pathname.match(routesJson[route].regex));
 				})
 			, matchesVerb;
 
 		if(matchedRoutes.length){
-			matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(req.method.toLowerCase()) !== -1
+			matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(method) !== -1
 		} else {
 			matchesVerb = false;
 		}
@@ -56,12 +56,12 @@ var path = require('path')
 		return matchedRoutes.length > 0 && matchesVerb;
 	}
 
-	, parseWildCardRoute = function (req, routesJson) {
+	, parseWildCardRoute = function (pathname, routesJson) {
 		var matchedRoute = Object.keys(routesJson).filter(function (route) {
-				return !!(req.pathname.match(routesJson[route].regex));
+				return !!(pathname.match(routesJson[route].regex));
 			})[0]
 
-			, matches = req.pathname.match(routesJson[matchedRoute].regex)			
+			, matches = pathname.match(routesJson[matchedRoute].regex)			
 			, values = {}
 			, routeInfo = routesJson[matchedRoute];
 
@@ -106,46 +106,47 @@ server = function (serverType, routesJson, config) {
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
-			, connection = {req: req, res: res}
-			, pathParsed = parsePath(req);
+			, connection = {
+							req: req
+							, res: res
+							, query: path.query
+							, params: {}
+						}
+			, pathParsed = parsePath(req.url)
+			, pathname = pathParsed.pathname;
 
-		//parse out queryparams
-		req.query = path.query;
-
-		//parse out pathname
-		req.pathname = pathParsed.pathname;
 
 		//match the first part of the url... for public stuff
-		if (publicFolders.indexOf(req.pathname.split('/')[1]) !== -1) {
+		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
 			//static assets y'all
 			//read in the file and stream it to the client
-			fs.exists(path.join(publicPath, req.pathname), function (exists) {
+			fs.exists(path.join(publicPath, pathname), function (exists) {
 				if(exists){
 					//return with the correct heders for the file type
 					res.writeHead(200, {
-						'Content-Type': mime.lookup(req.pathname),
+						'Content-Type': mime.lookup(pathname),
 						'Cache-Control': 'maxage=' + maxAge
 					});
-					fs.createReadStream(path.join(publicPath, req.pathname)).pipe(res);
-					emitter.emit('static:served', req.pathname);
+					fs.createReadStream(path.join(publicPath, pathname)).pipe(res);
+					emitter.emit('static:served', pathname);
 				} else {
-					emitter.emit('static:missing', req.pathname);
+					emitter.emit('static:missing', pathname);
 					emitter.emit('error:404', connection);
 				}
 			});
-		} else if (isRoute(req, routesObj.standard)) {
+		} else if (isRoute(pathname, method, routesObj.standard)) {
 			//matches a route in the routes.json
-			emitter.emit('route:' + req.pathname + ':' + method, connection);
+			emitter.emit('route:' + pathname + ':' + method, connection);
 
-		} else if (isWildCardRoute(req, routesObj.wildcard)) {
-			var routeInfo = parseWildCardRoute(req, routesObj.wildcard);
+		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
+			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
 
-			req.params = routeInfo.values;
+			connection.params = routeInfo.values;
 			
 			//emit the event for the url minus params and include the params
-			//	in the req.params object
+			//	in the params object
 			emitter.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
-		} else if(req.pathname === routeJSONPath){
+		} else if(pathname === routeJSONPath){
 			res.writeHead(200, {
 				'Content-Type': mime.lookup('routes.json')
 			});
@@ -156,4 +157,10 @@ server = function (serverType, routesJson, config) {
 	});
 }
 
-module.exports = server;
+module.exports = {
+					server: server
+					, parseWildCardRoute: parseWildCardRoute
+					, isWildCardRoute: isWildCardRoute
+					, parseRoutes: parseRoutes
+					, parsePath: parsePath
+				};

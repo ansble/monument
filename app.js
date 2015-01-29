@@ -36,13 +36,11 @@ var routes
 		return rtnObj;
 	}
 
-	, parser = function (req, callback, scope) {//parse out the body
-		var busboy;
-
-		getRawBody(req, {
-		    length: req.headers['content-length'],
+	, parser = function (connection, callback, scope) {//parse out the body
+		getRawBody(connection.req, {
+		    length: connection.req.headers['content-length'],
 		    limit: '1mb',
-		    encoding: typer.parse(req.headers['content-type']).parameters.charset || 'UTF-8'
+		    encoding: typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8'
 		  }, function (err, string) {
 		    if (err){
 		      emitter.emit('error:parse', err);
@@ -50,11 +48,9 @@ var routes
 		    }
 		    
 	    	try{
-	    		req.body = JSON.parse(string);
-	    		callback.apply(scope);
+	    		callback.apply(scope, [JSON.parse(string)]);
 	    	} catch (e) {
-		    	req.body = parseForm(string);
-		    	callback.apply(scope);
+		    	callback.apply(scope, [parseForm(string)]);
 	    	}
 		});
 	}
@@ -65,12 +61,10 @@ var routes
 			, routePath = config.routePath || './routes.json'
 			, routes = require(path.join(process.cwd(), routePath));
 
-			console.log(path.join(process.cwd(), routePath));
-
 		//compile the templates!
 		dot.process({path: path.join(process.cwd(), templatePath)});
 
-		server = require('./routes/index.js')(http, routes, config);
+		server = require('./routes/index.js').server(http, routes, config);
 
 		server.listen(port);
 
