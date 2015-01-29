@@ -29,11 +29,14 @@ The route events recieve an object right now, often called connection, that look
 ```
 {
 	res: response,
-	req: request
+	req: request,
+	params: the url parameters as an object,
+	body: the body of the request as an object,
+	query: the queryparams as an object
 }
 ```
 
-these are the request and response objects from node.
+these are the request and response objects from node. The other thing of interest are the other parts of the connection object, the params, body, and query objects. `params` contains the key/value pairs from the url params laid out with `:name` notation in the path. `body` is the parsed body of the request. Most commonly will have a value in `post`, `put`, and `update` requests. Lastly you get the `query` object which is the key/value pairs found in any queryparams on the path.
 
 ### Data and Events
 
