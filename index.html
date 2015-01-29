@@ -104,7 +104,7 @@
 </code></pre>
 <h4>The route event</h4>
 <p>Route events are structured like this: <code>route:PATH:VERB</code> and atr triggered by the routing code. All you have to do is respond to them. The function that handles the route recieves a connection object that has two members: <code>req</code>, and <code>res</code>. The Request and Response. Making it easy to access request variables and respond correctly to the request.</p>
-<p>Variables from the request are stored in <code>connection.req.query</code>, an object containing query params, <code>connection.req.body</code>, an object containing the body of the request, and <code>connection.req.params</code> for url parameters.</p>
+<p>Variables from the request are stored in <code>connection.query</code>, an object containing query params, <code>connection.body</code>, an object containing the body of the request, and <code>connection.params</code> for url parameters.</p>
 <h4>An important thought...</h4>
 <p>You can do anything you need to within the function passed to <code>events.on</code> but you should avoid adding permenant event listeners. Pretty much any event listening that needs to happen inside of the handler should be <code>events.once</code>. This is because each instance of that handler corresponds to a single request and once you are done with that request all the events need to be unbound or they will eventually eat up your memory footprint.</p>
 <p>So either manually unbind them or use the built in <code>events.once</code> as it will unbind itself after the first time it triggers.</p>
