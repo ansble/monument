@@ -17,7 +17,10 @@ Whichever way you decide to do it the first step is to add your route to the `ro
 	"/member/:username": ["get"]
 }
 ```
-So you have a key (the route) and then an array of allowed verbs for that route.
+
+So you have a key (the route) and then an array of allowed verbs for that route. This means that a request to a disallowed verb will not be handled. It returns a 404 just like a request to a route path does.
+
+You are allowed to specify routes with params in them as demonstrated by the `/member/:username` route above. This means that when someone requests that route with something like `/member/designfrontier` there will be a variable named `username` included in the variable req.params (req.params.username will equal 'designfrontier' in this example). You can use that variable in the event handler for the route. Oh yeah, that will be handled by the 'route:/member/:username:get' event. Hopefully that makes sense.
 
 ### Static Assetts
 
