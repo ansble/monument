@@ -48,10 +48,8 @@ var routes
 		    }
 		    
 	    	try{
-	    		// connection.body = JSON.parse(string);
 	    		callback.apply(scope, [JSON.parse(string)]);
 	    	} catch (e) {
-		    	// connection.body = parseForm(string);
 		    	callback.apply(scope, [parseForm(string)]);
 	    	}
 		});
