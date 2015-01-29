@@ -36,11 +36,11 @@ var routes
 		return rtnObj;
 	}
 
-	, parser = function (req, callback, scope) {//parse out the body
-		getRawBody(req, {
-		    length: req.headers['content-length'],
+	, parser = function (connection, callback, scope) {//parse out the body
+		getRawBody(connection.req, {
+		    length: connection.req.headers['content-length'],
 		    limit: '1mb',
-		    encoding: typer.parse(req.headers['content-type']).parameters.charset || 'UTF-8'
+		    encoding: typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8'
 		  }, function (err, string) {
 		    if (err){
 		      emitter.emit('error:parse', err);
@@ -48,11 +48,11 @@ var routes
 		    }
 		    
 	    	try{
-	    		req.body = JSON.parse(string);
-	    		callback.apply(scope);
+	    		// connection.body = JSON.parse(string);
+	    		callback.apply(scope, [JSON.parse(string)]);
 	    	} catch (e) {
-		    	req.body = parseForm(string);
-		    	callback.apply(scope);
+		    	// connection.body = parseForm(string);
+		    	callback.apply(scope, [parseForm(string)]);
 	    	}
 		});
 	}

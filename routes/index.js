@@ -110,7 +110,6 @@ server = function (serverType, routesJson, config) {
 							req: req
 							, res: res
 							, query: path.query
-							, body: {}
 							, params: {}
 						}
 			, pathParsed = parsePath(req)

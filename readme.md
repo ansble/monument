@@ -31,12 +31,29 @@ The route events recieve an object right now, often called connection, that look
 	res: response,
 	req: request,
 	params: the url parameters as an object,
-	body: the body of the request as an object,
 	query: the queryparams as an object
 }
 ```
 
-these are the request and response objects from node. The other thing of interest are the other parts of the connection object, the params, body, and query objects. `params` contains the key/value pairs from the url params laid out with `:name` notation in the path. `body` is the parsed body of the request. Most commonly will have a value in `post`, `put`, and `update` requests. Lastly you get the `query` object which is the key/value pairs found in any queryparams on the path.
+these are the request and response objects from node. The other thing of interest are the other parts of the connection object, the params, and query objects. `params` contains the key/value pairs from the url params laid out with `:name` notation in the path. Lastly you get the `query` object which is the key/value pairs found in any queryparams on the path.
+
+#### put, post, update and parsing out body
+
+At some point you are going to need to deal with body data from a form or ajax request. This is one of the areas where monument diverges from the mainstream you may be used to in server side js. We expose a parser function that you use like this in the event handler for the route you want:
+
+```
+var parser = require('monument').parser;
+
+events.on('route:/join:post', function (connection) {
+	//parse out the request body
+	parser(connection, function (body) {
+		console.log(body);
+		connection.res.end('route /join now responding to post requests');
+	});
+});
+```
+
+`body` is the parsed body of the request and is passed into the callback function.
 
 ### Data and Events
 
