@@ -32,7 +32,12 @@ The route events recieve an object right now, often called connection, that look
 	req: request
 }
 ```
+
 these are the request and response objects from node.
+
+### Data and Events
+
+More to come... but think about the idea of resource pooling and individual data modules that front DSLs.
 
 ### Static Assetts
 
