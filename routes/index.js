@@ -9,8 +9,8 @@ var path = require('path')
 
 	, server
 
-	, parsePath = function (req) {
-		return url.parse(req.url, true);
+	, parsePath = function (urlIn) {
+		return url.parse(urlIn, true);
 	}
 
 	, parseRoutes = function (routes) {
@@ -112,7 +112,7 @@ server = function (serverType, routesJson, config) {
 							, query: path.query
 							, params: {}
 						}
-			, pathParsed = parsePath(req)
+			, pathParsed = parsePath(req.url)
 			, pathname = pathParsed.pathname;
 
 
@@ -141,11 +141,10 @@ server = function (serverType, routesJson, config) {
 		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
 
-			// req.params = routeInfo.values;
 			connection.params = routeInfo.values;
 			
 			//emit the event for the url minus params and include the params
-			//	in the req.params object
+			//	in the params object
 			emitter.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
 		} else if(pathname === routeJSONPath){
 			res.writeHead(200, {
