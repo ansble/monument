@@ -66,7 +66,10 @@ gulp.task('release', ['test'], function(){
 							console.log('pushing to origin');
 
 							cp.exec('git push origin master', function(){});
-							cp.exec('git push origin v' + newVersion, function(){
+							cp.exec('git push origin v' + newVersion, function(err){
+								if(err){
+									console.log(err);
+								}
 								console.log(chalk.green('DONE! Congrats on the Release!'));
 							});
 						});
