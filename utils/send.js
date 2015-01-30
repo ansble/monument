@@ -21,9 +21,6 @@ method.exports = function (data) {
 //   var req = this.req;
 //   var type;
 
-//   // settings
-//   var app = this.app;
-
 //   switch (typeof chunk) {
 //     // string defaulting to html
 //     case 'string':
@@ -69,18 +66,6 @@ method.exports = function (data) {
 //     this.set('Content-Length', len);
 //   }
 
-//   // method check
-//   var isHead = req.method === 'HEAD';
-
-//   // ETag support
-//   if (len !== undefined && (isHead || req.method === 'GET')) {
-//     var etag = app.get('etag fn');
-//     if (etag && !this.get('ETag')) {
-//       etag = etag(chunk, encoding);
-//       etag && this.set('ETag', etag);
-//     }
-//   }
-
 //   // freshness
 //   if (req.fresh) this.statusCode = 304;
 
@@ -92,7 +77,7 @@ method.exports = function (data) {
 //     chunk = '';
 //   }
 
-//   if (isHead) {
+//   if (req.method === 'HEAD') {
 //     // skip body for HEAD
 //     this.end();
 //   } else {
