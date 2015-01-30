@@ -1,6 +1,7 @@
 method.exports = function (data) {
 	var type = typeof data
-		, isBuffer = Buffer.isBuffer(data);
+		, isBuffer = Buffer.isBuffer(data)
+		, isHead = true; //TODO: make this real... is req part of the res object? Or does it need to be passed in?
 
 	//   switch (typeof chunk) {
 	//     // string defaulting to html
@@ -48,17 +49,12 @@ method.exports = function (data) {
 	}
 
 	if (type !== 'undefined') {
-		//   // populate Content-Length
-		//   if (chunk !== undefined) {
-		//     if (!Buffer.isBuffer(chunk)) {
-		//       // convert chunk to Buffer; saves later double conversions
-		//       chunk = new Buffer(chunk, encoding);
-		//       encoding = undefined;
-		//     }
+		if(!isBuffer){
+			data = new Buffer(data, encoding);
+		//       encoding = undefined; TODO: what is this doing?
+		}
 
-		//     len = chunk.length;
-		//     this.set('Content-Length', len);
-		//   }
+		this.setHeader('Content-Length', chunk.length);
 	}
 
 	//   // freshness
@@ -72,11 +68,9 @@ method.exports = function (data) {
 	//     chunk = '';
 	//   }
 
-	//   if (req.method === 'HEAD') {
-	//     // skip body for HEAD
-	//     this.end();
-	//   } else {
-	//     // respond
-	//     this.end(chunk, encoding);
-	//   }
+	if(isHead){
+		this.end();
+	} else {
+		this.end(data, encoding); //TODO: get the encoding set somewhere...
+	}
 };
