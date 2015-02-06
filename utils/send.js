@@ -1,8 +1,8 @@
-method.exports = function (data) {
+module.exports = function (data) {
 	var type = typeof data
 		, isBuffer = Buffer.isBuffer(data)
-		, isHead = true; //TODO: make this real... is req part of the res object? Or does it need to be passed in?
-
+		, isHead = true //TODO: make this real... is req part of the res object? Or does it need to be passed in?
+		, encoding;
 	//   switch (typeof chunk) {
 	//     // string defaulting to html
 	//     case 'string':
@@ -20,7 +20,7 @@ method.exports = function (data) {
 	//           this.type('bin'); TODO: What is this.type???
 	//         }
 	//       } else {
-	//         return this.json(chunk); TODO: What is this.json???
+	//         return this.json(chunk);
 	//       }
 	//       break;
 	//   }
@@ -37,26 +37,22 @@ method.exports = function (data) {
 		//     }
 		//   }
 		this.setHeader('Content-Type', 'text/html');
-		this.setEncoding('utf8');
-		this.end(data);
-	} else if (type === 'object' || type === 'number' || type === 'boolean') {
-		if (isBuffer) {
-			this.setHeader('Content-Type', 'application/octet-stream');
-		} else {
-			this.setHeader('Content-Type', 'application/json');
-		}
-		this.end(data);
+		this.setEncoding('utf8'); //encoding header for the response
+		encoding = 'utf8'; //encoding for sending the data
+		data = new Buffer(data, encoding);
+	} else if (isBuffer) {
+		this.setHeader('Content-Type', 'application/octet-stream');
+		this.setEncoding('')
+	} else {
+		//this is JSON send it and end it
+		this.setHeader('Content-Type', 'application/json');
+		return this.end(JSON.stringify(data), 'utf8');
 	}
 
 	if (type !== 'undefined') {
-		if(!isBuffer){
-			data = new Buffer(data, encoding);
-		//       encoding = undefined; TODO: what is this doing?
-		}
-
-		this.setHeader('Content-Length', chunk.length);
+		this.setHeader('Content-Length', data.length);
 	}
-
+	
 	//   // freshness
 	//   if (req.fresh) this.statusCode = 304;
 
