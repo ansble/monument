@@ -106,14 +106,14 @@ server = function (serverType, routesJson, config) {
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
+			, pathParsed = parsePath(req.url)
+			, pathname = pathParsed.pathname
 			, connection = {
 							req: req
 							, res: res
-							, query: path.query
+							, query: pathParsed.query
 							, params: {}
-						}
-			, pathParsed = parsePath(req.url)
-			, pathname = pathParsed.pathname;
+						};
 
 
 		//match the first part of the url... for public stuff
