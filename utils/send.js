@@ -12,10 +12,15 @@ module.exports = function (data) {
 	// } else if (isBuffer) {
 	// 	this.setHeader('Content-Type', 'application/octet-stream');
 	// 	this.setEncoding('');
-	} else {
+	} else if(typeof data === 'object'){
 		//this is JSON send it and end it
 		this.setHeader('Content-Type', 'application/json');
-		data = JSON.stringify(data);
+		if(!isBuffer){
+			data = JSON.stringify(data);
+		} else {
+			this.setHeader('Content-Type', 'text/html');
+			data = data.toString();
+		}
 	}
 
 	return this.end(data, encoding);
