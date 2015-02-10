@@ -130,6 +130,7 @@ server = function (serverType, routesJson, config) {
 		var method = req.method.toLowerCase()
 			, pathParsed = parsePath(req.url)
 			, pathname = pathParsed.pathname
+			, compression
 			, connection = {
 							req: req
 							, res: res
@@ -146,7 +147,23 @@ server = function (serverType, routesJson, config) {
 			//read in the file and stream it to the client
 			fs.exists(path.join(publicPath, pathname), function (exists) {
 				if(exists){
-					if(getCompression(req.headers['accept-encoding']) !== 'none'){
+					compression = getCompression(req.headers['accept-encoding']);
+
+					if(compression !== 'none'){
+						//we have compression!
+						res.writeHead(200, {
+							'Content-Type': mime.lookup(pathname),
+							'Cache-Control': 'maxage=' + maxAge,
+							'Content-Encoding': compression
+						});
+
+						if(compression === 'deflate'){
+							fs.createReadStream(path.join(publicPath, pathname)).pipe(zlib.createDeflate()).pipe(res);
+						} else {
+							fs.createReadStream(path.join(publicPath, pathname)).pipe(zlib.createGzip()).pipe(res);	
+						}
+						
+						emitter.emit('static:served', pathname);
 
 					} else {
 						//no compression carry on...
