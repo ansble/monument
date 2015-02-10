@@ -1,5 +1,6 @@
 var Events = require('events').EventEmitter
-	, emitter = new Events();
+	, emitter = new Events()
+	, required = require('event-state');
 
 if(process.env.NODE_ENV === 'production'){
 	//turn off the max listener warnings in production
@@ -8,5 +9,7 @@ if(process.env.NODE_ENV === 'production'){
 	//	a single event and node throws a warning on the console if you exceed it.
 	emitter.setMaxListeners(0);
 }
+
+emitter.required = required;
 
 module.exports = emitter;

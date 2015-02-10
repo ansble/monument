@@ -4,7 +4,7 @@
 
 [![NPM](https://nodei.co/npm/monument.png)](https://nodei.co/npm/monument/)
 
-![build status](https://travis-ci.org/ansble/monument.svg?branch=master) ![david-dm](https://david-dm.org/ansble/monument.svg)
+![build status](https://travis-ci.org/ansble/monument.svg?branch=master) [![david-dm](https://david-dm.org/ansble/monument.svg)](https://david-dm.org/ansble/monument)
 
 ## How To Get Started
 
