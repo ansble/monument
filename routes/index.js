@@ -1,7 +1,8 @@
 var path = require('path')
 	, fs = require('fs')
-	, emitter = require('../emitter.js')
+	, emitter = require('../emitter')
 	, url = require('url')
+	, send = require('../utils/send')
 
 	, mime = require('mime')
 
@@ -106,15 +107,17 @@ server = function (serverType, routesJson, config) {
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
+			, pathParsed = parsePath(req.url)
+			, pathname = pathParsed.pathname
 			, connection = {
 							req: req
 							, res: res
-							, query: path.query
+							, query: pathParsed.query
 							, params: {}
-						}
-			, pathParsed = parsePath(req.url)
-			, pathname = pathParsed.pathname;
+						};
 
+		//add .send to the response
+		res.send = send;
 
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
