@@ -1,5 +1,6 @@
 var path = require('path')
 	, fs = require('fs')
+	, zlib = require('zlib')
 	, emitter = require('../emitter')
 	, url = require('url')
 	, send = require('../utils/send')
@@ -94,6 +95,26 @@ var path = require('path')
 				});
 			}
 		});
+	}
+
+	, getCompression = function (header) {
+		var type = ''
+			, typeArray = header.split(', ');
+
+		if(header.match(/q=/)){
+			//we have q values to calculate
+
+		} else {
+			if (acceptEncoding.match(/\bdeflate\b/)) {
+			    type = 'deflate';
+			  } else if (acceptEncoding.match(/\bgzip\b/)) {
+			    type = 'gzip';
+			  } else {
+			    type = 'none';
+			  }
+		}
+
+		return type;
 	};
 
 
@@ -125,13 +146,18 @@ server = function (serverType, routesJson, config) {
 			//read in the file and stream it to the client
 			fs.exists(path.join(publicPath, pathname), function (exists) {
 				if(exists){
-					//return with the correct heders for the file type
-					res.writeHead(200, {
-						'Content-Type': mime.lookup(pathname),
-						'Cache-Control': 'maxage=' + maxAge
-					});
-					fs.createReadStream(path.join(publicPath, pathname)).pipe(res);
-					emitter.emit('static:served', pathname);
+					if(getCompression(req.headers['accept-encoding']) !== 'none'){
+
+					} else {
+						//no compression carry on...
+						//return with the correct heders for the file type
+						res.writeHead(200, {
+							'Content-Type': mime.lookup(pathname),
+							'Cache-Control': 'maxage=' + maxAge
+						});
+						fs.createReadStream(path.join(publicPath, pathname)).pipe(res);
+						emitter.emit('static:served', pathname);
+					}
 				} else {
 					emitter.emit('static:missing', pathname);
 					emitter.emit('error:404', connection);
