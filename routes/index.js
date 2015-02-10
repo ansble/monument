@@ -99,11 +99,19 @@ var path = require('path')
 
 	, getCompression = function (header) {
 		var type = ''
-			, typeArray = header.split(', ');
+			, typeArray = header.split(', ')
+			, maxq = 0;
 
 		if(header.match(/q=/)){
 			//we have q values to calculate
+			typeArray.forEach(function (q) {
+				var q = parseFloat(q.match('/[0-9]\.[0-9]/')[0], 10);
 
+				if(q > maxq){
+					maxq = q;
+					type = q.split(';')[0];
+				}
+			});
 		} else {
 			if (acceptEncoding.match(/\bdeflate\b/)) {
 			    type = 'deflate';
@@ -162,7 +170,7 @@ server = function (serverType, routesJson, config) {
 						} else {
 							fs.createReadStream(path.join(publicPath, pathname)).pipe(zlib.createGzip()).pipe(res);	
 						}
-						
+
 						emitter.emit('static:served', pathname);
 
 					} else {
