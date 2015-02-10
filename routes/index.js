@@ -139,6 +139,7 @@ server = function (serverType, routesJson, config) {
 			, pathParsed = parsePath(req.url)
 			, pathname = pathParsed.pathname
 			, compression
+			, file
 			, connection = {
 							req: req
 							, res: res
@@ -152,8 +153,9 @@ server = function (serverType, routesJson, config) {
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
 			//static assets y'all
+			file = path.join(publicPath, pathname);
 			//read in the file and stream it to the client
-			fs.exists(path.join(publicPath, pathname), function (exists) {
+			fs.exists(file, function (exists) {
 				if(exists){
 					compression = getCompression(req.headers['accept-encoding']);
 
@@ -166,9 +168,16 @@ server = function (serverType, routesJson, config) {
 						});
 
 						if(compression === 'deflate'){
-							fs.createReadStream(path.join(publicPath, pathname)).pipe(zlib.createDeflate()).pipe(res);
+							if(fs.exists(file + '.def')){
+								fs.createReadStream(file + '.def').pipe(zlib.createDeflate()).pipe(res);
+							} else {
+								//no compressed file yet...
+								fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
+								fs.createReadStream(file).pipe(zlib.createDeflate()).createWriteStream(file + '.def');
+							}
 						} else {
-							fs.createReadStream(path.join(publicPath, pathname)).pipe(zlib.createGzip()).pipe(res);	
+							if(fs.exists())
+							fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);	
 						}
 
 						emitter.emit('static:served', pathname);
@@ -180,7 +189,7 @@ server = function (serverType, routesJson, config) {
 							'Content-Type': mime.lookup(pathname),
 							'Cache-Control': 'maxage=' + maxAge
 						});
-						fs.createReadStream(path.join(publicPath, pathname)).pipe(res);
+						fs.createReadStream(file).pipe(res);
 						emitter.emit('static:served', pathname);
 					}
 				} else {
