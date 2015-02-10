@@ -113,13 +113,13 @@ var path = require('path')
 				}
 			});
 		} else {
-			if (acceptEncoding.match(/\bdeflate\b/)) {
-			    type = 'deflate';
-			  } else if (acceptEncoding.match(/\bgzip\b/)) {
+			if (header.match(/\bgzip\b/)) {
 			    type = 'gzip';
-			  } else {
+			} else if (header.match(/\bdeflate\b/)) {
+			    type = 'deflate';
+			} else {
 			    type = 'none';
-			  }
+			}
 		}
 
 		return type;
@@ -168,16 +168,25 @@ server = function (serverType, routesJson, config) {
 						});
 
 						if(compression === 'deflate'){
-							if(fs.exists(file + '.def')){
-								fs.createReadStream(file + '.def').pipe(zlib.createDeflate()).pipe(res);
-							} else {
-								//no compressed file yet...
-								fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
-								fs.createReadStream(file).pipe(zlib.createDeflate()).createWriteStream(file + '.def');
-							}
-						} else {
-							if(fs.exists())
-							fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);	
+							fs.exists(file + '.def', function(exists){
+								if(exists){
+									fs.createReadStream(file + '.def').pipe(res);
+								} else {
+									//no compressed file yet...
+									fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
+									fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(fs.createWriteStream(file + '.def')).pipe(res);
+								}
+							});
+						} else if(compression !== 'none'){
+							fs.exists(file + '.tgz', function(exists){
+								if(exists){
+									fs.createReadStream(file + '.tgz').pipe(res);
+								} else {
+									//no compressed file yet...
+									fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);
+									fs.createReadStream(file).pipe(zlib.createGzip()).pipe(fs.createWriteStream(file + '.tgz'));
+								}
+							});
 						}
 
 						emitter.emit('static:served', pathname);
