@@ -1,5 +1,6 @@
 var path = require('path')
 	, fs = require('fs')
+	, zlib = require('zlib')
 	, emitter = require('../emitter')
 	, url = require('url')
 	, send = require('../utils/send')
@@ -94,6 +95,34 @@ var path = require('path')
 				});
 			}
 		});
+	}
+
+	, getCompression = function (header) {
+		var type = ''
+			, typeArray = header.split(', ')
+			, maxq = 0;
+
+		if(header.match(/q=/)){
+			//we have q values to calculate
+			typeArray.forEach(function (q) {
+				var q = parseFloat(q.match('/[0-9]\.[0-9]/')[0], 10);
+
+				if(q > maxq){
+					maxq = q;
+					type = q.split(';')[0];
+				}
+			});
+		} else {
+			if (header.match(/\bgzip\b/)) {
+			    type = 'gzip';
+			} else if (header.match(/\bdeflate\b/)) {
+			    type = 'deflate';
+			} else {
+			    type = 'none';
+			}
+		}
+
+		return type;
 	};
 
 
@@ -109,6 +138,8 @@ server = function (serverType, routesJson, config) {
 		var method = req.method.toLowerCase()
 			, pathParsed = parsePath(req.url)
 			, pathname = pathParsed.pathname
+			, compression
+			, file
 			, connection = {
 							req: req
 							, res: res
@@ -122,16 +153,54 @@ server = function (serverType, routesJson, config) {
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
 			//static assets y'all
+			file = path.join(publicPath, pathname);
 			//read in the file and stream it to the client
-			fs.exists(path.join(publicPath, pathname), function (exists) {
+			fs.exists(file, function (exists) {
 				if(exists){
-					//return with the correct heders for the file type
-					res.writeHead(200, {
-						'Content-Type': mime.lookup(pathname),
-						'Cache-Control': 'maxage=' + maxAge
-					});
-					fs.createReadStream(path.join(publicPath, pathname)).pipe(res);
-					emitter.emit('static:served', pathname);
+					compression = getCompression(req.headers['accept-encoding']);
+
+					if(compression !== 'none'){
+						//we have compression!
+						res.writeHead(200, {
+							'Content-Type': mime.lookup(pathname),
+							'Cache-Control': 'maxage=' + maxAge,
+							'Content-Encoding': compression
+						});
+
+						if(compression === 'deflate'){
+							fs.exists(file + '.def', function(exists){
+								if(exists){
+									fs.createReadStream(file + '.def').pipe(res);
+								} else {
+									//no compressed file yet...
+									fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
+									fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(fs.createWriteStream(file + '.def')).pipe(res);
+								}
+							});
+						} else if(compression !== 'none'){
+							fs.exists(file + '.tgz', function(exists){
+								if(exists){
+									fs.createReadStream(file + '.tgz').pipe(res);
+								} else {
+									//no compressed file yet...
+									fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);
+									fs.createReadStream(file).pipe(zlib.createGzip()).pipe(fs.createWriteStream(file + '.tgz'));
+								}
+							});
+						}
+
+						emitter.emit('static:served', pathname);
+
+					} else {
+						//no compression carry on...
+						//return with the correct heders for the file type
+						res.writeHead(200, {
+							'Content-Type': mime.lookup(pathname),
+							'Cache-Control': 'maxage=' + maxAge
+						});
+						fs.createReadStream(file).pipe(res);
+						emitter.emit('static:served', pathname);
+					}
 				} else {
 					emitter.emit('static:missing', pathname);
 					emitter.emit('error:404', connection);

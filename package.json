@@ -38,5 +38,9 @@
     "gulp": "^3.8.10",
     "gulp-mocha": "^2.0.0",
     "minimist": "^1.1.0"
+  },
+  "engines": {
+    "node": "*",
+    "iojs": "1.0.x"
   }
 }
