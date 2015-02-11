@@ -97,10 +97,15 @@ var path = require('path')
 		});
 	}
 
-	, getCompression = function (header) {
+	, getCompression = function (header, config) {
 		var type = ''
 			, typeArray = header.split(', ')
 			, maxq = 0;
+
+		if(typeof config.compress !== 'undefined' && !config.compress){
+			// compression turned off... bail
+			return 'none';
+		}
 
 		if(header.match(/q=/)){
 			//we have q values to calculate
