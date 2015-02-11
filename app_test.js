@@ -28,4 +28,9 @@ describe('The main monument tests', function(){
 			assert.instanceOf(app.events, Events);
 		});
 	});
+
+	describe('Compression Tests', function () {
+		it('should compress things by default');
+		it('should not compress things if compression is turned off');
+	});
 });
