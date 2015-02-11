@@ -8,6 +8,34 @@
 
 ## How To Get Started
 
+### Config object and the server
+
+When you create your server it takes a config object that allows you to pass in some options for your particular environment. It looks like this and these are the default values:
+
+```
+{
+	port: 3000 // the port for the server to run on
+	, compress: true // turns on compression for static files
+	, routePath: './routes' // the folder your routes live in
+	, templatePath: './templates' // the folder where your templates live
+	, publicPath: './public' // the folder where your static files live
+	, maxAge: 31536000 // time to cache static files client side in milliseconds
+}
+```
+
+All the values are optional. It is used like this to create a server (heroku example of port):
+
+```
+var monument = require('monument');
+
+monument.server({
+				routePath: './routes'
+				, templatePath: './templates'
+				, publicPath: './public'
+				, port: process.env.PORT || 3000
+			});
+```
+
 ### Setting up routes
 
 The easy way to do this is with the [monument-cli](https://github.com/ansble/monument-cli)and `yo monument-cli:routes` command. It takes your `routes.json` file and stubbs out all the route handlers and files for you.
