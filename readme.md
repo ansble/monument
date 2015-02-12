@@ -1,6 +1,6 @@
-# monumentjs
+# monument
 
-`monumentjs` is a super light event routed isomorphic nodejs framework. 
+`monument` is a super light event routed isomorphic nodejs framework. 
 
 [![NPM](https://nodei.co/npm/monument.png)](https://nodei.co/npm/monument/)
 
