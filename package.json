@@ -23,7 +23,16 @@
     "isomorphic",
     "browser",
     "event",
-    "eda"
+    "eda",
+    "server",
+    "http",
+    "web",
+    "webserver",
+    "framework",
+    "api",
+    "app",
+    "rest",
+    "restful"
   ],
   "dependencies": {
     "dot": "^1.0.3",
