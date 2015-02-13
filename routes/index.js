@@ -155,6 +155,10 @@ server = function (serverType, routesJson, config) {
 		//add .send to the response
 		res.send = send;
 
+		emitter.once('req:get:headers', function () {
+			emitter.emit('req:set:headers', req.headers);
+		});
+
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
 			//static assets y'all

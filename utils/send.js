@@ -1,29 +1,47 @@
+var etag = require('etag')
+	, emitter = require('../emitter');
+
 module.exports = function (data) {
-	var type = typeof data
+	var that = this
+		, type = typeof data
 		, isBuffer = Buffer.isBuffer(data)
 		, isHead = true //TODO: make this real... is req part of the res object? Or does it need to be passed in?
 		, encoding = 'utf8';
 
 	if (type === 'string') {
-		this.setHeader('Content-Type', 'text/html');
-		this.setEncoding(encoding); //encoding header for the response
+		that.setHeader('Content-Type', 'text/html');
+		that.setEncoding(encoding); //encoding header for the response
 
 		// data = new Buffer(data, encoding);
 	// } else if (isBuffer) {
-	// 	this.setHeader('Content-Type', 'application/octet-stream');
-	// 	this.setEncoding('');
+	// 	that.setHeader('Content-Type', 'application/octet-stream');
+	// 	that.setEncoding('');
 	} else if(typeof data === 'object'){
 		//this is JSON send it and end it
-		this.setHeader('Content-Type', 'application/json');
+		that.setHeader('Content-Type', 'application/json');
 		if(!isBuffer){
 			data = JSON.stringify(data);
+
 		} else {
-			this.setHeader('Content-Type', 'text/html');
+			that.setHeader('Content-Type', 'text/html');
 			data = data.toString();
 		}
 	}
 
-	return this.end(data, encoding);
+	emitter.once('req:set:headers', function (headersIn) {
+		var reqEtag = etag(data);
+
+		if(headersIn['if-none-match'] === reqEtag){
+			that.statusCode = 304;
+			that.end();
+		} else {
+			that.setHeader('ETag', reqEtag);
+			that.end(data, encoding);
+		}
+	});
+
+	emitter.emit('req:get:headers');
+
 	// if (type !== 'undefined') {
 	// 	this.setHeader('Content-Length', data.length);
 	// }
