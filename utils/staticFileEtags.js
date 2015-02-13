@@ -4,8 +4,16 @@ var etag = require('etag')
 	, files = {}
 
 	, checkEtag = function (etagObj) {
-		var valid = typeof etagObj.etag !== 'undefined' && (typeof files[etagObj.file] !== 'udefined') && (files[etagObj.file] === etagObj.etag);
+		var etagged = (typeof files[etagObj.file] !== 'undefined')
+			, valid = typeof etagObj.etag !== 'undefined' && etagged && (files[etagObj.file] === etagObj.etag);
 		
+		//if the file hasn't been etagged then etag it
+		if(!etagged){
+			addEtag(etagObj.file);
+		} else {
+			emitter.emit('etag:get:' + etagObj.file, files[etagObj.file]);
+		}
+
 		emitter.emit('etag:check:' + etagObj.file, valid);
 	}
 
@@ -16,6 +24,7 @@ var etag = require('etag')
 			}
 
 			files[fileIn] = etag(data);
+			emitter.emit('etag:get:' + fileIn, files[fileIn]);
 		});
 	};
 

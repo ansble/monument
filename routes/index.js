@@ -166,11 +166,13 @@ server = function (serverType, routesJson, config) {
 			//read in the file and stream it to the client
 			fs.exists(file, function (exists) {
 				if(exists){
-					emitter.once('etag:check:' + file, function (valid) {
-						if(valid){
+					emitter.required(['etag:check:' + file, 'etag:get:' + file], function (valid) {
+						if(valid[0]){ // does the etag match? YES
 							res.statusCode = 304;
 							res.end();
-						} else {
+						} else { //No match...
+							res.setHeader('ETag', valid[1]); //the etag is item 2 in the array
+
 							compression = getCompression(req.headers['accept-encoding'], config);
 
 							if(compression !== 'none'){
