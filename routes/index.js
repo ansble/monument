@@ -4,7 +4,7 @@ var path = require('path')
 	, emitter = require('../emitter')
 	, url = require('url')
 	, send = require('../utils/send')
-
+	, etag = require('etag')
 	, mime = require('mime')
 
 	, publicFolders = []
@@ -166,50 +166,60 @@ server = function (serverType, routesJson, config) {
 			//read in the file and stream it to the client
 			fs.exists(file, function (exists) {
 				if(exists){
-					compression = getCompression(req.headers['accept-encoding']);
+					emitter.on('etag:check:' + file, function (valid) {
+						if(valid){
+							res.statusCode = 304;
+							res.end();
+						} else {
+							compression = getCompression(req.headers['accept-encoding'], true);
 
-					if(compression !== 'none'){
-						//we have compression!
-						res.writeHead(200, {
-							'Content-Type': mime.lookup(pathname),
-							'Cache-Control': 'maxage=' + maxAge,
-							'Content-Encoding': compression
-						});
+							if(compression !== 'none'){
+								//we have compression!
+								res.writeHead(200, {
+									'Content-Type': mime.lookup(pathname),
+									'Cache-Control': 'maxage=' + maxAge,
+									'Content-Encoding': compression
+								});
 
-						if(compression === 'deflate'){
-							fs.exists(file + '.def', function(exists){
-								if(exists){
-									fs.createReadStream(file + '.def').pipe(res);
-								} else {
-									//no compressed file yet...
-									fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
-									fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(fs.createWriteStream(file + '.def')).pipe(res);
+								if(compression === 'deflate'){
+									fs.exists(file + '.def', function(exists){
+										if(exists){
+											fs.createReadStream(file + '.def').pipe(res);
+										} else {
+											//no compressed file yet...
+											fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
+											fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(fs.createWriteStream(file + '.def'));
+										}
+									});
+								} else if(compression !== 'none'){
+									fs.exists(file + '.tgz', function(exists){
+										if(exists){
+											fs.createReadStream(file + '.tgz').pipe(res);
+										} else {
+											//no compressed file yet...
+											fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);
+											fs.createReadStream(file).pipe(zlib.createGzip()).pipe(fs.createWriteStream(file + '.tgz'));
+										}
+									});
 								}
-							});
-						} else if(compression !== 'none'){
-							fs.exists(file + '.tgz', function(exists){
-								if(exists){
-									fs.createReadStream(file + '.tgz').pipe(res);
-								} else {
-									//no compressed file yet...
-									fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);
-									fs.createReadStream(file).pipe(zlib.createGzip()).pipe(fs.createWriteStream(file + '.tgz'));
-								}
-							});
+
+								emitter.emit('static:served', pathname);
+
+							} else {
+								//no compression carry on...
+								//return with the correct heders for the file type
+								res.writeHead(200, {
+									'Content-Type': mime.lookup(pathname),
+									'Cache-Control': 'maxage=' + maxAge
+								});
+								fs.createReadStream(file).pipe(res);
+								emitter.emit('static:served', pathname);
+							}
 						}
+					});
 
-						emitter.emit('static:served', pathname);
+					emitter.emit('etag:check', {file: file, etag: req.headers['if-none-match']});
 
-					} else {
-						//no compression carry on...
-						//return with the correct heders for the file type
-						res.writeHead(200, {
-							'Content-Type': mime.lookup(pathname),
-							'Cache-Control': 'maxage=' + maxAge
-						});
-						fs.createReadStream(file).pipe(res);
-						emitter.emit('static:served', pathname);
-					}
 				} else {
 					emitter.emit('static:missing', pathname);
 					emitter.emit('error:404', connection);

@@ -6,6 +6,8 @@ var routes
 	, typer = require('media-typer')
 	, querystring = require('querystring')
 
+	, staticEtag = require('./utils/staticFileEtags')
+
 	, pkg = require('./package.json')
 
 	//setup the routes and server
