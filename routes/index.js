@@ -166,12 +166,12 @@ server = function (serverType, routesJson, config) {
 			//read in the file and stream it to the client
 			fs.exists(file, function (exists) {
 				if(exists){
-					emitter.on('etag:check:' + file, function (valid) {
+					emitter.once('etag:check:' + file, function (valid) {
 						if(valid){
 							res.statusCode = 304;
 							res.end();
 						} else {
-							compression = getCompression(req.headers['accept-encoding'], true);
+							compression = getCompression(req.headers['accept-encoding'], config);
 
 							if(compression !== 'none'){
 								//we have compression!
