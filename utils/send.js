@@ -1,65 +1,64 @@
 var etag = require('etag')
 	, emitter = require('../emitter');
 
-module.exports = function (data) {
-	var that = this
-		, type = typeof data
-		, isBuffer = Buffer.isBuffer(data)
-		, isHead = true //TODO: make this real... is req part of the res object? Or does it need to be passed in?
-		, encoding = 'utf8';
+module.exports = function(req){
+	return function (data) {
+		var that = this
+			, type = typeof data
+			, isBuffer = Buffer.isBuffer(data)
+			, isHead = true //TODO: make this real... is req part of the res object? Or does it need to be passed in?
+			, encoding = 'utf8'
+			, reqEtag;
 
-	if (type === 'string') {
-		that.setHeader('Content-Type', 'text/html');
-		that.setEncoding(encoding); //encoding header for the response
-
-		// data = new Buffer(data, encoding);
-	// } else if (isBuffer) {
-	// 	that.setHeader('Content-Type', 'application/octet-stream');
-	// 	that.setEncoding('');
-	} else if(typeof data === 'object'){
-		//this is JSON send it and end it
-		that.setHeader('Content-Type', 'application/json');
-		if(!isBuffer){
-			data = JSON.stringify(data);
-
-		} else {
+		if (type === 'string') {
 			that.setHeader('Content-Type', 'text/html');
-			data = data.toString();
+			that.setEncoding(encoding); //encoding header for the response
+
+			// data = new Buffer(data, encoding);
+		// } else if (isBuffer) {
+		// 	that.setHeader('Content-Type', 'application/octet-stream');
+		// 	that.setEncoding('');
+		} else if(typeof data === 'object'){
+			//this is JSON send it and end it
+			that.setHeader('Content-Type', 'application/json');
+			if(!isBuffer){
+				data = JSON.stringify(data);
+
+			} else {
+				that.setHeader('Content-Type', 'text/html');
+				data = data.toString();
+			}
 		}
-	}
 
-	emitter.once('req:set:headers', function (headersIn) {
-		var reqEtag = etag(data);
+		reqEtag = etag(data);
 
-		if(headersIn['if-none-match'] === reqEtag){
+		if(req.headersIn['if-none-match'] === reqEtag){
 			that.statusCode = 304;
 			that.end();
 		} else {
 			that.setHeader('ETag', reqEtag);
 			that.end(data, encoding);
 		}
-	});
 
-	emitter.emit('req:get:headers');
+		// if (type !== 'undefined') {
+		// 	this.setHeader('Content-Length', data.length);
+		// }
+		
+		// //   // freshness
+		// //   if (req.fresh) this.statusCode = 304;
 
-	// if (type !== 'undefined') {
-	// 	this.setHeader('Content-Length', data.length);
-	// }
-	
-	// //   // freshness
-	// //   if (req.fresh) this.statusCode = 304;
+		// //   // strip irrelevant headers
+		// //   if (204 == this.statusCode || 304 == this.statusCode) {
+		// //     this.removeHeader('Content-Type');
+		// //     this.removeHeader('Content-Length');
+		// //     this.removeHeader('Transfer-Encoding');
+		// //     chunk = '';
+		// //   }
 
-	// //   // strip irrelevant headers
-	// //   if (204 == this.statusCode || 304 == this.statusCode) {
-	// //     this.removeHeader('Content-Type');
-	// //     this.removeHeader('Content-Length');
-	// //     this.removeHeader('Transfer-Encoding');
-	// //     chunk = '';
-	// //   }
-
-	// if(isHead){
-	// 	this.end();
-	// } else {
-	// 	this.end(data, encoding); //TODO: get the encoding set somewhere...
-	// }
+		// if(isHead){
+		// 	this.end();
+		// } else {
+		// 	this.end(data, encoding); //TODO: get the encoding set somewhere...
+		// }
+	};	
 };

@@ -38,7 +38,8 @@
     "chalk": "^0.5.1",
     "gulp": "^3.8.10",
     "gulp-mocha": "^2.0.0",
-    "minimist": "^1.1.0"
+    "minimist": "^1.1.0",
+    "v8-profiler": "^5.2.3"
   },
   "engines": {
     "node": "*",
