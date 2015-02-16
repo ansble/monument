@@ -1,9 +1,24 @@
 var etag = require('etag')
 	, fs = require('fs')
-	, emitter = require('../emitter')
+	, events = require('../emitter')
 	, files = {}
 
+	, addEtag = function (fileIn) {
+		'use strict';
+
+		fs.readFile(fileIn, function (err, data) {
+			if(err){
+				events.emit('error', {message: 'could not read file', error: err, file: fileIn});
+			}
+
+			files[fileIn] = etag(data);
+			events.emit('etag:get:' + fileIn, files[fileIn]);
+		});
+	}
+	
 	, checkEtag = function (etagObj) {
+		'use strict';
+		
 		var etagged = (typeof files[etagObj.file] !== 'undefined')
 			, valid = typeof etagObj.etag !== 'undefined' && etagged && (files[etagObj.file] === etagObj.etag);
 		
@@ -11,23 +26,12 @@ var etag = require('etag')
 		if(!etagged){
 			addEtag(etagObj.file);
 		} else {
-			emitter.emit('etag:get:' + etagObj.file, files[etagObj.file]);
+			events.emit('etag:get:' + etagObj.file, files[etagObj.file]);
 		}
 
-		emitter.emit('etag:check:' + etagObj.file, valid);
-	}
-
-	, addEtag = function (fileIn) {
-		fs.readFile(fileIn, function (err, data) {
-			if(err){
-				emitter.emit('error', {message: 'could not read file', error: err, file: fileIn});
-			}
-
-			files[fileIn] = etag(data);
-			emitter.emit('etag:get:' + fileIn, files[fileIn]);
-		});
+		events.emit('etag:check:' + etagObj.file, valid);
 	};
 
-emitter.on('etag:check', checkEtag);
-emitter.on('etag:add', addEtag);
-emitter.on('etag:update', addEtag);
+events.on('etag:check', checkEtag);
+events.on('etag:add', addEtag);
+events.on('etag:update', addEtag);

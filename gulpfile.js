@@ -13,6 +13,8 @@ var gulp = require('gulp')
 	}
 
 	, incrementVersion = function (version, type) {
+		'use strict';
+
 		var versionArr = version.split('.');
 
 		if(type === 'major'){
@@ -33,24 +35,28 @@ gulp.task('default', function(){
 });
 
 gulp.task('test', function(){
+	'use strict';
+
 	return gulp.src(['**/**_test.js', '!node_modules/**/*'], {read: false})
 			.pipe(mocha({reporter: 'spec'}));
 });
 
 gulp.task('release', ['test'], function(){
+	'use strict';
+
 	var newVersion = incrementVersion(pkg.version, options.type);
 	//this is the task to automat most of the release stuff... because it is lame and boring
 	console.log('\n\nPreparing for a ' + chalk.bgGreen.bold(options.type) + ' release...\n\n');
 
 
-	cp.exec('git log `git describe --tags --abbrev=0`..HEAD --pretty=format:"  - %s"', function (err, stdout, stderr) {
+	cp.exec('git log `git describe --tags --abbrev=0`..HEAD --pretty=format:"  - %s"', function (err, stdout) {
 		var history = fs.readFileSync('./history.md');
 		
 		console.log('Updating the history.md file');
 
 		fs.writeFile('./history.md', '### - ' + newVersion + ' *' + new Date().toLocaleString() + '*\n\n' + stdout + '\n\n\n' + history);
 		
-		cp.exec('git log --all --format="%aN <%aE>" | sort -u', function (err, stdout, stderr) {
+		cp.exec('git log --all --format="%aN <%aE>" | sort -u', function (err, stdout) {
 			//write out the Authors file with all contributors
 			console.log('Updating the AUTHORS file');
 

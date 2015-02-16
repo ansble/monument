@@ -1,10 +1,9 @@
 var path = require('path')
 	, fs = require('fs')
 	, zlib = require('zlib')
-	, emitter = require('../emitter')
+	, events = require('../emitter')
 	, url = require('url')
 	, send = require('../utils/send')
-	, etag = require('etag')
 	, mime = require('mime')
 
 	, publicFolders = []
@@ -12,10 +11,14 @@ var path = require('path')
 	, server
 
 	, parsePath = function (urlIn) {
+		'use strict';
+
 		return url.parse(urlIn, true);
 	}
 
 	, parseRoutes = function (routes) {
+		'use strict';
+
 		var wildCardRoutes = {}
 			, standardRoutes = {};
 
@@ -40,17 +43,21 @@ var path = require('path')
 	}
 
 	, isRoute = function (pathname, method, routesJson) {
+		'use strict';
+
 		return !!(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1);
 	}
 
 	, isWildCardRoute = function (pathname, method, routesJson) {
+		'use strict';
+
 		var matchedRoutes = Object.keys(routesJson).filter(function (route) {
 					return !!(pathname.match(routesJson[route].regex));
 				})
 			, matchesVerb;
 
 		if(matchedRoutes.length){
-			matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(method) !== -1
+			matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(method) !== -1;
 		} else {
 			matchesVerb = false;
 		}
@@ -59,13 +66,16 @@ var path = require('path')
 	}
 
 	, parseWildCardRoute = function (pathname, routesJson) {
+		'use strict';
+
 		var matchedRoute = Object.keys(routesJson).filter(function (route) {
 				return !!(pathname.match(routesJson[route].regex));
 			})[0]
 
 			, matches = pathname.match(routesJson[matchedRoute].regex)			
 			, values = {}
-			, routeInfo = routesJson[matchedRoute];
+			, routeInfo = routesJson[matchedRoute]
+			, i = 0;
 
 		for(i = 0; i < routeInfo.variables.length; i++){
 			values[routeInfo.variables[i].substring(1)] = matches[i + 1]; //offset by one to avoid the whole match which is at array[0]
@@ -75,8 +85,10 @@ var path = require('path')
 	}
 
 	, setupStaticRoutes = function (routePathIn, publicPathIn) {
+		'use strict';
+
 		var routePath = path.join(process.cwd(), routePathIn)
-			, publicPath = publicPathIn
+			, publicPath = publicPathIn;
 
 		//load in all the route handlers
 		fs.readdirSync(routePath).forEach(function (file) {
@@ -98,6 +110,8 @@ var path = require('path')
 	}
 
 	, getCompression = function (header, config) {
+		'use strict';
+
 		var type = ''
 			, typeArray = header.split(', ')
 			, maxq = 0;
@@ -109,8 +123,8 @@ var path = require('path')
 
 		if(header.match(/q=/)){
 			//we have q values to calculate
-			typeArray.forEach(function (q) {
-				var q = parseFloat(q.match('/[0-9]\.[0-9]/')[0], 10);
+			typeArray.forEach(function (qIn) {
+				var q = parseFloat(qIn.match('/[0-9]\.[0-9]/')[0], 10);
 
 				if(q > maxq){
 					maxq = q;
@@ -132,6 +146,8 @@ var path = require('path')
 
 
 server = function (serverType, routesJson, config) {
+	'use strict';
+
 	var routesObj = parseRoutes(routesJson)
 		, publicPath = path.join(process.cwd(), config.publicPath || './public')
 		, maxAge = config.maxAge || 31536000
@@ -139,7 +155,7 @@ server = function (serverType, routesJson, config) {
 
 	setupStaticRoutes(config.routePath, publicPath);
 
-	return serverType.createServer(function (req, res) {
+	return serverType.createServer(function (req, res) {		
 		var method = req.method.toLowerCase()
 			, pathParsed = parsePath(req.url)
 			, pathname = pathParsed.pathname
@@ -162,7 +178,7 @@ server = function (serverType, routesJson, config) {
 			//read in the file and stream it to the client
 			fs.exists(file, function (exists) {
 				if(exists){
-					emitter.required(['etag:check:' + file, 'etag:get:' + file], function (valid) {
+					events.required(['etag:check:' + file, 'etag:get:' + file], function (valid) {
 						if(valid[0]){ // does the etag match? YES
 							res.statusCode = 304;
 							res.end();
@@ -201,7 +217,7 @@ server = function (serverType, routesJson, config) {
 									});
 								}
 
-								emitter.emit('static:served', pathname);
+								events.emit('static:served', pathname);
 
 							} else {
 								//no compression carry on...
@@ -211,21 +227,21 @@ server = function (serverType, routesJson, config) {
 									'Cache-Control': 'maxage=' + maxAge
 								});
 								fs.createReadStream(file).pipe(res);
-								emitter.emit('static:served', pathname);
+								events.emit('static:served', pathname);
 							}
 						}
 					});
 
-					emitter.emit('etag:check', {file: file, etag: req.headers['if-none-match']});
+					events.emit('etag:check', {file: file, etag: req.headers['if-none-match']});
 
 				} else {
-					emitter.emit('static:missing', pathname);
-					emitter.emit('error:404', connection);
+					events.emit('static:missing', pathname);
+					events.emit('error:404', connection);
 				}
 			});
 		} else if (isRoute(pathname, method, routesObj.standard)) {
 			//matches a route in the routes.json
-			emitter.emit('route:' + pathname + ':' + method, connection);
+			events.emit('route:' + pathname + ':' + method, connection);
 
 		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
@@ -234,17 +250,17 @@ server = function (serverType, routesJson, config) {
 			
 			//emit the event for the url minus params and include the params
 			//	in the params object
-			emitter.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
+			events.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
 		} else if(pathname === routeJSONPath){
 			res.writeHead(200, {
 				'Content-Type': mime.lookup('routes.json')
 			});
 			fs.createReadStream(path.join(process.cwd(), './routes.json')).pipe(res);
 		} else {
-			emitter.emit('error:404', connection);
+			events.emit('error:404', connection);
 		}
 	});
-}
+};
 
 module.exports = {
 					server: server

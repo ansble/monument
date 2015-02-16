@@ -3,6 +3,8 @@ var assert = require('chai').assert
 	, Events = require('events').EventEmitter;
 
 describe('Routing Tests', function () {
+	'use strict';
+	
 	it('should return a function that starts a server', function () {
 		assert.isFunction(server.server);
 	});

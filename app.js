@@ -1,13 +1,11 @@
-var routes
-	, http = require('http')
+var http = require('http')
 	, dot = require('dot')
 	, path = require('path')
 	, getRawBody = require('raw-body')
 	, typer = require('media-typer')
 	, querystring = require('querystring')
 
-	, staticEtag = require('./utils/staticFileEtags')
-
+	, events = require('./emitter')
 	, pkg = require('./package.json')
 
 	//setup the routes and server
@@ -16,9 +14,11 @@ var routes
 	, server
 
 	, parseForm = function (formString) {
+		'use strict';
+
 		var rtnObj = {}
 			, keys  = formString.match(/([\n\r].+)/g) //formString.match(/(form-data; name=['"])([^"']+)/g)
-			, currenName;
+			, currentName;
 
 		if(keys !== null){
 			keys.forEach(function (item) {
@@ -39,13 +39,15 @@ var routes
 	}
 
 	, parser = function (connection, callback, scope) {//parse out the body
+		'use strict';
+
 		getRawBody(connection.req, {
 		    length: connection.req.headers['content-length'],
 		    limit: '1mb',
 		    encoding: typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8'
 		  }, function (err, string) {
 		    if (err){
-		      emitter.emit('error:parse', err);
+		      events.emit('error:parse', err);
 		      return err;
 		    }
 		    
@@ -58,6 +60,8 @@ var routes
 	}
 
 	, wrapper = function (config) {
+		'use strict';
+		
 		var port = config.port || 3000
 			, templatePath = config.templatePath || './templates'
 			, routePath = config.routePath || './routes.json'
@@ -77,8 +81,11 @@ var routes
 		console.log('monument v' + pkg.version +' up and running on port: ' + port);
 	};
 
+//set up the etag listeners and emitters
+require('./utils/staticFileEtags');
+
 module.exports = {
 	server: wrapper
-	, events: require('./emitter.js')
+	, events: events
 	, parser: parser
 };

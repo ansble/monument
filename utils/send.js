@@ -1,12 +1,12 @@
-var etag = require('etag')
-	, emitter = require('../emitter');
+var etag = require('etag');
 
 module.exports = function(req){
+	'use strict';
+	
 	return function (data) {
 		var that = this
 			, type = typeof data
 			, isBuffer = Buffer.isBuffer(data)
-			, isHead = true //TODO: make this real... is req part of the res object? Or does it need to be passed in?
 			, encoding = 'utf8'
 			, reqEtag;
 
