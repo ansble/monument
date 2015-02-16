@@ -32,7 +32,7 @@ module.exports = function(req){
 
 		reqEtag = etag(data);
 
-		if(req.headersIn['if-none-match'] === reqEtag){
+		if(req.headers['if-none-match'] === reqEtag){
 			that.statusCode = 304;
 			that.end();
 		} else {
