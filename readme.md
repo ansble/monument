@@ -1,12 +1,41 @@
-# monumentjs
+# monument
 
-`monumentjs` is a super light event routed isomorphic nodejs framework. 
+`monument` is a super light event routed isomorphic nodejs framework. 
 
 [![NPM](https://nodei.co/npm/monument.png)](https://nodei.co/npm/monument/)
 
 ![build status](https://travis-ci.org/ansble/monument.svg?branch=master) [![david-dm](https://david-dm.org/ansble/monument.svg)](https://david-dm.org/ansble/monument)
 
 ## How To Get Started
+
+### Config object and the server
+
+When you create your server it takes a config object that allows you to pass in some options for your particular environment. It looks like this and these are the default values:
+
+```
+{
+	port: 3000 // the port for the server to run on
+	, compress: true // turns on or off compression for static files (deflate/gzip)
+	, routePath: './routes' // the folder your routes live in
+	, templatePath: './templates' // the folder where your templates live
+	, publicPath: './public' // the folder where your static files live
+	, maxAge: 31536000 // time to cache static files client side in milliseconds
+	, etags: true // turns on or off etag generation and headers
+}
+```
+
+All the values are optional. It is used like this to create a server (heroku example of port):
+
+```
+var monument = require('monument');
+
+monument.server({
+				routePath: './routes'
+				, templatePath: './templates'
+				, publicPath: './public'
+				, port: process.env.PORT || 3000
+			});
+```
 
 ### Setting up routes
 

@@ -1,9 +1,9 @@
 var path = require('path')
 	, fs = require('fs')
-	, emitter = require('../emitter')
+	, zlib = require('zlib')
+	, events = require('../emitter')
 	, url = require('url')
 	, send = require('../utils/send')
-
 	, mime = require('mime')
 
 	, publicFolders = []
@@ -11,10 +11,14 @@ var path = require('path')
 	, server
 
 	, parsePath = function (urlIn) {
+		'use strict';
+
 		return url.parse(urlIn, true);
 	}
 
 	, parseRoutes = function (routes) {
+		'use strict';
+
 		var wildCardRoutes = {}
 			, standardRoutes = {};
 
@@ -39,17 +43,21 @@ var path = require('path')
 	}
 
 	, isRoute = function (pathname, method, routesJson) {
+		'use strict';
+
 		return !!(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1);
 	}
 
 	, isWildCardRoute = function (pathname, method, routesJson) {
+		'use strict';
+
 		var matchedRoutes = Object.keys(routesJson).filter(function (route) {
 					return !!(pathname.match(routesJson[route].regex));
 				})
 			, matchesVerb;
 
 		if(matchedRoutes.length){
-			matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(method) !== -1
+			matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(method) !== -1;
 		} else {
 			matchesVerb = false;
 		}
@@ -58,13 +66,16 @@ var path = require('path')
 	}
 
 	, parseWildCardRoute = function (pathname, routesJson) {
+		'use strict';
+
 		var matchedRoute = Object.keys(routesJson).filter(function (route) {
 				return !!(pathname.match(routesJson[route].regex));
 			})[0]
 
 			, matches = pathname.match(routesJson[matchedRoute].regex)			
 			, values = {}
-			, routeInfo = routesJson[matchedRoute];
+			, routeInfo = routesJson[matchedRoute]
+			, i = 0;
 
 		for(i = 0; i < routeInfo.variables.length; i++){
 			values[routeInfo.variables[i].substring(1)] = matches[i + 1]; //offset by one to avoid the whole match which is at array[0]
@@ -74,8 +85,10 @@ var path = require('path')
 	}
 
 	, setupStaticRoutes = function (routePathIn, publicPathIn) {
+		'use strict';
+
 		var routePath = path.join(process.cwd(), routePathIn)
-			, publicPath = publicPathIn
+			, publicPath = publicPathIn;
 
 		//load in all the route handlers
 		fs.readdirSync(routePath).forEach(function (file) {
@@ -94,10 +107,47 @@ var path = require('path')
 				});
 			}
 		});
+	}
+
+	, getCompression = function (header, config) {
+		'use strict';
+
+		var type = ''
+			, typeArray = header.split(', ')
+			, maxq = 0;
+
+		if(typeof config.compress !== 'undefined' && !config.compress){
+			// compression turned off... bail
+			return 'none';
+		}
+
+		if(header.match(/q=/)){
+			//we have q values to calculate
+			typeArray.forEach(function (qIn) {
+				var q = parseFloat(qIn.match('/[0-9]\.[0-9]/')[0], 10);
+
+				if(q > maxq){
+					maxq = q;
+					type = q.split(';')[0];
+				}
+			});
+		} else {
+			if (header.match(/\bgzip\b/)) {
+			    type = 'gzip';
+			} else if (header.match(/\bdeflate\b/)) {
+			    type = 'deflate';
+			} else {
+			    type = 'none';
+			}
+		}
+
+		return type;
 	};
 
 
 server = function (serverType, routesJson, config) {
+	'use strict';
+
 	var routesObj = parseRoutes(routesJson)
 		, publicPath = path.join(process.cwd(), config.publicPath || './public')
 		, maxAge = config.maxAge || 31536000
@@ -105,10 +155,12 @@ server = function (serverType, routesJson, config) {
 
 	setupStaticRoutes(config.routePath, publicPath);
 
-	return serverType.createServer(function (req, res) {
+	return serverType.createServer(function (req, res) {		
 		var method = req.method.toLowerCase()
 			, pathParsed = parsePath(req.url)
 			, pathname = pathParsed.pathname
+			, compression
+			, file
 			, connection = {
 							req: req
 							, res: res
@@ -117,29 +169,79 @@ server = function (serverType, routesJson, config) {
 						};
 
 		//add .send to the response
-		res.send = send;
+		res.send = send(req);
 
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
 			//static assets y'all
+			file = path.join(publicPath, pathname);
 			//read in the file and stream it to the client
-			fs.exists(path.join(publicPath, pathname), function (exists) {
+			fs.exists(file, function (exists) {
 				if(exists){
-					//return with the correct heders for the file type
-					res.writeHead(200, {
-						'Content-Type': mime.lookup(pathname),
-						'Cache-Control': 'maxage=' + maxAge
+					events.required(['etag:check:' + file, 'etag:get:' + file], function (valid) {
+						if(valid[0]){ // does the etag match? YES
+							res.statusCode = 304;
+							res.end();
+						} else { //No match...
+							res.setHeader('ETag', valid[1]); //the etag is item 2 in the array
+
+							compression = getCompression(req.headers['accept-encoding'], config);
+
+							if(compression !== 'none'){
+								//we have compression!
+								res.writeHead(200, {
+									'Content-Type': mime.lookup(pathname),
+									'Cache-Control': 'maxage=' + maxAge,
+									'Content-Encoding': compression
+								});
+
+								if(compression === 'deflate'){
+									fs.exists(file + '.def', function(exists){
+										if(exists){
+											fs.createReadStream(file + '.def').pipe(res);
+										} else {
+											//no compressed file yet...
+											fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
+											fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(fs.createWriteStream(file + '.def'));
+										}
+									});
+								} else if(compression !== 'none'){
+									fs.exists(file + '.tgz', function(exists){
+										if(exists){
+											fs.createReadStream(file + '.tgz').pipe(res);
+										} else {
+											//no compressed file yet...
+											fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);
+											fs.createReadStream(file).pipe(zlib.createGzip()).pipe(fs.createWriteStream(file + '.tgz'));
+										}
+									});
+								}
+
+								events.emit('static:served', pathname);
+
+							} else {
+								//no compression carry on...
+								//return with the correct heders for the file type
+								res.writeHead(200, {
+									'Content-Type': mime.lookup(pathname),
+									'Cache-Control': 'maxage=' + maxAge
+								});
+								fs.createReadStream(file).pipe(res);
+								events.emit('static:served', pathname);
+							}
+						}
 					});
-					fs.createReadStream(path.join(publicPath, pathname)).pipe(res);
-					emitter.emit('static:served', pathname);
+
+					events.emit('etag:check', {file: file, etag: req.headers['if-none-match']});
+
 				} else {
-					emitter.emit('static:missing', pathname);
-					emitter.emit('error:404', connection);
+					events.emit('static:missing', pathname);
+					events.emit('error:404', connection);
 				}
 			});
 		} else if (isRoute(pathname, method, routesObj.standard)) {
 			//matches a route in the routes.json
-			emitter.emit('route:' + pathname + ':' + method, connection);
+			events.emit('route:' + pathname + ':' + method, connection);
 
 		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
@@ -148,17 +250,17 @@ server = function (serverType, routesJson, config) {
 			
 			//emit the event for the url minus params and include the params
 			//	in the params object
-			emitter.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
+			events.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
 		} else if(pathname === routeJSONPath){
 			res.writeHead(200, {
 				'Content-Type': mime.lookup('routes.json')
 			});
 			fs.createReadStream(path.join(process.cwd(), './routes.json')).pipe(res);
 		} else {
-			emitter.emit('error:404', connection);
+			events.emit('error:404', connection);
 		}
 	});
-}
+};
 
 module.exports = {
 					server: server
