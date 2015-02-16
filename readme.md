@@ -20,6 +20,7 @@ When you create your server it takes a config object that allows you to pass in 
 	, templatePath: './templates' // the folder where your templates live
 	, publicPath: './public' // the folder where your static files live
 	, maxAge: 31536000 // time to cache static files client side in milliseconds
+	, etags: true // turns on or off etag generation and headers
 }
 ```
 

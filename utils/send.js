@@ -1,47 +1,64 @@
-module.exports = function (data) {
-	var type = typeof data
-		, isBuffer = Buffer.isBuffer(data)
-		, isHead = true //TODO: make this real... is req part of the res object? Or does it need to be passed in?
-		, encoding = 'utf8';
+var etag = require('etag');
 
-	if (type === 'string') {
-		this.setHeader('Content-Type', 'text/html');
-		this.setEncoding(encoding); //encoding header for the response
-
-		// data = new Buffer(data, encoding);
-	// } else if (isBuffer) {
-	// 	this.setHeader('Content-Type', 'application/octet-stream');
-	// 	this.setEncoding('');
-	} else if(typeof data === 'object'){
-		//this is JSON send it and end it
-		this.setHeader('Content-Type', 'application/json');
-		if(!isBuffer){
-			data = JSON.stringify(data);
-		} else {
-			this.setHeader('Content-Type', 'text/html');
-			data = data.toString();
-		}
-	}
-
-	return this.end(data, encoding);
-	// if (type !== 'undefined') {
-	// 	this.setHeader('Content-Length', data.length);
-	// }
+module.exports = function(req){
+	'use strict';
 	
-	// //   // freshness
-	// //   if (req.fresh) this.statusCode = 304;
+	return function (data) {
+		var that = this
+			, type = typeof data
+			, isBuffer = Buffer.isBuffer(data)
+			, encoding = 'utf8'
+			, reqEtag;
 
-	// //   // strip irrelevant headers
-	// //   if (204 == this.statusCode || 304 == this.statusCode) {
-	// //     this.removeHeader('Content-Type');
-	// //     this.removeHeader('Content-Length');
-	// //     this.removeHeader('Transfer-Encoding');
-	// //     chunk = '';
-	// //   }
+		if (type === 'string') {
+			that.setHeader('Content-Type', 'text/html');
+			that.setEncoding(encoding); //encoding header for the response
 
-	// if(isHead){
-	// 	this.end();
-	// } else {
-	// 	this.end(data, encoding); //TODO: get the encoding set somewhere...
-	// }
+			// data = new Buffer(data, encoding);
+		// } else if (isBuffer) {
+		// 	that.setHeader('Content-Type', 'application/octet-stream');
+		// 	that.setEncoding('');
+		} else if(typeof data === 'object'){
+			//this is JSON send it and end it
+			that.setHeader('Content-Type', 'application/json');
+			if(!isBuffer){
+				data = JSON.stringify(data);
+
+			} else {
+				that.setHeader('Content-Type', 'text/html');
+				data = data.toString();
+			}
+		}
+
+		reqEtag = etag(data);
+
+		if(req.headersIn['if-none-match'] === reqEtag){
+			that.statusCode = 304;
+			that.end();
+		} else {
+			that.setHeader('ETag', reqEtag);
+			that.end(data, encoding);
+		}
+
+		// if (type !== 'undefined') {
+		// 	this.setHeader('Content-Length', data.length);
+		// }
+		
+		// //   // freshness
+		// //   if (req.fresh) this.statusCode = 304;
+
+		// //   // strip irrelevant headers
+		// //   if (204 == this.statusCode || 304 == this.statusCode) {
+		// //     this.removeHeader('Content-Type');
+		// //     this.removeHeader('Content-Length');
+		// //     this.removeHeader('Transfer-Encoding');
+		// //     chunk = '';
+		// //   }
+
+		// if(isHead){
+		// 	this.end();
+		// } else {
+		// 	this.end(data, encoding); //TODO: get the encoding set somewhere...
+		// }
+	};	
 };
