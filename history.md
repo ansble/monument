@@ -1,3 +1,12 @@
+### - 1.3.1 *Sat Feb 21 2015 08:59:04 GMT-0700 (MST)*
+
+  - Merge pull request #59 from ansble/milan-san-remo
+  - fixed conflicts
+  - updated the readme closes #57
+  - 1.2.1
+  - preparing for release of v1.2.1
+
+
 
 ### - 1.3.0 *Mon Feb 16 2015 07:06:31 GMT-0700 (MST)*
 
