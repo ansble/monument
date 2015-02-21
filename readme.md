@@ -6,6 +6,32 @@
 
 ![build status](https://travis-ci.org/ansble/monument.svg?branch=master) [![david-dm](https://david-dm.org/ansble/monument.svg)](https://david-dm.org/ansble/monument)
 
+## New in 1.3.0!
+
+### etags
+Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
+
+They are generated and used for all static files, and all responses that use `res.send`. One of the cooler things we did was have monumen cache the etags for static assets. That means they get created the first time they are requested after the server starts up, and for all subsequent requests the etag is pulled from an in memory cache so that the file i/o is only done if there is a reason to stream the file to the client. Makes them fast and light!
+
+### `.send()`
+One of the things that I heard from several users was the lack of response.send was confusing for them. So we added it! It also allows etags and automatically handles strings or objects correctly. Basically it is a nice layer of sugar around res.end and res.setHeaders that correctly handles mimetype and serializing the data if needed.
+
+Should make developing in monumet just a little easier.
+
+### required events (state machine)
+We pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for. 
+
+```
+	emitter.required(['event-1', 'event-2', 'event-3'], function (dataArray) {
+		//do something here when all three events have triggered
+	});
+```
+
+### compression for static files
+Deflate and gzip compression of static files is handled according to the accepts header from the client. We do it in a pretty slick way that writes out the compressed file to the file system at first request, reducing the computing required for serving them on subsequent requests as compressed files. Compression for non-static files is scheduled for the next release (1.4).
+
+You can turn compression on or off in the config object described below.
+
 ## How To Get Started
 
 ### Config object and the server
