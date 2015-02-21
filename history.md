@@ -1,5 +1,7 @@
-### - 1.2.1 *Mon Feb 16 2015 07:04:42 GMT-0700 (MST)*
 
+### - 1.3.0 *Mon Feb 16 2015 07:06:31 GMT-0700 (MST)*
+
+  - Merge pull request #56 from ansble/milan-san-remo
   - Merge branch 'milan-san-remo' of https://github.com/ansble/monument into milan-san-remo
   - Merge branch 'feature/etag' into milan-san-remo
   - Merge branch 'master' of https://github.com/ansble/monument into milan-san-remo
