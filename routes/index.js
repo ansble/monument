@@ -32,7 +32,7 @@ var path = require('path')
 											verbs: routes[route]
 											, variables: routeVariables
 											, eventId: route
-											, regex: new RegExp(route.replace(/:[a-zA-Z]+/g, '([^\/]+)'))
+											, regex: new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)') + '$')
 										};
 			} else {
 				standardRoutes[route] = routes[route];
@@ -245,7 +245,7 @@ server = function (serverType, routesJson, config) {
 
 		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
-
+			
 			connection.params = routeInfo.values;
 			
 			//emit the event for the url minus params and include the params
