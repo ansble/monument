@@ -1,3 +1,9 @@
+### - 1.3.2 *2/27/2015, 2:26:21 PM*
+
+  - Merge pull request #64 from ansble/bug/wild-card-routes
+  - fixed the wild card route matching issue
+
+
 ### - 1.3.1 *Sat Feb 21 2015 08:59:04 GMT-0700 (MST)*
 
   - Merge pull request #59 from ansble/milan-san-remo
