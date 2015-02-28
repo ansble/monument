@@ -1,3 +1,10 @@
+### - 1.3.4 *2/28/2015, 8:29:51 AM*
+
+  - Merge branch 'master' of https://github.com/ansble/monument
+  - Merge pull request #65 from ansble/bug/favicon.ico
+  - fixing a bug that caused favicon.ico requrests to match wildcard and crash the app under some circumstances
+
+
 ### - 1.3.3 *2/28/2015, 8:23:04 AM*
 
 
