@@ -101,9 +101,7 @@ var path = require('path')
 		fs.exists(publicPath, function (exists) {
 			if(exists){
 				fs.readdirSync(publicPath).forEach(function (file) {
-					if(fs.statSync(path.join(publicPath, file)).isDirectory()){
-						publicFolders.push(file);
-					}
+					publicFolders.push(file);
 				});
 			}
 		});
