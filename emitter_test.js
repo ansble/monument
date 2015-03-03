@@ -2,6 +2,8 @@ var assert = require('chai').assert
 	, emitter = require('./emitter');
 
 describe('event module tests', function(){
+	'use strict';
+	
 	it('should have  an "on" function', function(){
 		assert.isFunction(emitter.on);
 	});
@@ -26,9 +28,9 @@ describe('event module tests', function(){
 		assert.isFunction(emitter.listeners);
 	});
 	
-	it('should have  an "setMaxListeners" function', function(){
-		assert.isFunction(emitter.setMaxListeners);
-	});
+	// it('should have  an "setMaxListeners" function', function(){
+	// 	assert.isFunction(emitter.setMaxListeners);
+	// });
 
 	it('should have  an "addListener" function', function(){
 		assert.isFunction(emitter.addListener);
