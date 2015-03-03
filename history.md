@@ -1,3 +1,10 @@
+### - 1.4.1 *3/3/2015, 6:36:07 AM*
+
+  - Merge pull request #68 from ansble/e3-harelbeke
+  - updated dependencies and readme.md
+  - updated the readme
+
+
 ### - 1.4.4 *3/3/2015, 6:24:56 AM*
 
   - Merge pull request #67 from ansble/milan-san-remo
