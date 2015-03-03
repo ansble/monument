@@ -1,3 +1,9 @@
+### - 1.4.4 *3/3/2015, 6:24:56 AM*
+
+  - Merge pull request #67 from ansble/milan-san-remo
+  - closes #66 rewrote around own event system instead of the built in one. memory use seems more reasonable and more stable
+
+
 ### - 1.3.4 *2/28/2015, 8:29:51 AM*
 
   - Merge branch 'master' of https://github.com/ansble/monument
