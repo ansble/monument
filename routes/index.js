@@ -23,16 +23,20 @@ var path = require('path')
 			, standardRoutes = {};
 
 		Object.keys(routes).forEach(function (route) {
-			var routeVariables = route.match(/:[a-zA-Z]+/g);
+			var routeVariables = route.match(/:[a-zA-Z]+/g)
+				, routeRegex;
 
 			if(routeVariables){
 				//generate the regex for laters and
 				//	store the verbs and variables belonging to the route
+				
+				routeRegex = new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)').replace(/(\/)?$/, '(\/)?$'));
+				
 				wildCardRoutes[route] = {
 											verbs: routes[route]
 											, variables: routeVariables
 											, eventId: route
-											, regex: new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)') + '$')
+											, regex: routeRegex
 										};
 			} else {
 				standardRoutes[route] = routes[route];
