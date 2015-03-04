@@ -23,16 +23,20 @@ var path = require('path')
 			, standardRoutes = {};
 
 		Object.keys(routes).forEach(function (route) {
-			var routeVariables = route.match(/:[a-zA-Z]+/g);
+			var routeVariables = route.match(/:[a-zA-Z]+/g)
+				, routeRegex;
 
 			if(routeVariables){
 				//generate the regex for laters and
 				//	store the verbs and variables belonging to the route
+				
+				routeRegex = new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)').replace(/(\/)?$/, '(\/)?$'));
+				
 				wildCardRoutes[route] = {
 											verbs: routes[route]
 											, variables: routeVariables
 											, eventId: route
-											, regex: new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)') + '$')
+											, regex: routeRegex
 										};
 			} else {
 				standardRoutes[route] = routes[route];
@@ -42,10 +46,27 @@ var path = require('path')
 		return {wildcard: wildCardRoutes, standard: standardRoutes};
 	}
 
-	, isRoute = function (pathname, method, routesJson) {
+	, matchSimpleRoute = function (pathname, method, routesJson) {
 		'use strict';
 
-		return !!(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1);
+		var pathString
+			, route;
+
+		if(pathname.slice(-1) === '/'){
+			pathString = pathname.replace(/\/$/,'');
+		} else {
+			pathString = pathname + '/';
+		}
+
+		if(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1){
+			route = pathname;
+		} else if (routesJson[pathString] && routesJson[pathString].indexOf(method) !== -1){
+			route = pathString;
+		} else {
+			route = null;
+		}
+
+		return route;
 	}
 
 	, isWildCardRoute = function (pathname, method, routesJson) {
@@ -159,6 +180,7 @@ server = function (serverType, routesJson, config) {
 			, pathname = pathParsed.pathname
 			, compression
 			, file
+			, simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
 			, connection = {
 							req: req
 							, res: res
@@ -237,9 +259,9 @@ server = function (serverType, routesJson, config) {
 					events.emit('error:404', connection);
 				}
 			});
-		} else if (isRoute(pathname, method, routesObj.standard)) {
+		} else if (simpleRoute !== null) {
 			//matches a route in the routes.json
-			events.emit('route:' + pathname + ':' + method, connection);
+			events.emit('route:' + simpleRoute + ':' + method, connection);
 
 		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
