@@ -1,3 +1,16 @@
+### - 1.4.2 *3/3/2015, 8:30:35 PM*
+
+  - Merge pull request #72 from ansble/e3-harelbeke
+  - Merge pull request #71 from ansble/bug/send
+  - fixed the issue with temlpates and strings, seems to be working now
+  - Merge pull request #70 from ansble/feature/trail-slash
+  - wildcard routes are now trailing slash independent
+  - renamed the function that matches simple routes to make it's purpose more clear
+  - fixed the simple route matching for traliing slash... now onto the wildcard routing
+  - modified the trail slash check for routes.
+  - fixing the build badge
+
+
 ### - 1.4.1 *3/3/2015, 6:36:07 AM*
 
   - Merge pull request #68 from ansble/e3-harelbeke
