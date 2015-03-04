@@ -12,7 +12,7 @@ module.exports = function(req){
 
 		if (type === 'string') {
 			that.setHeader('Content-Type', 'text/html');
-			that.setEncoding(encoding); //encoding header for the response
+			// that.setEncoding(encoding); //encoding header for the response
 
 			// data = new Buffer(data, encoding);
 		// } else if (isBuffer) {
