@@ -42,7 +42,7 @@ var path = require('path')
 		return {wildcard: wildCardRoutes, standard: standardRoutes};
 	}
 
-	, isRoute = function (pathname, method, routesJson) {
+	, matchSimpleRoute = function (pathname, method, routesJson) {
 		'use strict';
 
 		var pathString
@@ -176,7 +176,7 @@ server = function (serverType, routesJson, config) {
 			, pathname = pathParsed.pathname
 			, compression
 			, file
-			, simpleRoute = isRoute(pathname, method, routesObj.standard)
+			, simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
 			, connection = {
 							req: req
 							, res: res
