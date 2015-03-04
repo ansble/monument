@@ -45,7 +45,15 @@ var path = require('path')
 	, isRoute = function (pathname, method, routesJson) {
 		'use strict';
 
-		return !!(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1);
+		var pathString;
+
+		if(pathname.slice(-1) === '/'){
+			pathString = pathname.replace(/\/$/,'');
+		} else {
+			pathString = pathname + '/';
+		}
+
+		return (routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1) || (routesJson[pathString] && routesJson[pathString].indexOf(method) !== -1);;
 	}
 
 	, isWildCardRoute = function (pathname, method, routesJson) {
