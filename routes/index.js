@@ -45,7 +45,8 @@ var path = require('path')
 	, isRoute = function (pathname, method, routesJson) {
 		'use strict';
 
-		var pathString;
+		var pathString
+			, route;
 
 		if(pathname.slice(-1) === '/'){
 			pathString = pathname.replace(/\/$/,'');
@@ -53,7 +54,15 @@ var path = require('path')
 			pathString = pathname + '/';
 		}
 
-		return (routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1) || (routesJson[pathString] && routesJson[pathString].indexOf(method) !== -1);;
+		if(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1){
+			route = pathname;
+		} else if (routesJson[pathString] && routesJson[pathString].indexOf(method) !== -1){
+			route = pathString;
+		} else {
+			route = null;
+		}
+
+		return route;
 	}
 
 	, isWildCardRoute = function (pathname, method, routesJson) {
@@ -167,6 +176,7 @@ server = function (serverType, routesJson, config) {
 			, pathname = pathParsed.pathname
 			, compression
 			, file
+			, simpleRoute = isRoute(pathname, method, routesObj.standard)
 			, connection = {
 							req: req
 							, res: res
@@ -245,9 +255,9 @@ server = function (serverType, routesJson, config) {
 					events.emit('error:404', connection);
 				}
 			});
-		} else if (isRoute(pathname, method, routesObj.standard)) {
+		} else if (simpleRoute !== null) {
 			//matches a route in the routes.json
-			events.emit('route:' + pathname + ':' + method, connection);
+			events.emit('route:' + simpleRoute + ':' + method, connection);
 
 		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
