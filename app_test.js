@@ -33,4 +33,10 @@ describe('The main monument tests', function(){
 		it('should compress things by default');
 		it('should not compress things if compression is turned off');
 	});
+
+	describe('doTjs Tests', function () {
+		it('should use doTjs defaults if none are set');
+		it('should override doTjs specified defaults when set');
+		it('should ignore irrelevant config keys');
+	});
 });

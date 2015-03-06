@@ -1,6 +1,6 @@
 # monument
 
-`monument` is a super light event routed isomorphic nodejs framework. 
+`monument` is a super light event routed isomorphic nodejs framework.
 
 [![NPM](https://nodei.co/npm/monument.png)](https://nodei.co/npm/monument/)
 
@@ -24,7 +24,7 @@ One of the things that I heard from several users was the lack of response.send 
 Should make developing in monumet just a little easier.
 
 ### required events (state machine)
-We pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for. 
+We pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for.
 
 ```
 	emitter.required(['event-1', 'event-2', 'event-3'], function (dataArray) {
@@ -49,6 +49,10 @@ When you create your server it takes a config object that allows you to pass in 
 	, compress: true // turns on or off compression for static files (deflate/gzip)
 	, routePath: './routes' // the folder your routes live in
 	, templatePath: './templates' // the folder where your templates live
+	, dotjs: {
+		//dotjs defaults
+		// see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
+	}
 	, publicPath: './public' // the folder where your static files live
 	, maxAge: 31536000 // time to cache static files client side in milliseconds
 	, etags: true // turns on or off etag generation and headers
@@ -125,7 +129,7 @@ More to come... but think about the idea of resource pooling and individual data
 
 ### Static Assetts
 
-Static assetts live in `/public` and can be organized in whatever way you see fit. All folders within public become routes on root. So, `/public/compnents` answers to requests on `/components` when the server is running. These static routes take precedent over evented routes and essentially prevent non-static route handling from happening on them. 
+Static assetts live in `/public` and can be organized in whatever way you see fit. All folders within public become routes on root. So, `/public/compnents` answers to requests on `/components` when the server is running. These static routes take precedent over evented routes and essentially prevent non-static route handling from happening on them.
 
 You can interact with these routes through events to a certain degree. They raise a `static:served` with a payload of the file url that was served, when the file exists. If the file does not exist they raise a `static:missing` with the file url as payload. This will let you log and handle these conditions as needed.
 

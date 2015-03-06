@@ -50,7 +50,7 @@ var http = require('http')
 		      events.emit('error:parse', err);
 		      return err;
 		    }
-		    
+
 	    	try{
 	    		callback.apply(scope, [JSON.parse(string)]);
 	    	} catch (e) {
@@ -61,7 +61,7 @@ var http = require('http')
 
 	, wrapper = function (config) {
 		'use strict';
-		
+
 		var port = config.port || 3000
 			, templatePath = config.templatePath || './templates'
 			, routePath = config.routePath || './routes.json'
@@ -69,6 +69,13 @@ var http = require('http')
 
 		if(typeof config.compress === 'undefined'){
 			config.compress = true;
+		}
+
+		//configure dotjs
+		if (config.dotjs) {
+			Object.keys(config.dotjs).forEach(function (opt) {
+				dot.templateSettings[opt] = config.dotjs[opt];
+			});
 		}
 
 		//compile the templates!
