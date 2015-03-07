@@ -1,3 +1,9 @@
+### - 1.4.3 *3/6/2015, 10:20:23 PM*
+
+  - Merge pull request #74 from uniqname/feature/dotjs-config
+  - dotjs configs
+
+
 ### - 1.4.2 *3/3/2015, 8:30:35 PM*
 
   - Merge pull request #72 from ansble/e3-harelbeke
