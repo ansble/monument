@@ -1,3 +1,10 @@
+### - 1.4.4 *3/9/2015, 4:35:02 PM*
+
+  - Merge pull request #77 from ansble/e3-harelbeke
+  - Merge pull request #76 from ansble/feature/in-place-tests
+  - added support for inplace tests in routes which is nice
+
+
 ### - 1.4.3 *3/6/2015, 10:20:23 PM*
 
   - Merge pull request #74 from uniqname/feature/dotjs-config
