@@ -29,9 +29,9 @@ var path = require('path')
 			if(routeVariables){
 				//generate the regex for laters and
 				//	store the verbs and variables belonging to the route
-				
+
 				routeRegex = new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)').replace(/(\/)?$/, '(\/)?$'));
-				
+
 				wildCardRoutes[route] = {
 											verbs: routes[route]
 											, variables: routeVariables
@@ -93,7 +93,7 @@ var path = require('path')
 				return !!(pathname.match(routesJson[route].regex));
 			})[0]
 
-			, matches = pathname.match(routesJson[matchedRoute].regex)			
+			, matches = pathname.match(routesJson[matchedRoute].regex)
 			, values = {}
 			, routeInfo = routesJson[matchedRoute]
 			, i = 0;
@@ -113,7 +113,7 @@ var path = require('path')
 
 		//load in all the route handlers
 		fs.readdirSync(routePath).forEach(function (file) {
-			if(file !== 'index.js'){
+			if(file !== 'index.js' && !file.match(/_test\.js$/)){
 				require(path.join(routePath, file));
 			}
 		});
@@ -174,7 +174,7 @@ server = function (serverType, routesJson, config) {
 
 	setupStaticRoutes(config.routePath, publicPath);
 
-	return serverType.createServer(function (req, res) {		
+	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
 			, pathParsed = parsePath(req.url)
 			, pathname = pathParsed.pathname
@@ -265,9 +265,9 @@ server = function (serverType, routesJson, config) {
 
 		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
 			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
-			
+
 			connection.params = routeInfo.values;
-			
+
 			//emit the event for the url minus params and include the params
 			//	in the params object
 			events.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
