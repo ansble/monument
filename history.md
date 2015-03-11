@@ -1,3 +1,10 @@
+### - 1.4.5 *3/11/2015, 12:04:26 PM*
+
+  - Merge pull request #81 from ansble/bug/headers
+  - expanded tests to include the other areas
+  - added tests for getCompression and rolled all the utils into a utils package. cleaner... better. also cleaned the getCompression function out of the routes/index.js file so that it is independent.
+
+
 ### - 1.4.4 *3/9/2015, 4:35:02 PM*
 
   - Merge pull request #77 from ansble/e3-harelbeke
