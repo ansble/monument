@@ -3,7 +3,8 @@ var path = require('path')
 	, zlib = require('zlib')
 	, events = require('../emitter')
 	, url = require('url')
-	, send = require('../utils/send')
+  , utils = require('../utils/utils')
+	, send = utils.send
 	, mime = require('mime')
 
 	, publicFolders = []
@@ -128,40 +129,7 @@ var path = require('path')
 		});
 	}
 
-	, getCompression = function (header, config) {
-		'use strict';
-
-		var type = ''
-			, typeArray = header.split(', ')
-			, maxq = 0;
-
-		if(typeof config.compress !== 'undefined' && !config.compress){
-			// compression turned off... bail
-			return 'none';
-		}
-
-		if(header.match(/q=/)){
-			//we have q values to calculate
-			typeArray.forEach(function (qIn) {
-				var q = parseFloat(qIn.match('/[0-9]\.[0-9]/')[0], 10);
-
-				if(q > maxq){
-					maxq = q;
-					type = q.split(';')[0];
-				}
-			});
-		} else {
-			if (header.match(/\bgzip\b/)) {
-			    type = 'gzip';
-			} else if (header.match(/\bdeflate\b/)) {
-			    type = 'deflate';
-			} else {
-			    type = 'none';
-			}
-		}
-
-		return type;
-	};
+	, getCompression = utils.getCompression;
 
 
 server = function (serverType, routesJson, config) {
