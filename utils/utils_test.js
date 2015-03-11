@@ -29,6 +29,12 @@ describe('Utils Tests', function () {
     it('should return none if an empty header is passed in', function () {
       assert.strictEqual(utils.getCompression('', {compress: true}), 'none');
     });
+    it('should return none if compression is turned off no matter what the header is', function () {
+      assert.strictEqual(utils.getCompression('gzip', {compress: false}), 'none');
+    });
+    it('should return correct compression if compression is not in the config', function () {
+      assert.strictEqual(utils.getCompression('gzip', {}), 'gzip');
+    });
   });
 
   describe('send tests', function () {
