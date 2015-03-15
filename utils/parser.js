@@ -44,7 +44,7 @@ var getRawBody = require('raw-body')
         try{
           callback.apply(scope, [JSON.parse(string)]);
         } catch (e) {
-        console.log(e, string);
+          console.log(e, string);
           callback.apply(scope, [parseForm(string)]);
         }
     });
