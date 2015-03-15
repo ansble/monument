@@ -14,5 +14,6 @@
   "undef": true,
   "unused": true,
   "strict": true,
-  "laxcomma": true
+  "laxcomma": true,
+  "predef": ["describe", "it"]
 }
