@@ -2,20 +2,14 @@ var path = require('path')
 	, fs = require('fs')
 	, zlib = require('zlib')
 	, events = require('../emitter')
-	, url = require('url')
-  , utils = require('../utils/utils')
+	, parsePath = require('../utils/url')
+    , utils = require('../utils/utils')
 	, send = utils.send
 	, mime = require('mime')
 
 	, publicFolders = []
 
 	, server
-
-	, parsePath = function (urlIn) {
-		'use strict';
-
-		return url.parse(urlIn, true);
-	}
 
 	, parseRoutes = function (routes) {
 		'use strict';
