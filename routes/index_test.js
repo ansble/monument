@@ -21,7 +21,4 @@ describe('Routing Tests', function () {
 		assert.isFunction(server.parseRoutes);
 	});
 
-	it('should have a parsePath function', function () {
-		assert.isFunction(server.parsePath);
-	});
 });
