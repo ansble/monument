@@ -1,3 +1,9 @@
+### - 1.4.6 *3/17/2015, 7:06:52 AM*
+
+  - Merge pull request #83 from eatrocks/feature/queryparamarrays
+  - add util to handle array[] conventions with request parameters
+
+
 ### - 1.4.5 *3/11/2015, 12:04:26 PM*
 
   - Merge pull request #81 from ansble/bug/headers
