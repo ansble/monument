@@ -47,9 +47,10 @@ var http = require('http')
 		    encoding: typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8'
 		  }, function (err, string) {
 		    if (err){
-		      events.emit('error:parse', err);
-		      return err;
+		      	events.emit('error:parse', err);
+		      	return err;
 		    }
+
 
 	    	try{
 	    		callback.apply(scope, [JSON.parse(string)]);
