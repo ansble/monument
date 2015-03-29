@@ -1,3 +1,15 @@
+### - 1.4.7 *3/28/2015, 6:59:53 PM*
+
+  - Merge pull request #89 from ansble/e3-harelbeke
+  - updated the event-state version to latest
+  - Merge branch 'e3-harelbeke' of https://github.com/ansble/monument into e3-harelbeke
+  - Merge branch 'master' into e3-harelbeke
+  - Merge pull request #88 from ansble/master
+  - Merge pull request #87 from eatrocks/master
+  - modify gulp build to roll patch and minor versions when appropriate
+  - Merge pull request #84 from ansble/master
+
+
 ### - 1.4.6 *3/17/2015, 7:06:52 AM*
 
   - Merge pull request #83 from eatrocks/feature/queryparamarrays
