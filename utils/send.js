@@ -10,6 +10,13 @@ module.exports = function(req){
 			, encoding = 'utf8'
 			, reqEtag;
 
+		if (type === 'undefined'){
+			//handle empty bodies... as strings
+			that.setHeader('Content-Type', 'text/plain');
+			data = '';
+			type = 'string';
+		}
+
 		if (type === 'string') {
 			that.setHeader('Content-Type', 'text/html');
 			// that.setEncoding(encoding); //encoding header for the response
