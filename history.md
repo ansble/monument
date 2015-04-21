@@ -1,3 +1,10 @@
+### - 1.4.8 *4/20/2015, 4:03:15 PM*
+
+  - Merge pull request #92 from ansble/master
+  - Merge pull request #91 from ansble/bug/empty-array
+  - fixed the issue with empty paramaters being sent into the send function
+
+
 ### - 1.4.7 *3/28/2015, 6:59:53 PM*
 
   - Merge pull request #89 from ansble/e3-harelbeke
