@@ -11,14 +11,26 @@ var glob = require('glob')
 			events.emit('setup:compressed');
 		});
 
-		glob('components/**/*.(tgz|def)', function (er, files) {
-			files.forEach(function (file) {
+		glob(path.join(process.cwd(),'./public/**/*.tgz'), function (er, files) {
+
+      files.forEach(function (file) {
 				complete.add('setup:delete:' + file);
 				fs.unlink(file, function () {
 					events.emit('setup:delete:' + file);
 				});
 			});
 		});
+
+    glob(path.join(process.cwd(),'./public/**/*.def'), function (er, files) {
+
+      files.forEach(function (file) {
+        complete.add('setup:delete:' + file);
+        fs.unlink(file, function () {
+          events.emit('setup:delete:' + file);
+        });
+      });
+    });
+
 		events.emit('cleanup:compressed:start');
 	}
 
