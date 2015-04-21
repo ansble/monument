@@ -1,9 +1,10 @@
 var http = require('http')
-	, dot = require('dot')
 	, path = require('path')
 	, getRawBody = require('raw-body')
 	, typer = require('media-typer')
 	, querystring = require('querystring')
+
+	, utils = require('./utils/utils')
 
 	, events = require('./emitter')
 	, pkg = require('./package.json')
@@ -64,7 +65,6 @@ var http = require('http')
 		'use strict';
 
 		var port = config.port || 3000
-			, templatePath = config.templatePath || './templates'
 			, routePath = config.routePath || './routes.json'
 			, routes = require(path.join(process.cwd(), routePath));
 
@@ -72,25 +72,17 @@ var http = require('http')
 			config.compress = true;
 		}
 
-		//configure dotjs
-		if (config.dotjs) {
-			Object.keys(config.dotjs).forEach(function (opt) {
-				dot.templateSettings[opt] = config.dotjs[opt];
-			});
-		}
 
-		//compile the templates!
-		dot.process({path: path.join(process.cwd(), templatePath)});
+		//take care of any setup tasks before starting the server
+		events.on('setup:complete', function () {
+			server = require('./routes/index.js').server(http, routes, config);
+			server.listen(port);
 
-		server = require('./routes/index.js').server(http, routes, config);
+			console.log('monument v' + pkg.version +' up and running on port: ' + port);
+		});
 
-		server.listen(port);
-
-		console.log('monument v' + pkg.version +' up and running on port: ' + port);
+		utils.setup(config);
 	};
-
-//set up the etag listeners and emitters
-require('./utils/staticFileEtags');
 
 module.exports = {
 	server: wrapper
