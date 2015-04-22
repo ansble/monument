@@ -15,7 +15,7 @@ var http = require('http')
 		'use strict';
 
 		var port = config.port || 3000
-			, routePath = config.routePath || './routes.json'
+			, routePath = config.routeJSONPath || './routes.json'
 			, routes = require(path.join(process.cwd(), routePath))
       , server;
 
@@ -33,6 +33,8 @@ var http = require('http')
 		});
 
 		utils.setup(config);
+
+    return server;
 	};
 
 module.exports = {

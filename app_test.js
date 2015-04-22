@@ -5,6 +5,8 @@ var assert = require('chai').assert
   , server;
 
 describe('The main monument tests', function(){
+  'use strict';
+
 	it('should be correctly defined', function(){
 		assert.isFunction(app.server);
 		assert.isFunction(app.parser);
@@ -19,7 +21,7 @@ describe('The main monument tests', function(){
 
 	describe('Wrapper Tests', function () {
 		afterEach(function(){
-      server.close()
+      server.close();
     });
 
     it('should return a server when run', function () {
