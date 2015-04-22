@@ -3,7 +3,7 @@ var path = require('path')
 	, zlib = require('zlib')
 	, events = require('../emitter')
 	, parsePath = require('../utils/url')
-    , utils = require('../utils/utils')
+  , utils = require('../utils/utils')
 	, send = utils.send
 	, mime = require('mime')
 
@@ -151,7 +151,7 @@ server = function (serverType, routesJson, config) {
 						};
 
 		//add .send to the response
-		res.send = send(req);
+		res.send = send(req, config);
 
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
