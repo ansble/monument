@@ -23,7 +23,6 @@ var http = require('http')
 			config.compress = true;
 		}
 
-
 		//take care of any setup tasks before starting the server
 		events.on('setup:complete', function () {
 			server = require('./routes/index.js').server(http, routes, config);
