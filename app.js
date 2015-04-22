@@ -1,6 +1,7 @@
 var http = require('http')
-	, dot = require('dot')
 	, path = require('path')
+
+	, utils = require('./utils/utils')
 
 	, events = require('./emitter')
 	, pkg = require('./package.json')
@@ -9,57 +10,30 @@ var http = require('http')
   //setup the routes and server
   //  pass in the http or https object and the routes.json
   //  then listen below on port/address you want to
-  , server
 
 	, wrapper = function (config) {
 		'use strict';
 
-		var config = config || {}
-			, routes;
+		var port = config.port || 3000
+			, routePath = config.routePath || './routes.json'
+			, routes = require(path.join(process.cwd(), routePath))
+      , server;
 
 		if(typeof config.compress === 'undefined'){
 			config.compress = true;
 		}
 
-    if(typeof config.port === 'undefined'){
-      config.port = 3000;
-    }
 
-    if(typeof config.templatePath === 'undefined'){
-      config.templatePath = './templates';
-    }
+		//take care of any setup tasks before starting the server
+		events.on('setup:complete', function () {
+			server = require('./routes/index.js').server(http, routes, config);
+			server.listen(port);
 
-    if(typeof config.routePath === 'undefined'){
-      config.routePath = './routes';
-    }
+			console.log('monument v' + pkg.version +' up and running on port: ' + port);
+		});
 
-    if(typeof config.routeJSONPath === 'undefined'){
-      config.routeJSONPath = './routes.json';
-    }
-
-		//configure dotjs
-		if (config.dotjs) {
-			Object.keys(config.dotjs).forEach(function (opt) {
-				dot.templateSettings[opt] = config.dotjs[opt];
-			});
-		}
-
-    routes = require(path.join(process.cwd(), config.routeJSONPath));
-
-		//compile the templates!
-		dot.process({path: path.join(process.cwd(), config.templatePath)});
-
-		server = require('./routes/index.js').server(http, routes, config);
-
-		server.listen(config.port);
-
-		console.log('monument v' + pkg.version +' up and running on port: ' + config.port);
-
-    return server;
+		utils.setup(config);
 	};
-
-//set up the etag listeners and emitters
-require('./utils/staticFileEtags');
 
 module.exports = {
 	server: wrapper

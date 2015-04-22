@@ -1,23 +1,29 @@
-var etag = require('etag');
+var etag = require('etag')
+    , getCompression = require('./getCompression')
+    , zlib = require('zlib');
 
-module.exports = function(req){
+module.exports = function(req, config){
 	'use strict';
-	
+
 	return function (data) {
 		var that = this
 			, type = typeof data
 			, isBuffer = Buffer.isBuffer(data)
 			, encoding = 'utf8'
-			, reqEtag;
+			, reqEtag
+
+      , compression = getCompression(req.headers['accept-encoding'], config);
+
+		if (type === 'undefined'){
+			//handle empty bodies... as strings
+			that.setHeader('Content-Type', 'text/plain');
+			data = '';
+			type = 'string';
+		}
 
 		if (type === 'string') {
 			that.setHeader('Content-Type', 'text/html');
-			// that.setEncoding(encoding); //encoding header for the response
 
-			// data = new Buffer(data, encoding);
-		// } else if (isBuffer) {
-		// 	that.setHeader('Content-Type', 'application/octet-stream');
-		// 	that.setEncoding('');
 		} else if(typeof data === 'object'){
 			//this is JSON send it and end it
 			that.setHeader('Content-Type', 'application/json');
@@ -37,28 +43,18 @@ module.exports = function(req){
 			that.end();
 		} else {
 			that.setHeader('ETag', reqEtag);
-			that.end(data, encoding);
+
+      if(compression !== 'none'){
+        that.setHeader('Content-Encoding', compression);
+      }
+
+      if (compression === 'deflate'){
+        that.end(zlib.deflateSync(data), encoding);
+      } else if (compression === 'gzip'){
+        that.end(zlib.gzipSync(data), encoding);
+      } else {
+        that.end(data, encoding);
+      }
 		}
-
-		// if (type !== 'undefined') {
-		// 	this.setHeader('Content-Length', data.length);
-		// }
-		
-		// //   // freshness
-		// //   if (req.fresh) this.statusCode = 304;
-
-		// //   // strip irrelevant headers
-		// //   if (204 == this.statusCode || 304 == this.statusCode) {
-		// //     this.removeHeader('Content-Type');
-		// //     this.removeHeader('Content-Length');
-		// //     this.removeHeader('Transfer-Encoding');
-		// //     chunk = '';
-		// //   }
-
-		// if(isHead){
-		// 	this.end();
-		// } else {
-		// 	this.end(data, encoding); //TODO: get the encoding set somewhere...
-		// }
-	};	
+	};
 };
