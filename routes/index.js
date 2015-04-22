@@ -131,7 +131,7 @@ server = function (serverType, routesJson, config) {
 
 	var routesObj = parseRoutes(routesJson)
 		, publicPath = path.join(process.cwd(), config.publicPath || './public')
-		, maxAge = config.maxAge || 31536000
+		, maxAge = config.maxAge || 31658000000
 		, routeJSONPath = config.routesPath || '/routes';
 
 	setupStaticRoutes(config.routePath, publicPath);
@@ -143,6 +143,7 @@ server = function (serverType, routesJson, config) {
 			, compression
 			, file
 			, simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
+      , expires = new Date().getTime()
 			, connection = {
 							req: req
 							, res: res
@@ -174,6 +175,7 @@ server = function (serverType, routesJson, config) {
 								res.writeHead(200, {
 									'Content-Type': mime.lookup(pathname),
 									'Cache-Control': 'maxage=' + maxAge,
+                  'Expires': new Date(expires + maxAge).toUTCString(),
 									'Content-Encoding': compression
 								});
 
@@ -206,7 +208,8 @@ server = function (serverType, routesJson, config) {
 								//return with the correct heders for the file type
 								res.writeHead(200, {
 									'Content-Type': mime.lookup(pathname),
-									'Cache-Control': 'maxage=' + maxAge
+									'Cache-Control': 'maxage=' + maxAge,
+                  'Expires': new Date(expires + maxAge).toUTCString()
 								});
 								fs.createReadStream(file).pipe(res);
 								events.emit('static:served', pathname);
