@@ -22,6 +22,7 @@ module.exports = {
         }
       });
 
+      console.log(setupSteps);
       events.emit('setup:start');
   }
 };
