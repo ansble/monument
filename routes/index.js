@@ -161,6 +161,7 @@ server = function (serverType, routesJson, config) {
 			//read in the file and stream it to the client
 			fs.exists(file, function (exists) {
 				if(exists){
+
 					events.required(['etag:check:' + file, 'etag:get:' + file], function (valid) {
 						if(valid[0]){ // does the etag match? YES
 							res.statusCode = 304;
@@ -170,7 +171,16 @@ server = function (serverType, routesJson, config) {
 
 							compression = getCompression(req.headers['accept-encoding'], config);
 
-							if(compression !== 'none'){
+              if(req.method.toLowerCase() === 'head'){
+                res.writeHead(200, {
+                  'Content-Type': mime.lookup(pathname),
+                  'Cache-Control': 'maxage=' + maxAge,
+                  'Expires': new Date(expires + maxAge).toUTCString(),
+                  'Content-Encoding': compression
+                });
+
+                res.end();
+              } else if (compression !== 'none'){
 								//we have compression!
 								res.writeHead(200, {
 									'Content-Type': mime.lookup(pathname),
