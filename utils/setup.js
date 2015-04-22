@@ -31,6 +31,7 @@ var glob = require('glob')
       });
     });
 
+    console.log('Cleaned up old compressed files...');
 		events.emit('cleanup:compressed:start');
 	}
 
@@ -59,6 +60,7 @@ var glob = require('glob')
       require('./staticFileEtags');
 
       events.emit('setup:etags');
+      console.log('etags setup...');
   };
 
 module.exports  = {
