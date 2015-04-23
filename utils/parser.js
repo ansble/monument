@@ -40,14 +40,14 @@ var getRawBody = require('raw-body')
 
         if (err){
           events.emit('error:parse', err);
-          return err;
+          callback.apply(scope, [err, null]);
         }
 
         try{
-          callback.apply(scope, [JSON.parse(string)]);
+          callback.apply(scope, [null, JSON.parse(string)]);
         } catch (e) {
           console.log(e, string);
-          callback.apply(scope, [parseForm(string)]);
+          callback.apply(scope, [null, parseForm(string)]);
         }
     });
   };

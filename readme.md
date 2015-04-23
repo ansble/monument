@@ -114,8 +114,8 @@ var parser = require('monument').parser;
 
 events.on('route:/join:post', function (connection) {
 	//parse out the request body
-	parser(connection, function (body) {
-		console.log(body);
+	parser(connection, function (err, body) {
+		console.log(err, body);
 		connection.res.end('route /join now responding to post requests');
 	});
 });
