@@ -49,7 +49,6 @@
     "gulp": "^3.8.11",
     "gulp-mocha": "^2.0.0",
     "minimist": "^1.1.0",
-    "node-mocks-http": "^1.2.5",
     "v8-profiler": "^5.2.4"
   },
   "engines": {

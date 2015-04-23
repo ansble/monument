@@ -31,11 +31,13 @@ var getRawBody = require('raw-body')
   , parser = function (connection, callback, scope) {//parse out the body
     'use strict';
 
+
     getRawBody(connection.req, {
         length: connection.req.headers['content-length'],
         limit: '1mb',
         encoding: typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8'
       }, function (err, string) {
+
         if (err){
           events.emit('error:parse', err);
           return err;
