@@ -28,6 +28,7 @@ describe('The main monument tests', function(){
       server = app.server({
         routeJSONPath: './test_stubs/routes_stub.json'
         , templatePath: './test_stubs/templates'
+        , port: 9999
       });
 
       assert.instanceOf(server, http.Server);

@@ -7,22 +7,13 @@ var getRawBody = require('raw-body')
     'use strict';
 
     var rtnObj = {}
-      , keys  = formString.match(/([\n\r].+)/g) //formString.match(/(form-data; name=['"])([^"']+)/g)
-      , currentName;
+      , keys  = formString.match(/(name=")([^"]+)(")([^a-zA-Z0-9]+)([^-]+)/g);
 
     if(keys !== null){
       keys.forEach(function (item) {
-        var name = item.match(/(form-data; name=['"])([^"']+)/);
-        if (name) {
-          //this is a key
-          currentName = name[0].replace(/form-data; name=['"]/, '');
-        } else if (!item.match(/FormBoundary/ && typeof currentName !== 'undefined')) {
-          //this is a value
-          rtnObj[currentName] = item.replace(/[\n]/,'');
-        }
+        var temp = item.match(/(")([^"])+/);
+        rtnObj[temp[0].replace(/"/g, '')] = item.match(/([\s].+)/)[0].replace(/^[\s]/, '');
       });
-    } else {
-      rtnObj = querystring.parse(formString);
     }
 
     return rtnObj;
@@ -30,7 +21,6 @@ var getRawBody = require('raw-body')
 
   , parser = function (connection, callback, scope) {//parse out the body
     'use strict';
-
 
     getRawBody(connection.req, {
         length: connection.req.headers['content-length'],
@@ -43,10 +33,16 @@ var getRawBody = require('raw-body')
           callback.apply(scope, [null, err]);
         }
 
-        try{
-          callback.apply(scope, [JSON.parse(string)]);
-        } catch (e) {
-          console.log(e, string);
+        if(connection.req.headers['content-type'] === 'application/json'){
+          try{
+            callback.apply(scope, [JSON.parse(string)]);
+          } catch (e) {
+            events.emit('error:parse', e);
+            callback.apply(scope, [null, e]);
+          }
+        } else if (connection.req.headers['content-type'] === 'application/x-www-form-urlencoded'){
+          callback.apply(scope, [querystring.parse(string)]);
+        } else {
           callback.apply(scope, [parseForm(string)]);
         }
     });
