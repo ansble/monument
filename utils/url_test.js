@@ -13,7 +13,7 @@ describe('parseUrl', function () {
   });
 
   describe('parse Tests', function () {
-  	
+
   	it('should behave itself without request parameters', function () {
   		var query = parseUrl(urlStr).query;
   		assert.isObject(query);
@@ -51,7 +51,7 @@ describe('parseUrl', function () {
   		assert.isUndefined(query["stuff[]"], '"stuff[]" should not be defined on the query object');
   		assert.lengthOf(query.stuff,1,'should be a single element array: ' + query);
   		assert.equal(JSON.stringify(query.stuff), JSON.stringify(['one,two,three']), 'query param value of "stuff" got dorked');
-  	}); 
+  	});
 
   	it('should combine query parms that are not using square brackets', function(){
   		var queryStr = '?stuff=money&stuff=1000';
@@ -71,7 +71,7 @@ describe('parseUrl', function () {
   	it('should combine multiple query parms that use comma delimited values', function(){
   		var queryStr = '?stuff=one,two,three&stuff=four,five,six&stuff=seven,eight,nine,ten'
   			,query = parseUrl(urlStr + queryStr).query;
-  		//console.log(parseUrl(urlStr + queryStr));
+
   		assert.isDefined(query.stuff, '"stuff" should be defined on the query object');
   		assert.isArray(query.stuff, '"stuff" should be an array');
   		assert.isUndefined(query["stuff[]"], '"stuff[]" should not be defined on the query object');
@@ -86,8 +86,8 @@ describe('parseUrl', function () {
   		assert.lengthOf(query.stuff, 2,'should be a two element array: ' + query);
   		assert.equal(JSON.stringify(query.stuff), JSON.stringify(['money','1000']), 'query param value of "stuff" got dorked');
   	}
-    	
+
   });
-  	
+
 
 });
