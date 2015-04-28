@@ -1,5 +1,6 @@
 node_modules/
-unit-test-coverage/
+coverage/
 .DS_Store
+.coveralls.yml
 **/.DS_Store
 test_stubs/templates/*.js

@@ -44,21 +44,18 @@ gulp.task('test', function(){
   return gulp.src(['./utils/**/*.js', '!./utils/**/*-test.js', './routes/**/*.js', '!./routes/**/*-test.js', '*.js', '!*-test.js'])
       // Right there
       .pipe(istanbul({includeUntested: true}))
+      .pipe(istanbul.hookRequire())
       .on('finish', function () {
          gulp.src(['**/**_test.js', '!node_modules/**/*'], {read: false})
             .pipe(mocha({reporter: 'spec'}))
-            .pipe(istanbul.writeReports({
-              dir: './unit-test-coverage',
-              reporters: [ 'lcov' ],
-              reportOpts: { dir: './unit-test-coverage'}
-            }));
+            .pipe(istanbul.writeReports());
       });
 });
 
 gulp.task('coveralls', function () {
   'use strict';
 
-  return gulp.src('unit-test-coverage/**/lcov.info')
+  return gulp.src('coverage/**/lcov.info')
             .pipe(coveralls());
 });
 
