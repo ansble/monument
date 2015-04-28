@@ -1,3 +1,8 @@
+### - 1.5.2 *4/28/2015, 9:47:30 AM*
+
+  - badge issue fixed
+
+
 ### - 1.5.1 *4/28/2015, 9:42:43 AM*
 
   - preparing for release of v1.5.1
