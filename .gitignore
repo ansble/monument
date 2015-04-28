@@ -1,4 +1,5 @@
 node_modules/
+unit-test-coverage/
 .DS_Store
 **/.DS_Store
 test_stubs/templates/*.js
