@@ -3,7 +3,7 @@ var path = require('path')
 	, zlib = require('zlib')
 	, events = require('../emitter')
 	, parsePath = require('../utils/url')
-    , utils = require('../utils/utils')
+  , utils = require('../utils/utils')
 	, send = utils.send
 	, mime = require('mime')
 
@@ -131,10 +131,11 @@ server = function (serverType, routesJson, config) {
 
 	var routesObj = parseRoutes(routesJson)
 		, publicPath = path.join(process.cwd(), config.publicPath || './public')
-		, maxAge = config.maxAge || 31536000
-		, routeJSONPath = config.routesPath || '/routes';
+		, maxAge = config.maxAge || 31658000000
+		, routesPath = config.routesPath || '/routes'
+    , routeJSONPath = config.routeJSONPath || './routes.json';
 
-	setupStaticRoutes(config.routePath, publicPath);
+	setupStaticRoutes(routesPath, publicPath);
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
@@ -143,6 +144,7 @@ server = function (serverType, routesJson, config) {
 			, compression
 			, file
 			, simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
+      , expires = new Date().getTime()
 			, connection = {
 							req: req
 							, res: res
@@ -151,7 +153,7 @@ server = function (serverType, routesJson, config) {
 						};
 
 		//add .send to the response
-		res.send = send(req);
+		res.send = send(req, config);
 
 		//match the first part of the url... for public stuff
 		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
@@ -160,6 +162,7 @@ server = function (serverType, routesJson, config) {
 			//read in the file and stream it to the client
 			fs.exists(file, function (exists) {
 				if(exists){
+
 					events.required(['etag:check:' + file, 'etag:get:' + file], function (valid) {
 						if(valid[0]){ // does the etag match? YES
 							res.statusCode = 304;
@@ -169,11 +172,21 @@ server = function (serverType, routesJson, config) {
 
 							compression = getCompression(req.headers['accept-encoding'], config);
 
-							if(compression !== 'none'){
+              if(req.method.toLowerCase() === 'head'){
+                res.writeHead(200, {
+                  'Content-Type': mime.lookup(pathname),
+                  'Cache-Control': 'maxage=' + maxAge,
+                  'Expires': new Date(expires + maxAge).toUTCString(),
+                  'Content-Encoding': compression
+                });
+
+                res.end();
+              } else if (compression !== 'none'){
 								//we have compression!
 								res.writeHead(200, {
 									'Content-Type': mime.lookup(pathname),
 									'Cache-Control': 'maxage=' + maxAge,
+                  'Expires': new Date(expires + maxAge).toUTCString(),
 									'Content-Encoding': compression
 								});
 
@@ -206,7 +219,8 @@ server = function (serverType, routesJson, config) {
 								//return with the correct heders for the file type
 								res.writeHead(200, {
 									'Content-Type': mime.lookup(pathname),
-									'Cache-Control': 'maxage=' + maxAge
+									'Cache-Control': 'maxage=' + maxAge,
+                  'Expires': new Date(expires + maxAge).toUTCString()
 								});
 								fs.createReadStream(file).pipe(res);
 								events.emit('static:served', pathname);
@@ -233,11 +247,11 @@ server = function (serverType, routesJson, config) {
 			//emit the event for the url minus params and include the params
 			//	in the params object
 			events.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
-		} else if(pathname === routeJSONPath){
+		} else if(pathname === routesPath){
 			res.writeHead(200, {
 				'Content-Type': mime.lookup('routes.json')
 			});
-			fs.createReadStream(path.join(process.cwd(), './routes.json')).pipe(res);
+			fs.createReadStream(path.join(process.cwd(), routeJSONPath)).pipe(res);
 		} else {
 			events.emit('error:404', connection);
 		}

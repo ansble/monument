@@ -15,5 +15,5 @@
   "unused": true,
   "strict": true,
   "laxcomma": true,
-  "predef": ["it", "should", "describe"]
+  "predef": ["describe", "it", "beforeEach", "afterEach", "should"]
 }

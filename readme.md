@@ -6,6 +6,25 @@
 
 ![build status](https://codeship.com/projects/881ed090-9c54-0132-655c-263ab955f60c/status?branch=master) [![david-dm](https://david-dm.org/ansble/monument.svg)](https://david-dm.org/ansble/monument)
 
+## Changes in 1.5.0
+
+`parser` The `monument.parser` function now returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});`
+
+Updated to latest version (0.3.5) of [event-state](https://github.com/ansble/event-state) which fixed some bugs in its implementation.
+
+Expanded test suite... (yay!)
+
+We also added compression for non-static resources. It is turned on and off with the same compression flag as static file compression.
+
+Added max-age and other cache headers in addition to etags to make PageSpeed and ySlow happy. Works very nicely.
+
+Complete rework of the startup system. Modularized and will be pluggable in the future. Right now it handles the cleanup of static files, which makes development a lot nicer. It also Compiles the dot.js templates and gets them ready for use. The last thing that it does is include the etag system for handling etag creation. Basically all the same startup tasks just handled in a modular way.
+
+HEAD requests are now supported correctly for static resources. If you want to use HEAD requests in your applications then you can handle them very easily from the routes.json.
+
+That's the majority of the changes for 1.5.0!
+
+
 ## New in 1.4.0
 This was essentially a patch that turned into a minor release. We found some issues with using the builtin node event system that seemed to be revving up memory usage like crazy and so we rewrote the whole event system to use a custom one. The API is identical to 1.3.0 but the 99% rewrite of a core module felt more like a minor release then a patch release. So the new for this release is pretty much transparent, but it is lower overhead for your application.
 
@@ -114,8 +133,8 @@ var parser = require('monument').parser;
 
 events.on('route:/join:post', function (connection) {
 	//parse out the request body
-	parser(connection, function (body) {
-		console.log(body);
+	parser(connection, function (err, body) {
+		console.log(err, body);
 		connection.res.end('route /join now responding to post requests');
 	});
 });
