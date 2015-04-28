@@ -1,3 +1,37 @@
+### - 1.4.9 *4/21/2015, 2:09:22 PM*
+
+  - Merge pull request #94 from ansble/e3-harelbeke
+  - Merge pull request #93 from ansble/bug/compressed-files
+  - working closing #60
+  - this is much more then the bug mentioned at this point (#60). It also includes a refactor of the startup process. Startup is now a set of functions invoked at startup. When they are complete they trigger an event that notifies the server that we are ready to go. Which is nice. In the future this will allow for user created startup tasks that can be passed in. Not there yet... but it's definitely possible now with a little work.
+  - added a cleanup file and hooked it up in utils. It will contain all the tasks to be executed at shutdown of the server by default. The exposed task in the utils folder just executes all of the functions exposed by the cleanup module in sequence
+
+
+### - 1.4.8 *4/20/2015, 4:03:15 PM*
+
+  - Merge pull request #92 from ansble/master
+  - Merge pull request #91 from ansble/bug/empty-array
+  - fixed the issue with empty paramaters being sent into the send function
+
+
+### - 1.4.7 *3/28/2015, 6:59:53 PM*
+
+  - Merge pull request #89 from ansble/e3-harelbeke
+  - updated the event-state version to latest
+  - Merge branch 'e3-harelbeke' of https://github.com/ansble/monument into e3-harelbeke
+  - Merge branch 'master' into e3-harelbeke
+  - Merge pull request #88 from ansble/master
+  - Merge pull request #87 from eatrocks/master
+  - modify gulp build to roll patch and minor versions when appropriate
+  - Merge pull request #84 from ansble/master
+
+
+### - 1.4.6 *3/17/2015, 7:06:52 AM*
+
+  - Merge pull request #83 from eatrocks/feature/queryparamarrays
+  - add util to handle array[] conventions with request parameters
+
+
 ### - 1.4.5 *3/11/2015, 12:04:26 PM*
 
   - Merge pull request #81 from ansble/bug/headers

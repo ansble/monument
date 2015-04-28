@@ -6,9 +6,10 @@ describe('Utils Tests', function () {
   'use strict';
 
   it('should return an object that has a send and getCompression functions', function () {
-    assert.isObject(utils)
+    assert.isObject(utils);
     assert.isFunction(utils.send);
     assert.isFunction(utils.getCompression);
+    assert.isFunction(utils.setup);
   });
 
   describe('getCompression tests', function () {
@@ -38,6 +39,14 @@ describe('Utils Tests', function () {
   });
 
   describe('send tests', function () {
-    it('should do things...');
+    it('should have a send function', function () {
+      assert.isFunction(utils.send);
+    });
+  });
+
+  describe('setup tests', function () {
+    it('utils should have a setup function', function () {
+      assert.isFunction(utils.setup);
+    });
   });
 });
