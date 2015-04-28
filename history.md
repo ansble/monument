@@ -1,3 +1,12 @@
+### - 1.5.1 *4/28/2015, 9:41:11 AM*
+
+  - Merge pull request #101 from ansble/release/1.5.0
+  - Merge pull request #100 from ansble/feature/code-coverage
+  - added some badges... cause badges
+  - coverage number seems to be working now... and reporting to coveralls. Code coverage is live and real
+  - working on getting test coverage working
+
+
 ### - 1.5.0 *4/27/2015, 6:47:10 PM*
 
   - Merge pull request #99 from ansble/release/1.5.0
