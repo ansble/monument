@@ -2,9 +2,11 @@
 
 `monument` is a super light event routed isomorphic nodejs framework.
 
-[![NPM](https://nodei.co/npm/monument.png)](https://nodei.co/npm/monument/)
+[![NPM](https://nodei.co/npm/monument.png)](https://nodei.co/npm/monument.png?downloadRank=true&stars=true)
 
 ![build status](https://codeship.com/projects/881ed090-9c54-0132-655c-263ab955f60c/status?branch=master) [![david-dm](https://david-dm.org/ansble/monument.svg)](https://david-dm.org/ansble/monument)
+
+[![Coverage Status](https://coveralls.io/repos/ansble/monument/badge.svg?branch=feature%2Fcode-coverage)](https://coveralls.io/r/ansble/monument?branch=feature%2Fcode-coverage)
 
 ## Changes in 1.5.0
 
@@ -46,9 +48,9 @@ Should make developing in monumet just a little easier.
 We pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for.
 
 ```
-	emitter.required(['event-1', 'event-2', 'event-3'], function (dataArray) {
-		//do something here when all three events have triggered
-	});
+  emitter.required(['event-1', 'event-2', 'event-3'], function (dataArray) {
+    //do something here when all three events have triggered
+  });
 ```
 
 ### compression for static files
@@ -64,17 +66,17 @@ When you create your server it takes a config object that allows you to pass in 
 
 ```
 {
-	port: 3000 // the port for the server to run on
-	, compress: true // turns on or off compression for static files (deflate/gzip)
-	, routePath: './routes' // the folder your routes live in
-	, templatePath: './templates' // the folder where your templates live
-	, dotjs: {
-		//dotjs defaults
-		// see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
-	}
-	, publicPath: './public' // the folder where your static files live
-	, maxAge: 31536000 // time to cache static files client side in milliseconds
-	, etags: true // turns on or off etag generation and headers
+  port: 3000 // the port for the server to run on
+  , compress: true // turns on or off compression for static files (deflate/gzip)
+  , routePath: './routes' // the folder your routes live in
+  , templatePath: './templates' // the folder where your templates live
+  , dotjs: {
+    //dotjs defaults
+    // see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
+  }
+  , publicPath: './public' // the folder where your static files live
+  , maxAge: 31536000 // time to cache static files client side in milliseconds
+  , etags: true // turns on or off etag generation and headers
 }
 ```
 
@@ -84,11 +86,11 @@ All the values are optional. It is used like this to create a server (heroku exa
 var monument = require('monument');
 
 monument.server({
-				routePath: './routes'
-				, templatePath: './templates'
-				, publicPath: './public'
-				, port: process.env.PORT || 3000
-			});
+        routePath: './routes'
+        , templatePath: './templates'
+        , publicPath: './public'
+        , port: process.env.PORT || 3000
+      });
 ```
 
 ### Setting up routes
@@ -99,9 +101,9 @@ Whichever way you decide to do it the first step is to add your route to the `ro
 
 ```
 {
-	"/": ["get"],
-	"/sign-up": ["get", "post"],
-	"/member/:username": ["get"]
+  "/": ["get"],
+  "/sign-up": ["get", "post"],
+  "/member/:username": ["get"]
 }
 ```
 
@@ -115,10 +117,10 @@ The route events recieve an object right now, often called connection, that look
 
 ```
 {
-	res: response,
-	req: request,
-	params: the url parameters as an object,
-	query: the queryparams as an object
+  res: response,
+  req: request,
+  params: the url parameters as an object,
+  query: the queryparams as an object
 }
 ```
 
@@ -132,11 +134,11 @@ At some point you are going to need to deal with body data from a form or ajax r
 var parser = require('monument').parser;
 
 events.on('route:/join:post', function (connection) {
-	//parse out the request body
-	parser(connection, function (err, body) {
-		console.log(err, body);
-		connection.res.end('route /join now responding to post requests');
-	});
+  //parse out the request body
+  parser(connection, function (err, body) {
+    console.log(err, body);
+    connection.res.end('route /join now responding to post requests');
+  });
 });
 ```
 
