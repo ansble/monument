@@ -4,6 +4,8 @@ var gulp = require('gulp')
 	, cp = require('child_process')
 	, chalk = require('chalk')
 	, fs = require('fs')
+  , istanbul = require('gulp-istanbul')
+  , coveralls = require('gulp-coveralls')
 
 	, pkg = require('./package.json')
 
@@ -39,9 +41,22 @@ gulp.task('default', function(){
 
 gulp.task('test', function(){
 	'use strict';
+  return gulp.src(['./utils/**/*.js', '!./utils/**/*-test.js', './routes/**/*.js', '!./routes/**/*-test.js', '*.js', '!*-test.js'])
+      // Right there
+      .pipe(istanbul({includeUntested: true}))
+      .pipe(istanbul.hookRequire())
+      .on('finish', function () {
+         gulp.src(['**/**_test.js', '!node_modules/**/*'], {read: false})
+            .pipe(mocha({reporter: 'spec'}))
+            .pipe(istanbul.writeReports());
+      });
+});
 
-	return gulp.src(['**/**_test.js', '!node_modules/**/*'], {read: false})
-			.pipe(mocha({reporter: 'spec'}));
+gulp.task('coveralls', function () {
+  'use strict';
+
+  return gulp.src('coverage/**/lcov.info')
+            .pipe(coveralls());
 });
 
 gulp.task('release', ['test'], function(){
@@ -54,11 +69,11 @@ gulp.task('release', ['test'], function(){
 
 	cp.exec('git log `git describe --tags --abbrev=0`..HEAD --pretty=format:"  - %s"', function (err, stdout) {
 		var history = fs.readFileSync('./history.md');
-		
+
 		console.log('Updating the history.md file');
 
 		fs.writeFile('./history.md', '### - ' + newVersion + ' *' + new Date().toLocaleString() + '*\n\n' + stdout + '\n\n\n' + history);
-		
+
 		cp.exec('git log --all --format="%aN <%aE>" | sort -u', function (err, stdout) {
 			//write out the Authors file with all contributors
 			console.log('Updating the AUTHORS file');
