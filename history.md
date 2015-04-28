@@ -1,3 +1,38 @@
+### - 1.5.0 *4/27/2015, 6:47:10 PM*
+
+  - Merge pull request #99 from ansble/release/1.5.0
+  - updated the readme file with notes about 1.5.0
+  - Merge pull request #98 from ansble/de-ronde-van-vlaanderen
+  - Merge pull request #82 from ansble/feature/parser
+  - removed a console.log that had been commented out
+  - have tests working for parser and can\'t replicate the multi firing. So I am guessing it is fixed. If it turns up later I\'ll reopen the issue and work on it. For now I\'m assuming that it is fixed and moving ahead
+  - changed my mind about the signature change, and made it a non-breaking change. It deveats from the common pattern for node... but the common pattern for node doesn't always make sense anyway.
+  - changing the signature for the parser callback to allow for error handling
+  - cleaned up some dev dependencies and got the initial tests for parser working correctly
+  - Merge branch 'release/1.5.0' into feature/parser
+  - Merge pull request #97 from ansble/feature/head
+  - added head requests for static resources. Users already can handle them as they like for non-static. finishes #42
+  - removed a log that was for troubleshooting
+  - updated the event-state dependency
+  - something...
+  - trying to figure out broken tests
+  - added a template for test compiles
+  - adding some more startup messaging for kicks and giggles
+  - trying to get a good build
+  - fixed the broken tests... and we are working again
+  - catching this branch up to the work that has currently been done on the release/1.5.0 aka de Ronde von Vlaanderan
+  - Merge pull request #96 from ansble/feature/caching
+  - added some corrections to tweaking that make pagespeed happy
+  - Merge pull request #95 from ansble/feature/compression
+  - compression now turns on for non-static files as well. As long as you use res.send
+  - Merge pull request #85 from ansble/master
+  - took out tests for parser because I haven't figured out how to mock them correctly yet...
+  - tweaked the jshintrc to account for more testing functions
+  - working on getting everything humming more smoothly
+  - tidying up the event tests a bit
+  - breaking the parser out into it's own area and writing some tests for the server and the parser
+
+
 ### - 1.4.9 *4/21/2015, 2:09:22 PM*
 
   - Merge pull request #94 from ansble/e3-harelbeke
