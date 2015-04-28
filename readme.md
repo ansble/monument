@@ -2,7 +2,7 @@
 
 `monument` is a super light event routed isomorphic nodejs framework.
 
-[![NPM](https://nodei.co/npm/monument.png)](https://nodei.co/npm/monument.png?downloadRank=true&stars=true)
+[![NPM](https://nodei.co/npm/monument.png?downloadRank=true&stars=true)](https://nodei.co/npm/monument/)
 
 ![build status](https://codeship.com/projects/881ed090-9c54-0132-655c-263ab955f60c/status?branch=master) [![david-dm](https://david-dm.org/ansble/monument.svg)](https://david-dm.org/ansble/monument)
 
