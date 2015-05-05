@@ -1,11 +1,13 @@
 var getCompression = require('./getCompression')
   , send = require('./send')
   , setup = require('./setup')
+  , parsePath = require('./url')
   , events = require('../emitter');
 
 module.exports = {
   getCompression: getCompression
   , send: send
+  , parsePath: parsePath
   , setup: function (config) {
   		'use strict';
       var setupSteps = events.required(['setup:start'], function () {

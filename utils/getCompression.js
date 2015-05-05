@@ -2,6 +2,7 @@ var getCompression = function (header, config) {
     'use strict';
 
     var typeArray
+      , type
       , maxq = 0;
 
     if(typeof header === 'undefined'){
