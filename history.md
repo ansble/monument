@@ -1,3 +1,12 @@
+### - 1.5.3 *5/5/2015, 12:23:19 AM*
+
+  - Merge pull request #103 from ansble/release/1.5.0
+  - Merge pull request #102 from ansble/feature/tests
+  - lots of test writing, some re-organization and bug fixes identified by the tests
+  - expanding tests, parser is now 100% covered by tests
+  - expanding tests, parser is now 100% covered by tests
+
+
 ### - 1.5.2 *4/28/2015, 9:47:30 AM*
 
   - badge issue fixed
