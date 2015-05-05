@@ -6,7 +6,7 @@
 
 ![build status](https://codeship.com/projects/881ed090-9c54-0132-655c-263ab955f60c/status?branch=master) [![david-dm](https://david-dm.org/ansble/monument.svg)](https://david-dm.org/ansble/monument)
 
-[![Coverage Status](https://coveralls.io/repos/ansble/monument/badge.svg?branch=feature%2Fcode-coverage)](https://coveralls.io/r/ansble/monument?branch=feature%2Fcode-coverage)
+[![Coverage Status](https://coveralls.io/repos/ansble/monument/badge.svg)](https://coveralls.io/r/ansble/monument)
 
 ## Changes in 1.5.0
 
