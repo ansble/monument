@@ -134,6 +134,9 @@ describe('Event Tests', function(){
 
             emitter.emit('some-other-event');
         });
+
+        it('should be able to add additional listeners to the same event');
+        it('should handle an object for params and use the correct scope for the callback');
     });
 
 	it('should have  a "once" function', function(){
