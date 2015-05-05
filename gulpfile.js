@@ -41,7 +41,7 @@ gulp.task('default', function(){
 
 gulp.task('test', function(){
 	'use strict';
-  return gulp.src(['./utils/**/*.js', '!./utils/**/*_test.js', './routes/**/*.js', '!./routes/**/*_test.js', '*.js', '!*_test.js'])
+  return gulp.src(['./utils/**/*.js', '!./utils/**/*_test.js', './routes/**/*.js', '!./routes/**/*_test.js', '*.js', '!*_test.js', '!gulpfile.js'])
       // Right there
       .pipe(istanbul({includeUntested: true}))
       .pipe(istanbul.hookRequire())
