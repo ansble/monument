@@ -2,7 +2,6 @@ var path = require('path')
 	, fs = require('fs')
 	, zlib = require('zlib')
 	, events = require('../emitter')
-	, parsePath = require('../utils/url')
   , utils = require('../utils/utils')
 	, send = utils.send
 	, mime = require('mime')
@@ -139,7 +138,7 @@ server = function (serverType, routesJson, config) {
 
 	return serverType.createServer(function (req, res) {
 		var method = req.method.toLowerCase()
-			, pathParsed = parsePath(req.url)
+			, pathParsed = utils.parsePath(req.url)
 			, pathname = pathParsed.pathname
 			, compression
 			, file
@@ -263,5 +262,5 @@ module.exports = {
 					, parseWildCardRoute: parseWildCardRoute
 					, isWildCardRoute: isWildCardRoute
 					, parseRoutes: parseRoutes
-					, parsePath: parsePath
+          , matchSimpleRoute: matchSimpleRoute
 				};

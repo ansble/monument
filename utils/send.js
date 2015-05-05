@@ -14,14 +14,13 @@ module.exports = function(req, config){
 
       , compression = getCompression(req.headers['accept-encoding'], config);
 
-		if (type === 'undefined'){
-			//handle empty bodies... as strings
-			that.setHeader('Content-Type', 'text/plain');
-			data = '';
-			type = 'string';
-		}
+    if (type === 'undefined'){
+      //handle empty bodies... as strings
+      that.setHeader('Content-Type', 'text/plain');
+      data = '';
+      type = 'string';
 
-		if (type === 'string') {
+    } else if (type === 'string') {
 			that.setHeader('Content-Type', 'text/html');
 
 		} else if(typeof data === 'object'){
@@ -34,15 +33,17 @@ module.exports = function(req, config){
 				that.setHeader('Content-Type', 'text/html');
 				data = data.toString();
 			}
-		}
-
-		reqEtag = etag(data);
-
-		if(req.headers['if-none-match'] === reqEtag){
-			that.statusCode = 304;
-			that.end();
 		} else {
-			that.setHeader('ETag', reqEtag);
+      data = JSON.stringify(data);
+    }
+
+    reqEtag = etag(data);
+
+    if(typeof req.headers['if-none-match'] !== 'undefined' && req.headers['if-none-match'] === reqEtag){
+      that.statusCode = 304;
+      that.end();
+    } else {
+      that.setHeader('ETag', reqEtag);
 
       if(compression !== 'none'){
         that.setHeader('Content-Encoding', compression);
