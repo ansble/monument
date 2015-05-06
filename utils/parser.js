@@ -21,11 +21,16 @@ var getRawBody = require('raw-body')
 
   , parser = function (connection, callback, scope) {//parse out the body
     'use strict';
+    var encoding = 'UTF-8';
+
+    if(typeof connection.req.headers['content-type'] !== 'undefined'){
+        encoding = typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8';
+    }
 
     getRawBody(connection.req, {
         length: connection.req.headers['content-length'],
         limit: '1mb',
-        encoding: typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8'
+        encoding: encoding
       }, function (err, string) {
 
         if (err){
@@ -44,8 +49,10 @@ var getRawBody = require('raw-body')
           callback.apply(scope, [querystring.parse(string)]);
         } else {
             try{
+                console.log(string);
                 callback.apply(scope, [JSON.parse(string)]);
             } catch (e) {
+                console.log(string, 'form');
                 callback.apply(scope, [parseForm(string)]);
             }
         }
