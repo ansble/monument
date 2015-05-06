@@ -12,62 +12,75 @@ var assert = require('chai').assert
 describe('Parser Tests', function () {
   'use strict';
 
-  beforeEach(function () {
-    stream = new Readable();
-    jsonBody = {name: 'Tomas Voekler'};
-    formDataBody = fs.createReadStream(process.cwd() + '/test_stubs/formDataBody.txt');
-    urlBody = 'name=daniel&title=lord+of+the+actual+internet1';
-    errorBody = '{name: "Tomas Voekler"';
-  });
-
-  it('should return a function', function () {
-    assert.isFunction(parser);
-  });
-
-  it('should parse out a multipart/form-data submission', function (done) {
-    formDataBody.headers = {
-      'content-length': formDataBody.length
-      , 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryOR86nFvrvo9BHCQm'
-    };
-
-    parser({req: formDataBody}, function (body, err) {
-      assert.isUndefined(err);
-      assert.isObject(body);
-      assert.strictEqual(body.name, 'daniel');
-      done();
+    beforeEach(function () {
+        stream = new Readable();
+        jsonBody = {name: 'Tomas Voekler'};
+        formDataBody = fs.createReadStream(process.cwd() + '/test_stubs/formDataBody.txt');
+        urlBody = 'name=daniel&title=lord+of+the+actual+internet1';
+        errorBody = '{name: "Tomas Voekler"';
     });
-  });
 
-  it('should parse out a application/x-www-form-urlencoded submission', function (done) {
-    stream.push(urlBody);
-    stream.push(null);
-    stream.headers = {
-      'content-length': urlBody.length
-      , 'content-type': 'application/x-www-form-urlencoded'
-    };
-
-    parser({req: stream}, function (body, err) {
-      assert.isUndefined(err);
-      assert.isObject(body);
-      assert.strictEqual(body.name, 'daniel');
-      done();
+    it('should return a function', function () {
+        assert.isFunction(parser);
     });
-  });
 
-  it('should parse out a json post/put/update', function (done) {
-    stream.push(JSON.stringify(jsonBody));
-    stream.push(null);
-    stream.headers = {
-        'content-length': 24
-        , 'content-type': 'application/json'
-    };
+    it('should parse out a multipart/form-data submission', function (done) {
+        formDataBody.headers = {
+          'content-length': formDataBody.length
+          , 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryOR86nFvrvo9BHCQm'
+        };
 
-    parser({req: stream}, function (body) {
-        assert.isObject(body);
-        done();
-    }, {});
+        parser({req: formDataBody}, function (body, err) {
+          assert.isUndefined(err);
+          assert.isObject(body);
+          assert.strictEqual(body.name, 'daniel');
+          done();
+        });
+    });
 
-  });
+    it('should parse out a application/x-www-form-urlencoded submission', function (done) {
+        stream.push(urlBody);
+        stream.push(null);
+        stream.headers = {
+          'content-length': urlBody.length
+          , 'content-type': 'application/x-www-form-urlencoded'
+        };
+
+        parser({req: stream}, function (body, err) {
+          assert.isUndefined(err);
+          assert.isObject(body);
+          assert.strictEqual(body.name, 'daniel');
+          done();
+        });
+    });
+
+    it('should parse out a json post/put/update', function (done) {
+        stream.push(JSON.stringify(jsonBody));
+        stream.push(null);
+        stream.headers = {
+            'content-length': 24
+            , 'content-type': 'application/json'
+        };
+
+        parser({req: stream}, function (body) {
+            assert.isObject(body);
+            done();
+        }, {});
+
+    });
+    it('should parse out a json post/put/update without the correct header', function (done) {
+        stream.push(JSON.stringify(jsonBody));
+        stream.push(null);
+        stream.headers = {
+            'content-length': 24
+        };
+
+        parser({req: stream}, function (body) {
+            assert.isObject(body);
+            done();
+        }, {});
+
+    });
 
     it('should place the parsed elements in body', function (done) {
         stream.push(JSON.stringify(jsonBody));
