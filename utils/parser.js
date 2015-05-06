@@ -43,7 +43,11 @@ var getRawBody = require('raw-body')
         } else if (connection.req.headers['content-type'] === 'application/x-www-form-urlencoded'){
           callback.apply(scope, [querystring.parse(string)]);
         } else {
-          callback.apply(scope, [parseForm(string)]);
+            try{
+                callback.apply(scope, [JSON.parse(string)]);
+            } catch (e) {
+                callback.apply(scope, [parseForm(string)]);
+            }
         }
     });
   };
