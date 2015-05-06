@@ -1,3 +1,14 @@
+### - 1.5.4 *5/6/2015, 10:34:20 AM*
+
+  - Merge pull request #105 from ansble/bug/parser-content-type
+  - fixed an encoding bug I introduced in the previous commit. Thanks unit tests
+  - fixed a bug that would have caused some problems in the parser
+  - stubbed a couple of tests so I don't forget what they should be
+  - more tests for the emitter. Most of .on is now tested
+  - fixing the coveralls badge
+  - fixing the coveralls badge
+
+
 ### - 1.5.3 *5/5/2015, 12:23:19 AM*
 
   - Merge pull request #103 from ansble/release/1.5.0
