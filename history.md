@@ -1,3 +1,102 @@
+### - 1.5.5 *5/8/2015, 3:18:04 PM*
+
+  - Merge branch 'master' of https://github.com/ansble/monument
+  - added some tests because I feel guilty if I don't
+  - Merge pull request #107 from ansble/maint/update-deps
+  - updated the dev dependencies to latest
+  - removed some useless console.logs and updated the raw-body dependency to 2.0.0. Still passes tests so it should be working
+  - 1.5.4
+  - release 1.5.4
+  - preparing for release of v1.5.4
+  - Merge pull request #105 from ansble/bug/parser-content-type
+  - fixed an encoding bug I introduced in the previous commit. Thanks unit tests
+  - fixed a bug that would have caused some problems in the parser
+  - stubbed a couple of tests so I don't forget what they should be
+  - more tests for the emitter. Most of .on is now tested
+  - fixing the coveralls badge
+  - fixing the coveralls badge
+  - 1.5.3
+  - updates
+  - preparing for release of v1.5.3
+  - Merge pull request #103 from ansble/release/1.5.0
+  - Merge pull request #102 from ansble/feature/tests
+  - lots of test writing, some re-organization and bug fixes identified by the tests
+  - expanding tests, parser is now 100% covered by tests
+  - expanding tests, parser is now 100% covered by tests
+  - 1.5.2
+  - release
+  - preparing for release of v1.5.2
+  - badge issue fixed
+  - 1.5.1
+  - release work
+  - preparing for release of v1.5.1
+  - preparing for release of v1.5.1
+  - Merge pull request #101 from ansble/release/1.5.0
+  - Merge pull request #100 from ansble/feature/code-coverage
+  - added some badges... cause badges
+  - coverage number seems to be working now... and reporting to coveralls. Code coverage is live and real
+  - working on getting test coverage working
+  - 1.5.0
+  - preparing for release of v1.5.0
+  - Merge pull request #99 from ansble/release/1.5.0
+  - updated the readme file with notes about 1.5.0
+  - Merge pull request #98 from ansble/de-ronde-van-vlaanderen
+  - Merge pull request #82 from ansble/feature/parser
+  - removed a console.log that had been commented out
+  - have tests working for parser and can\'t replicate the multi firing. So I am guessing it is fixed. If it turns up later I\'ll reopen the issue and work on it. For now I\'m assuming that it is fixed and moving ahead
+  - changed my mind about the signature change, and made it a non-breaking change. It deveats from the common pattern for node... but the common pattern for node doesn't always make sense anyway.
+  - changing the signature for the parser callback to allow for error handling
+  - cleaned up some dev dependencies and got the initial tests for parser working correctly
+  - Merge branch 'release/1.5.0' into feature/parser
+  - Merge pull request #97 from ansble/feature/head
+  - added head requests for static resources. Users already can handle them as they like for non-static. finishes #42
+  - removed a log that was for troubleshooting
+  - updated the event-state dependency
+  - something...
+  - trying to figure out broken tests
+  - added a template for test compiles
+  - adding some more startup messaging for kicks and giggles
+  - trying to get a good build
+  - fixed the broken tests... and we are working again
+  - catching this branch up to the work that has currently been done on the release/1.5.0 aka de Ronde von Vlaanderan
+  - Merge pull request #96 from ansble/feature/caching
+  - added some corrections to tweaking that make pagespeed happy
+  - Merge pull request #95 from ansble/feature/compression
+  - compression now turns on for non-static files as well. As long as you use res.send
+  - 1.4.9
+  - preparing for release of v1.4.9
+  - Merge pull request #94 from ansble/e3-harelbeke
+  - Merge pull request #93 from ansble/bug/compressed-files
+  - working closing #60
+  - this is much more then the bug mentioned at this point (#60). It also includes a refactor of the startup process. Startup is now a set of functions invoked at startup. When they are complete they trigger an event that notifies the server that we are ready to go. Which is nice. In the future this will allow for user created startup tasks that can be passed in. Not there yet... but it's definitely possible now with a little work.
+  - added a cleanup file and hooked it up in utils. It will contain all the tasks to be executed at shutdown of the server by default. The exposed task in the utils folder just executes all of the functions exposed by the cleanup module in sequence
+  - 1.4.8
+  - preparing for release of v1.4.8
+  - Merge pull request #92 from ansble/master
+  - Merge pull request #91 from ansble/bug/empty-array
+  - fixed the issue with empty paramaters being sent into the send function
+  - 1.4.7
+  - preparing for release of v1.4.7
+  - Merge pull request #89 from ansble/e3-harelbeke
+  - updated the event-state version to latest
+  - Merge branch 'e3-harelbeke' of https://github.com/ansble/monument into e3-harelbeke
+  - Merge branch 'master' into e3-harelbeke
+  - Merge pull request #88 from ansble/master
+  - Merge pull request #87 from eatrocks/master
+  - modify gulp build to roll patch and minor versions when appropriate
+  - 1.4.6
+  - preparing for release of v1.4.6
+  - Merge pull request #85 from ansble/master
+  - Merge pull request #84 from ansble/master
+  - Merge pull request #83 from eatrocks/feature/queryparamarrays
+  - add util to handle array[] conventions with request parameters
+  - took out tests for parser because I haven't figured out how to mock them correctly yet...
+  - tweaked the jshintrc to account for more testing functions
+  - working on getting everything humming more smoothly
+  - tidying up the event tests a bit
+  - breaking the parser out into it's own area and writing some tests for the server and the parser
+
+
 ### - 1.5.4 *5/6/2015, 10:34:20 AM*
 
   - Merge pull request #105 from ansble/bug/parser-content-type
