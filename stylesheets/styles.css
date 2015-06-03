@@ -1,5 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
-
+/*font scale*/
+/*http://www.modularscale.com/?16&px&1.667&web&text*/
 body {
   padding:50px;
   font:16px/1.6 monospace;
