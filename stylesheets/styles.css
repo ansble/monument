@@ -235,7 +235,6 @@ footer {
   pre, code {
     word-wrap:normal;
   }
-}
 
 @media print {
   body {
