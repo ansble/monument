@@ -1,6 +1,6 @@
 var http = require('http')
     , path = require('path')
-    , utils = require('./utils/utils')
+    , utils = require('./utils')
     , events = require('harken')
     , pkg = require('./package.json')
     , parser = require('./utils/parser')
