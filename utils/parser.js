@@ -38,6 +38,7 @@ var getRawBody = require('raw-body')
           callback.apply(scope, [null, err]);
         }
 
+
         if(connection.req.headers['content-type'] === 'application/json'){
           try{
             callback.apply(scope, [JSON.parse(string)]);
@@ -49,10 +50,8 @@ var getRawBody = require('raw-body')
           callback.apply(scope, [querystring.parse(string)]);
         } else {
             try{
-                console.log(string);
                 callback.apply(scope, [JSON.parse(string)]);
             } catch (e) {
-                console.log(string, 'form');
                 callback.apply(scope, [parseForm(string)]);
             }
         }

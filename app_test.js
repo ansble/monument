@@ -21,18 +21,18 @@ describe('The main monument tests', function(){
 
 	describe('Wrapper Tests', function () {
 		afterEach(function(){
-      server.close();
-    });
+          server.close();
+        });
 
-    it('should return a server when run', function () {
-      server = app.server({
-        routeJSONPath: './test_stubs/routes_stub.json'
-        , templatePath: './test_stubs/templates'
-        , port: 9999
-      });
+        it('should return a server when run', function () {
+          server = app.server({
+            routeJSONPath: './test_stubs/routes_stub.json'
+            , templatePath: './test_stubs/templates'
+            , port: 9999
+          });
 
-      assert.instanceOf(server, http.Server);
-    });
+          assert.instanceOf(server, http.Server);
+        });
 	});
 
 	describe('Compression Tests', function () {
