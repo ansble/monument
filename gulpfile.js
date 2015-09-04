@@ -78,7 +78,7 @@ gulp.task('release', ['test'], function(){
 			//write out the Authors file with all contributors
 			console.log('Updating the AUTHORS file');
 
-			fs.writeFile('./AUTHORS', stdout);
+			fs.writeFileSync('./AUTHORS', stdout);
 
 			cp.exec('git add .', function () {
 				cp.exec('git commit -m "preparing for release of v' + newVersion + '"', function () {

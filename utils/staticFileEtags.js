@@ -6,22 +6,22 @@ var etag = require('etag')
 	, addEtag = function (fileIn) {
 		'use strict';
 
-		fs.readFile(fileIn, function (err, data) {
-			if(err){
-				events.emit('error', {message: 'could not read file', error: err, file: fileIn});
-			}
-
-			files[fileIn] = etag(data);
-			events.emit('etag:get:' + fileIn, files[fileIn]);
+        fs.readFile(fileIn, function (err, data) {
+            if(err){
+                events.emit('error', {message: 'could not read file', error: err, file: fileIn});
+            } else {
+                files[fileIn] = etag(data);
+    			events.emit('etag:get:' + fileIn, files[fileIn]);
+            }
 		});
 	}
-	
+
 	, checkEtag = function (etagObj) {
 		'use strict';
-		
+
 		var etagged = (typeof files[etagObj.file] !== 'undefined')
 			, valid = typeof etagObj.etag !== 'undefined' && etagged && (files[etagObj.file] === etagObj.etag);
-		
+
 		//if the file hasn't been etagged then etag it
 		if(!etagged){
 			addEtag(etagObj.file);
