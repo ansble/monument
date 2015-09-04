@@ -1,5 +1,5 @@
 var assert = require('chai').assert
-    , app = require('./app')
+    , app = require('./index')
     , http = require('http')
     , server;
 
