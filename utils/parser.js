@@ -1,7 +1,7 @@
 var getRawBody = require('raw-body')
     , typer = require('media-typer')
     , querystring = require('querystring')
-    , events = require('../emitter')
+    , events = require('harken')
     , tools = require('./tools')
 
     , parseForm = function (formString) {

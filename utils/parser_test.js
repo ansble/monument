@@ -2,7 +2,7 @@ var assert = require('chai').assert
     , parser = require('./parser')
     , Readable = require('stream').Readable
     , fs = require('fs')
-    , events = require('../emitter')
+    , events = require('harken')
     , stream
     , jsonBody
     , formDataBody

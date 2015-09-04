@@ -1,7 +1,7 @@
 var path = require('path')
 	, fs = require('fs')
 	, zlib = require('zlib')
-	, events = require('../emitter')
+	, events = require('harken')
   , utils = require('../utils/utils')
 	, send = utils.send
 	, mime = require('mime')

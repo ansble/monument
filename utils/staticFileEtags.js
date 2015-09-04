@@ -1,7 +1,7 @@
 var etag = require('etag')
     , fs = require('fs')
     , tools = require('./tools')
-    , events = require('../emitter')
+    , events = require('harken')
     , files = {}
 
     , addEtag = function (fileIn) {

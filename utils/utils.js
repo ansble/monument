@@ -2,7 +2,7 @@ var getCompression = require('./getCompression')
   , send = require('./send')
   , setup = require('./setup')
   , parsePath = require('./url')
-  , events = require('../emitter')
+  , events = require('harken')
   , tools = require('./tools');
 
 module.exports = {

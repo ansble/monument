@@ -1,6 +1,6 @@
 var glob = require('glob')
 	, fs = require('fs')
-	, events = require('../emitter.js')
+	, events = require('harken')
 	, path = require('path')
 	, dot = require('dot')
 
