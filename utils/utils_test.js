@@ -1,6 +1,5 @@
 var assert = require('chai').assert
-  , utils = require('./utils')
-  , Events = require('events').EventEmitter;
+  , utils = require('./utils');
 
 describe('Utils Tests', function () {
   'use strict';

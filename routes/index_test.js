@@ -1,6 +1,5 @@
 var assert = require('chai').assert
 	, server = require('./index')
-	, events = require('../emitter')
 
     , routeObject;
 

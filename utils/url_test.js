@@ -37,7 +37,7 @@ describe('parseUrl', function () {
   			, query = parseUrl(urlStr + queryStr).query;
   		assert.isDefined(query.stuff, '"stuff" should be defined on the query object');
   		assert.isArray(query.stuff, '"stuff" should be an array even though only one value was present, because of the deliberate square brackets');
-  		assert.isUndefined(query["stuff[]"], '"stuff[]" should not be defined on the query object');
+  		assert.isUndefined(query['stuff[]'], '"stuff[]" should not be defined on the query object');
   		assert.strictEqual(query.stuff[0], 'money', 'query param of "stuff" got dorked');
   		assert.lengthOf(query.stuff, 1, 'should be a single element array');
   	});
@@ -48,7 +48,7 @@ describe('parseUrl', function () {
   			,query = parseUrl(urlStr + queryStr).query;
   		assert.isDefined(query.stuff, '"stuff" should be defined on the query object');
   		assert.isArray(query.stuff, '"stuff" should be an array');
-  		assert.isUndefined(query["stuff[]"], '"stuff[]" should not be defined on the query object');
+  		assert.isUndefined(query['stuff[]'], '"stuff[]" should not be defined on the query object');
   		assert.lengthOf(query.stuff,1,'should be a single element array: ' + query);
   		assert.equal(JSON.stringify(query.stuff), JSON.stringify(['one,two,three']), 'query param value of "stuff" got dorked');
   	});
@@ -74,7 +74,7 @@ describe('parseUrl', function () {
 
   		assert.isDefined(query.stuff, '"stuff" should be defined on the query object');
   		assert.isArray(query.stuff, '"stuff" should be an array');
-  		assert.isUndefined(query["stuff[]"], '"stuff[]" should not be defined on the query object');
+  		assert.isUndefined(query['stuff[]'], '"stuff[]" should not be defined on the query object');
   		assert.lengthOf(query.stuff,3,'should be a three element array: ' + query);
   		assert.equal(JSON.stringify(query.stuff), JSON.stringify(['one,two,three','four,five,six','seven,eight,nine,ten']), 'query param value of "stuff" got dorked');
   	});
@@ -82,7 +82,7 @@ describe('parseUrl', function () {
   	function validateStuffMoney1000(query){
   		assert.isDefined(query.stuff, '"stuff" should be defined on the query object');
   		assert.isArray(query.stuff, '"stuff" should be an array');
-  		assert.isUndefined(query["stuff[]"], '"stuff[]" should not be defined on the query object');
+  		assert.isUndefined(query['stuff[]'], '"stuff[]" should not be defined on the query object');
   		assert.lengthOf(query.stuff, 2,'should be a two element array: ' + query);
   		assert.equal(JSON.stringify(query.stuff), JSON.stringify(['money','1000']), 'query param value of "stuff" got dorked');
   	}

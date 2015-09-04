@@ -8,10 +8,10 @@ function parse(urlStr, slashesDenoteHost) {
 	var urlObject = url.parse(urlStr, true, slashesDenoteHost)
 	    , query = urlObject.query
 	    , tempQuery = {}
-	    , newQuery = {};    
+	    , newQuery = {};
 
 	Object.keys(urlObject.query).forEach(function(key){
-		var newKey = key.replace(/\[\]$/, "");
+		var newKey = key.replace(/\[\]$/, '');
 
 		// if our key does not have brackets and the same
 		// key does not already exist on the tempQuery object
