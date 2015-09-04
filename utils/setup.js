@@ -13,7 +13,7 @@ var glob = require('glob')
 
 		glob(path.join(process.cwd(),'./public/**/*.tgz'), function (er, files) {
 
-      files.forEach(function (file) {
+        files.forEach(function (file) {
 				complete.add('setup:delete:' + file);
 				fs.unlink(file, function () {
 					events.emit('setup:delete:' + file);
@@ -21,17 +21,17 @@ var glob = require('glob')
 			});
 		});
 
-    glob(path.join(process.cwd(),'./public/**/*.def'), function (er, files) {
+        glob(path.join(process.cwd(),'./public/**/*.def'), function (er, files) {
 
-      files.forEach(function (file) {
-        complete.add('setup:delete:' + file);
-        fs.unlink(file, function () {
-          events.emit('setup:delete:' + file);
+          files.forEach(function (file) {
+            complete.add('setup:delete:' + file);
+            fs.unlink(file, function () {
+              events.emit('setup:delete:' + file);
+            });
+          });
         });
-      });
-    });
 
-    console.log('Cleaned up old compressed files...');
+        console.log('Cleaned up old compressed files...');
 		events.emit('cleanup:compressed:start');
 	}
 

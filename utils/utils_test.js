@@ -10,6 +10,8 @@ describe('Utils Tests', function () {
     assert.isFunction(utils.getCompression);
     assert.isFunction(utils.setup);
     assert.isFunction(utils.parsePath);
+    assert.isFunction(utils.isDefined);
+    assert.isFunction(utils.not);
   });
 
   describe('getCompression tests', function () {

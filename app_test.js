@@ -1,26 +1,25 @@
 var assert = require('chai').assert
-	, app = require('./app')
-  , http = require('http')
+    , app = require('./app')
+    , http = require('http')
+    , server;
 
-  , server;
-
-describe('The main monument tests', function(){
+describe('The main monument tests', function () {
   'use strict';
 
-	it('should be correctly defined', function(){
-		assert.isFunction(app.server);
-		assert.isFunction(app.parser);
-		assert.isObject(app.events);
-	});
+    it('should be correctly defined', function () {
+        assert.isFunction(app.server);
+        assert.isFunction(app.parser);
+        assert.isObject(app.events);
+    });
 
-	describe('Parser Tests', function(){
-		it('should have a parser method', function(){
-			assert.isFunction(app.parser);
-		});
-	});
+    describe('Parser Tests', function () {
+        it('should have a parser method', function () {
+            assert.isFunction(app.parser);
+        });
+    });
 
-	describe('Wrapper Tests', function () {
-		afterEach(function(){
+    describe('Wrapper Tests', function () {
+        afterEach(function () {
           server.close();
         });
 
@@ -33,16 +32,16 @@ describe('The main monument tests', function(){
 
           assert.instanceOf(server, http.Server);
         });
-	});
+    });
 
-	describe('Compression Tests', function () {
-		it('should compress things by default');
-		it('should not compress things if compression is turned off');
-	});
+    describe('Compression Tests', function () {
+        it('should compress things by default');
+        it('should not compress things if compression is turned off');
+    });
 
-	describe('doTjs Tests', function () {
-		it('should use doTjs defaults if none are set');
-		it('should override doTjs specified defaults when set');
-		it('should ignore irrelevant config keys');
-	});
+    describe('doTjs Tests', function () {
+        it('should use doTjs defaults if none are set');
+        it('should override doTjs specified defaults when set');
+        it('should ignore irrelevant config keys');
+    });
 });
