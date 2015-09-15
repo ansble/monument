@@ -1,3 +1,25 @@
+### - 1.5.6 *9/14/2015, 9:12:09 PM*
+
+  - Merge pull request #109 from ansble/feature/cleanup
+  - Merge branch 'feature/cleanup' of https://github.com/ansble/monument into feature/cleanup
+  - Finishes the base tests for the send functionality
+  - Broke out events to a new project and cleanup
+  - Broke out events to a new project and cleanup
+  - Removes emitter.js and replaces it with harken
+  - Implement the tools functions and clean up spacing
+  - Cleanup jslint and refine the header check
+  - Merge branch 'master' of https://github.com/ansble/monument
+  - cleanup and test expansion
+  - 1.5.5
+  - preparing for release of v1.5.5
+  - Merge branch 'master' of https://github.com/ansble/monument
+  - added some tests because I feel guilty if I don't
+  - Merge pull request #107 from ansble/maint/update-deps
+  - updated the dev dependencies to latest
+  - removed some useless console.logs and updated the raw-body dependency to 2.0.0. Still passes tests so it should be working
+  - 1.5.4
+
+
 ### - 1.5.5 *5/8/2015, 3:18:04 PM*
 
   - Merge branch 'master' of https://github.com/ansble/monument
