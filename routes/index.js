@@ -1,266 +1,263 @@
 var path = require('path')
-	, fs = require('fs')
-	, zlib = require('zlib')
-	, events = require('../emitter')
-  , utils = require('../utils/utils')
-	, send = utils.send
-	, mime = require('mime')
+    , fs = require('fs')
+    , zlib = require('zlib')
+    , events = require('harken')
+    , utils = require('../utils')
+    , mime = require('mime')
 
-	, publicFolders = []
+    , publicFolders = []
 
-	, server
+    , server
 
-	, parseRoutes = function (routes) {
-		'use strict';
+    , parseRoutes = function (routes) {
+        'use strict';
 
-		var wildCardRoutes = {}
-			, standardRoutes = {};
+        var wildCardRoutes = {}
+            , standardRoutes = {};
 
-		Object.keys(routes).forEach(function (route) {
-			var routeVariables = route.match(/:[a-zA-Z]+/g)
-				, routeRegex;
+        Object.keys(routes).forEach(function (route) {
+            var routeVariables = route.match(/:[a-zA-Z]+/g)
+                , routeRegex;
 
-			if(routeVariables){
-				//generate the regex for laters and
-				//	store the verbs and variables belonging to the route
+            if(routeVariables){
+                //generate the regex for laters and
+                //  store the verbs and variables belonging to the route
 
-				routeRegex = new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)').replace(/(\/)?$/, '(\/)?$'));
+                routeRegex = new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)').replace(/(\/)?$/, '(\/)?$'));
 
-				wildCardRoutes[route] = {
-											verbs: routes[route]
-											, variables: routeVariables
-											, eventId: route
-											, regex: routeRegex
-										};
-			} else {
-				standardRoutes[route] = routes[route];
-			}
-		});
+                wildCardRoutes[route] = {
+                    verbs: routes[route]
+                    , variables: routeVariables
+                    , eventId: route
+                    , regex: routeRegex
+                };
+            } else {
+                standardRoutes[route] = routes[route];
+            }
+        });
 
-		return {wildcard: wildCardRoutes, standard: standardRoutes};
-	}
+        return {wildcard: wildCardRoutes, standard: standardRoutes};
+    }
 
-	, matchSimpleRoute = function (pathname, method, routesJson) {
-		'use strict';
+    , matchSimpleRoute = function (pathname, method, routesJson) {
+        'use strict';
 
-		var pathString
-			, route;
+        var pathString
+            , route;
 
-		if(pathname.slice(-1) === '/'){
-			pathString = pathname.replace(/\/$/,'');
-		} else {
-			pathString = pathname + '/';
-		}
+        if(pathname.slice(-1) === '/'){
+            pathString = pathname.replace(/\/$/,'');
+        } else {
+            pathString = pathname + '/';
+        }
 
-		if(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1){
-			route = pathname;
-		} else if (routesJson[pathString] && routesJson[pathString].indexOf(method) !== -1){
-			route = pathString;
-		} else {
-			route = null;
-		}
+        if(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1){
+            route = pathname;
+        } else if (routesJson[pathString] && routesJson[pathString].indexOf(method) !== -1){
+            route = pathString;
+        } else {
+            route = null;
+        }
 
-		return route;
-	}
+        return route;
+    }
 
-	, isWildCardRoute = function (pathname, method, routesJson) {
-		'use strict';
+    , isWildCardRoute = function (pathname, method, routesJson) {
+        'use strict';
 
-		var matchedRoutes = Object.keys(routesJson).filter(function (route) {
-					return !!(pathname.match(routesJson[route].regex));
-				})
-			, matchesVerb;
+        var matchedRoutes = Object.keys(routesJson).filter(function (route) {
+                return !!(pathname.match(routesJson[route].regex));
+            })
+            , matchesVerb;
 
-		if(matchedRoutes.length){
-			matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(method) !== -1;
-		} else {
-			matchesVerb = false;
-		}
+        if(matchedRoutes.length){
+            matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(method) !== -1;
+        } else {
+            matchesVerb = false;
+        }
 
-		return matchedRoutes.length > 0 && matchesVerb;
-	}
+        return matchedRoutes.length > 0 && matchesVerb;
+    }
 
-	, parseWildCardRoute = function (pathname, routesJson) {
-		'use strict';
+    , parseWildCardRoute = function (pathname, routesJson) {
+        'use strict';
 
-		var matchedRoute = Object.keys(routesJson).filter(function (route) {
-				return !!(pathname.match(routesJson[route].regex));
-			})[0]
+        var matchedRoute = Object.keys(routesJson).filter(function (route) {
+                return !!(pathname.match(routesJson[route].regex));
+            })[0]
+            , matches = pathname.match(routesJson[matchedRoute].regex)
+            , values = {}
+            , routeInfo = routesJson[matchedRoute]
+            , i = 0;
 
-			, matches = pathname.match(routesJson[matchedRoute].regex)
-			, values = {}
-			, routeInfo = routesJson[matchedRoute]
-			, i = 0;
+        for(i = 0; i < routeInfo.variables.length; i++){
+            values[routeInfo.variables[i].substring(1)] = matches[i + 1]; //offset by one to avoid the whole match which is at array[0]
+        }
 
-		for(i = 0; i < routeInfo.variables.length; i++){
-			values[routeInfo.variables[i].substring(1)] = matches[i + 1]; //offset by one to avoid the whole match which is at array[0]
-		}
+        return {route: routeInfo, values: values};
+    }
 
-		return {route: routeInfo, values: values};
-	}
+    , setupStaticRoutes = function (routePathIn, publicPathIn) {
+        'use strict';
 
-	, setupStaticRoutes = function (routePathIn, publicPathIn) {
-		'use strict';
+        var routePath = path.join(process.cwd(), routePathIn)
+        , publicPath = publicPathIn;
 
-		var routePath = path.join(process.cwd(), routePathIn)
-			, publicPath = publicPathIn;
+        //load in all the route handlers
+        fs.readdirSync(routePath).forEach(function (file) {
+            if(file !== 'index.js' && !file.match(/_test\.js$/)){
+                require(path.join(routePath, file));
+            }
+        });
 
-		//load in all the route handlers
-		fs.readdirSync(routePath).forEach(function (file) {
-			if(file !== 'index.js' && !file.match(/_test\.js$/)){
-				require(path.join(routePath, file));
-			}
-		});
-
-		//load in all the static routes
-		fs.exists(publicPath, function (exists) {
-			if(exists){
-				fs.readdirSync(publicPath).forEach(function (file) {
-					publicFolders.push(file);
-				});
-			}
-		});
-	}
-
-	, getCompression = utils.getCompression;
+        //load in all the static routes
+        fs.exists(publicPath, function (exists) {
+            if(exists){
+                fs.readdirSync(publicPath).forEach(function (file) {
+                    publicFolders.push(file);
+                });
+            }
+        });
+    };
 
 
 server = function (serverType, routesJson, config) {
-	'use strict';
+    'use strict';
 
-	var routesObj = parseRoutes(routesJson)
-		, publicPath = path.join(process.cwd(), config.publicPath || './public')
-		, maxAge = config.maxAge || 31658000000
-		, routesPath = config.routesPath || '/routes'
-    , routeJSONPath = config.routeJSONPath || './routes.json';
+    var routesObj = parseRoutes(routesJson)
+        , publicPath = path.join(process.cwd(), config.publicPath || './public')
+        , maxAge = config.maxAge || 31658000000
+        , routesPath = config.routesPath || '/routes'
+        , routeJSONPath = config.routeJSONPath || './routes.json';
 
-	setupStaticRoutes(routesPath, publicPath);
+        setupStaticRoutes(routesPath, publicPath);
 
-	return serverType.createServer(function (req, res) {
-		var method = req.method.toLowerCase()
-			, pathParsed = utils.parsePath(req.url)
-			, pathname = pathParsed.pathname
-			, compression
-			, file
-			, simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
-      , expires = new Date().getTime()
-			, connection = {
-							req: req
-							, res: res
-							, query: pathParsed.query
-							, params: {}
-						};
+    return serverType.createServer(function (req, res) {
+        var method = req.method.toLowerCase()
+            , pathParsed = utils.parsePath(req.url)
+            , pathname = pathParsed.pathname
+            , compression
+            , file
+            , simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
+            , expires = new Date().getTime()
+            , connection = {
+                req: req
+                , res: res
+                , query: pathParsed.query
+                , params: {}
+            };
 
-		//add .send to the response
-		res.send = send(req, config);
+        //add .send to the response
+        res.send = utils.send(req, config);
 
-		//match the first part of the url... for public stuff
-		if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
-			//static assets y'all
-			file = path.join(publicPath, pathname);
-			//read in the file and stream it to the client
-			fs.exists(file, function (exists) {
-				if(exists){
+        //match the first part of the url... for public stuff
+        if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
+            //static assets y'all
+            file = path.join(publicPath, pathname);
+            //read in the file and stream it to the client
+            fs.exists(file, function (exists) {
+                if(exists){
 
-					events.required(['etag:check:' + file, 'etag:get:' + file], function (valid) {
-						if(valid[0]){ // does the etag match? YES
-							res.statusCode = 304;
-							res.end();
-						} else { //No match...
-							res.setHeader('ETag', valid[1]); //the etag is item 2 in the array
+                    events.required(['etag:check:' + file, 'etag:get:' + file], function (valid) {
+                        if(valid[0]){ // does the etag match? YES
+                            res.statusCode = 304;
+                            res.end();
+                        } else { //No match...
+                            res.setHeader('ETag', valid[1]); //the etag is item 2 in the array
 
-							compression = getCompression(req.headers['accept-encoding'], config);
+                            compression = utils.getCompression(req.headers['accept-encoding'], config);
 
-              if(req.method.toLowerCase() === 'head'){
-                res.writeHead(200, {
-                  'Content-Type': mime.lookup(pathname),
-                  'Cache-Control': 'maxage=' + maxAge,
-                  'Expires': new Date(expires + maxAge).toUTCString(),
-                  'Content-Encoding': compression
-                });
+                            if(req.method.toLowerCase() === 'head'){
+                                res.writeHead(200, {
+                                    'Content-Type': mime.lookup(pathname)
+                                    , 'Cache-Control': 'maxage=' + maxAge
+                                    , 'Expires': new Date(expires + maxAge).toUTCString()
+                                    , 'Content-Encoding': compression
+                                });
 
-                res.end();
-              } else if (compression !== 'none'){
-								//we have compression!
-								res.writeHead(200, {
-									'Content-Type': mime.lookup(pathname),
-									'Cache-Control': 'maxage=' + maxAge,
-                  'Expires': new Date(expires + maxAge).toUTCString(),
-									'Content-Encoding': compression
-								});
+                                res.end();
+                            } else if (compression !== 'none'){
+                                //we have compression!
+                                res.writeHead(200, {
+                                    'Content-Type': mime.lookup(pathname)
+                                    , 'Cache-Control': 'maxage=' + maxAge
+                                    , 'Expires': new Date(expires + maxAge).toUTCString()
+                                    , 'Content-Encoding': compression
+                                });
 
-								if(compression === 'deflate'){
-									fs.exists(file + '.def', function(exists){
-										if(exists){
-											fs.createReadStream(file + '.def').pipe(res);
-										} else {
-											//no compressed file yet...
-											fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
-											fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(fs.createWriteStream(file + '.def'));
-										}
-									});
-								} else if(compression !== 'none'){
-									fs.exists(file + '.tgz', function(exists){
-										if(exists){
-											fs.createReadStream(file + '.tgz').pipe(res);
-										} else {
-											//no compressed file yet...
-											fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);
-											fs.createReadStream(file).pipe(zlib.createGzip()).pipe(fs.createWriteStream(file + '.tgz'));
-										}
-									});
-								}
+                                if(compression === 'deflate'){
+                                    fs.exists(file + '.def', function(exists){
+                                        if(exists){
+                                            fs.createReadStream(file + '.def').pipe(res);
+                                        } else {
+                                            //no compressed file yet...
+                                            fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
+                                            fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(fs.createWriteStream(file + '.def'));
+                                        }
+                                    });
+                                } else {
+                                    fs.exists(file + '.tgz', function(exists){
+                                        if(exists){
+                                            fs.createReadStream(file + '.tgz').pipe(res);
+                                        } else {
+                                            //no compressed file yet...
+                                            fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);
+                                            fs.createReadStream(file).pipe(zlib.createGzip()).pipe(fs.createWriteStream(file + '.tgz'));
+                                        }
+                                    });
+                                 }
 
-								events.emit('static:served', pathname);
+                                events.emit('static:served', pathname);
 
-							} else {
-								//no compression carry on...
-								//return with the correct heders for the file type
-								res.writeHead(200, {
-									'Content-Type': mime.lookup(pathname),
-									'Cache-Control': 'maxage=' + maxAge,
-                  'Expires': new Date(expires + maxAge).toUTCString()
-								});
-								fs.createReadStream(file).pipe(res);
-								events.emit('static:served', pathname);
-							}
-						}
-					});
+                            } else {
+                                //no compression carry on...
+                                //return with the correct heders for the file type
+                                res.writeHead(200, {
+                                    'Content-Type': mime.lookup(pathname),
+                                    'Cache-Control': 'maxage=' + maxAge,
+                                    'Expires': new Date(expires + maxAge).toUTCString()
+                                });
+                                fs.createReadStream(file).pipe(res);
+                                events.emit('static:served', pathname);
+                            }
+                        }
+                    });
 
-					events.emit('etag:check', {file: file, etag: req.headers['if-none-match']});
+                    events.emit('etag:check', {file: file, etag: req.headers['if-none-match']});
 
-				} else {
-					events.emit('static:missing', pathname);
-					events.emit('error:404', connection);
-				}
-			});
-		} else if (simpleRoute !== null) {
-			//matches a route in the routes.json
-			events.emit('route:' + simpleRoute + ':' + method, connection);
+                } else {
+                    events.emit('static:missing', pathname);
+                    events.emit('error:404', connection);
+                }
+            });
 
-		} else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
-			var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
+        } else if (simpleRoute !== null) {
+            //matches a route in the routes.json
+            events.emit('route:' + simpleRoute + ':' + method, connection);
 
-			connection.params = routeInfo.values;
+        } else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
+            var routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
 
-			//emit the event for the url minus params and include the params
-			//	in the params object
-			events.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
-		} else if(pathname === routesPath){
-			res.writeHead(200, {
-				'Content-Type': mime.lookup('routes.json')
-			});
-			fs.createReadStream(path.join(process.cwd(), routeJSONPath)).pipe(res);
-		} else {
-			events.emit('error:404', connection);
-		}
-	});
+            connection.params = routeInfo.values;
+
+            //emit the event for the url minus params and include the params
+            //  in the params object
+            events.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
+        } else if(pathname === routesPath){
+            res.writeHead(200, {
+                'Content-Type': mime.lookup('routes.json')
+            });
+            fs.createReadStream(path.join(process.cwd(), routeJSONPath)).pipe(res);
+        } else {
+            events.emit('error:404', connection);
+        }
+    });
 };
 
 module.exports = {
-					server: server
-					, parseWildCardRoute: parseWildCardRoute
-					, isWildCardRoute: isWildCardRoute
-					, parseRoutes: parseRoutes
-          , matchSimpleRoute: matchSimpleRoute
-				};
+    server: server
+    , parseWildCardRoute: parseWildCardRoute
+    , isWildCardRoute: isWildCardRoute
+    , parseRoutes: parseRoutes
+    , matchSimpleRoute: matchSimpleRoute
+};

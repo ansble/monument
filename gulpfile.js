@@ -4,8 +4,8 @@ var gulp = require('gulp')
 	, cp = require('child_process')
 	, chalk = require('chalk')
 	, fs = require('fs')
-  , istanbul = require('gulp-istanbul')
-  , coveralls = require('gulp-coveralls')
+    , istanbul = require('gulp-istanbul')
+    , coveralls = require('gulp-coveralls')
 
 	, pkg = require('./package.json')
 

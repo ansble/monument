@@ -1,5 +1,5 @@
 var assert = require('chai').assert
-    , events = require('../emitter')
+    , events = require('harken')
     , etagTest;
 
 require('./staticFileEtags');

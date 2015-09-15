@@ -1,13 +1,13 @@
 var assert = require('chai').assert
-  , parser = require('./parser')
-  , Readable = require('stream').Readable
-  , fs = require('fs')
-  , events = require('../emitter')
-  , stream
-  , jsonBody
-  , formDataBody
-  , urlBody
-  , errorBody;
+    , parser = require('./parser')
+    , Readable = require('stream').Readable
+    , fs = require('fs')
+    , events = require('harken')
+    , stream
+    , jsonBody
+    , formDataBody
+    , urlBody
+    , errorBody;
 
 describe('Parser Tests', function () {
   'use strict';
