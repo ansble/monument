@@ -1,8 +1,9 @@
+'use strict';
+
 const assert = require('chai').assert
     , utils = require('./index');
 
 describe('Utils Tests', () => {
-  'use strict';
 
   it('should return an object that has a send and getCompression functions', () => {
     assert.isObject(utils);

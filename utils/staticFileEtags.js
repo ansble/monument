@@ -1,3 +1,5 @@
+'use strict';
+
 const etag = require('etag')
     , fs = require('fs')
     , tools = require('./tools')
@@ -5,7 +7,6 @@ const etag = require('etag')
     , files = {}
 
     , addEtag = (fileIn) => {
-        'use strict';
 
         fs.readFile(fileIn, (err, data) => {
             if(err){
@@ -18,7 +19,6 @@ const etag = require('etag')
     }
 
     , checkEtag = (etagObj) => {
-        'use strict';
 
         const etagged = (tools.isDefined(files[etagObj.file]))
             , valid = tools.isDefined(etagObj.etag) && etagged && (files[etagObj.file] === etagObj.etag);

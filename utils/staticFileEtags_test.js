@@ -1,3 +1,5 @@
+'use strict';
+
 const assert = require('chai').assert
     , events = require('harken');
 
@@ -6,7 +8,6 @@ let etagTest;
 require('./staticFileEtags');
 
 describe('Static File Etags', () => {
-  'use strict';
 
   it('should be able to add a file\'s etag and return it through events', (done) => {
     events.once('etag:get:./test_stubs/routes_stub.json', (etag) => {

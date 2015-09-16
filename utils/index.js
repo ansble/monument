@@ -1,3 +1,5 @@
+'use strict';
+
 const getCompression = require('./getCompression')
     , send = require('./send')
     , setup = require('./setup')

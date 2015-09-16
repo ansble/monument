@@ -1,3 +1,5 @@
+'use strict';
+
 const glob = require('glob')
     , fs = require('fs')
     , events = require('harken')

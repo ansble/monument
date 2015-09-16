@@ -1,3 +1,5 @@
+'use strict';
+
 const tools = require('./tools')
 
     , getCompression = (header, config) => {

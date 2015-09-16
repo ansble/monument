@@ -1,3 +1,5 @@
+'use strict';
+
 const assert = require('chai').assert
     , parser = require('./parser')
     , Readable = require('stream').Readable
@@ -11,7 +13,6 @@ let stream
     , errorBody;
 
 describe('Parser Tests', () => {
-  'use strict';
 
     beforeEach(() => {
         stream = new Readable();

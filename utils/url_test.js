@@ -1,3 +1,5 @@
+'use strict';
+
 const assert = require('chai').assert
     , parseUrl = require('./url')
     , host = 'thehost'
@@ -14,7 +16,6 @@ const assert = require('chai').assert
     };
 
 describe('parseUrl', () => {
-  'use strict';
 
   it('should return a parse function', () => {
     assert.isFunction(parseUrl);

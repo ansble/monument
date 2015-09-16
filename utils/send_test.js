@@ -1,3 +1,5 @@
+'use strict';
+
 const assert = require('chai').assert
     , send = require('./send')
     , zlib = require('zlib')

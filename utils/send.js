@@ -1,3 +1,5 @@
+'use strict';
+
 const etag = require('etag')
     , getCompression = require('./getCompression')
     , zlib = require('zlib')

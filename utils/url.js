@@ -1,3 +1,5 @@
+'use strict';
+
 // replacement for node's built-in 'url.parse' that safely removes the square brackets
 // supports only parseQueryString = true therefore does not accept that argument
 const url = require('url')

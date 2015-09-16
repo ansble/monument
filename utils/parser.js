@@ -1,3 +1,5 @@
+'use strict';
+
 const getRawBody = require('raw-body')
     , typer = require('media-typer')
     , querystring = require('querystring')
@@ -5,21 +7,27 @@ const getRawBody = require('raw-body')
     , tools = require('./tools')
 
     , parseForm = (formString) => {
-        var rtnObj = {}
-          , keys  = formString.match(/(name=")([^"]+)(")([^a-zA-Z0-9]+)([^-]+)/g);
+        const keys  = formString.match(/(name=")([^"]+)(")([^a-zA-Z0-9]+)([^-]+)/g);
 
-        if(keys !== null){
-          keys.forEach(function (item) {
-            var temp = item.match(/(")([^"])+/);
-            rtnObj[temp[0].replace(/"/g, '')] = item.match(/([\s].+)/)[0].replace(/^[\s]/, '');
-          });
+        if (keys !== null) {
+            return keys.reduce((prev, current) => {
+                const temp = current.match(/(")([^"])+/);
+
+                prev[temp[0].replace(/"/g, '')] = current.match(/([\s].+)/)[0].replace(/^[\s]/, '');
+
+                return prev;
+            }, {});
+
+          // keys.forEach(function (item) {
+          //   var temp = item.match(/(")([^"])+/);
+          //   rtnObj[temp[0].replace(/"/g, '')] = item.match(/([\s].+)/)[0].replace(/^[\s]/, '');
+          // });
+        } else {
+            return {};
         }
-
-        return rtnObj;
     }
 
     , parser = (connection, callback, scope) => {//parse out the body
-        'use strict';
         let encoding = 'UTF-8';
 
         if(tools.isDefined(connection.req.headers['content-type'])){
