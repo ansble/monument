@@ -1,12 +1,10 @@
-var getRawBody = require('raw-body')
+const getRawBody = require('raw-body')
     , typer = require('media-typer')
     , querystring = require('querystring')
     , events = require('harken')
     , tools = require('./tools')
 
-    , parseForm = function (formString) {
-        'use strict';
-
+    , parseForm = (formString) => {
         var rtnObj = {}
           , keys  = formString.match(/(name=")([^"]+)(")([^a-zA-Z0-9]+)([^-]+)/g);
 
@@ -20,9 +18,9 @@ var getRawBody = require('raw-body')
         return rtnObj;
     }
 
-    , parser = function (connection, callback, scope) {//parse out the body
+    , parser = (connection, callback, scope) => {//parse out the body
         'use strict';
-        var encoding = 'UTF-8';
+        let encoding = 'UTF-8';
 
         if(tools.isDefined(connection.req.headers['content-type'])){
             encoding = typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8';
@@ -32,7 +30,7 @@ var getRawBody = require('raw-body')
             length: connection.req.headers['content-length'],
             limit: '1mb',
             encoding: encoding
-          }, function (err, string) {
+          }, (err, string) => {
 
             if (err){
               events.emit('error:parse', err);

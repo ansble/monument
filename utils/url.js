@@ -1,18 +1,17 @@
 // replacement for node's built-in 'url.parse' that safely removes the square brackets
 // supports only parseQueryString = true therefore does not accept that argument
-var url = require('url')
+const url = require('url')
     , tools = require('./tools')
-    , parse = function (urlStr, slashesDenoteHost) {
-        'use strict';
 
-        var urlObject = url.parse(urlStr, true, slashesDenoteHost)
+    , parse = (urlStr, slashesDenoteHost) => {
+        let urlObject = url.parse(urlStr, true, slashesDenoteHost)
             , query = urlObject.query
             , tempQuery = {}
             , newQuery = {}
             , not = tools.not
             , isDefined = tools.isDefined;
 
-        Object.keys(urlObject.query).forEach(function(key){
+        Object.keys(urlObject.query).forEach((key) => {
             var newKey = key.replace(/\[\]$/, '');
 
             // if our key does not have brackets and the same
@@ -26,9 +25,9 @@ var url = require('url')
         });
 
         // filter out undefinded from tempQuery arrays
-        Object.keys(tempQuery).forEach(function(key){
+        Object.keys(tempQuery).forEach((key) => {
             if (Array.isArray(tempQuery[key])){
-                newQuery[key] = tempQuery[key].filter(function (element) {
+                newQuery[key] = tempQuery[key].filter((element) => {
                     return isDefined(element);
                 });
             }

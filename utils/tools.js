@@ -1,11 +1,11 @@
 module.exports = {
-    isDefined: function (item) {
+    isDefined: (item) => {
         'use strict';
 
         return typeof item !== 'undefined';
     }
 
-    , not: function (fn) {
+    , not: (fn) => {
         'use strict';
 
         return !fn;

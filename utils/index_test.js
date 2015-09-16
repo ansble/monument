@@ -1,10 +1,10 @@
-var assert = require('chai').assert
-  , utils = require('./index');
+const assert = require('chai').assert
+    , utils = require('./index');
 
-describe('Utils Tests', function () {
+describe('Utils Tests', () => {
   'use strict';
 
-  it('should return an object that has a send and getCompression functions', function () {
+  it('should return an object that has a send and getCompression functions', () => {
     assert.isObject(utils);
     assert.isFunction(utils.send);
     assert.isFunction(utils.getCompression);
@@ -14,40 +14,40 @@ describe('Utils Tests', function () {
     assert.isFunction(utils.not);
   });
 
-  describe('getCompression tests', function () {
-    it('should return deflate if the deflate header is passed in', function(){
+  describe('getCompression tests', () => {
+    it('should return deflate if the deflate header is passed in', () => {
       assert.strictEqual(utils.getCompression('deflate', {compress: true}), 'deflate');
     });
-    it('should return gzip if gzip is in the header passed in', function () {
+    it('should return gzip if gzip is in the header passed in', () => {
       assert.strictEqual(utils.getCompression('gzip', {compress: true}), 'gzip');
     });
-    it('should return gzip if both gzip and deflate are in the header', function () {
+    it('should return gzip if both gzip and deflate are in the header', () => {
       assert.strictEqual(utils.getCompression('deflate gzip', {compress: true}), 'gzip');
     });
-    it('should return none if no header is passed in', function () {
-      var header; //has no value... just exists
+    it('should return none if no header is passed in', () => {
+      let header; //has no value... just exists
 
       assert.strictEqual(utils.getCompression(header, {compress: true}), 'none');
     });
-    it('should return none if an empty header is passed in', function () {
+    it('should return none if an empty header is passed in', () => {
       assert.strictEqual(utils.getCompression('', {compress: true}), 'none');
     });
-    it('should return none if compression is turned off no matter what the header is', function () {
+    it('should return none if compression is turned off no matter what the header is', () => {
       assert.strictEqual(utils.getCompression('gzip', {compress: false}), 'none');
     });
-    it('should return correct compression if compression is not in the config', function () {
+    it('should return correct compression if compression is not in the config', () => {
       assert.strictEqual(utils.getCompression('gzip', {}), 'gzip');
     });
   });
 
-  describe('send tests', function () {
-    it('should have a send function', function () {
+  describe('send tests', () => {
+    it('should have a send function', () => {
       assert.isFunction(utils.send);
     });
   });
 
-  describe('setup tests', function () {
-    it('utils should have a setup function', function () {
+  describe('setup tests', () => {
+    it('utils should have a setup function', () => {
       assert.isFunction(utils.setup);
     });
   });

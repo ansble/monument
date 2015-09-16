@@ -1,20 +1,19 @@
-var etag = require('etag')
+const etag = require('etag')
     , getCompression = require('./getCompression')
     , zlib = require('zlib')
     , tools = require('./tools')
     , not = tools.not
     , isDefined = tools.isDefined;
 
-module.exports = function(req, config){
-    'use strict';
-
+module.exports = (req, config) => {
     return function (data) {
-        var that = this
-            , type = typeof data
+        const that = this
             , isBuffer = Buffer.isBuffer(data)
             , encoding = 'utf8'
-            , reqEtag
             , compression = getCompression(req.headers['accept-encoding'], config);
+
+        let reqEtag
+            , type = typeof data;
 
         if (not(isDefined(data))){
           //handle empty bodies... as strings

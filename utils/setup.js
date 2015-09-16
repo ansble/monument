@@ -1,61 +1,56 @@
-var glob = require('glob')
-	, fs = require('fs')
-	, events = require('harken')
-	, path = require('path')
-	, dot = require('dot')
+const glob = require('glob')
+    , fs = require('fs')
+    , events = require('harken')
+    , path = require('path')
+    , dot = require('dot')
 
-	, deleteCompressed = function (){
-		'use strict';
-		//run through and delete all the compressed files in the file system
-		var complete = events.required(['cleanup:compressed:start'], function (){
-			events.emit('setup:compressed');
-		});
+    , deleteCompressed = () => {
+        //run through and delete all the compressed files in the file system
+        let complete = events.required(['cleanup:compressed:start'], () => {
+            events.emit('setup:compressed');
+        });
 
-		glob(path.join(process.cwd(),'./public/**/*.tgz'), function (er, files) {
+        glob(path.join(process.cwd(),'./public/**/*.tgz'), (er, files) => {
 
-        files.forEach(function (file) {
-				complete.add('setup:delete:' + file);
-				fs.unlink(file, function () {
-					events.emit('setup:delete:' + file);
-				});
-			});
-		});
+        files.forEach((file) => {
+                complete.add('setup:delete:' + file);
+                fs.unlink(file, () => {
+                    events.emit('setup:delete:' + file);
+                });
+            });
+        });
 
-        glob(path.join(process.cwd(),'./public/**/*.def'), function (er, files) {
+        glob(path.join(process.cwd(),'./public/**/*.def'), (er, files) => {
 
-          files.forEach(function (file) {
+          files.forEach((file) => {
             complete.add('setup:delete:' + file);
-            fs.unlink(file, function () {
+            fs.unlink(file, () => {
               events.emit('setup:delete:' + file);
             });
           });
         });
 
         console.log('Cleaned up old compressed files...');
-		events.emit('cleanup:compressed:start');
-	}
+        events.emit('cleanup:compressed:start');
+    }
 
-	, compileTemplates = function (config) {
-		'use strict';
+    , compileTemplates = (config) => {
+        let templatePath = config.templatePath || './templates';
 
-		var templatePath = config.templatePath || './templates';
+        //configure dotjs
+        if (config.dotjs) {
+            Object.keys(config.dotjs).forEach((opt) => {
+                dot.templateSettings[opt] = config.dotjs[opt];
+            });
+        }
 
-		//configure dotjs
-		if (config.dotjs) {
-			Object.keys(config.dotjs).forEach(function (opt) {
-				dot.templateSettings[opt] = config.dotjs[opt];
-			});
-		}
+        //compile the templates
+        dot.process({path: path.join(process.cwd(), templatePath)});
 
-		//compile the templates
-		dot.process({path: path.join(process.cwd(), templatePath)});
+        events.emit('setup:templates');
+    }
 
-		events.emit('setup:templates');
-	}
-
-  , etagSetup = function (){
-      'use strict';
-
+  , etagSetup = () => {
       //set up the etag listeners and emitters
       require('./staticFileEtags');
 
@@ -64,7 +59,7 @@ var glob = require('glob')
   };
 
 module.exports  = {
-	compressed: deleteCompressed
-	, templates: compileTemplates
+    compressed: deleteCompressed
+    , templates: compileTemplates
   , etags: etagSetup
 };
