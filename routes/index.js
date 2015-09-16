@@ -1,103 +1,18 @@
-var path = require('path')
+const path = require('path')
     , fs = require('fs')
     , zlib = require('zlib')
     , events = require('harken')
     , utils = require('../utils')
     , mime = require('mime')
 
+    , parseRoutes = require('./parseRoutes')
+    , matchSimpleRoute = require('./matchSimpleRoute')
+    , isWildCardRoute = require('./isWildCardRoute')
+    , parseWildCardRoute = require('./parseWildCardRoute')
+
     , publicFolders = []
 
-    , server
-
-    , parseRoutes = function (routes) {
-        'use strict';
-
-        var wildCardRoutes = {}
-            , standardRoutes = {};
-
-        Object.keys(routes).forEach(function (route) {
-            var routeVariables = route.match(/:[a-zA-Z]+/g)
-                , routeRegex;
-
-            if(routeVariables){
-                //generate the regex for laters and
-                //  store the verbs and variables belonging to the route
-
-                routeRegex = new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)').replace(/(\/)?$/, '(\/)?$'));
-
-                wildCardRoutes[route] = {
-                    verbs: routes[route]
-                    , variables: routeVariables
-                    , eventId: route
-                    , regex: routeRegex
-                };
-            } else {
-                standardRoutes[route] = routes[route];
-            }
-        });
-
-        return {wildcard: wildCardRoutes, standard: standardRoutes};
-    }
-
-    , matchSimpleRoute = function (pathname, method, routesJson) {
-        'use strict';
-
-        var pathString
-            , route;
-
-        if(pathname.slice(-1) === '/'){
-            pathString = pathname.replace(/\/$/,'');
-        } else {
-            pathString = pathname + '/';
-        }
-
-        if(routesJson[pathname] && routesJson[pathname].indexOf(method) !== -1){
-            route = pathname;
-        } else if (routesJson[pathString] && routesJson[pathString].indexOf(method) !== -1){
-            route = pathString;
-        } else {
-            route = null;
-        }
-
-        return route;
-    }
-
-    , isWildCardRoute = function (pathname, method, routesJson) {
-        'use strict';
-
-        var matchedRoutes = Object.keys(routesJson).filter(function (route) {
-                return !!(pathname.match(routesJson[route].regex));
-            })
-            , matchesVerb;
-
-        if(matchedRoutes.length){
-            matchesVerb = routesJson[matchedRoutes[0]].verbs.indexOf(method) !== -1;
-        } else {
-            matchesVerb = false;
-        }
-
-        return matchedRoutes.length > 0 && matchesVerb;
-    }
-
-    , parseWildCardRoute = function (pathname, routesJson) {
-        'use strict';
-
-        var matchedRoute = Object.keys(routesJson).filter(function (route) {
-                return !!(pathname.match(routesJson[route].regex));
-            })[0]
-            , matches = pathname.match(routesJson[matchedRoute].regex)
-            , values = {}
-            , routeInfo = routesJson[matchedRoute]
-            , i = 0;
-
-        for(i = 0; i < routeInfo.variables.length; i++){
-            values[routeInfo.variables[i].substring(1)] = matches[i + 1]; //offset by one to avoid the whole match which is at array[0]
-        }
-
-        return {route: routeInfo, values: values};
-    }
-
-    , setupStaticRoutes = function (routePathIn, publicPathIn) {
+    , setupStaticRoutes = (routePathIn, publicPathIn) => {
         'use strict';
 
         var routePath = path.join(process.cwd(), routePathIn)
@@ -120,8 +35,7 @@ var path = require('path')
         });
     };
 
-
-server = function (serverType, routesJson, config) {
+const server = (serverType, routesJson, config) => {
     'use strict';
 
     var routesObj = parseRoutes(routesJson)
@@ -132,7 +46,7 @@ server = function (serverType, routesJson, config) {
 
         setupStaticRoutes(routesPath, publicPath);
 
-    return serverType.createServer(function (req, res) {
+    return serverType.createServer((req, res) => {
         var method = req.method.toLowerCase()
             , pathParsed = utils.parsePath(req.url)
             , pathname = pathParsed.pathname
