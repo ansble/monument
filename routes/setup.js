@@ -1,11 +1,15 @@
 'use strict';
 const path = require('path')
-    , fs = require('fs');
+    , fs = require('fs')
 
-module.exports = (routePathIn, publicPathIn) => {
+    , setup = (routePathIn, publicPathIn) => {
+        //Be warned... this function is very much a side effet
+        //  zone. It's full of them. There is no functional
+        //  purity here. It returns the publicFolders which allows
+        //  some modicum of testability but most of what it does
+        //  deals with the FS.
 
-        var routePath = path.join(process.cwd(), routePathIn)
-        , publicPath = publicPathIn
+        const routePath = path.join(process.cwd(), routePathIn)
         , publicFolders = [];
 
         //load in all the route handlers
@@ -16,9 +20,9 @@ module.exports = (routePathIn, publicPathIn) => {
         });
 
         //load in all the static routes
-        fs.exists(publicPath, function (exists) {
+        fs.exists(publicPathIn, function (exists) {
             if(exists){
-                fs.readdirSync(publicPath).forEach(function (file) {
+                fs.readdirSync(publicPathIn).forEach(function (file) {
                     publicFolders.push(file);
                 });
             }
@@ -26,3 +30,5 @@ module.exports = (routePathIn, publicPathIn) => {
 
         return publicFolders;
     };
+
+module.exports = setup;
