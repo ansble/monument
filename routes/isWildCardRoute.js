@@ -1,8 +1,6 @@
 'use strict';
 
-module.exports = (pathname, method, routesJson) => {
-        'use strict';
-
+const isWildCardRoute = (pathname, method, routesJson) => {
         var matchedRoutes = Object.keys(routesJson).filter(function (route) {
                 return !!(pathname.match(routesJson[route].regex));
             })
@@ -16,3 +14,5 @@ module.exports = (pathname, method, routesJson) => {
 
         return matchedRoutes.length > 0 && matchesVerb;
     };
+
+module.exports = isWildCardRoute;

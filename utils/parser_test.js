@@ -109,7 +109,7 @@ describe('Parser Tests', () => {
 
         events.on('error:parse', (msg) => {
             assert.isDefined(msg);
-            assert.isObject(msg);
+            assert.instanceOf(msg, Error);
             events.emit('error');
         });
 

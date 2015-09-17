@@ -8,14 +8,14 @@ const parseRoutes = (routes) => {
                 //generate the regex for laters and
                 //  store the verbs and variables belonging to the route
 
-                prev.wildCardRoutes[route] = {
+                prev.wildcard[route] = {
                     verbs: routes[route]
                     , variables: routeVariables
                     , eventId: route
                     , regex: new RegExp('^' + route.replace(/:[a-zA-Z]+/g, '([^\/]+)').replace(/(\/)?$/, '(\/)?$'))
                 };
             } else {
-                prev.standardRoutes[route] = routes[route];
+                prev.standard[route] = routes[route];
             }
 
             return prev;

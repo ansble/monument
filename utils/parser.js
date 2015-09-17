@@ -41,8 +41,8 @@ const getRawBody = require('raw-body')
           }, (err, string) => {
 
             if (err){
-              events.emit('error:parse', err);
-              callback.apply(scope, [null, err]);
+                events.emit('error:parse', err);
+                callback.apply(scope, [null, err]);
             }
 
             if(connection.req.headers['content-type'] === 'application/json'){
