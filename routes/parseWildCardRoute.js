@@ -2,9 +2,9 @@
 
 module.exports = (pathname, routesJson) => {
 
-        var matchedRoute = Object.keys(routesJson).filter(function (route) {
+        var matchedRoute = Object.keys(routesJson).find(function (route) {
                 return !!(pathname.match(routesJson[route].regex));
-            })[0]
+            })
             , matches = pathname.match(routesJson[matchedRoute].regex)
             , values = {}
             , routeInfo = routesJson[matchedRoute]

@@ -8,37 +8,38 @@ const url = require('url')
     , parse = (urlStr, slashesDenoteHost) => {
         let urlObject = url.parse(urlStr, true, slashesDenoteHost)
             , query = urlObject.query
-            , tempQuery = {}
-            , newQuery = {}
             , not = tools.not
-            , isDefined = tools.isDefined;
+            , isDefined = tools.isDefined
 
-        Object.keys(urlObject.query).forEach((key) => {
-            var newKey = key.replace(/\[\]$/, '');
+            , tempQuery = Object.keys(urlObject.query).reduce((prev, key) => {
+                const newKey = key.replace(/\[\]$/, '');
 
-            // if our key does not have brackets and the same
-            // key does not already exist on the tempQuery object
-            if (newKey === key && not(isDefined(tempQuery[newKey]))) {
-                tempQuery[newKey] = query[key];
-            }
-            else {
-                tempQuery[newKey] = [].concat(tempQuery[newKey], query[key]);
-            }
-        });
+                // if our key does not have brackets and the same
+                // key does not already exist on the tempQuery object
+                if (newKey === key && not(isDefined(prev[newKey]))) {
+                    prev[newKey] = query[key];
+                }
+                else {
+                    prev[newKey] = [].concat(prev[newKey], query[key]);
+                }
+
+                return prev;
+            }, {});
 
         // filter out undefinded from tempQuery arrays
-        Object.keys(tempQuery).forEach((key) => {
+        urlObject.query = Object.keys(tempQuery).reduce((prev, key) => {
             if (Array.isArray(tempQuery[key])){
-                newQuery[key] = tempQuery[key].filter((element) => {
+                prev[key] = tempQuery[key].filter((element) => {
                     return isDefined(element);
                 });
             }
             else {
-                newQuery[key] = tempQuery[key];
+                prev[key] = tempQuery[key];
             }
-        });
 
-        urlObject.query = newQuery;
+            return prev;
+        }, {});
+
         return urlObject;
     };
 
