@@ -17,11 +17,6 @@ const getRawBody = require('raw-body')
 
                 return prev;
             }, {});
-
-          // keys.forEach(function (item) {
-          //   var temp = item.match(/(")([^"])+/);
-          //   rtnObj[temp[0].replace(/"/g, '')] = item.match(/([\s].+)/)[0].replace(/^[\s]/, '');
-          // });
         } else {
             return {};
         }

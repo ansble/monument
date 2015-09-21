@@ -56,7 +56,6 @@
     "v8-profiler": "^5.3.1"
   },
   "engines": {
-    "node": "*",
-    "iojs": "*"
+    "node": "4.0.0"
   }
 }

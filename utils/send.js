@@ -54,8 +54,10 @@ module.exports = (req, config) => {
             }
 
             if (compression === 'deflate'){
+                //TODO: think about making this non sync
                 that.end(zlib.deflateSync(data), encoding);
             } else if (compression === 'gzip'){
+                //TODO: think about making this non sync
                 that.end(zlib.gzipSync(data), encoding);
             } else {
                 that.end(data, encoding);

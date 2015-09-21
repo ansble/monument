@@ -6,30 +6,30 @@ const glob = require('glob')
     , path = require('path')
     , dot = require('dot')
 
-    , deleteCompressed = () => {
+    , deleteCompressed = (config) => {
         //run through and delete all the compressed files in the file system
         let complete = events.required(['cleanup:compressed:start'], () => {
             events.emit('setup:compressed');
         });
 
-        glob(path.join(process.cwd(),'./public/**/*.tgz'), (er, files) => {
-
-        files.forEach((file) => {
+        glob(path.join(process.cwd(), config.publicPath + '/**/*.tgz'), (er, files) => {
+            files.forEach((file) => {
                 complete.add('setup:delete:' + file);
+
                 fs.unlink(file, () => {
                     events.emit('setup:delete:' + file);
                 });
             });
         });
 
-        glob(path.join(process.cwd(),'./public/**/*.def'), (er, files) => {
+        glob(path.join(process.cwd(), config.publicPath + '/**/*.def'), (er, files) => {
+            files.forEach((file) => {
+                complete.add('setup:delete:' + file);
 
-          files.forEach((file) => {
-            complete.add('setup:delete:' + file);
-            fs.unlink(file, () => {
-              events.emit('setup:delete:' + file);
+                fs.unlink(file, () => {
+                    events.emit('setup:delete:' + file);
+                });
             });
-          });
         });
 
         console.log('Cleaned up old compressed files...');

@@ -14,9 +14,13 @@ const http = require('http')
     , wrapper = (config) => {
         const port = config.port || 3000
             , routePath = config.routeJSONPath || './routes.json'
+            , publicPath = config.publicPath || './public'
             , routes = require(path.join(process.cwd(), routePath));
 
         let server;
+
+        config.routeJSONPath = routePath;
+        config.publicPath = publicPath;
 
         if(utils.not(utils.isDefined(config.compress))){
             config.compress = true;
@@ -29,6 +33,7 @@ const http = require('http')
 
             console.log('monument v' + pkg.version +' up and running on port: ' + port);
         });
+
 
         utils.setup(config);
 

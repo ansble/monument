@@ -9,19 +9,18 @@ const path = require('path')
         //  some modicum of testability but most of what it does
         //  deals with the FS.
 
-        const routePath = path.join(process.cwd(), routePathIn)
-        , publicFolders = [];
-
+        const publicFolders = [];
         //load in all the route handlers
-        fs.readdirSync(routePath).forEach(function (file) {
-            if(file !== 'index.js' && !file.match(/_test\.js$/)){
-                require(path.join(routePath, file));
+        fs.readdirSync(routePathIn).forEach(function (file) {
+            if(file !== 'index.js' && !file.match(/_test\.js$/) && file.match(/.js$/)){
+                require(path.join(routePathIn, file));
             }
         });
 
+
         //load in all the static routes
-        fs.exists(publicPathIn, function (exists) {
-            if(exists){
+        fs.stat(publicPathIn, function (err, exists) {
+            if(!err && exists.isDirectory()){
                 fs.readdirSync(publicPathIn).forEach(function (file) {
                     publicFolders.push(file);
                 });

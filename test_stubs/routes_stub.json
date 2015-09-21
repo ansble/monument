@@ -6,6 +6,7 @@
     "/api": ["get"],
     "/api/articles": ["get"],
     "/api/articles/:id": ["get"],
+    "/api/articles/:id/links/:item": ["get"],
     "/api/search": ["get"],
     "/rss": ["get"],
     "/stuff": ["get"]
