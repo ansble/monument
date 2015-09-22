@@ -3,21 +3,35 @@
 const assert = require('chai').assert
     , router = require('./router')
     , events = require('harken')
-    , routeObject = require('../test_stubs/routes_stub.json');
+    , routeObject = require('../test_stubs/routes_stub.json')
+    , stream = require('stream');
 
-let req = {
+let  req = {
         method: 'GET'
         , url: '/about'
         , headers: {}
     }
-    , res = {
-
-    }
+    , res
     , routeHandler;
 
 describe('Route Handler Tests', function () {
     beforeEach(function () {
-        routeHandler = router(routeObject, {publicPath: './test_stubs'});
+        routeHandler = router(routeObject, {publicPath: './test_stubs/deletes'});
+
+        res = new stream.Writable();
+        res.setHeader = () => {};
+        res.writeHead = function (status, headers) {
+            this.statusCode = status;
+            this.headers = headers;
+        };
+        res.statusCode = 0;
+
+        res._write = function (chunk, enc, cb) {
+            const buffer = (Buffer.isBuffer(chunk)) ? chunk : new Buffer(chunk, enc);
+
+            events.emit('response', buffer.toString());
+            cb();
+        };
     });
 
     it('should be defined as a funciton', function () {
@@ -79,9 +93,15 @@ describe('Route Handler Tests', function () {
     });
 
     describe('static file routes', () => {
+        let etag;
 
-        it('should emit 404 event for a non-existant file', (done) => {
-            req.url = './test_stubs/deletes/somefile.js';
+        beforeEach(() => {
+            etag = '"29-arFKTI61cu/N2F5PiAAbgw"';
+        });
+
+        it('should emit 404 event and a mising static event for a non-existant static file in a sub folder of public', (done) => {
+            req.url = '/static/somefile.js';
+
             events.required(['error:404', 'static:missing'], (input) => {
                 assert.isObject(input[0]);
                 assert.isString(input[1]);
@@ -89,6 +109,71 @@ describe('Route Handler Tests', function () {
             });
 
             routeHandler(req, res);
+        });
+
+        it('should emit 404 event for a non-existant static file in the root of public', (done) => {
+            req.url = '/static/somefile.js';
+
+            events.once('error:404', (input) => {
+                assert.isObject(input);
+                done();
+            });
+
+            routeHandler(req, res);
+        });
+
+        it('should return the file for an existing static file with no etag', (done) => {
+            req.url = '/static/main.js';
+
+            events.once('response', (input) => {
+                assert.isString(input);
+                assert.isAbove(input.length, 0);
+                done();
+            });
+
+            routeHandler(req, res);
+        });
+
+        it('should return a 304 for a valid etag match', (done) => {
+            req.url = '/static/main.js';
+            req.headers['if-none-match'] = etag;
+
+            res.on('finish', () => {
+                assert.strictEqual(res.statusCode, 304);
+                done();
+            });
+
+            routeHandler(req, res);
+        });
+
+        it('should return just headers if a head request is sent', (done) => {
+            req.url = '/static/main.js';
+            req.method = 'head';
+            req.headers['if-none-match'] = '';
+
+            res.on('finish', () => {
+                assert.strictEqual(res.statusCode, 200);
+                assert.isObject(res.headers);
+                done();
+            });
+
+            routeHandler(req, res);
+        });
+    });
+
+    describe('route.json route', () => {
+        it('should return the routes.json file when the router route is requested', (done) => {
+            req.url = '/routes';
+
+            events.once('response', (result) => {
+                const resultObject = JSON.parse(result);
+                assert.isObject(resultObject);
+                assert.strictEqual(resultObject['/'][0], routeObject['/'][0]);
+                done();
+            });
+
+            routeHandler(req, res);
+
         });
     });
 });

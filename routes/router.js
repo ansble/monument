@@ -17,7 +17,6 @@ module.exports = (routesJson, config) => {
             , publicPath = path.join(process.cwd(), config.publicPath || './public')
             , maxAge = config.maxAge || 31658000000
             , routesPath = path.join(process.cwd(), config.routesPath || './routes')
-            , routeJSONPath = config.routeJSONPath || './routes.json'
             , publicFolders = setupStaticRoutes(routesPath, publicPath);
 
     //the route handler... pulled out here for easier testing
@@ -42,11 +41,11 @@ module.exports = (routesJson, config) => {
             res.send = utils.send(req, config);
 
             //match the first part of the url... for public stuff
-
             if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
                 //static assets y'all
                 file = path.join(publicPath, pathname);
                 //read in the file and stream it to the client
+
                 fs.stat(file, (err, exists) => {
                     if(!err && exists.isFile()){
 
@@ -125,6 +124,13 @@ module.exports = (routesJson, config) => {
                 //matches a route in the routes.json
                 events.emit('route:' + simpleRoute + ':' + method, connection);
 
+            } else if(path.join(process.cwd(), pathname) === routesPath){
+                res.writeHead(200, {
+                    'Content-Type': mime.lookup('routes.json')
+                });
+
+                res.send(routesJson);
+
             } else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
                 //matches a route in the routes.json file that has params
                 routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
@@ -134,11 +140,6 @@ module.exports = (routesJson, config) => {
                 //emit the event for the url minus params and include the params
                 //  in the params object
                 events.emit('route:' + routeInfo.route.eventId + ':' + method, connection);
-            } else if(pathname === routesPath){
-                res.writeHead(200, {
-                    'Content-Type': mime.lookup('routes.json')
-                });
-                fs.createReadStream(path.join(process.cwd(), routeJSONPath)).pipe(res);
             } else {
                 events.emit('error:404', connection);
             }
