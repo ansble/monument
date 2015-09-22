@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (pathname, routesJson) => {
+const parseWildCardRoutes = (pathname, routesJson) => {
 
         var matchedRoute = Object.keys(routesJson).find(function (route) {
                 return !!(pathname.match(routesJson[route].regex));
@@ -16,3 +16,5 @@ module.exports = (pathname, routesJson) => {
 
         return {route: routeInfo, values: values};
     };
+
+module.exports = parseWildCardRoutes;
