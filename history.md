@@ -1,3 +1,12 @@
+### - 2.0.1 *9/22/2015, 8:46:56 AM*
+
+  - Merge pull request #112 from ansble/bug/syntax-consistency-route-modules
+  - Merge pull request #113 from ansble/bug/readme-2.0.0
+  - Cleans up module syntax for consistency
+  - Improve the grammer of the release notes
+  - Updates the readme file for 2.0.0
+
+
 ### - 2.0.0 *9/21/2015, 11:12:09 PM*
 
   - Merge pull request #111 from ansble/bug/node4-engine
