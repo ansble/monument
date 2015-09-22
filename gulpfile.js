@@ -48,7 +48,8 @@ gulp.task('test', function(){
       .on('finish', function () {
          gulp.src(['**/**_test.js', '!node_modules/**/*'], {read: false})
             .pipe(mocha({reporter: 'spec'}))
-            .pipe(istanbul.writeReports());
+            .pipe(istanbul.writeReports())
+            .pipe(istanbul.enforceThresholds({ thresholds: { global: 80 } })); // Enforce a coverage of at least 80%
       });
 });
 

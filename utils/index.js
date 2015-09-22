@@ -1,9 +1,11 @@
-var getCompression = require('./getCompression')
-  , send = require('./send')
-  , setup = require('./setup')
-  , parsePath = require('./url')
-  , events = require('harken')
-  , tools = require('./tools');
+'use strict';
+
+const getCompression = require('./getCompression')
+    , send = require('./send')
+    , setup = require('./setup')
+    , parsePath = require('./url')
+    , events = require('harken')
+    , tools = require('./tools');
 
 module.exports = {
     getCompression: getCompression
@@ -11,16 +13,15 @@ module.exports = {
     , parsePath: parsePath
     , isDefined: tools.isDefined
     , not: tools.not
-    , setup: function (config) {
-        'use strict';
-        var setupSteps = events.required(['setup:start'], function () {
+    , setup: (config) => {
+        const setupSteps = events.required(['setup:start'], () => {
             events.emit('setup:complete');
         });
 
             //execute all of the setup tasks in the setup obejct
             //  not functionally pure... has sideeffects in the file system
             //  sorry world
-        Object.keys(setup).forEach(function (key) {
+        Object.keys(setup).forEach((key) => {
             if(typeof setup[key] === 'function'){
                 setupSteps.add('setup:' + key);
                 setup[key](config);

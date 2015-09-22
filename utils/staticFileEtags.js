@@ -1,13 +1,14 @@
-var etag = require('etag')
+'use strict';
+
+const etag = require('etag')
     , fs = require('fs')
     , tools = require('./tools')
     , events = require('harken')
     , files = {}
 
-    , addEtag = function (fileIn) {
-        'use strict';
+    , addEtag = (fileIn) => {
 
-        fs.readFile(fileIn, function (err, data) {
+        fs.readFile(fileIn, (err, data) => {
             if(err){
                 events.emit('error', {message: 'could not read file', error: err, file: fileIn});
             } else {
@@ -17,10 +18,9 @@ var etag = require('etag')
         });
     }
 
-    , checkEtag = function (etagObj) {
-        'use strict';
+    , checkEtag = (etagObj) => {
 
-        var etagged = (tools.isDefined(files[etagObj.file]))
+        const etagged = (tools.isDefined(files[etagObj.file]))
             , valid = tools.isDefined(etagObj.etag) && etagged && (files[etagObj.file] === etagObj.etag);
 
         //if the file hasn't been etagged then etag it

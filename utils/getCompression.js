@@ -1,7 +1,8 @@
-var tools = require('./tools')
-    , getCompression = function (header, config) {
-        'use strict';
+'use strict';
 
+const tools = require('./tools')
+
+    , getCompression = (header, config) => {
         if(tools.not(tools.isDefined(header)) || (tools.isDefined(config.compress) && !config.compress)){
            return 'none';
         } else if (header.match(/\bgzip\b/)) {
