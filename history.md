@@ -1,3 +1,19 @@
+### - 2.0.0 *9/21/2015, 11:12:09 PM*
+
+  - Merge pull request #111 from ansble/bug/node4-engine
+  - Fixes the node engine setting
+  - Merge pull request #110 from ansble/feature/cleanup
+  - Adds more tests and refactors a tiny bit
+  - Rewrites in ES6 and improves testing
+  - Replaced all the some [] functions with better options
+  - Adds a note to route/setup and cleans up that file a bit
+  - Tests for most of the routes/setup moved to correct files
+  - ES6 syntax for the main files and test
+  - Breaks up the route file into several smaller modules
+  - Adds 'use strict' to the top of files
+  - Converts Utils to ES6 syntax
+
+
 ### - 1.5.6 *9/14/2015, 9:12:09 PM*
 
   - Merge pull request #109 from ansble/feature/cleanup
