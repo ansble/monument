@@ -8,6 +8,25 @@
 
 [![Coverage Status](https://coveralls.io/repos/ansble/monument/badge.svg?branch=master)](https://coveralls.io/r/ansble/monument?branch=master)
 
+## v2.0.0!
+Despite it being a major release this is actually a pretty bland one. It's a major release because monument 2+ requires you to be running on node > 4.0.0. It is a rewrite and cleanup in ES6 syntax. There were a few changes but mostly it was syntax.
+
+There will likely be a few more tweaks over the next couple of days, but this is a nice stable release as is.
+
+### Performance
+One of the things that did change was how route detection works. It now uses Array.some instead of Array.filter which means that as soon as it finds the route it exits the iterator instead of continuing on through the array of routes. Honestly this is probably a relatively minor performance tweak and the chances of you noticing it are tiny. But, for apps with large route lists this will make a difference, potentially a pretty big one.
+
+### Testing
+We are now over 80% global coverage and have a requirement in the build to hit 80%. So going forward that number will move upwards and the system as a whole will be locked in nicely.
+
+### Components
+We now use [harken](https://github.com/ansble/harken) to handle events. Pulled it directly out of the code base and made it its own thing much like event-state in a previous release. Makes the codebase simpler, and allows for upgrades to happen independently. This also means that you can use the same event system in your clients now. Which is pretty sweet.
+
+The router has also been broken into a whole lot of components. This is mostly for testability and has trimmed its lines of code way down. Before this version the router was pretty much a black box with very little ability to test it's functionality, now it is much closer to be ing truly testable.
+
+### Better commmit messages!
+The git log is now much nicer... with more meaningful commit messages.
+
 ## Changes in 1.5.0
 
 `parser` The `monument.parser` function now returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});`
