@@ -1,3 +1,9 @@
+### - 2.0.2 *10/9/2015, 6:00:25 PM*
+
+  - Merge pull request #114 from ansble/feature/upgrade-event-state
+  - Updates dependencies, simplifies parsing, and adds tests
+
+
 ### - 2.0.1 *9/22/2015, 8:46:56 AM*
 
   - Merge pull request #112 from ansble/bug/syntax-consistency-route-modules
