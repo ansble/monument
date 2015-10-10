@@ -32,6 +32,12 @@ describe('Route Handler Tests', function () {
             events.emit('response', buffer.toString());
             cb();
         };
+
+        events.off('error:404');
+        events.off('static:missing');
+        events.off('response');
+        events.off('route:/about:get');
+        events.off('route:/api/articles/:id:get');
     });
 
     it('should be defined as a funciton', function () {
