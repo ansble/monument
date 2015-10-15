@@ -19,12 +19,20 @@ describe('Route Handler Tests', function () {
         routeHandler = router(routeObject, {publicPath: './test_stubs/deletes'});
 
         res = new stream.Writable();
-        res.setHeader = () => {};
+
+        res.setHeader = function (name, value) {
+            this.headers = this.headers || {};
+
+            this.headers[name] = value;
+        };
+
         res.writeHead = function (status, headers) {
             this.statusCode = status;
             this.headers = headers;
         };
+
         res.statusCode = 0;
+        res.headers = {};
 
         res._write = function (chunk, enc, cb) {
             const buffer = (Buffer.isBuffer(chunk)) ? chunk : new Buffer(chunk, enc);
@@ -51,6 +59,31 @@ describe('Route Handler Tests', function () {
     describe('simple routes', () => {
         it('should emit the correct route event for a simple route', (done) => {
             events.once('route:/about:get', (connection) => {
+                assert.isObject(connection);
+                done();
+            });
+
+            routeHandler(req, res);
+        });
+    });
+
+    describe('security headers', () => {
+        it('should return x-powered-by only if it is set', (done) => {
+            const tempHandler = router(routeObject, {publicPath: './test_stubs/deletes', security: {poweredBy: 'waffles'}});
+
+            events.once('route:/about:get', (connection) => {
+                assert.isObject(connection.res.headers);
+                assert.strictEqual(connection.res.headers['X-Powered-By'], 'waffles');
+                assert.isObject(connection);
+                done();
+            });
+
+            tempHandler(req, res);
+        });
+
+        it('should by default not return x-powered-by ', (done) => {
+            events.once('route:/about:get', (connection) => {
+                assert.strictEqual(connection.res.headers['X-Powered-By'], undefined);
                 assert.isObject(connection);
                 done();
             });
