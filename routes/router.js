@@ -40,6 +40,10 @@ module.exports = (routesJson, config) => {
             //add .send to the response
             res.send = utils.send(req, config);
 
+            if (utils.isDefined(config.security) && utils.isDefined(config.security.poweredBy)) {
+                res.setHeader('X-Powered-By', config.security.poweredBy);
+            }
+
             //match the first part of the url... for public stuff
             if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
                 //static assets y'all
