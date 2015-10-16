@@ -2,7 +2,8 @@
 
 const poweredBy = require('./poweredByHeader')
     , xssHeader = require('./xssHeader')
-    , noSniff = require('./noSniff');
+    , noSniff = require('./noSniff')
+    , noOpen = require('./noOpen');
 
 module.exports = (config, reqIn, resIn) => {
     let res = resIn
@@ -11,6 +12,7 @@ module.exports = (config, reqIn, resIn) => {
     res = poweredBy(config, res);
     res = xssHeader(config, res, req);
     res = noSniff(config, res);
+    res = noOpen(config, res);
 
     return res;
 };
