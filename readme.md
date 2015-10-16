@@ -8,6 +8,39 @@
 
 [![Coverage Status](https://coveralls.io/repos/ansble/monument/badge.svg?branch=master)](https://coveralls.io/r/ansble/monument?branch=master)
 
+## v2.1.0
+
+###Config changes:
+Current state of the config object is right below this. Explanations about the new items in the security object are explained in more depth below.
+
+```
+{
+    port: 3000 // the port for the server to run on
+    , compress: true // turns on or off compression for static files (deflate/gzip)
+    , routePath: './routes' // the folder your routes live in
+    , templatePath: './templates' // the folder where your templates live
+    , dotjs: {
+        //dotjs defaults
+        // see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
+    }
+    , publicPath: './public' // the folder where your static files live
+    , maxAge: 31536000 // time to cache static files client side in milliseconds
+    , etags: true // turns on or off etag generation and headers
+    
+    //the security object is brand new in this release
+    , security: {
+        xssProtection: true //default, can be set to false to disable
+        , poweredBy: 'bacon' //the default is blank can be any string
+    }
+}
+```
+
+#### poweredBy
+You can set this value to whatever you want it to look like your server is powered by. By default it is off and the server does not return the `X-Powered-By` header. This is more secure then specifying it so we receommend you leave this alone, but since you are an adult you are free to set a value here. Any string passed here will become the value of the `X-Powered-By` header.
+
+#### xssProtection
+If set to false this turns off the X-XSS-Protection header for all browsers. This header is disabled in IE < 9 because it opens up vulnerabilities. In everything else it is enabled by default.
+
 ## v2.0.0!
 Despite it being a major release this is actually a pretty bland one. It's a major release because monument 2+ requires you to be running on node > 4.0.0. It is a rewrite and cleanup in ES6 syntax.
 
