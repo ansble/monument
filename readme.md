@@ -11,7 +11,7 @@
 ## v2.1.0
 
 ###Config changes:
-Current state of the config object is right below this. Explanations about the new items in the security object are explained in more depth below.
+Current state of the config object is right below this. Explanations about the new items in the security object are explained in more depth below. Most of the settings in security turn headers on and off, and documentation around those headers can be found on [OWASP](https://www.owasp.org/index.php/List_of_useful_HTTP_headers) and n [helmet and its source code](https://www.npmjs.com/package/helmet). Much of the code here is inspired by helmet.
 
 ```
 {
@@ -31,6 +31,7 @@ Current state of the config object is right below this. Explanations about the n
     , security: {
         xssProtection: true //default, can be set to false to disable
         , poweredBy: 'bacon' //the default is blank can be any string
+        , noSniff: true //default, can be set to false to disable
     }
 }
 ```
@@ -40,6 +41,9 @@ You can set this value to whatever you want it to look like your server is power
 
 #### xssProtection
 If set to false this turns off the X-XSS-Protection header for all browsers. This header is disabled in IE < 9 because it opens up vulnerabilities. In everything else it is enabled by default.
+
+#### noSniff
+If set to false this turns off the X-Content-Type-Options header for all browsers. This header prevents browsers from trying to infer mime type when a file with a mime type is downloaded. This helps prevent download related vulnerabilities and the misinterpretation of file types.
 
 ## v2.0.0!
 Despite it being a major release this is actually a pretty bland one. It's a major release because monument 2+ requires you to be running on node > 4.0.0. It is a rewrite and cleanup in ES6 syntax.
