@@ -1,7 +1,8 @@
 'use strict';
 
 const poweredBy = require('./poweredByHeader')
-    , xssHeader = require('./xssHeader');
+    , xssHeader = require('./xssHeader')
+    , noSniff = require('./noSniff');
 
 module.exports = (config, reqIn, resIn) => {
     let res = resIn
@@ -9,6 +10,7 @@ module.exports = (config, reqIn, resIn) => {
 
     res = poweredBy(config, res);
     res = xssHeader(config, res, req);
+    res = noSniff(config, res);
 
     return res;
 };
