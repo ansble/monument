@@ -8,7 +8,7 @@ module.exports = (config, reqIn, resIn) => {
         , req = reqIn;
 
     res = poweredBy(config, res);
-    // res = xssHeader(config, res, req);
+    res = xssHeader(config, res, req);
 
     return res;
 };
