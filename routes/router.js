@@ -10,7 +10,8 @@ const path = require('path')
     , matchSimpleRoute = require('./matchSimpleRoute')
     , isWildCardRoute = require('./isWildCardRoute')
     , parseWildCardRoute = require('./parseWildCardRoute')
-    , setupStaticRoutes = require('./serverSetup');
+    , setupStaticRoutes = require('./serverSetup')
+    , setSecurityHeaders = require('../security');
 
 module.exports = (routesJson, config) => {
     const routesObj = parseRoutes(routesJson)
@@ -40,9 +41,7 @@ module.exports = (routesJson, config) => {
             //add .send to the response
             res.send = utils.send(req, config);
 
-            if (utils.isDefined(config.security) && utils.isDefined(config.security.poweredBy)) {
-                res.setHeader('X-Powered-By', config.security.poweredBy);
-            }
+            res = setSecurityHeaders(config, req, res);
 
             //match the first part of the url... for public stuff
             if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
