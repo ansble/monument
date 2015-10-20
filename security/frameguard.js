@@ -23,11 +23,11 @@ module.exports = (config, res) => {
     }
 
     if (header === 'ALLOW-FROM') {
-        if (typeof options.options !== 'string') {
+        if (typeof options.domain !== 'string') {
             throw new Error('X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter');
         }
 
-        header = 'ALLOW-FROM ' + options.options;
+        header = 'ALLOW-FROM ' + options.domain;
     }
 
     res.setHeader('X-Frame-Options', header);

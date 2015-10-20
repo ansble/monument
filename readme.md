@@ -32,6 +32,10 @@ Current state of the config object is right below this. Explanations about the n
         xssProtection: true //default, can be set to false to disable
         , poweredBy: 'bacon' //the default is blank can be any string
         , noSniff: true //default, can be set to false to disable
+        , frameguard: {
+            action: 'SAMEORIGIN' //the default allows iframes from same domain
+            , domain: '' //defaults to not used. Only used for 'ALLOW-ORIGIN' 
+        }
     }
 }
 ```
@@ -44,6 +48,10 @@ If set to false this turns off the X-XSS-Protection header for all browsers. Thi
 
 #### noSniff
 If set to false this turns off the X-Content-Type-Options header for all browsers. This header prevents browsers from trying to infer mime type when a file with a mime type is downloaded. This helps prevent download related vulnerabilities and the misinterpretation of file types.
+
+#### frameguard
+Guard is a weird looking word. 
+Not that we have that out of the way frameguard allows you to specify under what conditions your application may be wrapped in an `iframe`. Setting `action: 'DENY'` means that your site may never be wrapped in an `iframe`. The default is 'SAMEORIGIN' which allows wrapping of your site by essentially your app. The last allowed setting, `action: 'ALLOW-ORIGIN'`, requires that you pass a `domain` value as well. It allows the specified domain to wrap your application in an iframe. All the calculations for `SAMEORIGIN` and `ALLOW-ORIGIN` follow the CORS rules for determining origin. So `www.designfrontier.net` and `designfrontier.net` are different origins.
 
 ## v2.0.0!
 Despite it being a major release this is actually a pretty bland one. It's a major release because monument 2+ requires you to be running on node > 4.0.0. It is a rewrite and cleanup in ES6 syntax.
