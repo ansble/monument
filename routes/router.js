@@ -39,6 +39,7 @@ module.exports = (routesJson, config) => {
 
             //add .send to the response
             res.send = utils.send(req, config);
+            res.redirect = utils.redirect(req);
 
             //match the first part of the url... for public stuff
             if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
