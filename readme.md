@@ -36,6 +36,11 @@ Current state of the config object is right below this. Explanations about the n
             action: 'SAMEORIGIN' //the default allows iframes from same domain
             , domain: '' //defaults to not used. Only used for 'ALLOW-ORIGIN' 
         }
+        , hsts: {
+            maxAge: 86400 //defaults to 1 day in seconds. All times in seconds
+            , includeSubDomains: true //optional. Defaults to true
+            , preload: true //optional. Defaults to true
+        }
     }
 }
 ```
@@ -52,6 +57,13 @@ If set to false this turns off the X-Content-Type-Options header for all browser
 #### frameguard
 Guard is a weird looking word. 
 Not that we have that out of the way frameguard allows you to specify under what conditions your application may be wrapped in an `iframe`. Setting `action: 'DENY'` means that your site may never be wrapped in an `iframe`. The default is 'SAMEORIGIN' which allows wrapping of your site by essentially your app. The last allowed setting, `action: 'ALLOW-ORIGIN'`, requires that you pass a `domain` value as well. It allows the specified domain to wrap your application in an iframe. All the calculations for `SAMEORIGIN` and `ALLOW-ORIGIN` follow the CORS rules for determining origin. So `www.designfrontier.net` and `designfrontier.net` are different origins.
+
+#### hsts (HTTP Strict Transport Security)
+This tells browsers to require HTTPS security if the connection started out as an HTTPS connection. It does not force the connection to switch, it just requires all subsequent requests by the page to use HTTPS if the page was requested with HTTPS. To disable it set `config.security.hsts` to `false`. It is set with a `maxAge` much like caching. The `maxAge` is set in seconds (not ms) and must be a positive number. 
+
+The two optional settings: `includeSubDomains` and `preload` are turned on by default. `includeSubDomains` requires any request to a subdmain of the current domain to be HTTPS as well. `preload` is a Google Chrome specific extension that allows you to submit your site for baked-into-the-browser HSTS. With it set you can submit your site to [this page](https://hstspreload.appspot.com/). Both of these can be individually turned off by setting them to false in the config object.
+
+For more information the spec is [available](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04).
 
 ## v2.0.0!
 Despite it being a major release this is actually a pretty bland one. It's a major release because monument 2+ requires you to be running on node > 4.0.0. It is a rewrite and cleanup in ES6 syntax.
