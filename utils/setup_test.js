@@ -8,21 +8,21 @@ const assert = require('chai').assert
 
 describe('setup Tests', () => {
 
-  it('should be an object of setup functions', () => {
-    assert.isObject(setup);
-    assert.isFunction(setup.compressed);
-    assert.isFunction(setup.templates);
-    assert.isFunction(setup.etags);
-  });
-
-  it('should setup listeners for etags', (done) => {
-    events.once('setup:etags', () => {
-        assert.strictEqual(true, true);
-        done();
+    it('should be an object of setup functions', () => {
+        assert.isObject(setup);
+        assert.isFunction(setup.compressed);
+        assert.isFunction(setup.templates);
+        assert.isFunction(setup.etags);
     });
 
-    setup.etags();
-  });
+    it('should setup listeners for etags', (done) => {
+        events.once('setup:etags', () => {
+            assert.strictEqual(true, true);
+            done();
+        });
+
+        setup.etags();
+    });
 
     describe('Delete Old Compressed Files', () => {
         it('should setup templates', (done) => {

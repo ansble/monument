@@ -11,7 +11,7 @@ describe('frameguard', () => {
         res = {};
         res.headers = {};
         res.setHeader = function (key, value) {
-          this.headers[key] = value;
+            this.headers[key] = value;
         };
 
         config.security = {};

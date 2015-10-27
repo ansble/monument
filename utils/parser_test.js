@@ -28,15 +28,15 @@ describe('Parser Tests', () => {
 
     it('should parse out a multipart/form-data submission', (done) => {
         formDataBody.headers = {
-          'content-length': formDataBody.length
-          , 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryOR86nFvrvo9BHCQm'
+            'content-length': formDataBody.length
+            , 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryOR86nFvrvo9BHCQm'
         };
 
         parser({req: formDataBody}, (body, err) => {
-          assert.isUndefined(err);
-          assert.isObject(body);
-          assert.strictEqual(body.name, 'daniel');
-          done();
+            assert.isUndefined(err);
+            assert.isObject(body);
+            assert.strictEqual(body.name, 'daniel');
+            done();
         });
     });
 
@@ -44,15 +44,15 @@ describe('Parser Tests', () => {
         stream.push(urlBody);
         stream.push(null);
         stream.headers = {
-          'content-length': urlBody.length
-          , 'content-type': 'application/x-www-form-urlencoded'
+            'content-length': urlBody.length
+            , 'content-type': 'application/x-www-form-urlencoded'
         };
 
         parser({req: stream}, (body, err) => {
-          assert.isUndefined(err);
-          assert.isObject(body);
-          assert.strictEqual(body.name, 'daniel');
-          done();
+            assert.isUndefined(err);
+            assert.isObject(body);
+            assert.strictEqual(body.name, 'daniel');
+            done();
         });
     });
 

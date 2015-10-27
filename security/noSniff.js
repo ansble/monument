@@ -8,6 +8,7 @@ module.exports = (config, res) => {
         return res;
     } else {
         res.setHeader('X-Content-Type-Options', 'nosniff');
+
         return res;
     }
 };

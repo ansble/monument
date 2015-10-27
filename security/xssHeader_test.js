@@ -8,56 +8,57 @@ const assert = require('chai').assert
     , IE8UA = 'Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; GTB7.4; InfoPath.2; SV1; .NET CLR 3.3.69573; WOW64; en-US)';
 
 let res = {}
-  , req = {}
-  , config = {};
+    , req = {}
+    , config = {};
 
 describe('Security Headers: X-XSS-Protection', () => {
-  beforeEach(() => {
-    req.headers = {};
-    res.headers = {};
-    res.setHeader = function (key, value) {
-      this.headers[key] = value;
-    };
+    beforeEach(() => {
+        req.headers = {};
+        res.headers = {};
 
-    config.security = {};
-  });
+        res.setHeader = function (key, value) {
+            this.headers[key] = value;
+        };
 
-  it('should return a function', () => {
-    assert.isFunction(xssHeader);
-  });
-
-  it('should return res when executed', () => {
-    assert.strictEqual(res, xssHeader(config, res, req));
-  });
-
-  describe('default behaviors', () => {
-    it('should set the correct header if old IE', () => {
-      req.headers['user-agent'] = IE8UA;
-
-      assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '0');
+        config.security = {};
     });
 
-    it('should set the correct header if IE', () => {
-      req.headers['user-agent'] = chromeOSXUA;
-
-      assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '1; mode=block');
+    it('should return a function', () => {
+        assert.isFunction(xssHeader);
     });
 
-    it('should set the correct header if new IE', () => {
-      req.headers['user-agent'] = IE11UA2;
-      assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '1; mode=block');
-
-      req.headers['user-agent'] = IE11UA;
-      assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '1; mode=block');
+    it('should return res when executed', () => {
+        assert.strictEqual(res, xssHeader(config, res, req));
     });
-  });
 
-  describe('disabled by config', () => {
-    it('should not set the header if config.security.xssProtection is false', () => {
-      config.security.xssProtection = false;
+    describe('default behaviors', () => {
+        it('should set the correct header if old IE', () => {
+            req.headers['user-agent'] = IE8UA;
 
-      req.headers['user-agent'] = IE11UA;
-      assert.isUndefined(xssHeader(config, res, req).headers['X-XSS-Protection']);
+            assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '0');
+        });
+
+        it('should set the correct header if IE', () => {
+            req.headers['user-agent'] = chromeOSXUA;
+
+            assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '1; mode=block');
+        });
+
+        it('should set the correct header if new IE', () => {
+            req.headers['user-agent'] = IE11UA2;
+            assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '1; mode=block');
+
+            req.headers['user-agent'] = IE11UA;
+            assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '1; mode=block');
+        });
     });
-  });
+
+    describe('disabled by config', () => {
+        it('should not set the header if config.security.xssProtection is false', () => {
+            config.security.xssProtection = false;
+
+            req.headers['user-agent'] = IE11UA;
+            assert.isUndefined(xssHeader(config, res, req).headers['X-XSS-Protection']);
+        });
+    });
 });
