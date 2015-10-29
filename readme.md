@@ -41,6 +41,7 @@ Current state of the config object is right below this. Explanations about the n
             , includeSubDomains: true //optional. Defaults to true
             , preload: true //optional. Defaults to true
         }
+        , noCahce: false //defaults to off. This is the nuclear option for caching
     }
 }
 ```
@@ -64,6 +65,11 @@ This tells browsers to require HTTPS security if the connection started out as a
 The two optional settings: `includeSubDomains` and `preload` are turned on by default. `includeSubDomains` requires any request to a subdmain of the current domain to be HTTPS as well. `preload` is a Google Chrome specific extension that allows you to submit your site for baked-into-the-browser HSTS. With it set you can submit your site to [this page](https://hstspreload.appspot.com/). Both of these can be individually turned off by setting them to false in the config object.
 
 For more information the spec is [available](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04).
+
+#### noCache
+Before using this think long and hard about it. It shuts down all client side caching for the server. All of it. As best as it can be shut down. You can set it to an object `{noEtag: true}` if you want to remove etags as well. If you merely set it to true then all no cache headers will be set but the ETag header will not be removed.
+
+There is now also a `res.noCache` function that allows you to do the same thing but on a per request/route/user (however you program it) basis. This is a much better option then setting noCache server wide.
 
 ## v2.0.0!
 Despite it being a major release this is actually a pretty bland one. It's a major release because monument 2+ requires you to be running on node > 4.0.0. It is a rewrite and cleanup in ES6 syntax.
