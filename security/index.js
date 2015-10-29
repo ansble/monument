@@ -4,7 +4,8 @@ const poweredBy = require('./poweredByHeader')
     , xssHeader = require('./xssHeader')
     , noSniff = require('./noSniff')
     , noOpen = require('./noOpen')
-    , hsts = require('./hsts');
+    , hsts = require('./hsts')
+    , noCache = require('./noCache');
 
 module.exports = (config, reqIn, resIn) => {
     let res = resIn
@@ -15,6 +16,7 @@ module.exports = (config, reqIn, resIn) => {
     res = noSniff(config, res);
     res = noOpen(config, res);
     res = hsts(config, res);
+    res = noCache(config, res);
 
     return res;
 };
