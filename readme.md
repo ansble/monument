@@ -41,7 +41,7 @@ Current state of the config object is right below this. Explanations about the n
             , includeSubDomains: true //optional. Defaults to true
             , preload: true //optional. Defaults to true
         }
-        , noCahce: false //defaults to off. This is the nuclear option for caching
+        , noCache: false //defaults to off. This is the nuclear option for caching
         , publicKeyPin: { //default is off. This one is complicated read below...
             sha256s: ['keynumberone', 'keynumbertwo'] //an array of SHA-256 public key pins see below for how to obtain
             , maxAge: 100 //time in seconds for the pin to be in effect
