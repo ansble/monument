@@ -56,4 +56,10 @@ describe('Security Headers: no cache!', () => {
     it('should return res when executed', () => {
         assert.strictEqual(res, noCache(config, res));
     });
+
+    it('should add a noCache function to res when executed', () => {
+        noCache(config, res);
+        assert.isDefined(res.noCache);
+        assert.isFunction(res.noCache);
+    });
 });
