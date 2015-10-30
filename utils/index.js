@@ -2,6 +2,7 @@
 
 const getCompression = require('./getCompression')
     , send = require('./send')
+    , redirect = require('./redirect')
     , setup = require('./setup')
     , parsePath = require('./url')
     , events = require('harken')
@@ -10,6 +11,7 @@ const getCompression = require('./getCompression')
 module.exports = {
     getCompression: getCompression
     , send: send
+    , redirect: redirect
     , parsePath: parsePath
     , isDefined: tools.isDefined
     , not: tools.not

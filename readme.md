@@ -36,6 +36,19 @@ Current state of the config object is right below this. Explanations about the n
             action: 'SAMEORIGIN' //the default allows iframes from same domain
             , domain: '' //defaults to not used. Only used for 'ALLOW-ORIGIN' 
         }
+        , hsts: {
+            maxAge: 86400 //defaults to 1 day in seconds. All times in seconds
+            , includeSubDomains: true //optional. Defaults to true
+            , preload: true //optional. Defaults to true
+        }
+        , noCahce: false //defaults to off. This is the nuclear option for caching
+        , publicKeyPin: { //default is off. This one is complicated read below...
+            sha256s: ['keynumberone', 'keynumbertwo'] //an array of SHA-256 public key pins see below for how to obtain
+            , maxAge: 100 //time in seconds for the pin to be in effect
+            , includeSubdomains: false //whether or not to pin for sub domains as well defaults to false
+            , reportUri: false //whether or not to report problems to a URL more details below. Defaults to false
+            , reportOnly: false //if a reportURI is passed and this is set to true it reports and terminates connection
+        }
     }
 }
 ```
@@ -52,6 +65,47 @@ If set to false this turns off the X-Content-Type-Options header for all browser
 #### frameguard
 Guard is a weird looking word. 
 Not that we have that out of the way frameguard allows you to specify under what conditions your application may be wrapped in an `iframe`. Setting `action: 'DENY'` means that your site may never be wrapped in an `iframe`. The default is 'SAMEORIGIN' which allows wrapping of your site by essentially your app. The last allowed setting, `action: 'ALLOW-ORIGIN'`, requires that you pass a `domain` value as well. It allows the specified domain to wrap your application in an iframe. All the calculations for `SAMEORIGIN` and `ALLOW-ORIGIN` follow the CORS rules for determining origin. So `www.designfrontier.net` and `designfrontier.net` are different origins.
+
+#### hsts (HTTP Strict Transport Security)
+This tells browsers to require HTTPS security if the connection started out as an HTTPS connection. It does not force the connection to switch, it just requires all subsequent requests by the page to use HTTPS if the page was requested with HTTPS. To disable it set `config.security.hsts` to `false`. It is set with a `maxAge` much like caching. The `maxAge` is set in seconds (not ms) and must be a positive number. 
+
+The two optional settings: `includeSubDomains` and `preload` are turned on by default. `includeSubDomains` requires any request to a subdmain of the current domain to be HTTPS as well. `preload` is a Google Chrome specific extension that allows you to submit your site for baked-into-the-browser HSTS. With it set you can submit your site to [this page](https://hstspreload.appspot.com/). Both of these can be individually turned off by setting them to false in the config object.
+
+For more information the spec is [available](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04).
+
+#### noCache
+Before using this think long and hard about it. It shuts down all client side caching for the server. All of it. As best as it can be shut down. You can set it to an object `{noEtag: true}` if you want to remove etags as well. If you merely set it to true then all no cache headers will be set but the ETag header will not be removed.
+
+There is now also a `res.noCache` function that allows you to do the same thing but on a per request/route/user (however you program it) basis. This is a much better option then setting noCache server wide.
+
+#### publicKeyPin
+This one is a bit of a beast. Before setting it and using it please read: [the spec](https://tools.ietf.org/html/rfc7469), [this mdn article](https://developer.mozilla.org/en-US/docs/Web/Security/Public_Key_Pinning) and [this tutorial](https://timtaubert.de/blog/2014/10/http-public-key-pinning-explained/). It's a great security feature to help prevent man in the middle attacks, but it is also complex.
+
+Enough of the warnings! How do you configure it? The config object above explains it pretty well. Some details about `includeSubdomains`: it pins all sub domains of your site if it is set to true. Turned off by setting it to false.
+
+`reportUri` takes a URL and changes the header so that the browser can corretly handle the reporting of mismatches between pins and your certificate keys. If this is set without `reportOnly` being set to false then it only reports it does not also terminate the connection. Setting `reportOnly` to false means that the connection will be terminated if it does not match the pins as well as reporting.
+
+If you specify a report URI it should be ready to recieve a POST from browsers in the form (described here)[https://tools.ietf.org/html/rfc7469#section-3]. The object you should expect looks like this (sourced from previous link):
+
+```
+{
+    "date-time": date-time,
+    "hostname": hostname,
+    "port": port,
+    "effective-expiration-date": expiration-date,
+    "include-subdomains": include-subdomains,
+    "noted-hostname": noted-hostname,
+    "served-certificate-chain": [
+        pem1, ... pemN
+    ],
+    "validated-certificate-chain": [
+        pem1, ... pemN
+    ],
+    "known-pins": [
+        known-pin1, ... known-pinN
+    ]
+}
+```
 
 ## v2.0.0!
 Despite it being a major release this is actually a pretty bland one. It's a major release because monument 2+ requires you to be running on node > 4.0.0. It is a rewrite and cleanup in ES6 syntax.

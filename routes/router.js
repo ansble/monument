@@ -40,6 +40,7 @@ module.exports = (routesJson, config) => {
 
             //add .send to the response
             res.send = utils.send(req, config);
+            res.redirect = utils.redirect(req);
 
             res = setSecurityHeaders(config, req, res);
 

@@ -63,5 +63,5 @@ const glob = require('glob')
 module.exports  = {
     compressed: deleteCompressed
     , templates: compileTemplates
-  , etags: etagSetup
+    , etags: etagSetup
 };
