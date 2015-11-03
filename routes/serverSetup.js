@@ -12,7 +12,10 @@ const path = require('path')
         const publicFolders = [];
         //load in all the route handlers
         fs.readdirSync(routePathIn).forEach(function (file) {
-            if(file !== 'index.js' && !file.match(/_test\.js$/) && file.match(/.js$/)){
+            if(file !== 'index.js' &&
+                !file.match(/_test\.js$/) &&
+                !file.match(/.test\.js$/) &&
+                file.match(/.js$/)){
                 require(path.join(routePathIn, file));
             }
         });
