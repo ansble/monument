@@ -1,9 +1,9 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
-    , publicKeyPinning = require('./publicKeyPinning');
-
-let res = {}
+    , publicKeyPinning = require('./publicKeyPinning')
+    , res = {}
     , config = {};
 
 describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', () => {
@@ -30,33 +30,43 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
     it('should throw if empty config is passed in', () => {
         config.security.publicKeyPin = {};
-        assert.throws(() => publicKeyPinning(config, res));
+        assert.throws(() => {
+            publicKeyPinning(config, res);
+        });
 
         config.security.publicKeyPin = {
-            sha256s : []
+            sha256s: []
         };
-        assert.throws(() => publicKeyPinning(config, res));
+        assert.throws(() => {
+            publicKeyPinning(config, res);
+        });
 
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone']
+            sha256s: [ 'keynumberone' ]
         };
-        assert.throws(() => publicKeyPinning(config, res));
+        assert.throws(() => {
+            publicKeyPinning(config, res);
+        });
 
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone', 'keynumbertwo']
+            sha256s: [ 'keynumberone', 'keynumbertwo' ]
         };
-        assert.throws(() => publicKeyPinning(config, res));
+        assert.throws(() => {
+            publicKeyPinning(config, res);
+        });
 
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone', 'keynumbertwo']
+            sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 0
         };
-        assert.throws(() => publicKeyPinning(config, res));
+        assert.throws(() => {
+            publicKeyPinning(config, res);
+        });
     });
 
     it('should return a header if correct config passed in', () => {
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone', 'keynumbertwo']
+            sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
         };
 
@@ -67,7 +77,7 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
     it('should return a header if correct config + includeSubdomains passed in', () => {
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone', 'keynumbertwo']
+            sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
             , includeSubdomains: true
         };
@@ -79,7 +89,7 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
     it('should return a header if correct config + includeSubdomains = false passed in', () => {
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone', 'keynumbertwo']
+            sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
             , includeSubdomains: false
         };
@@ -91,7 +101,7 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
     it('should return a header if correct config + reportUri passed in', () => {
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone', 'keynumbertwo']
+            sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
             , reportUri: 'http://ansble.com'
         };
@@ -104,7 +114,7 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
     it('should return a header if correct config + reportUri and reportOnly is passed in', () => {
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone', 'keynumbertwo']
+            sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
             , reportUri: 'http://ansble.com'
             , reportOnly: false
@@ -118,7 +128,7 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
     it('should return a header if correct config + reportUri = false passed in', () => {
         config.security.publicKeyPin = {
-            sha256s: ['keynumberone', 'keynumbertwo']
+            sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
             , reportUri: false
         };

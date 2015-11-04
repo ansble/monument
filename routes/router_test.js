@@ -1,22 +1,23 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
     , router = require('./router')
     , events = require('harken')
     , routeObject = require('../test_stubs/routes_stub.json')
-    , stream = require('stream');
-
-let  req = {
+    , stream = require('stream')
+    , req = {
         method: 'GET'
         , url: '/about'
         , headers: {}
-    }
-    , res
+    };
+
+let res
     , routeHandler;
 
-describe('Route Handler Tests', function () {
-    beforeEach(function () {
-        routeHandler = router(routeObject, {publicPath: './test_stubs/deletes'});
+describe('Route Handler Tests', () => {
+    beforeEach(() => {
+        routeHandler = router(routeObject, { publicPath: './test_stubs/deletes' });
 
         res = new stream.Writable();
 
@@ -35,7 +36,7 @@ describe('Route Handler Tests', function () {
         res.headers = {};
 
         res._write = function (chunk, enc, cb) {
-            const buffer = (Buffer.isBuffer(chunk)) ? chunk : new Buffer(chunk, enc);
+            const buffer = Buffer.isBuffer(chunk) ? chunk : new Buffer(chunk, enc);
 
             events.emit('response', buffer.toString());
             cb();
@@ -48,12 +49,12 @@ describe('Route Handler Tests', function () {
         events.off('route:/api/articles/:id:get');
     });
 
-    it('should be defined as a funciton', function () {
+    it('should be defined as a funciton', () => {
         assert.isFunction(router);
     });
 
-    it('should return a function', function () {
-        assert.isFunction(router(routeObject, {publicPath: './test_stubs/deletes'}));
+    it('should return a function', () => {
+        assert.isFunction(router(routeObject, { publicPath: './test_stubs/deletes' }));
     });
 
     describe('simple routes', () => {
@@ -69,7 +70,7 @@ describe('Route Handler Tests', function () {
 
     describe('security headers', () => {
         it('should return x-powered-by only if it is set', (done) => {
-            const tempHandler = router(routeObject, {publicPath: './test_stubs/deletes', security: {poweredBy: 'waffles'}});
+            const tempHandler = router(routeObject, { publicPath: './test_stubs/deletes', security: { poweredBy: 'waffles' } });
 
             events.once('route:/about:get', (connection) => {
                 assert.isObject(connection.res.headers);
@@ -141,7 +142,7 @@ describe('Route Handler Tests', function () {
         it('should emit 404 event and a mising static event for a non-existant static file in a sub folder of public', (done) => {
             req.url = '/static/somefile.js';
 
-            events.required(['error:404', 'static:missing'], (input) => {
+            events.required([ 'error:404', 'static:missing' ], (input) => {
                 assert.isObject(input[0]);
                 assert.isString(input[1]);
                 done();
@@ -206,6 +207,7 @@ describe('Route Handler Tests', function () {
 
             events.once('response', (result) => {
                 const resultObject = JSON.parse(result);
+
                 assert.isObject(resultObject);
                 assert.strictEqual(resultObject['/'][0], routeObject['/'][0]);
                 done();

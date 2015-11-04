@@ -11,14 +11,14 @@ module.exports = (config, res) => {
 
 
     if (type === 'undefined' || type === 'string') {
-        if(type === 'string' && ['DENY', 'ALLOW-FROM', 'SAMEORIGIN'].indexOf(options.action.toUpperCase()) === -1) {
+        if (type === 'string' && [ 'DENY', 'ALLOW-FROM', 'SAMEORIGIN' ].indexOf(options.action.toUpperCase()) === -1) {
             typeError();
         }
     } else {
         typeError();
     }
 
-    if(options.action) {
+    if (options.action) {
         header = options.action.toUpperCase();
     }
 
@@ -27,7 +27,7 @@ module.exports = (config, res) => {
             throw new Error('X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter');
         }
 
-        header = 'ALLOW-FROM ' + options.domain;
+        header = `ALLOW-FROM ${options.domain}`;
     }
 
     res.setHeader('X-Frame-Options', header);

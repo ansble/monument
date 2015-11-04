@@ -1,9 +1,9 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
-    , noSniff = require('./noSniff');
-
-let res = {}
+    , noSniff = require('./noSniff')
+    , res = {}
     , config = {};
 
 describe('Security Headers: X-Content-Type-Options Tests', () => {

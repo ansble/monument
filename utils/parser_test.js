@@ -1,3 +1,4 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
@@ -16,7 +17,7 @@ describe('Parser Tests', () => {
 
     beforeEach(() => {
         stream = new Readable();
-        jsonBody = {name: 'Tomas Voekler'};
+        jsonBody = { name: 'Tomas Voekler' };
         formDataBody = fs.createReadStream(process.cwd() + '/test_stubs/formDataBody.txt');
         urlBody = 'name=daniel&title=lord+of+the+actual+internet1';
         errorBody = '{name: "Tomas Voekler"';
@@ -32,7 +33,7 @@ describe('Parser Tests', () => {
             , 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryOR86nFvrvo9BHCQm'
         };
 
-        parser({req: formDataBody}, (body, err) => {
+        parser({ req: formDataBody }, (body, err) => {
             assert.isUndefined(err);
             assert.isObject(body);
             assert.strictEqual(body.name, 'daniel');
@@ -48,7 +49,7 @@ describe('Parser Tests', () => {
             , 'content-type': 'application/x-www-form-urlencoded'
         };
 
-        parser({req: stream}, (body, err) => {
+        parser({ req: stream }, (body, err) => {
             assert.isUndefined(err);
             assert.isObject(body);
             assert.strictEqual(body.name, 'daniel');
@@ -64,7 +65,7 @@ describe('Parser Tests', () => {
             , 'content-type': 'application/json'
         };
 
-        parser({req: stream}, (body) => {
+        parser({ req: stream }, (body) => {
             assert.isObject(body);
             done();
         }, {});
@@ -77,7 +78,7 @@ describe('Parser Tests', () => {
             'content-length': 24
         };
 
-        parser({req: stream}, (body) => {
+        parser({ req: stream }, (body) => {
             assert.isObject(body);
             done();
         }, {});
@@ -92,7 +93,7 @@ describe('Parser Tests', () => {
             , 'content-type': 'application/json'
         };
 
-        parser({req: stream}, (body) => {
+        parser({ req: stream }, (body) => {
             assert.strictEqual(JSON.stringify(body), JSON.stringify(jsonBody));
             done();
         }, {});
@@ -113,15 +114,15 @@ describe('Parser Tests', () => {
             events.emit('error');
         });
 
-        parser({req: stream}, (body) => {
+        parser({ req: stream }, (body) => {
             assert.isNull(body);
             events.emit('parse');
         }, {});
 
-        events.required(['parse', 'error'], () => {
+        events.required([ 'parse', 'error' ], () => {
             done();
         });
     });
 
-  it('should parse out uploaded files');
+    it('should parse out uploaded files');
 });

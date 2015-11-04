@@ -1,3 +1,4 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
@@ -19,10 +20,10 @@ describe('Redirect Tests', () => {
                 fakeHeaders[key] = value;
             }
             , end: (data, encode) => {
-                fakeOut = data;
-                fakeEncode = encode;
-            },
-            statusCode: 200
+                  fakeOut = data;
+                  fakeEncode = encode;
+              }
+            , statusCode: 200
         };
 
         fakeHead = {
@@ -30,10 +31,10 @@ describe('Redirect Tests', () => {
                 fakeHeaders[key] = value;
             }
             , end: (data, encode) => {
-                fakeOut = data;
-                fakeEncode = encode;
-            },
-            statusCode: 200
+                  fakeOut = data;
+                  fakeEncode = encode;
+              }
+            , statusCode: 200
         };
 
         fakeRes.redirect = redirect({

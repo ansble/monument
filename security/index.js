@@ -9,11 +9,10 @@ const poweredBy = require('./poweredByHeader')
     , publicKeyPin = require('./publicKeyPinning');
 
 module.exports = (config, reqIn, resIn) => {
-    let res = resIn
-        , req = reqIn;
+    let res = resIn;
 
     res = poweredBy(config, res);
-    res = xssHeader(config, res, req);
+    res = xssHeader(config, res, reqIn);
     res = noSniff(config, res);
     res = noOpen(config, res);
     res = hsts(config, res);

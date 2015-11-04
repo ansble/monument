@@ -1,9 +1,9 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
-    , noCache = require('./noCache');
-
-let res = {}
+    , noCache = require('./noCache')
+    , res = {}
     , config = {};
 
 describe('Security Headers: no cache!', () => {
@@ -41,7 +41,7 @@ describe('Security Headers: no cache!', () => {
     });
 
     it('should kill the etag and set all headers if the config.etag is true', () => {
-        config.security.noCache = {noEtag: true};
+        config.security.noCache = { noEtag: true };
         res.headers.ETag = 'someEtagString';
 
         noCache(config, res);

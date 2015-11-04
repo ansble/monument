@@ -1,18 +1,19 @@
 'use strict';
 
 const isWildCardRoute = (pathname, method, routesJson) => {
-        var matchedRoutes = Object.keys(routesJson).find(function (route) {
-                return !!(pathname.match(routesJson[route].regex));
-            })
-            , matchesVerb;
+    const matchedRoutes = Object.keys(routesJson).find((route) => {
+        return !!pathname.match(routesJson[route].regex);
+    });
 
-        if(matchedRoutes){
-            matchesVerb = routesJson[matchedRoutes].verbs.indexOf(method) !== -1;
-        } else {
-            matchesVerb = false;
-        }
+    let matchesVerb;
 
-        return !!(matchedRoutes && matchesVerb);
-    };
+    if (matchedRoutes){
+        matchesVerb = routesJson[matchedRoutes].verbs.indexOf(method) !== -1;
+    } else {
+        matchesVerb = false;
+    }
+
+    return !!(matchedRoutes && matchesVerb);
+};
 
 module.exports = isWildCardRoute;

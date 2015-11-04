@@ -1,9 +1,9 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
-    , poweredByHeader = require('./poweredByHeader');
-
-let res = {}
+    , poweredByHeader = require('./poweredByHeader')
+    , res = {}
     , config = {};
 
 describe('Security Headers: x-powered-by Tests', () => {

@@ -1,16 +1,16 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
-    , hsts = require('./hsts');
-
-let res = {}
-  , config = {};
+    , hsts = require('./hsts')
+    , res = {}
+    , config = {};
 
 describe('Security Headers: Strict-Transport-Security Tests', () => {
     beforeEach(() => {
         res.headers = {};
         res.setHeader = function (key, value) {
-          this.headers[key] = value;
+            this.headers[key] = value;
         };
 
         config.security = {};
@@ -113,13 +113,17 @@ describe('Security Headers: Strict-Transport-Security Tests', () => {
             maxAge: -1000
         };
 
-        assert.throws(() => {hsts(config, res);});
+        assert.throws(() => {
+            hsts(config, res);
+        });
 
         config.security.hsts = {
             maxAge: 'Sam I am'
         };
 
-        assert.throws(() => {hsts(config, res);});
+        assert.throws(() => {
+            hsts(config, res);
+        });
     });
 
     it('should return res when executed', () => {
