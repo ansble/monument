@@ -17,6 +17,48 @@ const missingConfigError = new Error('You must provide at least 2 SHA-256s and a
 
     , hasOptions = (config) => {
         return isDefined(config.security) && isDefined(config.security.publicKeyPin);
+    }
+
+    , hasReportUri = (options) => {
+        return isDefined(options.reportUri) && options.reportUri;
+    }
+
+    , hasReportOnly = (options) => {
+        return not(isDefined(options.reportOnly)) || options.reportOnly;
+    }
+
+    , addSubdomainFlag = (headerValueIn, options) => {
+        let headerValue = headerValueIn;
+
+        if (options.includeSubdomains) {
+            headerValue += '; includeSubdomains';
+        }
+
+        return headerValue;
+    }
+
+    , addReportUri = (headerValueIn, options) => {
+        let headerValue = headerValueIn;
+
+        if (hasReportUri(options)) {
+            headerValue += `; report-uri="${options.reportUri}"`;
+        }
+
+        return headerValue;
+    }
+
+    , setHeaderKey = (options, force) => {
+        let headerKey = 'Public-Key-Pins';
+
+        if (force) {
+            headerKey = 'Public-Key-Pins';
+        }
+
+        if (hasReportUri(options) && hasReportOnly(options)) {
+            headerKey += '-Report-Only';
+        }
+
+        return headerKey;
     };
 
 let headerKey = 'Public-Key-Pins'
@@ -29,34 +71,25 @@ module.exports = (config, res, force) => {
     // only do things if the user wants it. This option is complex
     //  and because of that it defaults to off. Also because the
     //  consequences for getting it wrong are catastrophic to a site.
-    if (hasOptions(config)){
+
+    if (hasOptions(config)) {
         if ((headerValue === '' || force) && shapeCheck(options)) {
             // all the needed params are there and we haven't set up yet
-            if (force) {
-                headerKey = 'Public-Key-Pins';
-            }
+
+            headerKey = setHeaderKey(options, force);
 
             headerValue = options.sha256s.map((key) => {
                 return `pin-sha256="${key}"`;
             }).join('; ');
 
             headerValue += `; max-age=${options.maxAge}`;
-
-            if (options.includeSubdomains) {
-                headerValue += '; includeSubdomains';
-            }
-
-            if (isDefined(options.reportUri) && options.reportUri) {
-                if (not(isDefined(options.reportOnly)) || options.reportOnly) {
-                    headerKey += '-Report-Only';
-                }
-
-                headerValue += `; report-uri="${options.reportUri}"`;
-            }
+            headerValue = addSubdomainFlag(headerValue, options);
+            headerValue = addReportUri(headerValue, options);
         }
 
         res.setHeader(headerKey, headerValue);
     }
+
 
     return res;
 };
