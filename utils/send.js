@@ -8,8 +8,14 @@ const etag = require('etag')
     , isDefined = tools.isDefined
 
     , send = (req, config) => {
+        // TODO: think about making this a constructor that returns the
+        //  modified response object instead of being added as it is
+        //  in the router.js file.
+
         return function (dataIn) {
+            /* eslint-disable no-invalid-this */
             const that = this
+            /* eslint-enable no-invalid-this */
                 , isBuffer = Buffer.isBuffer(dataIn)
                 , encoding = 'utf8'
                 , compression = getCompression(req.headers['accept-encoding'], config);

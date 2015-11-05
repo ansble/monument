@@ -7,7 +7,6 @@ const assert = require('chai').assert
 
 let fakeRes
     , fakeOut
-    , fakeEncode
     , fakeHeaders
     , fakeHead;
 
@@ -19,9 +18,8 @@ describe('Redirect Tests', () => {
             setHeader: (key, value) => {
                 fakeHeaders[key] = value;
             }
-            , end: (data, encode) => {
+            , end: (data) => {
                   fakeOut = data;
-                  fakeEncode = encode;
               }
             , statusCode: 200
         };
@@ -30,9 +28,8 @@ describe('Redirect Tests', () => {
             setHeader: (key, value) => {
                 fakeHeaders[key] = value;
             }
-            , end: (data, encode) => {
+            , end: (data) => {
                   fakeOut = data;
-                  fakeEncode = encode;
               }
             , statusCode: 200
         };

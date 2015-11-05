@@ -8,7 +8,6 @@ const assert = require('chai').assert
 
 let fakeRes
     , fakeOut
-    , fakeEncode
     , fakeHeaders
     , obj
     , buf;
@@ -21,9 +20,8 @@ describe('Send Tests', () => {
             setHeader: (key, value) => {
                 fakeHeaders[key] = value;
             }
-            , end: (data, encode) => {
+            , end: (data) => {
                   fakeOut = data;
-                  fakeEncode = encode;
               }
             , statusCode: 200
         };
