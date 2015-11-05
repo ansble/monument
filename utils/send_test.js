@@ -1,3 +1,4 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
@@ -21,10 +22,10 @@ describe('Send Tests', () => {
                 fakeHeaders[key] = value;
             }
             , end: (data, encode) => {
-                fakeOut = data;
-                fakeEncode = encode;
-            },
-            statusCode: 200
+                  fakeOut = data;
+                  fakeEncode = encode;
+              }
+            , statusCode: 200
         };
 
         fakeRes.send = send({
@@ -32,21 +33,21 @@ describe('Send Tests', () => {
                 'accept-encoding': 'none'
                 , 'if-none-match': ''
             }
-        }, {compression: false});
+        }, { compression: false });
 
         fakeRes.sendDeflate = send({
             headers: {
                 'accept-encoding': 'deflate'
                 , 'if-none-match': ''
             }
-        }, {compression: 'deflate'});
+        }, { compression: 'deflate' });
 
         fakeRes.sendGzip = send({
             headers: {
                 'accept-encoding': 'gzip'
                 , 'if-none-match': ''
             }
-        }, {compression: 'gzip'});
+        }, { compression: 'gzip' });
 
         fakeOut = '';
 
@@ -62,7 +63,7 @@ describe('Send Tests', () => {
                 'accept-encoding': 'none'
                 , 'if-none-match': etag(JSON.stringify(obj))
             }
-        }, {compression: false});
+        }, { compression: false });
     });
 
     it('should be defined as a function', () => {
@@ -94,8 +95,8 @@ describe('Send Tests', () => {
     });
 
     it('should handle an array', () => {
-        fakeRes.send(['one', 'two']);
-        assert.strictEqual(fakeOut, JSON.stringify(['one', 'two']));
+        fakeRes.send([ 'one', 'two' ]);
+        assert.strictEqual(fakeOut, JSON.stringify([ 'one', 'two' ]));
     });
 
     it('should handle a number and other weird data', () => {

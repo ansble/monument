@@ -15,6 +15,7 @@ module.exports = {
     , parsePath: parsePath
     , isDefined: tools.isDefined
     , not: tools.not
+    , contains: tools.contains
     , setup: (config) => {
           const setupSteps = events.required([ 'setup:start' ], () => {
               events.emit('setup:complete');

@@ -1,3 +1,4 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
@@ -30,30 +31,30 @@ describe('setup Tests', () => {
             fs.writeFileSync('./test_stubs/deletes/old.js.def', '//this is js', 'utf8');
 
             events.required([
-                    'setup:compressed'
-                    , 'setup:delete:' + path.join(process.cwd(), './test_stubs/deletes/old.js.tgz')
-                    , 'setup:delete:' + path.join(process.cwd(), './test_stubs/deletes/old.js.def')
-                ], () => {
-                    let pass = [false, false];
+                'setup:compressed'
+                , 'setup:delete:' + path.join(process.cwd(), './test_stubs/deletes/old.js.tgz')
+                , 'setup:delete:' + path.join(process.cwd(), './test_stubs/deletes/old.js.def')
+            ], () => {
+                const pass = [ false, false ];
 
-                    try {
-                        fs.statSync(path.join(process.cwd(), './test_stubs/deletes/old.js.tgz'));
-                    } catch (e) {
-                        pass[0] = true;
-                    }
+                try {
+                    fs.statSync(path.join(process.cwd(), './test_stubs/deletes/old.js.tgz'));
+                } catch (e) {
+                    pass[0] = true;
+                }
 
-                    try {
-                        fs.statSync(path.join(process.cwd(), './test_stubs/deletes/old.js.def'));
-                    } catch (e) {
-                        pass[1] = true;
-                    }
+                try {
+                    fs.statSync(path.join(process.cwd(), './test_stubs/deletes/old.js.def'));
+                } catch (e) {
+                    pass[1] = true;
+                }
 
-                    assert.strictEqual(pass[0], true);
-                    assert.strictEqual(pass[1], true);
-                    done();
-                });
+                assert.strictEqual(pass[0], true);
+                assert.strictEqual(pass[1], true);
+                done();
+            });
 
-            setup.compressed({publicPath: './test_stubs/deletes'});
+            setup.compressed({ publicPath: './test_stubs/deletes' });
         });
     });
 });

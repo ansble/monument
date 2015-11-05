@@ -11,17 +11,21 @@ const path = require('path')
     , isWildCardRoute = require('./isWildCardRoute')
     , parseWildCardRoute = require('./parseWildCardRoute')
     , setupStaticRoutes = require('./serverSetup')
-    , setSecurityHeaders = require('../security');
+    , setSecurityHeaders = require('../security')
+
+    , succesStatus = 200
+    , unmodifiedStatus = 304
+    , oneYearMS = 31658000000;
 
 module.exports = (routesJson, config) => {
     const routesObj = parseRoutes(routesJson)
             , publicPath = path.join(process.cwd(), config.publicPath || './public')
-            , maxAge = config.maxAge || 31658000000
+            , maxAge = config.maxAge || oneYearMS
             , routesPath = path.join(process.cwd(), config.routesPath || './routes')
             , publicFolders = setupStaticRoutes(routesPath, publicPath);
 
     // the route handler... pulled out here for easier testing
-    return (req, res) => {
+    return (req, resIn) => {
         const method = req.method.toLowerCase()
             , pathParsed = utils.parsePath(req.url)
             , pathname = pathParsed.pathname
@@ -29,14 +33,15 @@ module.exports = (routesJson, config) => {
             , expires = new Date().getTime()
             , connection = {
                 req: req
-                , res: res
+                , res: resIn
                 , query: pathParsed.query
                 , params: {}
             }
             , compression = utils.getCompression(req.headers['accept-encoding'], config);
 
         let file
-            , routeInfo;
+            , routeInfo
+            , res = resIn;
 
         // add .send to the response
         res.send = utils.send(req, config);
@@ -45,7 +50,7 @@ module.exports = (routesJson, config) => {
         res = setSecurityHeaders(config, req, res);
 
         // match the first part of the url... for public stuff
-        if (publicFolders.indexOf(pathname.split('/')[1]) !== -1) {
+        if (utils.contains(publicFolders, pathname.split('/')[1])) {
             // static assets y'all
             file = path.join(publicPath, pathname);
             // read in the file and stream it to the client
@@ -53,66 +58,72 @@ module.exports = (routesJson, config) => {
             fs.stat(file, (err, exists) => {
                 if (!err && exists.isFile()){
 
-                    events.required([ 'etag:check:' + file, 'etag:get:' + file ], (valid) => {
+                    events.required([ `etag:check:${file}`, `etag:get:${file}` ], (valid) => {
                         if (valid[0]){ // does the etag match? YES
-                            res.statusCode = 304;
+                            res.statusCode = unmodifiedStatus;
+                            return res.end();
+                        }
+                        // No match...
+                        res.setHeader('ETag', valid[1]); // the etag is item 2 in the array
+
+                        if (req.method.toLowerCase() === 'head'){
+                            res.writeHead(succesStatus, {
+                                'Content-Type': mime.lookup(pathname)
+                                , 'Cache-Control': `maxage=${maxAge}`
+                                , Expires: new Date(expires + maxAge).toUTCString()
+                                , 'Content-Encoding': compression
+                            });
+
                             res.end();
-                        } else { // No match...
-                            res.setHeader('ETag', valid[1]); // the etag is item 2 in the array
+                        } else if (compression !== 'none'){
+                            // we have compression!
+                            res.writeHead(succesStatus, {
+                                'Content-Type': mime.lookup(pathname)
+                                , 'Cache-Control': `maxage=${maxAge}`
+                                , Expires: new Date(expires + maxAge).toUTCString()
+                                , 'Content-Encoding': compression
+                            });
 
-                            if (req.method.toLowerCase() === 'head'){
-                                res.writeHead(200, {
-                                    'Content-Type': mime.lookup(pathname)
-                                    , 'Cache-Control': 'maxage=' + maxAge
-                                    , Expires: new Date(expires + maxAge).toUTCString()
-                                    , 'Content-Encoding': compression
+                            if (compression === 'deflate'){
+                                fs.stat(`${file}.def`, (errDef, existsDef) => {
+                                    if (!errDef && existsDef.isFile()){
+                                        fs.createReadStream(`${file}.def`).pipe(res);
+                                    } else {
+                                        // no compressed file yet...
+                                        fs.createReadStream(file).pipe(zlib.createDeflate())
+                                            .pipe(res);
+
+                                        fs.createReadStream(file).pipe(zlib.createDeflate())
+                                            .pipe(fs.createWriteStream(`${file}.def`));
+                                    }
                                 });
-
-                                res.end();
-                            } else if (compression !== 'none'){
-                                // we have compression!
-                                res.writeHead(200, {
-                                    'Content-Type': mime.lookup(pathname)
-                                    , 'Cache-Control': 'maxage=' + maxAge
-                                    , Expires: new Date(expires + maxAge).toUTCString()
-                                    , 'Content-Encoding': compression
-                                });
-
-                                if (compression === 'deflate'){
-                                    fs.stat(`${file}.def`, (err, exists) => {
-                                        if (!err && exists.isFile()){
-                                            fs.createReadStream(`${file}.def`).pipe(res);
-                                        } else {
-                                            // no compressed file yet...
-                                            fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(res);
-                                            fs.createReadStream(file).pipe(zlib.createDeflate()).pipe(fs.createWriteStream(`${file}.def`));
-                                        }
-                                    });
-                                } else {
-                                    fs.stat(`${file}.tgz`, (err, exists) => {
-                                        if (!err && exists.isFile()){
-                                            fs.createReadStream(`${file}.tgz`).pipe(res);
-                                        } else {
-                                            // no compressed file yet...
-                                            fs.createReadStream(file).pipe(zlib.createGzip()).pipe(res);
-                                            fs.createReadStream(file).pipe(zlib.createGzip()).pipe(fs.createWriteStream(`${file}.tgz`));
-                                        }
-                                    });
-                                }
-
-                                events.emit('static:served', pathname);
-
                             } else {
-                                // no compression carry on...
-                                // return with the correct heders for the file type
-                                res.writeHead(200, {
-                                    'Content-Type': mime.lookup(pathname)
-                                    , 'Cache-Control': `maxage=${maxAge}`
-                                    , Expires: new Date(expires + maxAge).toUTCString()
+                                fs.stat(`${file}.tgz`, (errTgz, existsTgz) => {
+                                    if (!errTgz && existsTgz.isFile()){
+                                        fs.createReadStream(`${file}.tgz`).pipe(res);
+                                    } else {
+                                        // no compressed file yet...
+                                        fs.createReadStream(file).pipe(zlib.createGzip())
+                                            .pipe(res);
+
+                                        fs.createReadStream(file).pipe(zlib.createGzip())
+                                            .pipe(fs.createWriteStream(`${file}.tgz`));
+                                    }
                                 });
-                                fs.createReadStream(file).pipe(res);
-                                events.emit('static:served', pathname);
                             }
+
+                            events.emit('static:served', pathname);
+
+                        } else {
+                            // no compression carry on...
+                            // return with the correct heders for the file type
+                            res.writeHead(succesStatus, {
+                                'Content-Type': mime.lookup(pathname)
+                                , 'Cache-Control': `maxage=${maxAge}`
+                                , Expires: new Date(expires + maxAge).toUTCString()
+                            });
+                            fs.createReadStream(file).pipe(res);
+                            events.emit('static:served', pathname);
                         }
                     });
 
@@ -129,7 +140,7 @@ module.exports = (routesJson, config) => {
             events.emit(`route:${simpleRoute}:${method}`, connection);
 
         } else if (path.join(process.cwd(), pathname) === routesPath){
-            res.writeHead(200, {
+            res.writeHead(succesStatus, {
                 'Content-Type': mime.lookup('routes.json')
             });
 

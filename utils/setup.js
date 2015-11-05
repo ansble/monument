@@ -7,8 +7,8 @@ const glob = require('glob')
     , dot = require('dot')
 
     , deleteCompressed = (config) => {
-        //run through and delete all the compressed files in the file system
-        let complete = events.required(['cleanup:compressed:start'], () => {
+        // run through and delete all the compressed files in the file system
+        const complete = events.required([ 'cleanup:compressed:start' ], () => {
             events.emit('setup:compressed');
         });
 
@@ -37,30 +37,30 @@ const glob = require('glob')
     }
 
     , compileTemplates = (config) => {
-        let templatePath = config.templatePath || './templates';
+        const templatePath = config.templatePath || './templates';
 
-        //configure dotjs
+        // configure dotjs
         if (config.dotjs) {
             Object.keys(config.dotjs).forEach((opt) => {
                 dot.templateSettings[opt] = config.dotjs[opt];
             });
         }
 
-        //compile the templates
-        dot.process({path: path.join(process.cwd(), templatePath)});
+        // compile the templates
+        dot.process({ path: path.join(process.cwd(), templatePath) });
 
         events.emit('setup:templates');
     }
 
   , etagSetup = () => {
-      //set up the etag listeners and emitters
+      // set up the etag listeners and emitters
       require('./staticFileEtags');
 
       events.emit('setup:etags');
       console.log('etags setup...');
   };
 
-module.exports  = {
+module.exports = {
     compressed: deleteCompressed
     , templates: compileTemplates
     , etags: etagSetup

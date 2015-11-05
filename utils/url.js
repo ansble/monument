@@ -6,20 +6,20 @@ const url = require('url')
     , tools = require('./tools')
 
     , parse = (urlStr, slashesDenoteHost) => {
-        let urlObject = url.parse(urlStr, true, slashesDenoteHost)
+        const urlObject = url.parse(urlStr, true, slashesDenoteHost)
             , query = urlObject.query
             , not = tools.not
             , isDefined = tools.isDefined
 
-            , tempQuery = Object.keys(urlObject.query).reduce((prev, key) => {
-                const newKey = key.replace(/\[\]$/, '');
+            , tempQuery = Object.keys(urlObject.query).reduce((prevIn, key) => {
+                const newKey = key.replace(/\[\]$/, '')
+                    , prev = prevIn;
 
                 // if our key does not have brackets and the same
                 // key does not already exist on the tempQuery object
                 if (newKey === key && not(isDefined(prev[newKey]))) {
                     prev[newKey] = query[key];
-                }
-                else {
+                } else {
                     prev[newKey] = [].concat(prev[newKey], query[key]);
                 }
 
@@ -27,13 +27,14 @@ const url = require('url')
             }, {});
 
         // filter out undefinded from tempQuery arrays
-        urlObject.query = Object.keys(tempQuery).reduce((prev, key) => {
+        urlObject.query = Object.keys(tempQuery).reduce((prevIn, key) => {
+            const prev = prevIn;
+
             if (Array.isArray(tempQuery[key])){
                 prev[key] = tempQuery[key].filter((element) => {
                     return isDefined(element);
                 });
-            }
-            else {
+            } else {
                 prev[key] = tempQuery[key];
             }
 

@@ -4,13 +4,13 @@
 const assert = require('chai').assert
     , server = require('./index');
 
-let routeObject;
 
 describe('Routing Tests', () => {
+    // let routeObject;
 
-    beforeEach(() => {
-        routeObject = require('../test_stubs/routes_stub.json');
-    });
+    // beforeEach(() => {
+    //     routeObject = require('../test_stubs/routes_stub.json');
+    // });
 
     it('should return a function that starts a server', () => {
         assert.isFunction(server.server);

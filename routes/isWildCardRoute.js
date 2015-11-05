@@ -1,19 +1,20 @@
 'use strict';
 
-const isWildCardRoute = (pathname, method, routesJson) => {
-    const matchedRoutes = Object.keys(routesJson).find((route) => {
-        return !!pathname.match(routesJson[route].regex);
-    });
+const utils = require('../utils')
+    , isWildCardRoute = (pathname, method, routesJson) => {
+        const matchedRoutes = Object.keys(routesJson).find((route) => {
+            return !!pathname.match(routesJson[route].regex);
+        });
 
-    let matchesVerb;
+        let matchesVerb;
 
-    if (matchedRoutes){
-        matchesVerb = routesJson[matchedRoutes].verbs.indexOf(method) !== -1;
-    } else {
-        matchesVerb = false;
-    }
+        if (matchedRoutes){
+            matchesVerb = utils.contains(routesJson[matchedRoutes].verbs, method);
+        } else {
+            matchesVerb = false;
+        }
 
-    return !!(matchedRoutes && matchesVerb);
-};
+        return !!(matchedRoutes && matchesVerb);
+    };
 
 module.exports = isWildCardRoute;

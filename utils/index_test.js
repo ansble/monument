@@ -15,6 +15,7 @@ describe('Utils Tests', () => {
         assert.isFunction(utils.isDefined);
         assert.isFunction(utils.not);
         assert.isFunction(utils.redirect);
+        assert.isFunction(utils.contains);
     });
 
     describe('getCompression tests', () => {

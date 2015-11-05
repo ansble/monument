@@ -34,13 +34,14 @@ describe('Route Handler Tests', () => {
 
         res.statusCode = 0;
         res.headers = {};
-
+        /* eslint-disable no-underscore-dangle */
         res._write = function (chunk, enc, cb) {
             const buffer = Buffer.isBuffer(chunk) ? chunk : new Buffer(chunk, enc);
 
             events.emit('response', buffer.toString());
             cb();
         };
+        /* eslint-enable no-underscore-dangle */
 
         events.off('error:404');
         events.off('static:missing');
@@ -70,7 +71,10 @@ describe('Route Handler Tests', () => {
 
     describe('security headers', () => {
         it('should return x-powered-by only if it is set', (done) => {
-            const tempHandler = router(routeObject, { publicPath: './test_stubs/deletes', security: { poweredBy: 'waffles' } });
+            const tempHandler = router(routeObject, {
+                publicPath: './test_stubs/deletes'
+                , security: { poweredBy: 'waffles' }
+            });
 
             events.once('route:/about:get', (connection) => {
                 assert.isObject(connection.res.headers);
@@ -136,7 +140,7 @@ describe('Route Handler Tests', () => {
         let etag;
 
         beforeEach(() => {
-            etag = '"29-arFKTI61cu/N2F5PiAAbgw"';
+            etag = '"4b-ah1/iPV1wknehHVYGkU4jQ"';
         });
 
         it('should emit 404 event and a mising static event for a non-existant static file in a sub folder of public', (done) => {
@@ -175,11 +179,13 @@ describe('Route Handler Tests', () => {
         });
 
         it('should return a 304 for a valid etag match', (done) => {
+            const unmodStatus = 304;
+
             req.url = '/static/main.js';
             req.headers['if-none-match'] = etag;
 
             res.on('finish', () => {
-                assert.strictEqual(res.statusCode, 304);
+                assert.strictEqual(res.statusCode, unmodStatus);
                 done();
             });
 
@@ -187,12 +193,14 @@ describe('Route Handler Tests', () => {
         });
 
         it('should return just headers if a head request is sent', (done) => {
+            const successStatus = 200;
+
             req.url = '/static/main.js';
             req.method = 'head';
             req.headers['if-none-match'] = '';
 
             res.on('finish', () => {
-                assert.strictEqual(res.statusCode, 200);
+                assert.strictEqual(res.statusCode, successStatus);
                 assert.isObject(res.headers);
                 done();
             });
