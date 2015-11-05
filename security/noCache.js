@@ -1,11 +1,12 @@
 'use strict';
+const cacheControlString = 'private, no-store, no-cache, must-revalidate, proxy-revalidate';
 
 module.exports = (config, resIn) => {
     const res = resIn;
 
     res.noCache = function (etags) {
         this.setHeader('Surrogate-Control', 'no-store');
-        this.setHeader('Cache-Control', 'private, no-store, no-cache, must-revalidate, proxy-revalidate');
+        this.setHeader('Cache-Control', cacheControlString);
         this.setHeader('Pragma', 'no-cache');
         this.setHeader('Expires', '0');
 

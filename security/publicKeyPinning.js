@@ -1,5 +1,8 @@
 'use strict';
-const missingConfigError = new Error('You must provide at least 2 SHA-256s and a maxAge argument to use Public Key Pinning. How To: http://mzl.la/1EnfqBf, http://bit.ly/1WkHcWs Spec: http://bit.ly/1kVy0MR')
+const missingConfigError = new Error(`You must provide at least 2 SHA-256s and a maxAge argument
+    to use Public Key Pinning.
+    How To: http://mzl.la/1EnfqBf, http://bit.ly/1WkHcWs Spec: http://bit.ly/1kVy0MR`)
+
     , isDefined = require('../utils').isDefined
     , not = require('../utils').not
     , shapeCheck = (options) => {

@@ -1,5 +1,7 @@
 'use strict';
 const utils = require('../utils')
+    , reqGuard = 'X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter'
+    , invalidOption = 'X-Frame must be undefined, "DENY", "ALLOW-FROM", or "SAMEORIGIN"'
 
     , allowedOptions = [ 'DENY', 'ALLOW-FROM', 'SAMEORIGIN' ]
 
@@ -36,7 +38,7 @@ const utils = require('../utils')
 
     , setHeader = (header, domain) => {
         const allowFromError = () => {
-            throw new Error('X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter');
+            throw new Error(reqGuard);
         };
 
         let headerValue = '';
@@ -57,7 +59,7 @@ const utils = require('../utils')
 module.exports = (config, res) => {
     const options = config.security.frameguard || {}
         , typeError = () => {
-            throw new Error('X-Frame must be undefined, "DENY", "ALLOW-FROM", or "SAMEORIGIN"');
+            throw new Error(invalidOption);
         };
 
 
