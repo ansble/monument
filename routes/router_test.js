@@ -143,7 +143,7 @@ describe('Route Handler Tests', () => {
             etag = '"4b-ah1/iPV1wknehHVYGkU4jQ"';
         });
 
-        it('should emit 404 event and a mising static event for a non-existant static file in a sub folder of public', (done) => {
+        it('should emit 404 & missing static events for missing file in sub of public', (done) => {
             req.url = '/static/somefile.js';
 
             events.required([ 'error:404', 'static:missing' ], (input) => {
