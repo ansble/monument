@@ -3,7 +3,10 @@
 
 const assert = require('chai').assert
     , redirect = require('./redirect')
-    , events = require('harken');
+    , events = require('harken')
+
+    , defaultRedirectStatus = 307
+    , status302 = 302;
 
 let fakeRes
     , fakeOut
@@ -73,27 +76,27 @@ describe('Redirect Tests', () => {
         fakeRes.redirect('www.google.com');
         assert.strictEqual(fakeOut, '307 Temporary Redirect to www.google.com');
         assert.strictEqual(fakeHeaders.location, 'www.google.com');
-        assert.strictEqual(fakeRes.statusCode, 307);
+        assert.strictEqual(fakeRes.statusCode, defaultRedirectStatus);
     });
 
     it('should allow a statusCode to be passed in', () => {
-        fakeRes.redirect('www.google.com', 302);
+        fakeRes.redirect('www.google.com', status302);
         assert.strictEqual(fakeOut, '302 Found to www.google.com');
         assert.strictEqual(fakeHeaders.location, 'www.google.com');
-        assert.strictEqual(fakeRes.statusCode, 302);
+        assert.strictEqual(fakeRes.statusCode, status302);
     });
 
     it('should return an empty body if \'HEAD\' request and specified type', () => {
-        fakeHead.redirect('www.google.com', 302);
+        fakeHead.redirect('www.google.com', status302);
         assert.strictEqual(fakeOut, undefined);
         assert.strictEqual(fakeHeaders.location, 'www.google.com');
-        assert.strictEqual(fakeHead.statusCode, 302);
+        assert.strictEqual(fakeHead.statusCode, status302);
     });
 
     it('should return an empty body if \'HEAD\' request and no type', () => {
         fakeHead.redirect('www.google.com');
         assert.strictEqual(fakeOut, undefined);
         assert.strictEqual(fakeHeaders.location, 'www.google.com');
-        assert.strictEqual(fakeHead.statusCode, 307);
+        assert.strictEqual(fakeHead.statusCode, defaultRedirectStatus);
     });
 });

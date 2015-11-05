@@ -75,7 +75,7 @@ module.exports = (routesJson, config) => {
                             });
 
                             res.end();
-                        } else if (compression !== 'none'){
+                        } else if (utils.not(compression === 'none')){
                             // we have compression!
                             res.writeHead(succesStatus, {
                                 'Content-Type': mime.lookup(pathname)

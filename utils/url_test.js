@@ -53,7 +53,8 @@ describe('parseUrl', () => {
             const queryStr = '?stuff[]=money'
                 , query = parseUrl(urlStr + queryStr).query
                 , definedError = '"stuff[]" should not be defined on the query object'
-                , arrayError = '"stuff" should be an array even though only one value was present, because of the deliberate square brackets';
+                , arrayError = `"stuff" should be an array even though only one value was present,
+                because of the deliberate square brackets`;
 
             assert.isDefined(query.stuff, '"stuff" should be defined on the query object');
             assert.isArray(query.stuff, arrayError);
@@ -104,12 +105,14 @@ describe('parseUrl', () => {
                     'one,two,three'
                     , 'four,five,six'
                     , 'seven,eight,nine,ten' ])
-                , definedError = '"stuff[]" should not be defined on the query object';
+                , definedError = '"stuff[]" should not be defined on the query object'
+
+                , stuffLength = 3;
 
             assert.isDefined(query.stuff, '"stuff" should be defined on the query object');
             assert.isArray(query.stuff, '"stuff" should be an array');
             assert.isUndefined(query['stuff[]'], definedError);
-            assert.lengthOf(query.stuff, 3, `should be a three element array: ${query}`);
+            assert.lengthOf(query.stuff, stuffLength, `should be a three element array: ${query}`);
             assert.equal(jsonStuff, correctJson, 'query param value of "stuff" got dorked');
         });
     });

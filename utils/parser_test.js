@@ -5,20 +5,23 @@ const assert = require('chai').assert
     , parser = require('./parser')
     , Readable = require('stream').Readable
     , fs = require('fs')
-    , events = require('harken');
+    , events = require('harken')
+    , path = require('path');
 
 let stream
     , jsonBody
     , formDataBody
     , urlBody
-    , errorBody;
+    , errorBody
+    , fileToRead;
 
 describe('Parser Tests', () => {
 
     beforeEach(() => {
         stream = new Readable();
         jsonBody = { name: 'Tomas Voekler' };
-        formDataBody = fs.createReadStream(process.cwd() + '/test_stubs/formDataBody.txt');
+        fileToRead = path.join(process.cwd(), '/test_stubs/formDataBody.txt');
+        formDataBody = fs.createReadStream(fileToRead);
         urlBody = 'name=daniel&title=lord+of+the+actual+internet1';
         errorBody = '{name: "Tomas Voekler"';
     });
@@ -100,7 +103,7 @@ describe('Parser Tests', () => {
 
     });
 
-    it('should raise error:parse which contains an error message and return null to the parse function when an error occurs', (done) => {
+    it('should handle parse errors correctly when they occur', (done) => {
         stream.push(errorBody);
         stream.push(null);
         stream.headers = {

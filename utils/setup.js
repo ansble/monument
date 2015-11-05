@@ -9,25 +9,31 @@ const glob = require('glob')
     , deleteCompressed = (config) => {
         // run through and delete all the compressed files in the file system
         const complete = events.required([ 'cleanup:compressed:start' ], () => {
-            events.emit('setup:compressed');
-        });
+                events.emit('setup:compressed');
+            })
+            , tgzPath = `${config.publicPath}/**/*.tgz`
+            , defPath = `${config.publicPath}/**/*.def`;
 
-        glob(path.join(process.cwd(), config.publicPath + '/**/*.tgz'), (er, files) => {
+        glob(path.join(process.cwd(), tgzPath), (er, files) => {
             files.forEach((file) => {
-                complete.add('setup:delete:' + file);
+                const fileEvent = `setup:delete:${file}`;
+
+                complete.add(fileEvent);
 
                 fs.unlink(file, () => {
-                    events.emit('setup:delete:' + file);
+                    events.emit(fileEvent);
                 });
             });
         });
 
-        glob(path.join(process.cwd(), config.publicPath + '/**/*.def'), (er, files) => {
+        glob(path.join(process.cwd(), defPath), (er, files) => {
             files.forEach((file) => {
-                complete.add('setup:delete:' + file);
+                const fileEvent = `setup:delete:${file}`;
+
+                complete.add(fileEvent);
 
                 fs.unlink(file, () => {
-                    events.emit('setup:delete:' + file);
+                    events.emit(fileEvent);
                 });
             });
         });

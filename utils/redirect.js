@@ -3,6 +3,8 @@
 
 const statusCodes = require('http').STATUS_CODES
     , events = require('harken')
+    , defaultRedirectStatus = 307
+
     , redirect = (req) => {
         return function (url, status) {
             if (typeof url === 'undefined') {
@@ -11,7 +13,7 @@ const statusCodes = require('http').STATUS_CODES
             }
 
             this.setHeader('location', url);
-            this.statusCode = status || 307;
+            this.statusCode = status || defaultRedirectStatus;
 
             if (req.method === 'HEAD') {
                 this.end();

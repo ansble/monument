@@ -108,19 +108,35 @@ describe('Send Tests', () => {
     });
 
     it('should return deflate compressed results if deflate header is sent', () => {
+        let outString
+            , compareString;
+
         fakeRes.sendDeflate(obj);
-        assert.strictEqual(JSON.stringify(fakeOut), JSON.stringify(zlib.deflateSync(JSON.stringify(obj))));
+
+        outString = JSON.stringify(fakeOut);
+        compareString = JSON.stringify(zlib.deflateSync(JSON.stringify(obj)));
+
+        assert.strictEqual(outString, compareString);
         assert.strictEqual(fakeHeaders['Content-Encoding'], 'deflate');
     });
 
     it('should return gzip compressed results if gzip header is sent', () => {
+        let outString
+            , compareString;
+
         fakeRes.sendGzip(obj);
-        assert.strictEqual(JSON.stringify(fakeOut), JSON.stringify(zlib.gzipSync(JSON.stringify(obj))));
+
+        outString = JSON.stringify(fakeOut);
+        compareString = JSON.stringify(zlib.gzipSync(JSON.stringify(obj)));
+
+        assert.strictEqual(outString, compareString);
         assert.strictEqual(fakeHeaders['Content-Encoding'], 'gzip');
     });
 
     it('should return a 304 if the content has not changed', () => {
+        const notModifiedStatus = 304;
+
         fakeRes.sendEtag(obj);
-        assert.strictEqual(fakeRes.statusCode, 304);
+        assert.strictEqual(fakeRes.statusCode, notModifiedStatus);
     });
 });

@@ -7,6 +7,10 @@ const etag = require('etag')
     , not = tools.not
     , isDefined = tools.isDefined
 
+    , etagMatch = (ifNoneMatch, etagIn) => {
+        return isDefined(ifNoneMatch) && ifNoneMatch === etagIn;
+    }
+
     , send = (req, config) => {
         // TODO: think about making this a constructor that returns the
         //  modified response object instead of being added as it is
@@ -50,7 +54,7 @@ const etag = require('etag')
 
             reqEtag = etag(data);
 
-            if (isDefined(req.headers['if-none-match']) && req.headers['if-none-match'] === reqEtag) {
+            if (etagMatch(req.headers['if-none-match'], reqEtag)) {
                 that.statusCode = 304;
                 that.end();
             } else {

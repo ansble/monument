@@ -8,10 +8,12 @@ const getRawBody = require('raw-body')
     , parseForm = require('./parseForm')
 
     , parser = (connection, callback, scope) => {// parse out the body
+        const contentType = connection.req.headers['content-type'];
+
         let encoding = 'UTF-8';
 
-        if (tools.isDefined(connection.req.headers['content-type'])){
-            encoding = typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8';
+        if (tools.isDefined(contentType)){
+            encoding = typer.parse(contentType).parameters.charset || 'UTF-8';
         }
 
         getRawBody(connection.req, {
@@ -23,16 +25,17 @@ const getRawBody = require('raw-body')
             if (err){
                 events.emit('error:parse', err);
                 callback.apply(scope, [ null, err ]);
+                return;
             }
 
-            if (connection.req.headers['content-type'] === 'application/json'){
+            if (contentType === 'application/json'){
                 try {
                     callback.apply(scope, [ JSON.parse(string) ]);
                 } catch (e) {
                     events.emit('error:parse', e);
                     callback.apply(scope, [ null, e ]);
                 }
-            } else if (connection.req.headers['content-type'] === 'application/x-www-form-urlencoded'){
+            } else if (contentType === 'application/x-www-form-urlencoded'){
                 callback.apply(scope, [ querystring.parse(string) ]);
             } else {
                 try {
