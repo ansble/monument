@@ -14,7 +14,6 @@ describe('parseForm Tests', () => {
     });
 
     it('should parse a form string out correctly', () => {
-        console.log(validString);
         assert.isObject(parseForm(validString));
         assert.strictEqual(parseForm(validString).name, 'daniel');
         assert.strictEqual(parseForm(validString).title, 'lord of the interwebz');

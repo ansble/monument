@@ -65,6 +65,8 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
     });
 
     it('should return a header if correct config passed in', () => {
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
+
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
@@ -72,10 +74,12 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
         publicKeyPinning(config, res, true);
 
-        assert.strictEqual(res.headers['Public-Key-Pins'], 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100');
+        assert.strictEqual(res.headers['Public-Key-Pins'], expected);
     });
 
     it('should return a header if correct config + includeSubdomains passed in', () => {
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; includeSubdomains';
+
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
@@ -84,10 +88,12 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
         publicKeyPinning(config, res, true);
 
-        assert.strictEqual(res.headers['Public-Key-Pins'], 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; includeSubdomains');
+        assert.strictEqual(res.headers['Public-Key-Pins'], expected);
     });
 
     it('should return a header if correct config + includeSubdomains = false passed in', () => {
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
+
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
@@ -96,10 +102,12 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
 
         publicKeyPinning(config, res, true);
 
-        assert.strictEqual(res.headers['Public-Key-Pins'], 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100');
+        assert.strictEqual(res.headers['Public-Key-Pins'], expected);
     });
 
     it('should return a header if correct config + reportUri passed in', () => {
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; report-uri="http://ansble.com"';
+
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
@@ -109,10 +117,12 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
         publicKeyPinning(config, res, true);
 
         assert.isUndefined(res.headers['Public-Key-Pins']);
-        assert.strictEqual(res.headers['Public-Key-Pins-Report-Only'], 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; report-uri="http://ansble.com"');
+        assert.strictEqual(res.headers['Public-Key-Pins-Report-Only'], expected);
     });
 
     it('should return a header if correct config + reportUri and reportOnly is passed in', () => {
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; report-uri="http://ansble.com"';
+
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
@@ -123,10 +133,12 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
         publicKeyPinning(config, res, true);
 
         assert.isUndefined(res.headers['Public-Key-Pins-Report-Only']);
-        assert.strictEqual(res.headers['Public-Key-Pins'], 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; report-uri="http://ansble.com"');
+        assert.strictEqual(res.headers['Public-Key-Pins'], expected);
     });
 
     it('should return a header if correct config + reportUri = false passed in', () => {
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
+
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
             , maxAge: 100
@@ -136,7 +148,7 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
         publicKeyPinning(config, res, true);
 
         assert.isUndefined(res.headers['Public-Key-Pins-Report-Only']);
-        assert.strictEqual(res.headers['Public-Key-Pins'], 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100');
+        assert.strictEqual(res.headers['Public-Key-Pins'], expected);
     });
 
     it('should return res when executed', () => {

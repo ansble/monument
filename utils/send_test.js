@@ -4,7 +4,9 @@
 const assert = require('chai').assert
     , send = require('./send')
     , zlib = require('zlib')
-    , etag = require('etag');
+    , etag = require('etag')
+
+    , compressTimeout = 10;
 
 let fakeRes
     , fakeOut
@@ -107,30 +109,36 @@ describe('Send Tests', () => {
         assert.strictEqual(fakeOut, JSON.stringify(true));
     });
 
-    it('should return deflate compressed results if deflate header is sent', () => {
+    it('should return deflate compressed results if deflate header is sent', (done) => {
         let outString
             , compareString;
 
         fakeRes.sendDeflate(obj);
 
-        outString = JSON.stringify(fakeOut);
-        compareString = JSON.stringify(zlib.deflateSync(JSON.stringify(obj)));
+        setTimeout(() => {
+            outString = JSON.stringify(fakeOut);
+            compareString = JSON.stringify(zlib.deflateSync(JSON.stringify(obj)));
 
-        assert.strictEqual(outString, compareString);
-        assert.strictEqual(fakeHeaders['Content-Encoding'], 'deflate');
+            assert.strictEqual(outString, compareString);
+            assert.strictEqual(fakeHeaders['Content-Encoding'], 'deflate');
+            done();
+        }, compressTimeout);
     });
 
-    it('should return gzip compressed results if gzip header is sent', () => {
+    it('should return gzip compressed results if gzip header is sent', (done) => {
         let outString
             , compareString;
 
         fakeRes.sendGzip(obj);
 
-        outString = JSON.stringify(fakeOut);
-        compareString = JSON.stringify(zlib.gzipSync(JSON.stringify(obj)));
+        setTimeout(() => {
+            outString = JSON.stringify(fakeOut);
+            compareString = JSON.stringify(zlib.gzipSync(JSON.stringify(obj)));
 
-        assert.strictEqual(outString, compareString);
-        assert.strictEqual(fakeHeaders['Content-Encoding'], 'gzip');
+            assert.strictEqual(outString, compareString);
+            assert.strictEqual(fakeHeaders['Content-Encoding'], 'gzip');
+            done();
+        }, compressTimeout);
     });
 
     it('should return a 304 if the content has not changed', () => {

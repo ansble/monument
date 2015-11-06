@@ -11,6 +11,42 @@ const etag = require('etag')
         return isDefined(ifNoneMatch) && ifNoneMatch === etagIn;
     }
 
+    , setContentTypeHeaders = (data, isBuffer, response) => {
+        const type = typeof data;
+
+        if (type === 'undefined') {
+            response.setHeader('Content-Type', 'text/plain');
+        } else if (type === 'string') {
+            response.setHeader('Content-Type', 'text/html');
+        } else if (type === 'object' && not(isBuffer)) {
+            response.setHeader('Content-Type', 'application/json');
+        } else if (type === 'object') {
+            response.setHeader('Content-Type', 'text/html');
+        }
+
+        return response;
+    }
+
+    , prepareData = (data, isBuffer) => {
+        const type = typeof data;
+
+        if (type === 'undefined') {
+            return '';
+        } else if (type === 'object' && isBuffer) {
+            return data.toString();
+        } else if (type === 'string') {
+            return data;
+        } else {
+            return JSON.stringify(data);
+        }
+    }
+
+    , setCompressionHeader = (compression, response) => {
+        if (compression !== 'none') {
+            response.setHeader('Content-Encoding', compression);
+        }
+    }
+
     , send = (req, config) => {
         // TODO: think about making this a constructor that returns the
         //  modified response object instead of being added as it is
@@ -22,54 +58,27 @@ const etag = require('etag')
             /* eslint-enable no-invalid-this */
                 , isBuffer = Buffer.isBuffer(dataIn)
                 , encoding = 'utf8'
-                , compression = getCompression(req.headers['accept-encoding'], config);
+                , compression = getCompression(req.headers['accept-encoding'], config)
+                , data = prepareData(dataIn, isBuffer)
+                , reqEtag = etag(data);
 
-            let reqEtag
-                , data = dataIn
-                , type = typeof data;
-
-            if (not(isDefined(data))) {
-              // handle empty bodies... as strings
-                that.setHeader('Content-Type', 'text/plain');
-                data = '';
-                type = 'string';
-
-            } else if (type === 'string') {
-                that.setHeader('Content-Type', 'text/html');
-
-            } else if (typeof data === 'object') {
-                // this is JSON send it and end it
-                that.setHeader('Content-Type', 'application/json');
-
-                if (not(isBuffer)) {
-                    data = JSON.stringify(data);
-
-                } else {
-                    that.setHeader('Content-Type', 'text/html');
-                    data = data.toString();
-                }
-            } else {
-                data = JSON.stringify(data);
-            }
-
-            reqEtag = etag(data);
+            setContentTypeHeaders(dataIn, isBuffer, that);
 
             if (etagMatch(req.headers['if-none-match'], reqEtag)) {
                 that.statusCode = 304;
                 that.end();
             } else {
                 that.setHeader('ETag', reqEtag);
-
-                if (compression !== 'none') {
-                    that.setHeader('Content-Encoding', compression);
-                }
+                setCompressionHeader(compression, that);
 
                 if (compression === 'deflate') {
-                    // TODO: think about making this non sync
-                    that.end(zlib.deflateSync(data), encoding);
+                    zlib.deflate(data, (err, result) => {
+                        that.end(result, encoding);
+                    });
                 } else if (compression === 'gzip') {
-                    // TODO: think about making this non sync
-                    that.end(zlib.gzipSync(data), encoding);
+                    zlib.gzip(data, (err, result) => {
+                        that.end(result, encoding);
+                    });
                 } else {
                     that.end(data, encoding);
                 }

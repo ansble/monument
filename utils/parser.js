@@ -4,7 +4,7 @@ const getRawBody = require('raw-body')
     , typer = require('media-typer')
     , querystring = require('querystring')
     , events = require('harken')
-    , tools = require('./tools')
+    , isDefined = require('./tools').isDefined
     , parseForm = require('./parseForm')
 
     , parser = (connection, callback, scope) => {// parse out the body
@@ -12,7 +12,7 @@ const getRawBody = require('raw-body')
 
         let encoding = 'UTF-8';
 
-        if (tools.isDefined(contentType)){
+        if (isDefined(contentType)){
             encoding = typer.parse(contentType).parameters.charset || 'UTF-8';
         }
 
@@ -28,19 +28,18 @@ const getRawBody = require('raw-body')
                 return;
             }
 
-            if (contentType === 'application/json'){
-                try {
-                    callback.apply(scope, [ JSON.parse(string) ]);
-                } catch (e) {
+            if (contentType === 'application/x-www-form-urlencoded'){
+                callback.apply(scope, [ querystring.parse(string) ]);
+                return;
+            }
+
+            try {
+                callback.apply(scope, [ JSON.parse(string) ]);
+            } catch (e) {
+                if (contentType === 'application/json') {
                     events.emit('error:parse', e);
                     callback.apply(scope, [ null, e ]);
-                }
-            } else if (contentType === 'application/x-www-form-urlencoded'){
-                callback.apply(scope, [ querystring.parse(string) ]);
-            } else {
-                try {
-                    callback.apply(scope, [ JSON.parse(string) ]);
-                } catch (e) {
+                } else {
                     callback.apply(scope, [ parseForm(string) ]);
                 }
             }
