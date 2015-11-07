@@ -1,95 +1,95 @@
-var config = require('./config');
-var shallowCopy = require('./shallow-copy');
-
-var SET_NOTHING = { headers: [] };
-
-var handlers = {};
+'use strict';
+const config = require('./contentSecurityPolicyConfig')
+    , shallowCopy = (directives) => {
+        return JSON.parse(JSON.stringify(directives));
+    }
+    , SET_NOTHING = { headers: [] }
+    , handlers = {};
 
 handlers.default = function () {
     return { headers: config.allHeaders };
 };
 
 handlers.IE = function (browser) {
-    var header = browser.version < 12 ? 'X-Content-Security-Policy' : 'Content-Security-Policy';
+    const header = browser.version < 12 ? 'X-Content-Security-Policy' : 'Content-Security-Policy';
+
     return { headers: [ header ] };
 };
 
 handlers.Firefox = function (browser, directives) {
-
-    var version = parseFloat(browser.version);
+    const version = parseFloat(browser.version)
+        , policy = shallowCopy(directives);
 
     if (version >= 23) {
         return { headers: [ 'Content-Security-Policy' ] };
     } else if (version >= 4 && version < 23) {
+        policy.defaultSrc = policy.defaultSrc || [ '*' ];
 
-      var policy = shallowCopy(directives);
+        Object.keys(policy).forEach((key) => {
+            const value = policy[key];
 
-      policy.defaultSrc = policy.defaultSrc || [ '*' ];
+            let index;
 
-      Object.keys(policy).forEach(function (key) {
-          var value = policy[key];
-          if (key === 'connectSrc') {
-            policy.xhrSrc = value;
-        } else if (key === 'defaultSrc') {
-          if (version < 5) {
-              policy.allow = value;
-          } else {
-              policy.defaultSrc = value;
-          }
-      } else if (key !== 'sandbox') {
-          policy[key] = value;
-      }
+            if (key === 'connectSrc') {
+                policy.xhrSrc = value;
+            } else if (key === 'defaultSrc') {
+                if (version < 5) {
+                    policy.allow = value;
+                } else {
+                    policy.defaultSrc = value;
+                }
+            } else if (key !== 'sandbox') {
+                policy[key] = value;
+            }
 
-          var index;
-          if ((index = policy[key].indexOf('\'unsafe-inline\'')) !== -1) {
-            if (key === 'scriptSrc') {
-              policy[key][index] = '\'inline-script\'';
-          } else {
-              policy[key].splice(index, 1);
-          }
-        }
-          if ((index = policy[key].indexOf('\'unsafe-eval\'')) !== -1) {
-            if (key === 'scriptSrc') {
-              policy[key][index] = '\'eval-script\'';
-          } else {
-              policy[key].splice(index, 1);
-          }
-        }
-      });
+            if ((index = policy[key].indexOf('\'unsafe-inline\'')) !== -1) {
+                if (key === 'scriptSrc') {
+                    policy[key][index] = '\'inline-script\'';
+                } else {
+                    policy[key].splice(index, 1);
+                }
+            }
 
-      return {
-          headers: [ 'X-Content-Security-Policy' ],
-          directives: policy
-      };
+            if ((index = policy[key].indexOf('\'unsafe-eval\'')) !== -1) {
+                if (key === 'scriptSrc') {
+                    policy[key][index] = '\'eval-script\'';
+                } else {
+                    policy[key].splice(index, 1);
+                }
+            }
+        });
 
-  } else {
-
-      return SET_NOTHING;
-
-  }
-
+        return {
+            headers: [ 'X-Content-Security-Policy' ]
+            , directives: policy
+        };
+    } else {
+        return SET_NOTHING;
+    }
 };
 
 handlers.Chrome = function (browser) {
-    var version = parseFloat(browser.version);
+    const version = parseFloat(browser.version);
+
     if (version >= 14 && version < 25) {
         return { headers: [ 'X-WebKit-CSP' ] };
     } else if (version >= 25) {
-      return { headers: [ 'Content-Security-Policy' ] };
-  } else {
-      return SET_NOTHING;
-  }
+        return { headers: [ 'Content-Security-Policy' ] };
+    } else {
+        return SET_NOTHING;
+    }
 };
 
 handlers.Safari = function (browser, directives, options) {
-    var version = parseFloat(browser.version);
+    const version = parseFloat(browser.version);
+
     if (version >= 7) {
         return { headers: [ 'Content-Security-Policy' ] };
     } else if (version >= 6 || options.safari5) {
-      return { headers: [ 'X-WebKit-CSP' ] };
-  } else {
-      return SET_NOTHING;
-  }
+        return { headers: [ 'X-WebKit-CSP' ] };
+    } else {
+        return SET_NOTHING;
+    }
 };
 
 handlers.Opera = function (browser) {
@@ -110,15 +110,17 @@ handlers['Android Browser'] = function (browser, directives, options) {
 
 handlers['Chrome Mobile'] = function (browser, directives) {
     if (browser.os.family === 'iOS') {
-        var result = { headers: [ 'Content-Security-Policy' ] };
-        var connect = directives.connectSrc || directives.connectSrc;
+        const result = { headers: [ 'Content-Security-Policy' ] }
+            , connect = directives.connectSrc || directives.connectSrc;
+
         if (!connect) {
-          result.directives = shallowCopy(directives);
-          result.directives.connectSrc = [ '\'self\'' ];
-      } else if (connect.indexOf('\'self\'') === -1) {
-        result.directives = shallowCopy(directives);
-        result.directives.connectSrc.push('\'self\'');
-    }
+            result.directives = shallowCopy(directives);
+            result.directives.connectSrc = [ '\'self\'' ];
+        } else if (connect.indexOf('\'self\'') === -1) {
+            result.directives = shallowCopy(directives);
+            result.directives.connectSrc.push('\'self\'');
+        }
+
         return result;
     } else {
         return handlers['Android Browser'].apply(this, arguments);
