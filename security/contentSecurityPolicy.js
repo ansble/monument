@@ -8,7 +8,7 @@ const platform = require('platform')
 
     , contains = require('../utils').contains
 
-    , config = require('./contentSecurityPolicyConfig')
+    , policyConfig = require('./contentSecurityPolicyConfig')
     , browserHandlers = require('./contentSecurityPolicyBrowserHandlers.js')
     , pick = require('lodash.pick')
 
@@ -18,7 +18,7 @@ const platform = require('platform')
         }
 
         Object.keys(options).forEach((key) => {
-            const value = options[key];
+            let value = options[key];
 
             if (isString(value)) {
                 value = value.trim().split(/\s+/);
@@ -26,7 +26,7 @@ const platform = require('platform')
                 return;
             }
 
-            config.mustBeQuoted.forEach((mustBeQuoted) => {
+            policyConfig.mustBeQuoted.forEach((mustBeQuoted) => {
                 if (contains(value, mustBeQuoted)) {
                     throw new Error(`${mustBeQuoted} must be quoted.`);
                 }
@@ -34,40 +34,35 @@ const platform = require('platform')
         });
     };
 
-module.exports = (passedOptions) => {
-    const options = passedOptions || { defaultSrc: `'self'` };
+module.exports = (config, req, res) => {
+    const settings = config.security.contentSecurity || { defaultSrc: `'self'` }
+        , browser = platform.parse(req.headers['User-Agent'])
+        , handler = browserHandlers[browser.name] || browserHandlers.default
+        , directives = pick(settings, policyConfig.supportedDirectives)
+        , headerData = handler(browser, directives, settings);
 
-    let directives;
+    let policyString;
 
-    checkOptions(options);
-    directives = pick(options, config.supportedDirectives);
+    checkOptions(settings);
 
-    return (req, res) => {
-        const browser = platform.parse(req.headers['user-agent'])
-            , browserHandler = browserHandlers[browser.name] || browserHandlers.default
-            , headerData = browserHandler(browser, directives, options);
+    if (settings.setAllHeaders) {
+        headerData.headers = policyConfig.allHeaders;
+    }
 
-        let policyString;
+    // console.log(headerData, directives, settings);
 
-        if (options.setAllHeaders) {
-            headerData.headers = config.allHeaders;
+    if (headerData.headers.length) {
+        policyString = cspBuilder({ directives: headerData.directives || directives });
+    }
+
+    headerData.headers.forEach((header) => {
+        let headerName = header;
+
+        if (settings.reportOnly) {
+            headerName += '-Report-Only';
         }
+        res.setHeader(headerName, policyString);
+    });
 
-        headerData.directives = headerData.directives || directives;
-
-        if (headerData.headers.length) {
-            policyString = cspBuilder({ directives: headerData.directives });
-        }
-
-        headerData.headers.forEach((header) => {
-            let headerName = header;
-
-            if (options.reportOnly) {
-                headerName += '-Report-Only';
-            }
-            res.setHeader(headerName, policyString);
-        });
-
-        return res;
-    };
+    return res;
 };
