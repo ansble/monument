@@ -1,8 +1,18 @@
 'use strict';
-const IE9 = 9;
+const IE9 = 9
+    , platform = require('platform')
+
+    , isOldIE = (browser) => {
+        return browser.name === 'IE' && parseFloat(browser.version) < IE9;
+    }
+
+    , getUserAgent = (req) => {
+        return req.headers['User-Agent'] || req.headers['user-agent'] || req.headers['USER-AGENT'];
+    };
 
 module.exports = (config, res, req) => {
-    const matches = /msie\s*(\d+)/i.exec(req.headers['user-agent']);
+    const header = getUserAgent(req)
+        , browser = platform.parse(header);
 
     let value = '';
 
@@ -17,10 +27,10 @@ module.exports = (config, res, req) => {
         //  there. For everything else it is set.
         //
         // This defaults to being on
-        if (!matches || parseFloat(matches[1]) >= IE9) {
-            value = '1; mode=block';
-        } else {
+        if (isOldIE(browser)) {
             value = '0';
+        } else {
+            value = '1; mode=block';
         }
 
         res.setHeader('X-XSS-Protection', value);
