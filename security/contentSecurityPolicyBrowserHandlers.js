@@ -42,17 +42,17 @@ handlers.Firefox = function (browser, directives) {
                 policy[key] = value;
             }
 
-            if ((index = policy[key].indexOf('\'unsafe-inline\'')) !== -1) {
+            if ((index = policy[key].indexOf(`'unsafe-inline'`)) !== -1) {
                 if (key === 'scriptSrc') {
-                    policy[key][index] = '\'inline-script\'';
+                    policy[key][index] = `'inline-script'`;
                 } else {
                     policy[key].splice(index, 1);
                 }
             }
 
-            if ((index = policy[key].indexOf('\'unsafe-eval\'')) !== -1) {
+            if ((index = policy[key].indexOf(`'unsafe-eval'`)) !== -1) {
                 if (key === 'scriptSrc') {
-                    policy[key][index] = '\'eval-script\'';
+                    policy[key][index] = `'eval-script'`;
                 } else {
                     policy[key].splice(index, 1);
                 }
@@ -115,10 +115,10 @@ handlers['Chrome Mobile'] = function (browser, directives) {
 
         if (!connect) {
             result.directives = shallowCopy(directives);
-            result.directives.connectSrc = [ '\'self\'' ];
-        } else if (connect.indexOf('\'self\'') === -1) {
+            result.directives.connectSrc = [ `'self'` ];
+        } else if (connect.indexOf(`'self'`) === -1) {
             result.directives = shallowCopy(directives);
-            result.directives.connectSrc.push('\'self\'');
+            result.directives.connectSrc.push(`'self'`);
         }
 
         return result;

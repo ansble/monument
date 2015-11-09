@@ -32,12 +32,20 @@ const platform = require('platform')
                 }
             });
         });
+    }
+
+    , getSettings = (settings) => {
+        return settings || { defaultSrc: `'self'` };
+    }
+
+    , getHandler = (browser) => {
+        return browserHandlers[browser.name] || browserHandlers.default;
     };
 
 module.exports = (config, req, res) => {
-    const settings = config.security.contentSecurity || { defaultSrc: `'self'` }
+    const settings = getSettings(config.security.contentSecurity)
         , browser = platform.parse(req.headers['User-Agent'])
-        , handler = browserHandlers[browser.name] || browserHandlers.default
+        , handler = getHandler(browser)
         , directives = pick(settings, policyConfig.supportedDirectives)
         , headerData = handler(browser, directives, settings);
 
@@ -48,8 +56,6 @@ module.exports = (config, req, res) => {
     if (settings.setAllHeaders) {
         headerData.headers = policyConfig.allHeaders;
     }
-
-    // console.log(headerData, directives, settings);
 
     if (headerData.headers.length) {
         policyString = cspBuilder({ directives: headerData.directives || directives });

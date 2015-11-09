@@ -9,7 +9,7 @@ const assert = require('chai').assert
         baseUri: '*'
         , childSrc: [ 'child.com' ]
         , connectSrc: [ 'connect.com' ]
-        , defaultSrc: [ '\'self\'' ]
+        , defaultSrc: [ `'self'` ]
         , fontSrc: [ 'font.com' ]
         , formAction: [ 'formaction.com' ]
         , frameAncestors: [ 'frameancestor.com' ]
@@ -21,18 +21,18 @@ const assert = require('chai').assert
         , pluginTypes: [ 'application/x-shockwave-flash' ]
         , reportUri: '/report-violation'
         , sandbox: []
-        , scriptSrc: [ '\'unsafe-eval\'', 'scripts.com' ]
-        , styleSrc: [ 'styles.com', '\'unsafe-inline\'' ]
+        , scriptSrc: [ `'unsafe-eval'`, 'scripts.com' ]
+        , styleSrc: [ 'styles.com', `'unsafe-inline'` ]
         , upgradeInsecureRequests: ''
     }
     , EXPECTED_POLICY = [
         'base-uri *; child-src child.com; connect-src connect.com; default-src '
-        , '\'self\'; font-src font.com; form-action formaction.com; frame-ancestors '
+        , `'self'; font-src font.com; form-action formaction.com; frame-ancestors `
         , 'frameancestor.com; frame-src frame.com; img-src data: img.com; '
         , 'manifest-src manifest.com; media-src media.com; object-src object.com; '
         , 'plugin-types application/x-shockwave-flash; report-uri /report-violation; '
-        , 'sandbox; script-src \'unsafe-eval\' scripts.com; style-src styles.com '
-        , '\'unsafe-inline\'; upgrade-insecure-requests'
+        , `sandbox; script-src 'unsafe-eval' scripts.com; style-src styles.com `
+        , `'unsafe-inline'; upgrade-insecure-requests`
     ].join('')
     , AGENTS = require('../test_stubs/userAgents');
 
@@ -222,10 +222,30 @@ describe('content security policy', () => {
         assert.include(res.headers[header], 'xhr-src connect.com');
     });
 
+    it('sets the header properly for Firefox 4.0', () => {
+        const header = 'X-Content-Security-Policy';
+
+        config.security.contentSecurity = POLICY;
+        req.headers['User-Agent'] = AGENTS['Firefox 4.0b8'].string;
+
+        csp(config, req, res);
+
+        // assert.strictEqual(res.headers[header], EXPECTED_POLICY);
+        assert.include(res.headers[header], `'eval-script' scripts.com`);
+        assert.include(res.headers[header], 'style-src styles.com;');
+        assert.include(res.headers[header], 'xhr-src connect.com;');
+        assert.include(res.headers[header], `allow 'self'`);
+
+    });
+
     [
         'Safari 4.1'
         , 'Safari 5.1 on OS X'
         , 'Safari 5.1 on Windows Server 2008'
+        , 'Chrome 13'
+        , 'Firefox 3'
+        , 'Android Browser 4.0.3'
+        , 'Opera 12.16'
     ].forEach((browser) => {
         it(`does not set the property for ${browser} by default`, () => {
             config.security.contentSecurity = POLICY;
