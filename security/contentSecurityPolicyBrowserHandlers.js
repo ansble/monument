@@ -1,39 +1,75 @@
 'use strict';
 const config = require('./contentSecurityPolicyConfig')
+    , contains = require('../utils').contains
+    , not = require('../utils').not
     , shallowCopy = (directives) => {
         return JSON.parse(JSON.stringify(directives));
     }
     , SET_NOTHING = { headers: [] }
-    , handlers = {};
+    , handlers = {}
+
+    , setUnsafeInline = (policyStringIn, key) => {
+        const index = policyStringIn.indexOf(`'unsafe-inline'`)
+            , policyString = policyStringIn;
+
+        if (index >= 0) {
+            if (key === 'scriptSrc') {
+                policyString[index] = `'inline-script'`;
+            } else {
+                policyString.splice(index, 1);
+            }
+        }
+
+        return policyString;
+    }
+
+    , setUnsafeEval = (policyStringIn, key) => {
+        const index = policyStringIn.indexOf(`'unsafe-eval'`)
+            , policyString = policyStringIn;
+
+        if (index >= 0) {
+            if (key === 'scriptSrc') {
+                policyString[index] = `'eval-script'`;
+            } else {
+                policyString.splice(index, 1);
+            }
+        }
+
+        return policyString;
+    };
 
 handlers.default = function () {
     return { headers: config.allHeaders };
 };
 
 handlers.IE = function (browser) {
-    const header = browser.version < 12 ? 'X-Content-Security-Policy' : 'Content-Security-Policy';
+    const headerSwitchVersion = 12
+        , xHeader = browser.version < headerSwitchVersion
+        , header = xHeader ? 'X-Content-Security-Policy' : 'Content-Security-Policy';
 
     return { headers: [ header ] };
 };
 
 handlers.Firefox = function (browser, directives) {
     const version = parseFloat(browser.version)
-        , policy = shallowCopy(directives);
+        , policy = shallowCopy(directives)
 
-    if (version >= 23) {
+        , upperSplitVersion = 23
+        , bottomVersion = 4
+        , defaultSrcThreshold = 5;
+
+    if (version >= upperSplitVersion) {
         return { headers: [ 'Content-Security-Policy' ] };
-    } else if (version >= 4 && version < 23) {
+    } else if (version >= bottomVersion && version < upperSplitVersion) {
         policy.defaultSrc = policy.defaultSrc || [ '*' ];
 
         Object.keys(policy).forEach((key) => {
             const value = policy[key];
 
-            let index;
-
             if (key === 'connectSrc') {
                 policy.xhrSrc = value;
             } else if (key === 'defaultSrc') {
-                if (version < 5) {
+                if (version < defaultSrcThreshold) {
                     policy.allow = value;
                 } else {
                     policy.defaultSrc = value;
@@ -42,21 +78,8 @@ handlers.Firefox = function (browser, directives) {
                 policy[key] = value;
             }
 
-            if ((index = policy[key].indexOf(`'unsafe-inline'`)) !== -1) {
-                if (key === 'scriptSrc') {
-                    policy[key][index] = `'inline-script'`;
-                } else {
-                    policy[key].splice(index, 1);
-                }
-            }
-
-            if ((index = policy[key].indexOf(`'unsafe-eval'`)) !== -1) {
-                if (key === 'scriptSrc') {
-                    policy[key][index] = `'eval-script'`;
-                } else {
-                    policy[key].splice(index, 1);
-                }
-            }
+            policy[key] = setUnsafeInline(policy[key], key);
+            policy[key] = setUnsafeEval(policy[key], key);
         });
 
         return {
@@ -69,11 +92,14 @@ handlers.Firefox = function (browser, directives) {
 };
 
 handlers.Chrome = function (browser) {
-    const version = parseFloat(browser.version);
+    const version = parseFloat(browser.version)
 
-    if (version >= 14 && version < 25) {
+    , upperSplitVersion = 25
+    , lowerSupportedVersion = 14;
+
+    if (version >= lowerSupportedVersion && version < upperSplitVersion) {
         return { headers: [ 'X-WebKit-CSP' ] };
-    } else if (version >= 25) {
+    } else if (version >= upperSplitVersion) {
         return { headers: [ 'Content-Security-Policy' ] };
     } else {
         return SET_NOTHING;
@@ -81,11 +107,13 @@ handlers.Chrome = function (browser) {
 };
 
 handlers.Safari = function (browser, directives, options) {
-    const version = parseFloat(browser.version);
+    const version = parseFloat(browser.version)
+        , upperSplitVersion = 7
+        , headerSwitchVersion = 6;
 
-    if (version >= 7) {
+    if (version >= upperSplitVersion) {
         return { headers: [ 'Content-Security-Policy' ] };
-    } else if (version >= 6 || options.safari5) {
+    } else if (version >= headerSwitchVersion || options.safari5) {
         return { headers: [ 'X-WebKit-CSP' ] };
     } else {
         return SET_NOTHING;
@@ -93,7 +121,9 @@ handlers.Safari = function (browser, directives, options) {
 };
 
 handlers.Opera = function (browser) {
-    if (parseFloat(browser.version) >= 15) {
+    const supportThreshold = 15;
+
+    if (parseFloat(browser.version) >= supportThreshold) {
         return { headers: [ 'Content-Security-Policy' ] };
     } else {
         return SET_NOTHING;
@@ -101,7 +131,9 @@ handlers.Opera = function (browser) {
 };
 
 handlers['Android Browser'] = function (browser, directives, options) {
-    if (parseFloat(browser.os.version) < 4.4 || options.disableAndroid) {
+    const supportThreshold = 4.4;
+
+    if (parseFloat(browser.os.version) < supportThreshold || options.disableAndroid) {
         return SET_NOTHING;
     } else {
         return { headers: [ 'Content-Security-Policy' ] };
@@ -116,7 +148,7 @@ handlers['Chrome Mobile'] = function (browser, directives) {
         if (!connect) {
             result.directives = shallowCopy(directives);
             result.directives.connectSrc = [ `'self'` ];
-        } else if (connect.indexOf(`'self'`) === -1) {
+        } else if (not(contains(connect, `'self'`))) {
             result.directives = shallowCopy(directives);
             result.directives.connectSrc.push(`'self'`);
         }
