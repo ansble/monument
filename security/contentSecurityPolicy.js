@@ -44,7 +44,7 @@ const platform = require('platform')
 
 module.exports = (config, req, res) => {
     const settings = getSettings(config.security.contentSecurity)
-        , browser = platform.parse(req.headers['User-Agent'])
+        , browser = platform.parse(req.headers['user-agent'])
         , handler = getHandler(browser)
         , directives = pick(settings, policyConfig.supportedDirectives)
         , headerData = handler(browser, directives, settings);

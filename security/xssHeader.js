@@ -7,7 +7,7 @@ const IE9 = 9
     }
 
     , getUserAgent = (req) => {
-        return req.headers['User-Agent'] || req.headers['user-agent'] || req.headers['USER-AGENT'];
+        return req.headers['user-agent'];
     };
 
 module.exports = (config, res, req) => {

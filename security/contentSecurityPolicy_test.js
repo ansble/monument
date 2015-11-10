@@ -70,7 +70,7 @@ describe('content security policy', () => {
     it('sets all the headers if you tell it to', () => {
         const expected = `default-src 'self' domain.com`;
 
-        req.headers['User-Agent'] = AGENTS['Firefox 23'].string;
+        req.headers['user-agent'] = AGENTS['Firefox 23'].string;
 
         config.security.contentSecurity = {
             defaultSrc: [ `'self'`, 'domain.com' ]
@@ -87,7 +87,7 @@ describe('content security policy', () => {
     it('sets all the headers if you provide an unknown user-agent', () => {
         const expected = `default-src 'self' domain.com`;
 
-        req.headers['User-Agent'] = 'Some Crazy Fake Browser';
+        req.headers['user-agent'] = 'Some Crazy Fake Browser';
 
         config.security.contentSecurity = {
             defaultSrc: [ '\'self\'', 'domain.com' ]
@@ -101,7 +101,7 @@ describe('content security policy', () => {
         res.headers = {};
 
         // unknown browser shouldn't effect a subsequent request
-        req.headers['User-Agent'] = AGENTS['Chrome 27'].string;
+        req.headers['user-agent'] = AGENTS['Chrome 27'].string;
 
         csp(config, req, res);
         assert.isUndefined(res.headers['X-Content-Security-Policy']);
@@ -119,7 +119,7 @@ describe('content security policy', () => {
             , reportUri: '/reporter'
         };
 
-        req.headers['User-Agent'] = AGENTS['Firefox 23'].string;
+        req.headers['user-agent'] = AGENTS['Firefox 23'].string;
 
         csp(config, req, res);
 
@@ -137,7 +137,7 @@ describe('content security policy', () => {
             , sandbox: [ '' ]
         };
 
-        req.headers['User-Agent'] = AGENTS['Firefox 23'].string;
+        req.headers['user-agent'] = AGENTS['Firefox 23'].string;
 
         csp(config, req, res);
 
@@ -202,7 +202,7 @@ describe('content security policy', () => {
 
         it(`sets the header properly for ${key}`, () => {
             config.security.contentSecurity = POLICY;
-            req.headers['User-Agent'] = agent.string;
+            req.headers['user-agent'] = agent.string;
 
             csp(config, req, res);
 
@@ -214,7 +214,7 @@ describe('content security policy', () => {
         const header = 'X-Content-Security-Policy';
 
         config.security.contentSecurity = POLICY;
-        req.headers['User-Agent'] = AGENTS['Firefox 22'].string;
+        req.headers['user-agent'] = AGENTS['Firefox 22'].string;
 
         csp(config, req, res);
 
@@ -226,7 +226,7 @@ describe('content security policy', () => {
         const header = 'X-Content-Security-Policy';
 
         config.security.contentSecurity = POLICY;
-        req.headers['User-Agent'] = AGENTS['Firefox 4.0b8'].string;
+        req.headers['user-agent'] = AGENTS['Firefox 4.0b8'].string;
 
         csp(config, req, res);
 
@@ -249,7 +249,7 @@ describe('content security policy', () => {
     ].forEach((browser) => {
         it(`does not set the property for ${browser} by default`, () => {
             config.security.contentSecurity = POLICY;
-            req.headers['User-Agent'] = AGENTS[browser].string;
+            req.headers['user-agent'] = AGENTS[browser].string;
 
             csp(config, req, res);
 
@@ -265,7 +265,7 @@ describe('content security policy', () => {
             , defaultSrc: 'a.com'
         };
 
-        req.headers['User-Agent'] = AGENTS['Safari 4.1'].string;
+        req.headers['user-agent'] = AGENTS['Safari 4.1'].string;
 
         csp(config, req, res);
 
@@ -278,7 +278,7 @@ describe('content security policy', () => {
             , defaultSrc: 'a.com'
         };
 
-        req.headers['User-Agent'] = AGENTS['Safari 5.1 on OS X'].string;
+        req.headers['user-agent'] = AGENTS['Safari 5.1 on OS X'].string;
 
         csp(config, req, res);
 
@@ -291,7 +291,7 @@ describe('content security policy', () => {
             , defaultSrc: 'a.com'
         };
 
-        req.headers['User-Agent'] = AGENTS['Android 4.4.3'].string;
+        req.headers['user-agent'] = AGENTS['Android 4.4.3'].string;
 
         assert.isUndefined(res.headers['X-Webkit-CSP']);
         assert.isUndefined(res.headers['Content-Security-Policy']);
@@ -302,7 +302,7 @@ describe('content security policy', () => {
         const iosChrome = AGENTS['iOS Chrome 40'];
 
         config.security.contentSecurity = POLICY;
-        req.headers['User-Agent'] = iosChrome.string;
+        req.headers['user-agent'] = iosChrome.string;
 
         csp(config, req, res);
 
@@ -313,7 +313,7 @@ describe('content security policy', () => {
         const iosChrome = AGENTS['iOS Chrome 40'];
 
         config.security.contentSecurity = { styleSrc: [ `'self'` ] };
-        req.headers['User-Agent'] = iosChrome.string;
+        req.headers['user-agent'] = iosChrome.string;
 
         csp(config, req, res);
 
@@ -324,7 +324,7 @@ describe('content security policy', () => {
         const iosChrome = AGENTS['iOS Chrome 40'];
 
         config.security.contentSecurity = { connectSrc: [ 'somedomain.com', `'self'` ] };
-        req.headers['User-Agent'] = iosChrome.string;
+        req.headers['user-agent'] = iosChrome.string;
 
         csp(config, req, res);
 
@@ -342,19 +342,19 @@ describe('content security policy', () => {
             ]
         };
 
-        req.headers['User-Agent'] = chrome.string;
+        req.headers['user-agent'] = chrome.string;
         csp(config, req, res);
         assert.match(res.headers[chrome.header], /style-src 'self' 'unsafe-inline'/);
 
         res.headers = {};
 
-        req.headers['User-Agent'] = ff.string;
+        req.headers['user-agent'] = ff.string;
         csp(config, req, res);
         assert.match(res.headers['X-Content-Security-Policy'], /style-src 'self'/);
 
         res.headers = {};
 
-        req.headers['User-Agent'] = chrome.string;
+        req.headers['user-agent'] = chrome.string;
         csp(config, req, res);
         assert.match(res.headers[chrome.header], /style-src 'self' 'unsafe-inline'/);
     });

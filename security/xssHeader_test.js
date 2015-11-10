@@ -34,7 +34,7 @@ describe('Security Headers: X-XSS-Protection', () => {
 
     describe('default behaviors', () => {
         it('should set the correct header if old IE', () => {
-            req.headers['User-Agent'] = IE8UA;
+            req.headers['user-agent'] = IE8UA;
 
             assert.strictEqual(xssHeader(config, res, req).headers['X-XSS-Protection'], '0');
         });
@@ -42,7 +42,7 @@ describe('Security Headers: X-XSS-Protection', () => {
         it('should set the correct header if IE', () => {
             let result;
 
-            req.headers['User-Agent'] = chromeOSXUA;
+            req.headers['user-agent'] = chromeOSXUA;
             result = xssHeader(config, res, req);
             assert.strictEqual(result.headers['X-XSS-Protection'], '1; mode=block');
         });
@@ -50,11 +50,11 @@ describe('Security Headers: X-XSS-Protection', () => {
         it('should set the correct header if new IE', () => {
             let result;
 
-            req.headers['User-Agent'] = IE11UA2;
+            req.headers['user-agent'] = IE11UA2;
             result = xssHeader(config, res, req);
             assert.strictEqual(result.headers['X-XSS-Protection'], '1; mode=block');
 
-            req.headers['User-Agent'] = IE11UA;
+            req.headers['user-agent'] = IE11UA;
             result = xssHeader(config, res, req);
             assert.strictEqual(result.headers['X-XSS-Protection'], '1; mode=block');
         });
@@ -64,7 +64,7 @@ describe('Security Headers: X-XSS-Protection', () => {
         it('should not set the header if config.security.xssProtection is false', () => {
             config.security.xssProtection = false;
 
-            req.headers['User-Agent'] = IE11UA;
+            req.headers['user-agent'] = IE11UA;
             assert.isUndefined(xssHeader(config, res, req).headers['X-XSS-Protection']);
         });
     });
