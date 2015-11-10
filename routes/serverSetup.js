@@ -2,6 +2,10 @@
 const path = require('path')
     , fs = require('fs')
 
+    , isRouteFile = (fileName) => {
+        return !fileName.match(/((index)|([._]test)).js$/) && fileName.match(/\.js$/);
+    }
+
     , setup = (routePathIn, publicPathIn) => {
         // Be warned... this function is very much a side effet
         //  zone. It's full of them. There is no functional
@@ -13,7 +17,7 @@ const path = require('path')
 
         // load in all the route handlers
         fs.readdirSync(routePathIn).forEach((file) => {
-            if (file !== 'index.js' && !file.match(/_test\.js$/) && file.match(/.js$/)) {
+            if (isRouteFile(file)) {
                 require(path.join(routePathIn, file));
             }
         });
