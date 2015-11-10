@@ -67,6 +67,26 @@ describe('content security policy', () => {
         assert.strictEqual(res.headers['Content-Security-Policy'], 'default-src a.com b.biz');
     });
 
+    it('is turned off by passing false', () => {
+        config.security.contentSecurity = false;
+
+        csp(config, req, res);
+
+        assert.isUndefined(res.headers['Content-Security-Policy']);
+    });
+
+    it('sets default-src to self by default', () => {
+        csp(config, req, res);
+
+        assert.strictEqual(res.headers['Content-Security-Policy'], `default-src 'self'`);
+
+        config.security = undefined;
+
+        csp(config, req, res);
+
+        assert.strictEqual(res.headers['Content-Security-Policy'], `default-src 'self'`);
+    });
+
     it('sets all the headers if you tell it to', () => {
         const expected = `default-src 'self' domain.com`;
 
