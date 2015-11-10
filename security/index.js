@@ -6,7 +6,8 @@ const poweredBy = require('./poweredByHeader')
     , noOpen = require('./noOpen')
     , hsts = require('./hsts')
     , noCache = require('./noCache')
-    , publicKeyPin = require('./publicKeyPinning');
+    , publicKeyPin = require('./publicKeyPinning')
+    , contentSecurity = require('./contentSecurityPolicy');
 
 module.exports = (config, reqIn, resIn) => {
     let res = resIn;
@@ -18,6 +19,7 @@ module.exports = (config, reqIn, resIn) => {
     res = hsts(config, res);
     res = noCache(config, res);
     res = publicKeyPin(config, res);
+    res = contentSecurity(config, reqIn, res);
 
     return res;
 };

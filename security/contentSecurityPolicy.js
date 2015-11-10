@@ -7,6 +7,7 @@ const platform = require('platform')
     }
 
     , contains = require('../utils').contains
+    , isDefined = require('../utils').isDefined
 
     , policyConfig = require('./contentSecurityPolicyConfig')
     , browserHandlers = require('./contentSecurityPolicyBrowserHandlers.js')
@@ -35,7 +36,11 @@ const platform = require('platform')
     }
 
     , getSettings = (settings) => {
-        return settings || { defaultSrc: `'self'` };
+        if (isDefined(settings) && isDefined(settings.contentSecurity)) {
+            return settings.contentSecurity;
+        } else {
+            return { defaultSrc: `'self'` };
+        }
     }
 
     , getHandler = (browser) => {
@@ -43,13 +48,17 @@ const platform = require('platform')
     };
 
 module.exports = (config, req, res) => {
-    const settings = getSettings(config.security.contentSecurity)
+    const settings = getSettings(config.security)
         , browser = platform.parse(req.headers['user-agent'])
         , handler = getHandler(browser)
         , directives = pick(settings, policyConfig.supportedDirectives)
         , headerData = handler(browser, directives, settings);
 
     let policyString;
+
+    if (settings === false) {
+        return res;
+    }
 
     checkOptions(settings);
 
