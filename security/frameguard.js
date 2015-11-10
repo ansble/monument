@@ -1,34 +1,79 @@
 'use strict';
+const utils = require('../utils')
+    , reqGuard = 'X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter'
+    , invalidOption = 'X-Frame must be undefined, "DENY", "ALLOW-FROM", or "SAMEORIGIN"'
+
+    , allowedOptions = [ 'DENY', 'ALLOW-FROM', 'SAMEORIGIN' ]
+
+    , actionValid = (action) => {
+        const type = typeof action;
+
+        let valid = true;
+
+        if (type === 'undefined') {
+            return valid;
+        }
+
+        if (type === 'string') {
+            if (utils.not(utils.contains(allowedOptions, action.toUpperCase()))) {
+                valid = false;
+            }
+        } else {
+            valid = false;
+        }
+
+
+        return valid;
+    }
+
+    , headerValid = (header, domain) => {
+        let valid = header === 'ALLOW-FROM' && typeof domain === 'string';
+
+        if (!valid && header !== 'ALLOW-FROM') {
+            valid = true;
+        }
+
+        return valid;
+    }
+
+    , setHeader = (header, domain) => {
+        const allowFromError = () => {
+            throw new Error(reqGuard);
+        };
+
+        let headerValue = '';
+
+        if (headerValid(header, domain)) {
+            if (header === 'ALLOW-FROM') {
+                headerValue = `ALLOW-FROM ${domain}`;
+            } else {
+                headerValue = header;
+            }
+        } else {
+            allowFromError();
+        }
+
+        return headerValue;
+    };
 
 module.exports = (config, res) => {
     const options = config.security.frameguard || {}
-        , type = typeof options.action
         , typeError = () => {
-            throw new Error('X-Frame must be undefined, "DENY", "ALLOW-FROM", or "SAMEORIGIN"');
+            throw new Error(invalidOption);
         };
+
 
     let header = 'SAMEORIGIN';
 
-
-    if (type === 'undefined' || type === 'string') {
-        if(type === 'string' && ['DENY', 'ALLOW-FROM', 'SAMEORIGIN'].indexOf(options.action.toUpperCase()) === -1) {
-            typeError();
-        }
-    } else {
+    if (utils.not(actionValid(options.action))) {
         typeError();
     }
 
-    if(options.action) {
+    if (options.action) {
         header = options.action.toUpperCase();
     }
 
-    if (header === 'ALLOW-FROM') {
-        if (typeof options.domain !== 'string') {
-            throw new Error('X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter');
-        }
-
-        header = 'ALLOW-FROM ' + options.domain;
-    }
+    header = setHeader(header, options.domain);
 
     res.setHeader('X-Frame-Options', header);
 

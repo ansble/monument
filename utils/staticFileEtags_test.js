@@ -1,3 +1,4 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
@@ -25,7 +26,7 @@ describe('Static File Etags', () => {
             done();
         });
 
-        events.emit('etag:check', {file: './test_stubs/routes_stub.json', etag: etagTest});
+        events.emit('etag:check', { file: './test_stubs/routes_stub.json', etag: etagTest });
     });
 
     it('should be able to udpate a file\'s etag', (done) => {
@@ -34,6 +35,6 @@ describe('Static File Etags', () => {
             done();
         });
 
-        events.emit('etag:check', {file: './test_stubs/routes_stub.json', etag: etagTest});
+        events.emit('etag:check', { file: './test_stubs/routes_stub.json', etag: etagTest });
     });
 });

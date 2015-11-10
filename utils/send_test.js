@@ -1,13 +1,15 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
     , send = require('./send')
     , zlib = require('zlib')
-    , etag = require('etag');
+    , etag = require('etag')
+
+    , compressTimeout = 10;
 
 let fakeRes
     , fakeOut
-    , fakeEncode
     , fakeHeaders
     , obj
     , buf;
@@ -20,11 +22,10 @@ describe('Send Tests', () => {
             setHeader: (key, value) => {
                 fakeHeaders[key] = value;
             }
-            , end: (data, encode) => {
-                fakeOut = data;
-                fakeEncode = encode;
-            },
-            statusCode: 200
+            , end: (data) => {
+                  fakeOut = data;
+              }
+            , statusCode: 200
         };
 
         fakeRes.send = send({
@@ -32,21 +33,21 @@ describe('Send Tests', () => {
                 'accept-encoding': 'none'
                 , 'if-none-match': ''
             }
-        }, {compression: false});
+        }, { compression: false });
 
         fakeRes.sendDeflate = send({
             headers: {
                 'accept-encoding': 'deflate'
                 , 'if-none-match': ''
             }
-        }, {compression: 'deflate'});
+        }, { compression: 'deflate' });
 
         fakeRes.sendGzip = send({
             headers: {
                 'accept-encoding': 'gzip'
                 , 'if-none-match': ''
             }
-        }, {compression: 'gzip'});
+        }, { compression: 'gzip' });
 
         fakeOut = '';
 
@@ -62,7 +63,7 @@ describe('Send Tests', () => {
                 'accept-encoding': 'none'
                 , 'if-none-match': etag(JSON.stringify(obj))
             }
-        }, {compression: false});
+        }, { compression: false });
     });
 
     it('should be defined as a function', () => {
@@ -94,8 +95,8 @@ describe('Send Tests', () => {
     });
 
     it('should handle an array', () => {
-        fakeRes.send(['one', 'two']);
-        assert.strictEqual(fakeOut, JSON.stringify(['one', 'two']));
+        fakeRes.send([ 'one', 'two' ]);
+        assert.strictEqual(fakeOut, JSON.stringify([ 'one', 'two' ]));
     });
 
     it('should handle a number and other weird data', () => {
@@ -108,20 +109,42 @@ describe('Send Tests', () => {
         assert.strictEqual(fakeOut, JSON.stringify(true));
     });
 
-    it('should return deflate compressed results if deflate header is sent', () => {
+    it('should return deflate compressed results if deflate header is sent', (done) => {
+        let outString
+            , compareString;
+
         fakeRes.sendDeflate(obj);
-        assert.strictEqual(JSON.stringify(fakeOut), JSON.stringify(zlib.deflateSync(JSON.stringify(obj))));
-        assert.strictEqual(fakeHeaders['Content-Encoding'], 'deflate');
+
+        setTimeout(() => {
+            outString = JSON.stringify(fakeOut);
+            compareString = JSON.stringify(zlib.deflateSync(JSON.stringify(obj)));
+
+            assert.strictEqual(outString, compareString);
+            assert.strictEqual(fakeHeaders['Content-Encoding'], 'deflate');
+            done();
+        }, compressTimeout);
     });
 
-    it('should return gzip compressed results if gzip header is sent', () => {
+    it('should return gzip compressed results if gzip header is sent', (done) => {
+        let outString
+            , compareString;
+
         fakeRes.sendGzip(obj);
-        assert.strictEqual(JSON.stringify(fakeOut), JSON.stringify(zlib.gzipSync(JSON.stringify(obj))));
-        assert.strictEqual(fakeHeaders['Content-Encoding'], 'gzip');
+
+        setTimeout(() => {
+            outString = JSON.stringify(fakeOut);
+            compareString = JSON.stringify(zlib.gzipSync(JSON.stringify(obj)));
+
+            assert.strictEqual(outString, compareString);
+            assert.strictEqual(fakeHeaders['Content-Encoding'], 'gzip');
+            done();
+        }, compressTimeout);
     });
 
     it('should return a 304 if the content has not changed', () => {
+        const notModifiedStatus = 304;
+
         fakeRes.sendEtag(obj);
-        assert.strictEqual(fakeRes.statusCode, 304);
+        assert.strictEqual(fakeRes.statusCode, notModifiedStatus);
     });
 });

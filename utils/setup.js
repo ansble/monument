@@ -7,27 +7,33 @@ const glob = require('glob')
     , dot = require('dot')
 
     , deleteCompressed = (config) => {
-        //run through and delete all the compressed files in the file system
-        let complete = events.required(['cleanup:compressed:start'], () => {
-            events.emit('setup:compressed');
-        });
+        // run through and delete all the compressed files in the file system
+        const complete = events.required([ 'cleanup:compressed:start' ], () => {
+                events.emit('setup:compressed');
+            })
+            , tgzPath = `${config.publicPath}/**/*.tgz`
+            , defPath = `${config.publicPath}/**/*.def`;
 
-        glob(path.join(process.cwd(), config.publicPath + '/**/*.tgz'), (er, files) => {
+        glob(path.join(process.cwd(), tgzPath), (er, files) => {
             files.forEach((file) => {
-                complete.add('setup:delete:' + file);
+                const fileEvent = `setup:delete:${file}`;
+
+                complete.add(fileEvent);
 
                 fs.unlink(file, () => {
-                    events.emit('setup:delete:' + file);
+                    events.emit(fileEvent);
                 });
             });
         });
 
-        glob(path.join(process.cwd(), config.publicPath + '/**/*.def'), (er, files) => {
+        glob(path.join(process.cwd(), defPath), (er, files) => {
             files.forEach((file) => {
-                complete.add('setup:delete:' + file);
+                const fileEvent = `setup:delete:${file}`;
+
+                complete.add(fileEvent);
 
                 fs.unlink(file, () => {
-                    events.emit('setup:delete:' + file);
+                    events.emit(fileEvent);
                 });
             });
         });
@@ -37,30 +43,30 @@ const glob = require('glob')
     }
 
     , compileTemplates = (config) => {
-        let templatePath = config.templatePath || './templates';
+        const templatePath = config.templatePath || './templates';
 
-        //configure dotjs
+        // configure dotjs
         if (config.dotjs) {
             Object.keys(config.dotjs).forEach((opt) => {
                 dot.templateSettings[opt] = config.dotjs[opt];
             });
         }
 
-        //compile the templates
-        dot.process({path: path.join(process.cwd(), templatePath)});
+        // compile the templates
+        dot.process({ path: path.join(process.cwd(), templatePath) });
 
         events.emit('setup:templates');
     }
 
   , etagSetup = () => {
-      //set up the etag listeners and emitters
+      // set up the etag listeners and emitters
       require('./staticFileEtags');
 
       events.emit('setup:etags');
       console.log('etags setup...');
   };
 
-module.exports  = {
+module.exports = {
     compressed: deleteCompressed
     , templates: compileTemplates
     , etags: etagSetup

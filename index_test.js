@@ -1,3 +1,4 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
@@ -22,17 +23,17 @@ describe('The main monument tests', () => {
 
     describe('Wrapper Tests', () => {
         afterEach(() => {
-          server.close();
+            server.close();
         });
 
         it('should return a server when run', () => {
-          server = app.server({
-            routeJSONPath: './test_stubs/routes_stub.json'
-            , templatePath: './test_stubs/templates'
-            , port: 9999
-          });
+            server = app.server({
+                routeJSONPath: './test_stubs/routes_stub.json'
+                , templatePath: './test_stubs/templates'
+                , port: 9999
+            });
 
-          assert.instanceOf(server, http.Server);
+            assert.instanceOf(server, http.Server);
         });
     });
 

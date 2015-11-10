@@ -1,9 +1,9 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
-    , noOpen = require('./noOpen');
-
-let res = {}
+    , noOpen = require('./noOpen')
+    , res = {}
     , config = {};
 
 describe('Security Headers: X-Download-Options Tests', () => {

@@ -37,17 +37,20 @@ Current state of the config object is right below this. Explanations about the n
             , domain: '' //defaults to not used. Only used for 'ALLOW-ORIGIN' 
         }
         , hsts: {
-            maxAge: 86400 //defaults to 1 day in seconds. All times in seconds
-            , includeSubDomains: true //optional. Defaults to true
-            , preload: true //optional. Defaults to true
+            maxAge: 86400 // defaults to 1 day in seconds. All times in seconds
+            , includeSubDomains: true // optional. Defaults to true
+            , preload: true // optional. Defaults to true
         }
-        , noCache: false //defaults to off. This is the nuclear option for caching
-        , publicKeyPin: { //default is off. This one is complicated read below...
-            sha256s: ['keynumberone', 'keynumbertwo'] //an array of SHA-256 public key pins see below for how to obtain
-            , maxAge: 100 //time in seconds for the pin to be in effect
-            , includeSubdomains: false //whether or not to pin for sub domains as well defaults to false
-            , reportUri: false //whether or not to report problems to a URL more details below. Defaults to false
-            , reportOnly: false //if a reportURI is passed and this is set to true it reports and terminates connection
+        , noCache: false // defaults to off. This is the nuclear option for caching
+        , publicKeyPin: { // default is off. This one is complicated read below...
+            sha256s: ['keynumberone', 'keynumbertwo'] // an array of SHA-256 public key pins see below for how to obtain
+            , maxAge: 100 // time in seconds for the pin to be in effect
+            , includeSubdomains: false // whether or not to pin for sub domains as well defaults to false
+            , reportUri: false // whether or not to report problems to a URL more details below. Defaults to false
+            , reportOnly: false // if a reportURI is passed and this is set to true it reports and terminates connection
+        }
+        , contentSecurity: {
+            defaultSrc: `'self'` // optional. This is the default setting and is very strict
         }
     }
 }
@@ -106,6 +109,16 @@ If you specify a report URI it should be ready to recieve a POST from browsers i
     ]
 }
 ```
+
+#### contentSecurity
+
+This is the Content Security Policy configuration. Content Security Policies are amazing and if you aren't familiar with them you should [go read up on them](https://developer.mozilla.org/en-US/docs/Web/Security/CSP). Firefox pioneered them a long time ago and they have become a powerful standard for protecting your end users.
+
+Because of the extensive options available in configuring your CSP we recommend that you go take a look at [the MDN article on directives](https://developer.mozilla.org/en-US/docs/Web/Security/CSP/CSP_policy_directives). All of the options they spell out are supported. The directives need to be passed in camelCase though (`defaultSrc` not `default-src`).
+
+The default is a very strict `default-src 'self'` which prevents any files from outside the current domain from being loaded and/or executed. You will probably want to ease that off a hair. 
+
+In the event that you don't want a Content Security Policy (why!? WHY!? Trust us you want one) you can disable it by setting `config.security.contentSecurity` to false in the config section of your server. This is not a good idea.
 
 ## v2.0.0!
 Despite it being a major release this is actually a pretty bland one. It's a major release because monument 2+ requires you to be running on node > 4.0.0. It is a rewrite and cleanup in ES6 syntax.

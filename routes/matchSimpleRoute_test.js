@@ -1,3 +1,4 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
@@ -22,19 +23,19 @@ describe('matchSimpleRoute Tests', () => {
         assert.isNull(matchSimpleRoute('/api/search', 'post', stubRoutes.standard));
     });
 
-    it('should return true for /about', function () {
+    it('should return true for /about', () => {
         assert.ok(matchSimpleRoute('/about', 'get', stubRoutes.standard));
     });
 
-    it('should return true for /', function () {
+    it('should return true for /', () => {
         assert.ok(matchSimpleRoute('/', 'get', stubRoutes.standard));
     });
 
-    it('should not match for /:id', function () {
+    it('should not match for /:id', () => {
         assert.notOk(matchSimpleRoute('/1234', 'get', stubRoutes.standard));
     });
 
-    it('should return true for /about/ handling trailing slash', function () {
+    it('should return true for /about/ handling trailing slash', () => {
         assert.ok(matchSimpleRoute('/about/', 'get', stubRoutes.standard));
     });
 });
