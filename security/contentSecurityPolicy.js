@@ -45,6 +45,33 @@ const platform = require('platform')
 
     , getHandler = (browser) => {
         return browserHandlers[browser.name] || browserHandlers.default;
+    }
+
+    , policyStringCache = {}
+
+    , getPolicyString = (browser, directives) => {
+        const version = parseFloat(browser.version)
+            , isChromeMobile = browser.name === 'Chrome Mobile'
+            , isCustomFirefox = browser.name === 'Firefox' && version < 23 && version >= 4
+            , isCustom = isChromeMobile || isCustomFirefox;
+
+        let policyString;
+
+        if (isCustom && policyStringCache[browser.name]) {
+            return policyStringCache[browser.name];
+        } else if (!isChromeMobile && !isCustomFirefox && policyStringCache.default) {
+            return policyStringCache.default;
+        } else {
+            policyString = cspBuilder({ directives: directives });
+
+            if (isCustom) {
+                policyStringCache[browser.name] = policyString;
+            } else {
+                policyStringCache.default = policyString;
+            }
+
+            return policyString;
+        }
     };
 
 module.exports = (config, req, res) => {
@@ -67,7 +94,7 @@ module.exports = (config, req, res) => {
     }
 
     if (headerData.headers.length) {
-        policyString = cspBuilder({ directives: headerData.directives || directives });
+        policyString = getPolicyString(browser, headerData.directives || directives);
     }
 
     headerData.headers.forEach((header) => {
@@ -80,4 +107,10 @@ module.exports = (config, req, res) => {
     });
 
     return res;
+};
+
+module.exports.flushCache = () => {
+    Object.keys(policyStringCache).forEach((key) => {
+        policyStringCache[key] = undefined;
+    });
 };

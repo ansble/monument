@@ -53,10 +53,16 @@ describe('content security policy', () => {
         };
 
         config.security = {};
+
+        csp.flushCache();
     });
 
     it('returns a function', () => {
         assert.isFunction(csp);
+    });
+
+    it('should have a flushCache function', () => {
+        assert.isFunction(csp.flushCache);
     });
 
     it('sets headers by string', () => {
