@@ -65,7 +65,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
     });
 
@@ -93,7 +95,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
     });
 
@@ -106,7 +110,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
 
         it('should pass variables on the connection.params from the url', (done) => {
@@ -119,7 +125,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
     });
 
@@ -132,7 +140,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
     });
 
@@ -152,7 +162,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
 
         it('should emit 404 event for a non-existant static file in the root of public', (done) => {
@@ -163,7 +175,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
 
         it('should return the file for an existing static file with no etag', (done) => {
@@ -175,7 +189,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
 
         it('should return a 304 for a valid etag match', (done) => {
@@ -189,7 +205,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
 
         it('should return just headers if a head request is sent', (done) => {
@@ -205,7 +223,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
     });
 
@@ -221,7 +241,9 @@ describe('Route Handler Tests', () => {
                 done();
             });
 
-            routeHandler(req, res);
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
 
         });
     });
