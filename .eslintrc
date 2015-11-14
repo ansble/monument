@@ -103,7 +103,7 @@
         "no-native-reassign": 1,
         "no-multi-str": 1,
         "no-multi-spaces": 2,
-        "no-magic-numbers": 1,
+        "no-magic-numbers": 0,
         "no-loop-func": 1,
         "no-lone-blocks": 2,
         "no-labels": 2,
