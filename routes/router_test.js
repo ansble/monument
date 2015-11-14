@@ -22,14 +22,19 @@ describe('Route Handler Tests', () => {
         res = new stream.Writable();
 
         res.setHeader = function (name, value) {
-            this.headers = this.headers || {};
-
             this.headers[name] = value;
         };
 
         res.writeHead = function (status, headers) {
+            console.log(headers, 'write head');
             this.statusCode = status;
-            this.headers = headers;
+            this.headers = Object.keys(headers).reduce((prevIn, key) => {
+                const prev = prevIn;
+
+                prev[key] = headers[key];
+
+                return prev;
+            }, this.headers);
         };
 
         res.statusCode = 0;
@@ -186,6 +191,26 @@ describe('Route Handler Tests', () => {
             events.once('response', (input) => {
                 assert.isString(input);
                 assert.isAbove(input.length, 0);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should have a vary:accept-encoding header for static resources', (done) => {
+            const successStatus = 200;
+
+            req.url = '/static/main.js';
+            req.method = 'get';
+            req.headers['if-none-match'] = '';
+
+            res.on('finish', () => {
+                assert.strictEqual(res.statusCode, successStatus);
+                assert.isObject(res.headers);
+                console.log(res.headers);
+                assert.strictEqual(res.headers.Vary, 'Accept-Encoding');
                 done();
             });
 

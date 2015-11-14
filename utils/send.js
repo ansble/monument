@@ -6,6 +6,7 @@ const etag = require('etag')
     , tools = require('./tools')
     , not = tools.not
     , isDefined = tools.isDefined
+    , encoding = 'utf-8'
 
     , etagMatch = (ifNoneMatch, etagIn) => {
         return isDefined(ifNoneMatch) && ifNoneMatch === etagIn;
@@ -15,13 +16,13 @@ const etag = require('etag')
         const type = typeof data;
 
         if (type === 'undefined') {
-            response.setHeader('Content-Type', 'text/plain');
+            response.setHeader('Content-Type', `text/plain; charset=${encoding}`);
         } else if (type === 'string') {
-            response.setHeader('Content-Type', 'text/html');
+            response.setHeader('Content-Type', `text/html; charset=${encoding}`);
         } else if (type === 'object' && not(isBuffer)) {
-            response.setHeader('Content-Type', 'application/json');
+            response.setHeader('Content-Type', `application/json; charset=${encoding}`);
         } else if (type === 'object') {
-            response.setHeader('Content-Type', 'text/html');
+            response.setHeader('Content-Type', `text/html; charset=${encoding}`);
         }
 
         return response;
@@ -57,7 +58,6 @@ const etag = require('etag')
             const that = this
             /* eslint-enable no-invalid-this */
                 , isBuffer = Buffer.isBuffer(dataIn)
-                , encoding = 'utf8'
                 , compression = getCompression(req.headers['accept-encoding'], config)
                 , data = prepareData(dataIn, isBuffer)
                 , reqEtag = etag(data);
