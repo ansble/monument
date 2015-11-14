@@ -52,6 +52,11 @@ module.exports = (routesJson, config) => {
         // match the first part of the url... for public stuff
         if (utils.contains(publicFolders, pathname.split('/')[1])) {
             // static assets y'all
+
+            // this header allows proxies to cache different version based on
+            //  the accept-encoding header. So (gzip/deflate/no compression)
+            res.setHeader('Vary', 'Accept-Encoding');
+
             file = path.join(publicPath, pathname);
             // read in the file and stream it to the client
 
