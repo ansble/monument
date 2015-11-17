@@ -1,11 +1,13 @@
 'use strict';
 
-const parseForm = (formString) => {
-        const keys  = formString.match(/(name=")([^"]+)(")([^a-zA-Z0-9]+)([^-]+)/g);
+const not = require('./tools').not
+    , parseForm = (formString) => {
+        const keys = formString.match(/(name=")([^"]+)(")([^a-zA-Z0-9]+)([^-]+)/g);
 
-        if (keys !== null) {
-            return keys.reduce((prev, current) => {
-                const temp = current.match(/(")([^"])+/);
+        if (not(keys === null)) {
+            return keys.reduce((prevIn, current) => {
+                const temp = current.match(/(")([^"])+/)
+                    , prev = prevIn;
 
                 prev[temp[0].replace(/"/g, '')] = current.match(/([\s].+)/)[0].replace(/^[\s]/, '');
 

@@ -4,41 +4,43 @@ const getRawBody = require('raw-body')
     , typer = require('media-typer')
     , querystring = require('querystring')
     , events = require('harken')
-    , tools = require('./tools')
+    , isDefined = require('./tools').isDefined
     , parseForm = require('./parseForm')
 
-    , parser = (connection, callback, scope) => {//parse out the body
+    , parser = (connection, callback, scope) => {// parse out the body
+        const contentType = connection.req.headers['content-type'];
+
         let encoding = 'UTF-8';
 
-        if(tools.isDefined(connection.req.headers['content-type'])){
-            encoding = typer.parse(connection.req.headers['content-type']).parameters.charset || 'UTF-8';
+        if (isDefined(contentType)){
+            encoding = typer.parse(contentType).parameters.charset || 'UTF-8';
         }
 
         getRawBody(connection.req, {
-            length: connection.req.headers['content-length'],
-            limit: '1mb',
-            encoding: encoding
-          }, (err, string) => {
+            length: connection.req.headers['content-length']
+            , limit: '1mb'
+            , encoding: encoding
+        }, (err, string) => {
 
             if (err){
                 events.emit('error:parse', err);
-                callback.apply(scope, [null, err]);
+                callback.apply(scope, [ null, err ]);
+                return;
             }
 
-            if(connection.req.headers['content-type'] === 'application/json'){
-              try{
-                callback.apply(scope, [JSON.parse(string)]);
-              } catch (e) {
-                events.emit('error:parse', e);
-                callback.apply(scope, [null, e]);
-              }
-            } else if (connection.req.headers['content-type'] === 'application/x-www-form-urlencoded'){
-              callback.apply(scope, [querystring.parse(string)]);
-            } else {
-                try{
-                    callback.apply(scope, [JSON.parse(string)]);
-                } catch (e) {
-                    callback.apply(scope, [parseForm(string)]);
+            if (contentType === 'application/x-www-form-urlencoded'){
+                callback.apply(scope, [ querystring.parse(string) ]);
+                return;
+            }
+
+            try {
+                callback.apply(scope, [ JSON.parse(string) ]);
+            } catch (e) {
+                if (contentType === 'application/json') {
+                    events.emit('error:parse', e);
+                    callback.apply(scope, [ null, e ]);
+                } else {
+                    callback.apply(scope, [ parseForm(string) ]);
                 }
             }
         });

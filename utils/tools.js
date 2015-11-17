@@ -1,6 +1,15 @@
 'use strict';
 
 module.exports = {
-    isDefined: (item) => typeof item !== 'undefined'
-    , not: (fn) => !fn
+    isDefined: (item) => {
+        return typeof item !== 'undefined';
+    }
+
+    , not: (fn) => {
+          return !fn;
+      }
+
+    , contains: (array, item) => {
+          return array.indexOf(item) >= 0;
+      }
 };

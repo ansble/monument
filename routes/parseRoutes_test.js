@@ -1,32 +1,33 @@
+/* eslint-env node, mocha */
 'use strict';
 
 const assert = require('chai').assert
     , parseRoutes = require('./parseRoutes')
     , stubRoutes = require('../test_stubs/routes_stub.json');
 
-describe('parseRoutes tests', function () {
+describe('parseRoutes tests', () => {
     it('should export a function', () => {
         assert.isFunction(parseRoutes);
     });
 
-    it('should return an object containing wildcard and standard routes', function () {
-        var routes = parseRoutes(stubRoutes);
+    it('should return an object containing wildcard and standard routes', () => {
+        const routes = parseRoutes(stubRoutes);
 
         assert.isObject(routes);
         assert.isObject(routes.wildcard);
         assert.isObject(routes.standard);
     });
 
-    it('should return an object containing 2 wildcard routes', function () {
-        var routes = parseRoutes(stubRoutes);
+    it('should return an object containing 2 wildcard routes', () => {
+        const routes = parseRoutes(stubRoutes);
 
         assert.isObject(routes);
         assert.isObject(routes.wildcard['/:id']);
         assert.isObject(routes.wildcard['/api/articles/:id']);
     });
 
-    it('should return a properly formatted route object for /:id', function () {
-        var routes = parseRoutes(stubRoutes)
+    it('should return a properly formatted route object for /:id', () => {
+        const routes = parseRoutes(stubRoutes)
             , idRoute = routes.wildcard['/:id'];
 
         assert.isObject(routes);
@@ -37,8 +38,8 @@ describe('parseRoutes tests', function () {
         assert.typeOf(new RegExp(idRoute.regex), 'regexp');
     });
 
-    it('should return an object containing 8 standard routes', function () {
-        var routes = parseRoutes(stubRoutes);
+    it('should return an object containing 8 standard routes', () => {
+        const routes = parseRoutes(stubRoutes);
 
         assert.isObject(routes);
         assert.isArray(routes.standard['/']);
