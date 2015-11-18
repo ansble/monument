@@ -16,7 +16,7 @@ The easiest way to get started with monument is to use the CLI tool which does p
 
 It is also the easiest way to add routes and fata handlers!
 
-### Config object and the server
+## Config object and the server
 
 When you create your server it takes a config object that allows you to pass in some options for your particular environment. It looks like this and these are the default values:
 
@@ -76,7 +76,7 @@ monument.server({
       });
 ```
 
-#### etags
+### etags
 Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
 
 They are generated and used for all static files, and all responses that use `res.send`. One of the cooler things we did was have monumen cache the etags for static assets. That means they get created the first time they are requested after the server starts up, and for all subsequent requests the etag is pulled from an in memory cache so that the file i/o is only done if there is a reason to stream the file to the client. Makes them fast and light!
@@ -153,9 +153,9 @@ The default is a very strict `default-src 'self'` which prevents any files from 
 
 In the event that you don't want a Content Security Policy (why!? WHY!? Trust us you want one) you can disable it by setting `config.security.contentSecurity` to false in the config section of your server. This is not a good idea.
 
-### Setting up routes
+## Setting up routes
 
-The easy way to do this is with the [monument-cli](https://github.com/ansble/monument-cli)and `yo monument-cli:routes` command. It takes your `routes.json` file and stubbs out all the route handlers and files for you.
+The easy way to do this is with the [monument-cli](https://github.com/ansble/monument-cli)and `monument routes` command. It takes your `routes.json` file and stubbs out all the route handlers and files for you.
 
 Whichever way you decide to do it the first step is to add your route to the `routes.json` file. It looks like this:
 
@@ -186,7 +186,10 @@ The route events recieve an object right now, often called connection, that look
 
 these are the request and response objects from node. The other thing of interest are the other parts of the connection object, the params, and query objects. `params` contains the key/value pairs from the url params laid out with `:name` notation in the path. Lastly you get the `query` object which is the key/value pairs found in any queryparams on the path.
 
-#### put, post, update and parsing out body
+### `.send()`
+One of the things that I heard from several users was the lack of response.send was confusing for them. So we added it! It also allows etags and automatically handles strings or objects correctly. Basically it is a nice layer of sugar around res.end and res.setHeaders that correctly handles mimetype and serializing the data if needed.
+
+### put, post, update and parsing out body
 
 At some point you are going to need to deal with body data from a form or ajax request. This is one of the areas where monument diverges from the mainstream you may be used to in server side js. We expose a parser function that you use like this in the event handler for the route you want:
 
@@ -208,9 +211,6 @@ The `monument.parser` function returns `null` if an error occurs during parsing.
 
 ### Data and Events
 
-#### `.send()`
-One of the things that I heard from several users was the lack of response.send was confusing for them. So we added it! It also allows etags and automatically handles strings or objects correctly. Basically it is a nice layer of sugar around res.end and res.setHeaders that correctly handles mimetype and serializing the data if needed.
-
 #### required events (state machine)
 We pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for.
 
@@ -228,7 +228,7 @@ Static assetts live in `/public` and can be organized in whatever way you see fi
 
 You can interact with these routes through events to a certain degree. They raise a `static:served` with a payload of the file url that was served, when the file exists. If the file does not exist they raise a `static:missing` with the file url as payload. This will let you log and handle these conditions as needed.
 
-### Testing!
+## Testing!
 The [testing documentation](docs/testing.md) lives in the docs directory
 
 
