@@ -26,7 +26,6 @@ describe('Route Handler Tests', () => {
         };
 
         res.writeHead = function (status, headers) {
-            console.log(headers, 'write head');
             this.statusCode = status;
             this.headers = Object.keys(headers).reduce((prevIn, key) => {
                 const prev = prevIn;
@@ -209,7 +208,6 @@ describe('Route Handler Tests', () => {
             res.on('finish', () => {
                 assert.strictEqual(res.statusCode, successStatus);
                 assert.isObject(res.headers);
-                console.log(res.headers);
                 assert.strictEqual(res.headers.Vary, 'Accept-Encoding');
                 done();
             });
