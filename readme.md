@@ -228,6 +228,10 @@ Static assetts live in `/public` and can be organized in whatever way you see fi
 
 You can interact with these routes through events to a certain degree. They raise a `static:served` with a payload of the file url that was served, when the file exists. If the file does not exist they raise a `static:missing` with the file url as payload. This will let you log and handle these conditions as needed.
 
+### Testing!
+The [testing documentation](docs/testing.md) lives in the docs directory
+
+
 ## Contributing
 Contributing is simple :-)
 
