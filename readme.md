@@ -231,6 +231,11 @@ You can interact with these routes through events to a certain degree. They rais
 ## Testing!
 The [testing documentation](docs/testing.md) lives in the docs directory
 
+## Template language
+The templates right now default to [dot](http://olado.github.io/doT/index.html) it's documentation is pretty good... though there is definitely room for improvement there. It is still the best place to learn about templating at the moment though.
+
+## Route documentation
+The [route documentation](docs/routes.md) lives in the docs directory
 
 ## Contributing
 Contributing is simple :-)
