@@ -6,6 +6,7 @@ const http = require('http')
     , events = require('harken')
     , pkg = require('./package.json')
     , parser = require('./utils/parser')
+    , webSockets = require('./web-sockets')
 
     , defaultPort = 3000
 
@@ -33,6 +34,11 @@ const http = require('http')
         events.on('setup:complete', () => {
             server = require('./routes/index.js').server(http, routes, config);
             server.listen(port);
+
+            if (configIn.webSockets === true) {
+                // enables websockets for data requests
+                webSockets(server);
+            }
 
             console.log(`monument v${pkg.version} up and running on port: ${port}`);
         });
