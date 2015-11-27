@@ -35,9 +35,9 @@ const http = require('http')
             server = require('./routes/index.js').server(http, routes, config);
             server.listen(port);
 
-            if (configIn.webSockets === true) {
+            if (utils.not(configIn.webSockets === false)) {
                 // enables websockets for data requests
-                webSockets(server);
+                webSockets(server, config.webSockets);
             }
 
             console.log(`monument v${pkg.version} up and running on port: ${port}`);
