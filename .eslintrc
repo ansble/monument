@@ -43,7 +43,7 @@
         "no-array-constructor": 2,
         "no-new-object": 2,
         "no-trailing-spaces": 2,
-        "no-underscore-dangle": [2, { "allow": [] }],
+        "no-underscore-dangle": [2],
         "object-curly-spacing": [2, "always"],
         "quote-props": [2, "as-needed"],
         "semi": [2, "always"],
