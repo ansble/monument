@@ -4,24 +4,24 @@ const parseRoutes = require('./parseRoutes')
     , matchSimpleRoute = require('./matchSimpleRoute')
     , isWildCardRoute = require('./isWildCardRoute')
     , parseWildCardRoute = require('./parseWildCardRoute')
+    , isDefined = require('../utils').isDefined
 
 
-    , server = (serverType, routesJson, config) => {
-        let serverReturn;
+    , serverInstance = (serverType, routesJson, config) => {
+        const options = config.serverOptions;
 
-        if (config.key && config.cert) {
-            serverReturn = serverType.createServer({
-                key: config.key
-                , cert: config.cert
-            }, require('./router.js')(routesJson, config));
+        let server;
+
+        if (isDefined(options)) {
+            server = serverType.createServer(options, require('./router.js')(routesJson, config));
         } else {
-            serverReturn = serverType.createServer(require('./router.js')(routesJson, config));
+            server = serverType.createServer(require('./router.js')(routesJson, config));
         }
-        return serverReturn;
+        return server;
     };
 
 module.exports = {
-    server: server
+    server: serverInstance
     , parseWildCardRoute: parseWildCardRoute
     , isWildCardRoute: isWildCardRoute
     , parseRoutes: parseRoutes
