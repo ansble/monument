@@ -7,7 +7,17 @@ const parseRoutes = require('./parseRoutes')
 
 
     , server = (serverType, routesJson, config) => {
-        return serverType.createServer(require('./router.js')(routesJson, config));
+        let serverReturn;
+
+        if (config.key && config.cert) {
+            serverReturn = serverType.createServer({
+                key: config.key
+                , cert: config.cert
+            }, require('./router.js')(routesJson, config));
+        } else {
+            serverReturn = serverType.createServer(require('./router.js')(routesJson, config));
+        }
+        return serverReturn;
     };
 
 module.exports = {

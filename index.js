@@ -18,7 +18,8 @@ const http = require('http')
             , routePath = configIn.routeJSONPath || './routes.json'
             , publicPath = configIn.publicPath || './public'
             , routes = require(path.join(process.cwd(), routePath))
-            , config = configIn;
+            , config = configIn
+            , httpServer = config.server || http;
 
         let server;
 
@@ -31,7 +32,7 @@ const http = require('http')
 
         // take care of any setup tasks before starting the server
         events.on('setup:complete', () => {
-            server = require('./routes/index.js').server(http, routes, config);
+            server = require('./routes/index.js').server(httpServer, routes, config);
             server.listen(port);
 
             console.log(`monument v${pkg.version} up and running on port: ${port}`);
