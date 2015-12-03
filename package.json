@@ -46,6 +46,7 @@
     "mime": "^1.3.4",
     "platform": "^1.3.0",
     "raw-body": "^2.1.4",
+    "uuid": "^2.0.1",
     "ws": "^0.8.0"
   },
   "devDependencies": {

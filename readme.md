@@ -79,6 +79,25 @@ monument.server({
       });
 ```
 
+### `monument`'s api
+
+In addition to the server `monument` exposes the following:
+
+```
+monument.uuid
+```
+a v4 UUID generator which return a UUID when called with no paramters
+
+```
+monument.events
+```
+The event emitter/subscriber api for your app
+
+```
+monument.parser
+```
+The body parser for dealing with forms
+
 ### etags
 Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
 
