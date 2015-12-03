@@ -3,10 +3,6 @@ const events = require('harken')
     , not = require('../utils').not
     , isDefined = require('../utils').isDefined
 
-    // , isPassThrough = (event, setEvent) => {
-    //     return event === setEvent;
-    // }
-
     , isDataEvent = (event, setEvent) => {
         return event !== setEvent;
     };

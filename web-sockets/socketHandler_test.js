@@ -87,7 +87,25 @@ describe('WebSocket handler Tests', () => {
             });
         });
 
-        it('should pass data through to data new events');
+        it('should pass message and socket through to data new events', (done) => {
+            const socket = {};
+
+            handler(socket);
+
+            events.once('data:new:person', (data) => {
+                assert.isObject(data);
+                assert.isObject(data.message);
+                assert.isObject(data.message.payload);
+                assert.isObject(data.socket);
+                assert.strictEqual(socket, data.socket);
+                assert.strictEqual(data.message.event, 'data:new:person');
+                done();
+            });
+
+            socket.onmessage({
+                data: `{ "event": "data:new:person", "payload": { "name": "daniel" } }`
+            });
+        });
 
         it('should emit events for non-data event messages', (done) => {
             const socket = {};
@@ -163,22 +181,6 @@ describe('WebSocket handler Tests', () => {
 
             assert.strictEqual(events.listeners('some:event').length, 0);
         });
-
-        it('should pass data through to data new events', (done) => {
-            const socket = {};
-
-            events.once('data:new:test', (test) => {
-                assert.isObject(test);
-                assert.strictEqual(test.name, 'daniel');
-                done();
-            });
-
-            handler(socket);
-
-            socket.onmessage({
-                data: `{ "event": "data:new:test", "payload": { "name": "daniel"} }`
-            });
-        });
     });
 
     describe('Web Socket Handler Type: passthrough tests', () => {
@@ -237,6 +239,26 @@ describe('WebSocket handler Tests', () => {
 
             socket.onmessage({
                 data: `{ "event": "some:event" }`
+            });
+        });
+
+        it('should pass message and socket through to data new events', (done) => {
+            const socket = {};
+
+            handler(socket);
+
+            events.once('data:new:person', (data) => {
+                assert.isObject(data);
+                assert.isObject(data.message);
+                assert.isObject(data.message.payload);
+                assert.isObject(data.socket);
+                assert.strictEqual(socket, data.socket);
+                assert.strictEqual(data.message.event, 'data:new:person');
+                done();
+            });
+
+            socket.onmessage({
+                data: `{ "event": "data:new:person", "payload": { "name": "daniel" } }`
             });
         });
     });
