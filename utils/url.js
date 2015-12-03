@@ -8,8 +8,8 @@ const url = require('url')
     , parse = (urlStr, slashesDenoteHost) => {
         const urlObject = url.parse(urlStr, true, slashesDenoteHost)
             , query = urlObject.query
-            , not = tools.not
             , isDefined = tools.isDefined
+            , isUndefined = tools.isUndefined
 
             , tempQuery = Object.keys(urlObject.query).reduce((prevIn, key) => {
                 const newKey = key.replace(/\[\]$/, '')
@@ -17,7 +17,7 @@ const url = require('url')
 
                 // if our key does not have brackets and the same
                 // key does not already exist on the tempQuery object
-                if (newKey === key && not(isDefined(prev[newKey]))) {
+                if (newKey === key && isUndefined(prev[newKey])) {
                     prev[newKey] = query[key];
                 } else {
                     prev[newKey] = [].concat(prev[newKey], query[key]);
