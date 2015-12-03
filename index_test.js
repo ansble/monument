@@ -3,9 +3,9 @@
 
 const assert = require('chai').assert
     , app = require('./index')
-    , http = require('http');
-
-let server;
+    , http = require('http')
+    , servers = []
+    , events = require('harken');
 
 describe('The main monument tests', () => {
 
@@ -22,18 +22,61 @@ describe('The main monument tests', () => {
     });
 
     describe('Wrapper Tests', () => {
-        afterEach(() => {
-            server.close();
+        afterEach((done) => {
+            const shutDownEvents = events.required([ 'complete' ], () => {
+                done();
+            });
+
+            servers.forEach((server, i) => {
+                shutDownEvents.add(`server:${i}`);
+                server.close(() => {
+                    events.emit(`server:${i}`);
+                });
+            });
+
+            events.emit('complete');
         });
 
-        it('should return a server when run', () => {
-            server = app.server({
+        it('should return a server when run', (done) => {
+            const server = app.server({
                 routeJSONPath: './test_stubs/routes_stub.json'
                 , templatePath: './test_stubs/templates'
                 , port: 9999
             });
 
-            assert.instanceOf(server, http.Server);
+            servers.push(server);
+            setTimeout(() => {
+                assert.instanceOf(server, http.Server);
+                done();
+            }, 50);
+        });
+
+        it('should return a server when run and no port passed in', (done) => {
+            const server = require('./index').server({
+                routeJSONPath: './test_stubs/routes_stub.json'
+                , templatePath: './test_stubs/templates'
+            });
+
+            servers.push(server);
+            setTimeout(() => {
+                assert.instanceOf(server, http.Server);
+                done();
+            }, 50);
+        });
+
+        it('should return a server when run and compress passed in', (done) => {
+            const server = require('./index').server({
+                routeJSONPath: './test_stubs/routes_stub.json'
+                , templatePath: './test_stubs/templates'
+                , compress: false
+            });
+
+            servers.push(server);
+
+            setTimeout(() => {
+                assert.instanceOf(server, http.Server);
+                done();
+            }, 50);
         });
     });
 
