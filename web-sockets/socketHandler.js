@@ -1,7 +1,6 @@
 'use strict';
 const events = require('harken')
-    , not = require('../utils').not
-    , isDefined = require('../utils').isDefined
+    , isUndefined = require('../utils').isUndefined
 
     , isDataEvent = (event, setEvent) => {
         return event !== setEvent;
@@ -14,7 +13,7 @@ module.exports = (type) => {
             const message = JSON.parse(messageIn.data)
                 , setEvent = message.event.replace(':get:', ':set:');
 
-            if (!type || not(isDefined(message.event))) {
+            if (!type || isUndefined(message.event)) {
                 // no event then we can't really do anything...
                 return;
             }
