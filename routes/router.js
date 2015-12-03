@@ -4,7 +4,6 @@ const path = require('path')
     , fs = require('fs')
     , zlib = require('zlib')
     , events = require('harken')
-    , utils = require('../utils')
     , mime = require('mime')
     , parseRoutes = require('./parseRoutes')
     , matchSimpleRoute = require('./matchSimpleRoute')
@@ -12,6 +11,13 @@ const path = require('path')
     , parseWildCardRoute = require('./parseWildCardRoute')
     , setupStaticRoutes = require('./serverSetup')
     , setSecurityHeaders = require('../security')
+
+    , not = require('../utils').not
+    , send = require('../utils').send
+    , parsePath = require('../utils').parsePath
+    , getCompression = require('../utils').getCompression
+    , redirect = require('../utils').redirect
+    , contains = require('../utils').contains
 
     , succesStatus = 200
     , unmodifiedStatus = 304
@@ -27,7 +33,7 @@ module.exports = (routesJson, config) => {
     // the route handler... pulled out here for easier testing
     return (req, resIn) => {
         const method = req.method.toLowerCase()
-            , pathParsed = utils.parsePath(req.url)
+            , pathParsed = parsePath(req.url)
             , pathname = pathParsed.pathname
             , simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
             , expires = new Date().getTime()
@@ -37,20 +43,20 @@ module.exports = (routesJson, config) => {
                 , query: pathParsed.query
                 , params: {}
             }
-            , compression = utils.getCompression(req.headers['accept-encoding'], config);
+            , compression = getCompression(req.headers['accept-encoding'], config);
 
         let file
             , routeInfo
             , res = resIn;
 
         // add .send to the response
-        res.send = utils.send(req, config);
-        res.redirect = utils.redirect(req);
+        res.send = send(req, config);
+        res.redirect = redirect(req);
 
         res = setSecurityHeaders(config, req, res);
 
         // match the first part of the url... for public stuff
-        if (utils.contains(publicFolders, pathname.split('/')[1])) {
+        if (contains(publicFolders, pathname.split('/')[1])) {
             // static assets y'all
 
             // this header allows proxies to cache different version based on
@@ -80,7 +86,7 @@ module.exports = (routesJson, config) => {
                             });
 
                             res.end();
-                        } else if (utils.not(compression === 'none')){
+                        } else if (not(compression === 'none')){
                             // we have compression!
                             res.writeHead(succesStatus, {
                                 'Content-Type': mime.lookup(pathname)

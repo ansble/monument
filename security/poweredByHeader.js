@@ -1,9 +1,9 @@
 'use strict';
 
-const utils = require('../utils');
+const isDefined = require('../utils').isDefined;
 
 module.exports = (config, res) => {
-    if (utils.isDefined(config.security) && utils.isDefined(config.security.poweredBy)) {
+    if (isDefined(config.security) && isDefined(config.security.poweredBy)) {
         res.setHeader('X-Powered-By', config.security.poweredBy);
     }
 
