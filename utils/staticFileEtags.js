@@ -2,8 +2,11 @@
 
 const etag = require('etag')
     , fs = require('fs')
-    , tools = require('./tools')
     , events = require('harken')
+
+    , not = require('./tools').not
+    , isDefined = require('./tools').isDefined
+
     , files = {}
 
     , addEtag = (fileIn) => {
@@ -19,18 +22,18 @@ const etag = require('etag')
     }
 
     , isValid = (etagObj, etagged) => {
-        return tools.isDefined(etagObj.etag)
+        return isDefined(etagObj.etag)
             && etagged
             && files[etagObj.file] === etagObj.etag;
     }
 
     , checkEtag = (etagObj) => {
 
-        const etagged = tools.isDefined(files[etagObj.file])
+        const etagged = isDefined(files[etagObj.file])
             , valid = isValid(etagObj, etagged);
 
         // if the file hasn't been etagged then etag it
-        if (tools.not(etagged)){
+        if (not(etagged)){
             addEtag(etagObj.file);
         } else {
             events.emit(`etag:get:${etagObj.file}`, files[etagObj.file]);
