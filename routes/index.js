@@ -10,14 +10,11 @@ const parseRoutes = require('./parseRoutes')
     , serverInstance = (serverType, routesJson, config) => {
         const options = config.serverOptions;
 
-        let server;
-
         if (isDefined(options)) {
-            server = serverType.createServer(options, require('./router.js')(routesJson, config));
+            return serverType.createServer(options, require('./router.js')(routesJson, config));
         } else {
-            server = serverType.createServer(require('./router.js')(routesJson, config));
+            return serverType.createServer(require('./router.js')(routesJson, config));
         }
-        return server;
     };
 
 module.exports = {
