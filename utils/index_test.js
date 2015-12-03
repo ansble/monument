@@ -13,6 +13,7 @@ describe('Utils Tests', () => {
         assert.isFunction(utils.setup);
         assert.isFunction(utils.parsePath);
         assert.isFunction(utils.isDefined);
+        assert.isFunction(utils.isUndefined);
         assert.isFunction(utils.not);
         assert.isFunction(utils.redirect);
         assert.isFunction(utils.contains);

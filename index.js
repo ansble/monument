@@ -6,6 +6,8 @@ const http = require('http')
     , events = require('harken')
     , pkg = require('./package.json')
     , parser = require('./utils/parser')
+    , webSockets = require('./web-sockets')
+    , uuid = require('uuid')
 
     , defaultPort = 3000
 
@@ -25,15 +27,17 @@ const http = require('http')
 
         config.routeJSONPath = routePath;
         config.publicPath = publicPath;
-
-        if (utils.not(utils.isDefined(config.compress))){
-            config.compress = true;
-        }
+        config.compress = utils.isDefined(config.compress) ? config.compreess : true;
 
         // take care of any setup tasks before starting the server
-        events.on('setup:complete', () => {
+        events.once('setup:complete', () => {
             server = require('./routes/index.js').server(httpServer, routes, config);
             server.listen(port);
+
+            if (utils.not(configIn.webSockets === false)) {
+                // enables websockets for data requests
+                webSockets(server, config.webSockets);
+            }
 
             console.log(`monument v${pkg.version} up and running on port: ${port}`);
         });
@@ -48,4 +52,7 @@ module.exports = {
     server: wrapper
     , events: events
     , parser: parser
+    , createUUID: () => {
+          return uuid.v4();
+      }
 };

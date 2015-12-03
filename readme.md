@@ -35,6 +35,7 @@ When you create your server it takes a config object that allows you to pass in 
     , publicPath: './public' // the folder where your static files live
     , maxAge: 31536000 // time to cache static files client side in milliseconds
     , etags: true // turns on or off etag generation and headers
+    , webSockets: false // default setting disables websockets. can be (false, true, 'passthrough', 'data')
     
     //the security object is brand new in this release
     , security: {
@@ -77,6 +78,25 @@ monument.server({
         , port: process.env.PORT || 3000
       });
 ```
+
+### `monument`'s api
+
+In addition to the server `monument` exposes the following:
+
+```
+monument.uuid
+```
+a v4 UUID generator which return a UUID when called with no paramters
+
+```
+monument.events
+```
+The event emitter/subscriber api for your app
+
+```
+monument.parser
+```
+The body parser for dealing with forms
 
 ### etags
 Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
@@ -223,6 +243,13 @@ We pulled in [event-state](http://github.com/ansble/event-state) to provide a si
 ```
 
 More to come... but think about the idea of resource pooling and individual data modules that front DSLs.
+
+### web socket connections
+
+moument has a built in websocket server! So when you spin up a server you can connect either through normal `http` or through a web socket connection. Under the hoods it uses [ws](https://www.npmjs.com/package/ws) which provides a light weight, performant, and standards compliant web socket server.
+
+For more information check out [Using Web Sockets with monument](docs/websockets.md).
+
 
 ### Static Assetts
 

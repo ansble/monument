@@ -53,6 +53,8 @@ gulp.task('test', [ 'lint' ], () => {
         , '!./routes/**/*_test.js'
         , './security/**/*.js'
         , '!./security/**/*_test.js'
+        , './web-sockets/**/*.js'
+        , '!./web-sockets/**/*_test.js'
         , '*.js'
         , '!*_test.js'
         , '!gulpfile.js' ])

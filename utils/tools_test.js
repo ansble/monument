@@ -8,6 +8,7 @@ describe('Tools Tests', () => {
     it('should return an object', () => {
         assert.isObject(tools);
         assert.isFunction(tools.isDefined);
+        assert.isFunction(tools.isUndefined);
         assert.isFunction(tools.not);
     });
 
@@ -24,6 +25,22 @@ describe('Tools Tests', () => {
             };
 
             assert.strictEqual(tools.isDefined(some.test), true);
+        });
+    });
+
+    describe('.isUndefined tests', () => {
+        it('should return true it the item is undefined', () => {
+            const some = {};
+
+            assert.strictEqual(tools.isUndefined(some.test), true);
+        });
+
+        it('should return false it the item is defined', () => {
+            const some = {
+                test: true
+            };
+
+            assert.strictEqual(tools.isUndefined(some.test), false);
         });
     });
 
