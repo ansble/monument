@@ -47,4 +47,18 @@ describe('The main monument tests', () => {
         it('should override doTjs specified defaults when set');
         it('should ignore irrelevant config keys');
     });
+
+    describe('uuid tests', () => {
+        it('should have a createUUID function', () => {
+            assert.isFunction(app.createUUID);
+        });
+
+        it('should return a uuid when called', () => {
+            assert.match(app.createUUID(), /[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
+        });
+
+        it('should not return the same uuid when called multiple times', () => {
+            assert.notEqual(app.createUUID(), app.createUUID());
+        });
+    });
 });

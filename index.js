@@ -6,6 +6,7 @@ const http = require('http')
     , events = require('harken')
     , pkg = require('./package.json')
     , parser = require('./utils/parser')
+    , uuid = require('uuid')
 
     , defaultPort = 3000
 
@@ -47,4 +48,7 @@ module.exports = {
     server: wrapper
     , events: events
     , parser: parser
+    , createUUID: () => {
+          return uuid.v4();
+      }
 };
