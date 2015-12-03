@@ -177,7 +177,7 @@ In the event that you don't want a Content Security Policy (why!? WHY!? Trust us
 
 ## Setting up routes
 
-The easy way to do this is with the [monument-cli](https://github.com/ansble/monument-cli)and `monument routes` command. It takes your `routes.json` file and stubbs out all the route handlers and files for you.
+The easy way to do this is with the [monument-cli](https://github.com/ansble/monument-cli)and `monument routes` command. It takes your `routes.json` file and stubs out all the route handlers and files for you.
 
 Whichever way you decide to do it the first step is to add your route to the `routes.json` file. It looks like this:
 
