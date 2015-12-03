@@ -14,6 +14,7 @@ module.exports = {
     , redirect: redirect
     , parsePath: parsePath
     , isDefined: tools.isDefined
+    , isUndefined: tools.isUndefined
     , not: tools.not
     , contains: tools.contains
     , setup: (config) => {
