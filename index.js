@@ -34,7 +34,7 @@ const http = require('http')
             server = require('./routes/index.js').server(httpServer, routes, config);
             server.listen(port);
 
-            if (utils.not(configIn.webSockets === false)) {
+            if (configIn.webSockets !== false) {
                 // enables websockets for data requests
                 webSockets(server, config.webSockets);
             }

@@ -1,4 +1,4 @@
-# Getting up and running with `http2`
+# Getting up and running with http2/spdy
 
 `monument` now ships with support for running a variety of different server types and protocols. At the top of the list is http2! One of many nice features is the ability to push multiple assets to users over the same connection. Now you can get that in `monument`.
 
@@ -32,6 +32,7 @@ monument.server({
     , serverOptions: {
         key: fs.readFileSync('./server.key')
         , cert: fs.readFileSync('./server.crt')
+        , ca: fs.readFileSync(./ca.pem)
     }
 });
 ```
@@ -59,3 +60,7 @@ events.on('route:/:get', (connection) => {
     connection.res.send(mainTemplate({ version: pkg.version }));
 });
 ```
+
+## Other types of servers
+
+The real power here is that you can use any server that follows the native `http` server's API. So if you want to use `spdy` or `http2` modules, or any other server type you can think of you can. Anything that is passed to `config.serverOptions` will be passed into `config.server.createServer` as the first parameter and you should be off and running.
