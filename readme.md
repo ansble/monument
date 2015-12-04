@@ -1,5 +1,7 @@
 # monument
 
+[![Join the chat at https://gitter.im/ansble/monument](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ansble/monument?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 `monument` is a super light event routed nodejs framework.
 
 [![NPM](https://nodei.co/npm/monument.png?downloadRank=true&stars=true)](https://nodei.co/npm/monument/)
