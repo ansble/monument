@@ -1,12 +1,13 @@
 'use strict';
 
-const tools = require('./tools')
+const isDefined = require('./tools').isDefined
+    , isUndefined = require('./tools').isUndefined
     , dontCompress = (config) => {
-        return tools.isDefined(config.compress) && !config.compress;
+        return isDefined(config.compress) && !config.compress;
     }
 
     , getCompression = (header, config) => {
-        if (tools.not(tools.isDefined(header)) || dontCompress(config)){
+        if (isUndefined(header) || dontCompress(config)){
             return 'none';
         } else if (header.match(/\bgzip\b/)) {
             return 'gzip';

@@ -1,5 +1,6 @@
 'use strict';
-const utils = require('../utils')
+const not = require('../utils').not
+    , contains = require('../utils').contains
     , reqGuard = 'X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter'
     , invalidOption = 'X-Frame must be undefined, "DENY", "ALLOW-FROM", or "SAMEORIGIN"'
 
@@ -15,7 +16,7 @@ const utils = require('../utils')
         }
 
         if (type === 'string') {
-            if (utils.not(utils.contains(allowedOptions, action.toUpperCase()))) {
+            if (not(contains(allowedOptions, action.toUpperCase()))) {
                 valid = false;
             }
         } else {
@@ -65,7 +66,7 @@ module.exports = (config, res) => {
 
     let header = 'SAMEORIGIN';
 
-    if (utils.not(actionValid(options.action))) {
+    if (not(actionValid(options.action))) {
         typeError();
     }
 

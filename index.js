@@ -2,12 +2,14 @@
 
 const http = require('http')
     , path = require('path')
-    , utils = require('./utils')
     , events = require('harken')
     , pkg = require('./package.json')
     , parser = require('./utils/parser')
     , webSockets = require('./web-sockets')
     , uuid = require('uuid')
+
+    , isDefined = require('./utils').isDefined
+    , setup = require('./utils').setup
 
     , defaultPort = 3000
 
@@ -27,7 +29,7 @@ const http = require('http')
 
         config.routeJSONPath = routePath;
         config.publicPath = publicPath;
-        config.compress = utils.isDefined(config.compress) ? config.compreess : true;
+        config.compress = isDefined(config.compress) ? config.compreess : true;
 
         // take care of any setup tasks before starting the server
         events.once('setup:complete', () => {
@@ -43,7 +45,7 @@ const http = require('http')
         });
 
 
-        utils.setup(config);
+        setup(config);
 
         return server;
     };

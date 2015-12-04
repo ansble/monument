@@ -4,11 +4,11 @@ const missingConfigError = new Error(`You must provide at least 2 SHA-256s and a
     How To: http://mzl.la/1EnfqBf, http://bit.ly/1WkHcWs Spec: http://bit.ly/1kVy0MR`)
 
     , isDefined = require('../utils').isDefined
-    , not = require('../utils').not
+    , isUndefined = require('../utils').isUndefined
     , shapeCheck = (options) => {
 
-        if (not(isDefined(options.maxAge)) ||
-            not(isDefined(options.sha256s)) ||
+        if (isUndefined(options.maxAge) ||
+            isUndefined(options.sha256s) ||
             options.sha256s.length < 2 ||
             options.maxAge <= 0) {
 
@@ -27,7 +27,7 @@ const missingConfigError = new Error(`You must provide at least 2 SHA-256s and a
     }
 
     , hasReportOnly = (options) => {
-        return not(isDefined(options.reportOnly)) || options.reportOnly;
+        return isUndefined(options.reportOnly) || options.reportOnly;
     }
 
     , addSubdomainFlag = (headerValueIn, options) => {
