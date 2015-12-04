@@ -175,39 +175,6 @@ The default is a very strict `default-src 'self'` which prevents any files from 
 
 In the event that you don't want a Content Security Policy (why!? WHY!? Trust us you want one) you can disable it by setting `config.security.contentSecurity` to false in the config section of your server. This is not a good idea.
 
-## Setting up routes
-
-The easy way to do this is with the [monument-cli](https://github.com/ansble/monument-cli)and `monument routes` command. It takes your `routes.json` file and stubbs out all the route handlers and files for you.
-
-Whichever way you decide to do it the first step is to add your route to the `routes.json` file. It looks like this:
-
-```
-{
-  "/": ["get"],
-  "/sign-up": ["get", "post"],
-  "/member/:username": ["get"]
-}
-```
-
-So you have a key (the route) and then an array of allowed verbs for that route. This means that a request to a disallowed verb will not be handled. It returns a 404 just like a request to a route path does.
-
-You are allowed to specify routes with params in them as demonstrated by the `/member/:username` route above. This means that when someone requests that route with something like `/member/designfrontier` there will be a variable named `username` included in the variable req.params (req.params.username will equal 'designfrontier' in this example). You can use that variable in the event handler for the route. Oh yeah, that will be handled by the 'route:/member/:username:get' event. Hopefully that makes sense.
-
-The structure of a route event is: 'route:/path/to/resource:http-verb'. So if you want to listen to those events for something, route handling, logging, jumping jack counter, whatever you just listen to the exposed emitter and you are good to go.
-
-The route events recieve an object right now, often called connection, that looks like this
-
-```
-{
-  res: response,
-  req: request,
-  params: the url parameters as an object,
-  query: the queryparams as an object
-}
-```
-
-these are the request and response objects from node. The other thing of interest are the other parts of the connection object, the params, and query objects. `params` contains the key/value pairs from the url params laid out with `:name` notation in the path. Lastly you get the `query` object which is the key/value pairs found in any queryparams on the path.
-
 ### `.send()`
 One of the things that I heard from several users was the lack of response.send was confusing for them. So we added it! It also allows etags and automatically handles strings or objects correctly. Basically it is a nice layer of sugar around res.end and res.setHeaders that correctly handles mimetype and serializing the data if needed.
 
