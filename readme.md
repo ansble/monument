@@ -12,6 +12,8 @@
 
 [![Code Climate](https://img.shields.io/codeclimate/github/ansble/monument.svg?style=flat-square)](https://codeclimate.com/github/ansble/monument)
 
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/ansble/monument)
+
 ## How To Get Started
 
 The easiest way to get started with monument is to use the CLI tool which does project lay down. `npm install -g monument-cli` From there a simple `monument new <path to project>` will get you up and running with stubbed tests, basic error handlers and an index route and everything you need to knock out an application fast.
