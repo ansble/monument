@@ -1,6 +1,6 @@
 'use strict';
 
-const utils = require('../utils')
+const contains = require('../utils').contains
     , isWildCardRoute = (pathname, method, routesJson) => {
         const matchedRoutes = Object.keys(routesJson).find((route) => {
             return !!pathname.match(routesJson[route].regex);
@@ -9,7 +9,7 @@ const utils = require('../utils')
         let matchesVerb;
 
         if (matchedRoutes){
-            matchesVerb = utils.contains(routesJson[matchedRoutes].verbs, method);
+            matchesVerb = contains(routesJson[matchedRoutes].verbs, method);
         } else {
             matchesVerb = false;
         }
