@@ -14,7 +14,7 @@
 
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/ansble/monument)
 
-## How To Get Started
+## How to Get Started
 
 The easiest way to get started with monument is to use the CLI tool which does project lay down. `npm install -g monument-cli` From there a simple `monument new <path to project>` will get you up and running with stubbed tests, basic error handlers and an index route and everything you need to knock out an application fast.
 
@@ -22,7 +22,7 @@ The easiest way to get started with monument is to use the CLI tool which does p
 
 It is also the easiest way to add routes and fata handlers!
 
-## Config object and the server
+## Config Object and the Server
 
 When you create your server it takes a config object that allows you to pass in some options for your particular environment. It looks like this and these are the default values:
 
@@ -83,7 +83,7 @@ monument.server({
       });
 ```
 
-### `monument`'s api
+### `monument`'s API
 
 In addition to the server `monument` exposes the following:
 
@@ -102,12 +102,12 @@ monument.parser
 ```
 The body parser for dealing with forms
 
-### etags
+### Etags
 Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
 
 They are generated and used for all static files, and all responses that use `res.send`. One of the cooler things we did was have monumen cache the etags for static assets. That means they get created the first time they are requested after the server starts up, and for all subsequent requests the etag is pulled from an in memory cache so that the file i/o is only done if there is a reason to stream the file to the client. Makes them fast and light!
 
-### Secuirty configuration
+### Security Configuration
 
 Ths server config opbject provides a security object inside it for you to specify what security options you would like to turn on at the server level. They are detailed in the example object above but below is more information on each of the options.
 
@@ -115,32 +115,32 @@ We have done our best to place an out-of-the-box monument server in a secure pos
 
 The one thing we don't do is handle Public Key Pinning without configuration. But you can easily add that if you want!  Most of the settings in security turn headers on and off, and documentation around those headers can be found on [OWASP](https://www.owasp.org/index.php/List_of_useful_HTTP_headers) and in [helmet and its source code](https://www.npmjs.com/package/helmet). Much of the code here is inspired by and adapted from helmet.
 
-#### poweredBy
+#### Powered By
 You can set this value to whatever you want it to look like your server is powered by. By default it is off and the server does not return the `X-Powered-By` header. This is more secure then specifying it so we receommend you leave this alone, but since you are an adult you are free to set a value here. Any string passed here will become the value of the `X-Powered-By` header.
 
-#### xssProtection
+#### XSS Protection
 If set to false this turns off the X-XSS-Protection header for all browsers. This header is disabled in IE < 9 because it opens up vulnerabilities. In everything else it is enabled by default.
 
-#### noSniff
+#### No Sniff
 If set to false this turns off the X-Content-Type-Options header for all browsers. This header prevents browsers from trying to infer mime type when a file with a mime type is downloaded. This helps prevent download related vulnerabilities and the misinterpretation of file types.
 
-#### frameguard
+#### Frameguard
 Guard is a weird looking word. 
 Not that we have that out of the way frameguard allows you to specify under what conditions your application may be wrapped in an `iframe`. Setting `action: 'DENY'` means that your site may never be wrapped in an `iframe`. The default is 'SAMEORIGIN' which allows wrapping of your site by essentially your app. The last allowed setting, `action: 'ALLOW-ORIGIN'`, requires that you pass a `domain` value as well. It allows the specified domain to wrap your application in an iframe. All the calculations for `SAMEORIGIN` and `ALLOW-ORIGIN` follow the CORS rules for determining origin. So `www.designfrontier.net` and `designfrontier.net` are different origins.
 
-#### hsts (HTTP Strict Transport Security)
+#### HSTS (HTTP Strict Transport Security)
 This tells browsers to require HTTPS security if the connection started out as an HTTPS connection. It does not force the connection to switch, it just requires all subsequent requests by the page to use HTTPS if the page was requested with HTTPS. To disable it set `config.security.hsts` to `false`. It is set with a `maxAge` much like caching. The `maxAge` is set in seconds (not ms) and must be a positive number. 
 
 The two optional settings: `includeSubDomains` and `preload` are turned on by default. `includeSubDomains` requires any request to a subdmain of the current domain to be HTTPS as well. `preload` is a Google Chrome specific extension that allows you to submit your site for baked-into-the-browser HSTS. With it set you can submit your site to [this page](https://hstspreload.appspot.com/). Both of these can be individually turned off by setting them to false in the config object.
 
 For more information the spec is [available](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04).
 
-#### noCache
+#### No Cache
 Before using this think long and hard about it. It shuts down all client side caching for the server. All of it. As best as it can be shut down. You can set it to an object `{noEtag: true}` if you want to remove etags as well. If you merely set it to true then all no cache headers will be set but the ETag header will not be removed.
 
 There is now also a `res.noCache` function that allows you to do the same thing but on a per request/route/user (however you program it) basis. This is a much better option then setting noCache server wide.
 
-#### publicKeyPin
+#### Public Key Pin
 This one is a bit of a beast. Before setting it and using it please read: [the spec](https://tools.ietf.org/html/rfc7469), [this mdn article](https://developer.mozilla.org/en-US/docs/Web/Security/Public_Key_Pinning) and [this tutorial](https://timtaubert.de/blog/2014/10/http-public-key-pinning-explained/). It's a great security feature to help prevent man in the middle attacks, but it is also complex.
 
 Enough of the warnings! How do you configure it? The config object above explains it pretty well. Some details about `includeSubdomains`: it pins all sub domains of your site if it is set to true. Turned off by setting it to false.
@@ -169,7 +169,7 @@ If you specify a report URI it should be ready to recieve a POST from browsers i
 }
 ```
 
-#### contentSecurity
+#### Content Security Policy
 
 This is the Content Security Policy configuration. Content Security Policies are amazing and if you aren't familiar with them you should [go read up on them](https://developer.mozilla.org/en-US/docs/Web/Security/CSP). Firefox pioneered them a long time ago and they have become a powerful standard for protecting your end users.
 
@@ -182,7 +182,7 @@ In the event that you don't want a Content Security Policy (why!? WHY!? Trust us
 ### `.send()`
 One of the things that I heard from several users was the lack of response.send was confusing for them. So we added it! It also allows etags and automatically handles strings or objects correctly. Basically it is a nice layer of sugar around res.end and res.setHeaders that correctly handles mimetype and serializing the data if needed.
 
-### put, post, update and parsing out body
+### PUT, POST, UPDATE and Parsing Out Body
 
 At some point you are going to need to deal with body data from a form or ajax request. This is one of the areas where monument diverges from the mainstream you may be used to in server side js. We expose a parser function that you use like this in the event handler for the route you want:
 
@@ -204,7 +204,7 @@ The `monument.parser` function returns `null` if an error occurs during parsing.
 
 ### Data and Events
 
-#### required events (state machine)
+#### Required Events (State Machine)
 We pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for.
 
 ```
@@ -215,7 +215,7 @@ We pulled in [event-state](http://github.com/ansble/event-state) to provide a si
 
 More to come... but think about the idea of resource pooling and individual data modules that front DSLs.
 
-### web socket connections
+### Web Socket Connections
 
 moument has a built in websocket server! So when you spin up a server you can connect either through normal `http` or through a web socket connection. Under the hoods it uses [ws](https://www.npmjs.com/package/ws) which provides a light weight, performant, and standards compliant web socket server.
 
@@ -231,10 +231,10 @@ You can interact with these routes through events to a certain degree. They rais
 ## Testing!
 The [testing documentation](docs/testing.md) lives in the docs directory
 
-## Template language
+## Template Language
 The templates right now default to [dot](http://olado.github.io/doT/index.html) it's documentation is pretty good... though there is definitely room for improvement there. It is still the best place to learn about templating at the moment though.
 
-## Route documentation
+## Route Documentation
 The [route documentation](docs/routes.md) lives in the docs directory
 
 ## Contributing
