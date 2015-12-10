@@ -1,5 +1,140 @@
 # Change Log
 
+## v2.2.0
+
+The main focus of this release is expanding the available protocol stack that `monument` can use to communicate. It adds a builtin Web Socket server and the ability to drop in any http-like server that adheres to the API made popular by the builtin `http` and `https` modules. This includes `spdy` and `http2`!
+
+### Config changes:
+Current state of the config object is right below this. Explanations about the new items in the server section of the config is below.
+
+```
+{
+    port: 3000 // the port for the server to run on
+    , compress: true // turns on or off compression for static files (deflate/gzip)
+    , routePath: './routes' // the folder your routes live in
+    , templatePath: './templates' // the folder where your templates live
+    , dotjs: {
+        //dotjs defaults
+        // see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
+    }
+    , publicPath: './public' // the folder where your static files live
+    , maxAge: 31536000 // time to cache static files client side in milliseconds
+    , etags: true // turns on or off etag generation and headers
+    , security: {
+        xssProtection: true //default, can be set to false to disable
+        , poweredBy: 'bacon' //the default is blank can be any string
+        , noSniff: true //default, can be set to false to disable
+        , frameguard: {
+            action: 'SAMEORIGIN' //the default allows iframes from same domain
+            , domain: '' //defaults to not used. Only used for 'ALLOW-ORIGIN' 
+        }
+        , hsts: {
+            maxAge: 86400 // defaults to 1 day in seconds. All times in seconds
+            , includeSubDomains: true // optional. Defaults to true
+            , preload: true // optional. Defaults to true
+        }
+        , noCache: false // defaults to off. This is the nuclear option for caching
+        , publicKeyPin: { // default is off. This one is complicated read below...
+            sha256s: ['keynumberone', 'keynumbertwo'] // an array of SHA-256 public key pins see below for how to obtain
+            , maxAge: 100 // time in seconds for the pin to be in effect
+            , includeSubdomains: false // whether or not to pin for sub domains as well defaults to false
+            , reportUri: false // whether or not to report problems to a URL more details below. Defaults to false
+            , reportOnly: false // if a reportURI is passed and this is set to true it reports and terminates connection
+        }
+        , contentSecurity: {
+            defaultSrc: `'self'` // optional. This is the default setting and is very strict
+        }
+    }
+    
+    // Web Sockets is new for this release!
+    , webSockets: false // default setting disables websockets. can be (false, true, 'passthrough', 'data')
+
+    // Server and ServerOptions are new for this release!
+    , server: spdy
+    , serverOptions: { // anything set in this object will be passed to the server
+        key: fs.readFileSync('./server.key')
+        , cert: fs.readFileSync('./server.crt')
+        , ca: fs.readFileSync(./ca.pem)
+    }
+}
+```
+
+#### Web Sockets
+Web Sockets are awesome and generally pretty straightforward. `monument` does have some opinions about how to handle them and the settings allow for quite a bit of flexibility when it comes down to it so let's take a deep dive into working with them. If you aren't familiar with how web sockets work the [HTML5 rocks article](http://www.html5rocks.com/en/tutorials/websockets/basics/) is a good place to start. 
+
+Web Sockets allow a low latency, low overhead two-way connection between youe client and server. It dramatically reduces the overhead of normal connections, by staying open and by not involving the transmission of headers with every piece of data. They are pretty fantastic.
+
+The idea of events or messages in Web Sockets meshes very well with `monument`'s own concept of events so it seems like a natural fit here.
+
+##### Settings
+
+There are four possible settings for web socket config.
+- `false` which turns off the web socket server
+- `true` which turns it on with `data` and `passthrough` style handling enabled
+- `data` which turns on the server but only for `data` style handling
+- `passthrough` which turn on the server but only for `passthrough` style handling
+
+Any other value passed to the `config.webSocket` will be treated as `true` turning on the server for both handlings. The default setting is `false`.
+
+For more information check out the [web sockets documentation](docs/websockets.md).
+
+### `spdy` and `http2`
+
+`monument` now ships with support for running a variety of different server types and protocols. At the top of the list is http2/spdy! One of many nice features is the ability to push multiple assets to users over the same connection. Now you can get that in `monument`.
+
+For local use the simplest way to go is generating a self signed certificate. Your browser will complain about it, but you will still be able to test everything and do your development without buying an actual certificate.
+
+Heroku has a [great writeup on the process](https://devcenter.heroku.com/articles/ssl-certificate-self) that will get you up and running. If you are using the [spdy](https://www.npmjs.com/package/spdy) module then you will need to [create a CA as well](http://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/). Once you have a cert generated in the root of your new `monument` project you will need to setup your server config appropriately. Your new app.js file should look something like this:
+
+```
+'use strict';
+
+const monument = require('monument')
+    , defaultPort = 4000
+    , spdy = require('spdy')
+    , fs = require('fs');
+
+monument.server({
+    routePath: './routes'
+    , templatePath: './templates'
+    , publicPath: './public'
+    , port: process.env.PORT || defaultPort
+    , security: {
+        contentSecurity: false
+    }
+    , webSockets: true
+
+    , server: spdy
+    , serverOptions: {
+        key: fs.readFileSync('./server.key')
+        , cert: fs.readFileSync('./server.crt')
+        , ca: fs.readFileSync(./ca.pem)
+    }
+});
+```
+
+For more information including the [documentation for connection.res.push](docs/http2-server.md).
+
+### UUID generator
+
+We added a V4 UUID generator to monument (`require('monument').createUUID`). It's handy for dealing with data and lots of other things. It was mostly added for use when creating new data through events.
+
+### isUndefined
+
+If you are working on the core of monument you now have a `utils.isUndefined` function for checking if a value is undefined. Handy and simplified a lot of the code in the server.
+
+### Code Climate
+
+We added Code Climate checks to the project!
+
+### Cleans up bugs in testing
+
+There were some bugs in the unit tests that manifest themselves once we started testing with multiple types of servers for the http2/spdy stuff. These bugs were fixed and the tests now hum along nicely.
+
+### Tons of documentation
+
+There is a lot more documentation now and it is much more in depth!
+
 ## v2.1.0
 
 ###Config changes:

@@ -1,6 +1,58 @@
+### - 2.2.0 * 11/18/2015, 7:46:10 AM *
+
+  - Merge pull request #176 from ansble/feature/docs
+  - Closes #172 and gets documentation ready for the release of 2.2.0
+  - Merge pull request #175 from ansble/bug/typos-readme
+  - Updates typos and heading inconsistency
+  - added gitter badge
+  - some changed to code climate and another badge
+  - 2.2.0-rc.1
+  - Merge pull request #162 from ansble/feature/http2-server-support
+  - Merge branch 'la-fleche-wallone-2.2.x' into feature/http2-server-support
+  - Finishes the implementation of adhoc server types
+  - Merge pull request #167 from ansble/docs/routes
+  - Adds an in use file
+  - Removed the routes section to the new file
+  - Finished up the routes.md file
+  - Starts the revision of the routes docs
+  - Merge pull request #165 from ansble/feature/switch-isUndefined
+  - Cleans up some weird differences in syntax
+  - Cleans up the use of not and isDefined
+  - Revises the code flow and removes an unused variable
+  - Merge branch 'la-fleche-wallone-2.2.x' into feature/http2-server-support
+  - Merge pull request #156 from ansble/feature/websocket-built-in
+  - bug from the isUndefined branch fixed here
+  - switched to isUndefined
+  - Merge branch 'la-fleche-wallone-2.2.x' into feature/websocket-built-in
+  - Merge pull request #164 from ansble/feature/isUndefined
+  - Adds an isUndefined function
+  - revised strategy and test and looking good
+  - Merge branch 'la-fleche-wallone-2.2.x' into feature/websocket-built-in
+  - Merge branch 'la-fleche-wallone-2.2.x' into feature/websocket-built-in
+  - Merge pull request #163 from ansble/feature/uuid-generator
+  - Adds more tests and fixes a bug
+  - Adds some documentation around the uuid generator
+  - Adds a UUID generator to monument
+  - Writing tests and making changes to the implementation
+  - Adds lots of documentation
+  - Cleans up the syntax a bit and solidifies the API
+  - Adds basic support for http2 spdy
+  - Merge pull request #161 from ansble/master
+  - Update .eslintrc
+  - Merge pull request #160 from ansble/bug/eslint-code-climate
+  - fixed a setting that code climate hated
+  - Merge pull request #158 from ansble/feature/code-climate
+  - Merge pull request #157 from ansble/bug/cleanup-badges
+  - fixing line spacing
+  - playing with code-climate
+  - Cleans up the badges
+  - Fixes an issue with the tests for web sockets
+  - Adds tons of documentation and cleans up the implementation
+  - Adds basic websocket support to the server
+
 ### - 2.1.1 * 11/18/2015, 8:34:27 AM *
 
-   - Merge pull request #153 from ansble/amstel-gold-race-2.1.x
+  - Merge pull request #153 from ansble/amstel-gold-race-2.1.x
   - Merge pull request #151 from ansble/feature/docs
   - removes some console.logs that were muddying up the tests
   - more work on the readme file
