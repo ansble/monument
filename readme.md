@@ -14,6 +14,19 @@
 
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/ansble/monument)
 
+## Table of Contents
+- [How to Get Started](#how-to-get-started)
+- [Config Object and the Server](#config-object-and-the-server)
+- [Data and Events](#data-and-events)
+- [Security Configuration](#security-configuration)
+- [Template Language](#template-language)
+- [Route Documentation](docs/routes.md)
+- [Testing Documentation](docs/testing.md)
+- [Using Web Sockets with monument](docs/websockets.md)
+- [HTTP2 and SPDY with monument](docs/http2-server.md)
+- [Contributing](contributing.md)
+- [Sites Using Monument](docs/Monument-in-action.md)
+
 ## How to Get Started
 
 The easiest way to get started with monument is to use the CLI tool which does project lay down. `npm install -g monument-cli` From there a simple `monument new <path to project>` will get you up and running with stubbed tests, basic error handlers and an index route and everything you need to knock out an application fast.
@@ -66,6 +79,13 @@ When you create your server it takes a config object that allows you to pass in 
         , contentSecurity: {
             defaultSrc: `'self'` // optional. This is the default setting and is very strict
         }
+    }
+
+    , server: spdy //an http API compliant server module. See below for more info [optional]
+    , serverOptions: { // The options object to be passed to the createServer function [optional]
+        key: fs.readFileSync('./server.key')
+        , cert: fs.readFileSync('./server.crt')
+        , ca: fs.readFileSync(./ca.pem)
     }
 }
 ```
@@ -228,20 +248,5 @@ Static assetts live in `/public` and can be organized in whatever way you see fi
 
 You can interact with these routes through events to a certain degree. They raise a `static:served` with a payload of the file url that was served, when the file exists. If the file does not exist they raise a `static:missing` with the file url as payload. This will let you log and handle these conditions as needed.
 
-## Testing!
-The [testing documentation](docs/testing.md) lives in the docs directory
-
 ## Template Language
 The templates right now default to [dot](http://olado.github.io/doT/index.html) it's documentation is pretty good... though there is definitely room for improvement there. It is still the best place to learn about templating at the moment though.
-
-## Route Documentation
-The [route documentation](docs/routes.md) lives in the docs directory
-
-## Contributing
-Contributing is simple :-)
-
-Feel free to edit away, just make sure that everything still passes its tests `npm test` and add new tests in `*_test.js` files. (For a file named merckx.js you would create a merckx_test.js file that contains the tests.) Once you have done that then open a pull request and we'll get it pulled in.
-
-For things to do check out the [issues](issues/) and grab a ticket. Feel free to reach out if you need help or have questions about it. We want to help you contribute :-)
-
-When we do the next release your name will be added to the AUTHORS file... you know, because you're an author now.
