@@ -4,7 +4,7 @@
 
 [![NPM](https://nodei.co/npm/monument.png?downloadRank=true&stars=true)](https://nodei.co/npm/monument/)
 
-[![npm version](https://img.shields.io/npm/v/monument.svg)](https://www.npmjs.com/package/monument)
+[![npm version](https://img.shields.io/npm/v/monument.svg?style=flat-square)](https://www.npmjs.com/package/monument)
 
 ![build status](https://codeship.com/projects/881ed090-9c54-0132-655c-263ab955f60c/status?branch=master) 
 
