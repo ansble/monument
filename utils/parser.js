@@ -7,6 +7,12 @@ const getRawBody = require('raw-body')
     , isDefined = require('./tools').isDefined
     , parseForm = require('./parseForm')
 
+    , os = require('os')
+    , fs = require('fs')
+    , tempPath = os.tmpDir()
+    , path = require('path')
+    , Busboy = require('busboy')
+
     , parser = (connection, callback, scope) => {// parse out the body
         const contentType = connection.req.headers['content-type'];
 
@@ -44,6 +50,31 @@ const getRawBody = require('raw-body')
                 }
             }
         });
+    }
+
+    , fileParser = (connection, callback, scope) => {
+        const fileArray = []
+            , busboy = new Busboy({ headers: connection.req.headers });
+
+        busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+            // const saveTo = path.join(tempPath, path.basename(fieldname));
+
+            fileArray.push({
+                file: file
+                , filename: filename
+                , mimetype: mimetype
+                , encoding: encoding
+            });
+
+            // file.pipe(fs.createWriteStream(saveTo));
+        });
+
+        busboy.on('finish', () => {
+            callback.apply(scope || {}, [ fileArray ]);
+        });
+
+        return connection.req.pipe(busboy);
     };
 
 module.exports = parser;
+module.exports.files = fileParser;
