@@ -9,12 +9,41 @@ const getRawBody = require('raw-body')
 
     , os = require('os')
     , fs = require('fs')
-    , tempPath = os.tmpDir()
     , path = require('path')
     , Busboy = require('busboy')
 
-    , parser = (connection, callback, scope) => {// parse out the body
-        const contentType = connection.req.headers['content-type'];
+    , fileParser = (connection, callback, options) => {
+        const form = {}
+            , scope = options ? options.scope : null
+            // , saveFile = options ? options.saveFile : true
+            , busboy = new Busboy({ headers: connection.req.headers });
+
+        busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+
+            file.pipe(fs.createWriteStream(path.join(os.tmpdir(), filename)));
+
+            form[fieldname] = {
+                tempFile: path.join(os.tmpdir(), filename)
+                , encoding: encoding
+                , mimetype: mimetype
+                , file: file
+            };
+        });
+
+        busboy.on('field', (fieldname, val) => {
+            form[fieldname] = val;
+        });
+
+        busboy.on('finish', () => {
+            callback.apply(scope, [ form ]);
+        });
+
+        connection.req.pipe(busboy);
+    }
+
+    , parser = (connection, callback, scopeIn) => {// parse out the body
+        const contentType = connection.req.headers['content-type'].split(';')[0]
+            , scope = scopeIn;
 
         let encoding = 'UTF-8';
 
@@ -22,58 +51,39 @@ const getRawBody = require('raw-body')
             encoding = typer.parse(contentType).parameters.charset || 'UTF-8';
         }
 
-        getRawBody(connection.req, {
-            length: connection.req.headers['content-length']
-            , limit: '1mb'
-            , encoding: encoding
-        }, (err, string) => {
-
-            if (err){
-                events.emit('error:parse', err);
-                callback.apply(scope, [ null, err ]);
-                return;
-            }
-
-            if (contentType === 'application/x-www-form-urlencoded'){
-                callback.apply(scope, [ querystring.parse(string) ]);
-                return;
-            }
-
-            try {
-                callback.apply(scope, [ JSON.parse(string) ]);
-            } catch (e) {
-                if (contentType === 'application/json') {
-                    events.emit('error:parse', e);
-                    callback.apply(scope, [ null, e ]);
-                } else {
-                    callback.apply(scope, [ parseForm(string) ]);
-                }
-            }
-        });
-    }
-
-    , fileParser = (connection, callback, scope) => {
-        const fileArray = []
-            , busboy = new Busboy({ headers: connection.req.headers });
-
-        busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-            // const saveTo = path.join(tempPath, path.basename(fieldname));
-
-            fileArray.push({
-                file: file
-                , filename: filename
-                , mimetype: mimetype
+        if (contentType === 'multipart/form-data') {
+            fileParser(connection, callback, { scope: scope });
+        } else {
+            getRawBody(connection.req, {
+                length: connection.req.headers['content-length']
+                , limit: '1mb'
                 , encoding: encoding
+            }, (err, string) => {
+
+                if (err){
+                    events.emit('error:parse', err);
+                    callback.apply(scope, [ null, err ]);
+                    return;
+                }
+
+                if (contentType === 'application/x-www-form-urlencoded'){
+                    callback.apply(scope, [ querystring.parse(string) ]);
+                    return;
+                }
+
+                try {
+                    callback.apply(scope, [ JSON.parse(string) ]);
+                } catch (e) {
+                    if (contentType === 'application/json') {
+                        events.emit('error:parse', e);
+                        callback.apply(scope, [ null, e ]);
+                    } else {
+                        callback.apply(scope, [ parseForm(string) ]);
+                    }
+                }
             });
+        }
 
-            // file.pipe(fs.createWriteStream(saveTo));
-        });
-
-        busboy.on('finish', () => {
-            callback.apply(scope || {}, [ fileArray ]);
-        });
-
-        return connection.req.pipe(busboy);
     };
 
 module.exports = parser;
