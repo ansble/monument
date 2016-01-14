@@ -40,6 +40,7 @@ describe('Parser Tests', () => {
             assert.isUndefined(err);
             assert.isObject(body);
             assert.strictEqual(body.name, 'daniel');
+            assert.strictEqual(body.title, 'lord of the interwebz');
             done();
         });
     });

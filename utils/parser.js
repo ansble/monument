@@ -52,7 +52,11 @@ const getRawBody = require('raw-body')
         }
 
         if (contentType === 'multipart/form-data') {
-            fileParser(connection, callback, { scope: scope });
+            try {
+                fileParser(connection, callback, { scope: scope });
+            } catch (err) {
+                callback.apply(scope, [ null, err ]);
+            }
         } else {
             getRawBody(connection.req, {
                 length: connection.req.headers['content-length']
