@@ -16,6 +16,10 @@
 
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/ansble/monument)
 
+[![Issue Stats](http://issuestats.com/github/ansble/monument/badge/pr?style=flat-square)](http://issuestats.com/github/ansble/monument)
+
+[![Issue Stats](http://issuestats.com/github/ansble/monument/badge/issue?style=flat-square)](http://issuestats.com/github/ansble/monument)
+
 ## Table of Contents
 - [How to Get Started](#how-to-get-started)
 - [Config Object and the Server](#config-object-and-the-server)
