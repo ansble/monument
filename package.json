@@ -36,6 +36,7 @@
     "restful"
   ],
   "dependencies": {
+    "busboy": "^0.2.12",
     "content-security-policy-builder": "^0.2.0",
     "dot": "^1.0.3",
     "etag": "^1.7.0",
@@ -53,6 +54,7 @@
     "chai": "^3.3.0",
     "chalk": "^1.1.1",
     "eslint": "^1.8.0",
+    "form-data": "^1.0.0-rc3",
     "gulp": "^3.9.0",
     "gulp-coveralls": "^0.1.4",
     "gulp-eslint": "^1.0.0",
