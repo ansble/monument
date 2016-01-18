@@ -1,9 +1,13 @@
-------WebKitFormBoundaryOR86nFvrvo9BHCQm
-Content-Disposition: form-data; name="name"
+------WebKitFormBoundaryTB2MiQ36fnSJlrhY
+Content-Disposition: form-data; name="cont"
 
-daniel
-------WebKitFormBoundaryOR86nFvrvo9BHCQm
-Content-Disposition: form-data; name="title"
+some random content
+------WebKitFormBoundaryTB2MiQ36fnSJlrhY
+Content-Disposition: form-data; name="pass"
 
-lord of the interwebz
-------WebKitFormBoundaryOR86nFvrvo9BHCQm--
+some random pass
+------WebKitFormBoundaryTB2MiQ36fnSJlrhY
+Content-Disposition: form-data; name="bit"
+
+2
+------WebKitFormBoundaryTB2MiQ36fnSJlrhY--

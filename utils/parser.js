@@ -24,6 +24,7 @@ const getRawBody = require('raw-body')
 
             form[fieldname] = {
                 tempFile: path.join(os.tmpdir(), filename)
+                , name: filename
                 , encoding: encoding
                 , mimetype: mimetype
                 , file: file
@@ -42,7 +43,8 @@ const getRawBody = require('raw-body')
     }
 
     , parser = (connection, callback, scopeIn) => {// parse out the body
-        const contentType = connection.req.headers['content-type'].split(';')[0]
+        const contentType = connection.req.headers['content-type'] ?
+                connection.req.headers['content-type'].split(';')[0] : 'application/json'
             , scope = scopeIn;
 
         let encoding = 'UTF-8';
@@ -91,4 +93,3 @@ const getRawBody = require('raw-body')
     };
 
 module.exports = parser;
-module.exports.files = fileParser;

@@ -15,8 +15,8 @@ describe('parseForm Tests', () => {
 
     it('should parse a form string out correctly', () => {
         assert.isObject(parseForm(validString));
-        assert.strictEqual(parseForm(validString).name, 'daniel');
-        assert.strictEqual(parseForm(validString).title, 'lord of the interwebz');
+        assert.strictEqual(parseForm(validString).cont, 'some random content');
+        assert.strictEqual(parseForm(validString).pass, 'some random pass');
     });
 
     it('should return an empty object if no form string', () => {
