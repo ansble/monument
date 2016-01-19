@@ -1,6 +1,6 @@
-### - 2.2.2 * 1/18/2016, 10:52:43 PM *
+### - 2.3.0 * 1/18/2016, 10:52:43 PM *
 
-   - Merge pull request #191 from ansble/feature/parse-upload-files
+  - Merge pull request #191 from ansble/feature/parse-upload-files
   - Finished tests and expands test coverage for the parsers
   - Merge pull request #198 from ansble/adrian-bobev-master
   - feat: Add issuestats svg images to the readme

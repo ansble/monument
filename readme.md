@@ -228,6 +228,20 @@ events.on('route:/join:post', function (connection) {
 
 The `monument.parser` function returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});`
 
+#### Example object
+```
+{
+    "file1": {
+        "tempFile": "/tmp/some/file.jpg"
+        , "mimetype": "image/jpg"
+        , "file": //this is the file stream
+        , "encoding": "UTF-8"
+    }
+    , "name": "Daniel"
+    , "check": "true"
+}
+```
+
 ### Data and Events
 
 #### Required Events (State Machine)
