@@ -1,4 +1,24 @@
-### - 2.2.0 * 11/18/2015, 7:46:10 AM *
+### - 2.2.2 * 1/18/2016, 10:52:43 PM *
+
+   - Merge pull request #191 from ansble/feature/parse-upload-files
+  - Finished tests and expands test coverage for the parsers
+  - Merge pull request #198 from ansble/adrian-bobev-master
+  - feat: Add issuestats svg images to the readme
+  - Finished the implementation but still have broken tests
+  - Switches multipart parsing to busboy
+  - Adds busboy and gets things started
+  - Merge pull request #189 from ansble/docs/update-contrib-with-branch-info
+  - Tweak to the contribution rules/process
+  - Merge pull request #188 from ansble/master
+  - Merge pull request #187 from kellyi/master
+  - fix: set npm badge style to `?style=flat-square`
+  - Merge branch 'master' of github.com:kellyi/monument
+  - feat: add npm badge to README
+  - feat: add npm badge to README
+  - Merge pull request #186 from ansble/la-fleche-wallone-2.2.x 
+
+
+ ### - 2.2.0 * 11/18/2015, 7:46:10 AM *
 
   - Merge pull request #176 from ansble/feature/docs
   - Closes #172 and gets documentation ready for the release of 2.2.0
