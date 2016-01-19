@@ -6,7 +6,8 @@ const assert = require('chai').assert
     , Readable = require('stream').Readable
     , fs = require('fs')
     , events = require('harken')
-    , path = require('path');
+    , path = require('path')
+    , FormData = require('form-data');
 
 let stream
     , jsonBody
@@ -31,15 +32,18 @@ describe('Parser Tests', () => {
     });
 
     it('should parse out a multipart/form-data submission', (done) => {
-        formDataBody.headers = {
-            'content-length': formDataBody.length
-            , 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundaryOR86nFvrvo9BHCQm'
-        };
+        const form = new FormData();
 
-        parser({ req: formDataBody }, (body, err) => {
+        form.append('cont', 'some random content');
+        form.append('title', 'lord of the interwebz');
+
+        form.headers = form.getHeaders();
+
+        parser({ req: form }, (body, err) => {
             assert.isUndefined(err);
             assert.isObject(body);
-            assert.strictEqual(body.name, 'daniel');
+            assert.strictEqual(body.cont, 'some random content');
+            assert.strictEqual(body.title, 'lord of the interwebz');
             done();
         });
     });
@@ -74,6 +78,41 @@ describe('Parser Tests', () => {
         }, {});
 
     });
+
+    it('should error on an invalid json post/put/update', (done) => {
+        stream.push('{"name": "Jonah"');
+        stream.push(null);
+        stream.headers = {
+            'content-length': '{"name": "Jonah"'.length
+            , 'content-type': 'application/json'
+        };
+
+        parser({ req: stream }, (body, err) => {
+            assert.isNull(body);
+            assert.instanceOf(err, Error);
+            done();
+        }, {});
+    });
+
+    it('should error on an invalid json post/put/update and emit the error:parse event', (done) => {
+        stream.push('{"name": "Jonah"');
+        stream.push(null);
+        stream.headers = {
+            'content-length': '{"name": "Jonah"'.length
+            , 'content-type': 'application/json'
+        };
+
+        parser({ req: stream }, (body, err) => {
+            assert.isNull(body);
+            assert.instanceOf(err, Error);
+        }, {});
+
+        events.once('error:parse', (error) => {
+            assert.instanceOf(error, Error);
+            done();
+        });
+    });
+
     it('should parse out a json post/put/update without the correct header', (done) => {
         stream.push(JSON.stringify(jsonBody));
         stream.push(null);
@@ -127,5 +166,28 @@ describe('Parser Tests', () => {
         });
     });
 
-    it('should parse out uploaded files');
+    it('should parse out uploaded files', (done) => {
+        const form = new FormData();
+
+        form.append('cont', 'some random content');
+        form.append('title', 'lord of the interwebz');
+        form.append('file1', formDataBody);
+
+        form.headers = form.getHeaders();
+
+        parser({ req: form }, (body, err) => {
+            assert.isUndefined(err);
+            assert.isObject(body);
+            assert.strictEqual(body.cont, 'some random content');
+            assert.strictEqual(body.title, 'lord of the interwebz');
+            assert.isObject(body.file1);
+            assert.strictEqual(body.file1.name, 'formDataBody.txt');
+            assert.isDefined(body.file1.encoding);
+            assert.isDefined(body.file1.tempFile);
+            assert.isDefined(body.file1.mimetype);
+            assert.isDefined(body.file1.file);
+            assert.isTrue(fs.statSync(body.file1.tempFile).isFile());
+            done();
+        });
+    });
 });

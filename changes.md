@@ -1,5 +1,27 @@
 # Change Log
 
+## v2.3.0
+
+The big enhancement for Liège–Bastogne–Liège (2.3.0) is the addition of file upload handling courtesy of busboy. The handling is essentially the same as it used to be but using busboy means that the form handling now appropriately handles file upload fields.
+
+### New form handling information
+
+The files that are uploaded are sent to the OS's temp file directory and the object that contains the references to them looks like this:
+```
+{
+    "file1": {
+        "tempFile": "/tmp/some/file.jpg"
+        , "mimetype": "image/jpg"
+        , "file": //this is the file stream
+        , "encoding": "UTF-8"
+    }
+}
+```
+
+It also welcome some new contributors with their first commits to the project! Welcome Kelly Innes and Adrian Bobev! Contributor 4 and 5 respectively.
+
+The last real notable change is the addition of some more information around contributing in the contributing.md file. That's it. Not a whole ton of stuff this time around.
+
 ## v2.2.0
 
 The main focus of this release is expanding the available protocol stack that `monument` can use to communicate. It adds a builtin Web Socket server and the ability to drop in any http-like server that adheres to the API made popular by the builtin `http` and `https` modules. This includes `spdy` and `http2`!

@@ -16,6 +16,10 @@
 
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/ansble/monument)
 
+[![Issue Stats](http://issuestats.com/github/ansble/monument/badge/pr?style=flat-square)](http://issuestats.com/github/ansble/monument)
+
+[![Issue Stats](http://issuestats.com/github/ansble/monument/badge/issue?style=flat-square)](http://issuestats.com/github/ansble/monument)
+
 ## Table of Contents
 - [How to Get Started](#how-to-get-started)
 - [Config Object and the Server](#config-object-and-the-server)
@@ -223,6 +227,20 @@ events.on('route:/join:post', function (connection) {
 `body` is the parsed body of the request and is passed into the callback function.
 
 The `monument.parser` function returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});`
+
+#### Example object
+```
+{
+    "file1": {
+        "tempFile": "/tmp/some/file.jpg"
+        , "mimetype": "image/jpg"
+        , "file": //this is the file stream
+        , "encoding": "UTF-8"
+    }
+    , "name": "Daniel"
+    , "check": "true"
+}
+```
 
 ### Data and Events
 
