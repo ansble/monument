@@ -5,15 +5,15 @@ const minusOne = -1
         let pathString
             , route;
 
-        if (pathname.slice(minusOne) === '/'){
+        if (pathname.slice(minusOne) === '/') {
             pathString = pathname.replace(/\/$/, '');
         } else {
             pathString = `${pathname}/`;
         }
 
-        if (routesJson[pathname] && routesJson[pathname].indexOf(method) !== minusOne){
+        if (routesJson[pathname] && routesJson[pathname].indexOf(method) !== minusOne) {
             route = pathname;
-        } else if (routesJson[pathString] && routesJson[pathString].indexOf(method) !== minusOne){
+        } else if (routesJson[pathString] && routesJson[pathString].indexOf(method) !== minusOne) {
             route = pathString;
         } else {
             route = null;

@@ -12,7 +12,7 @@ const etag = require('etag')
     , addEtag = (fileIn) => {
 
         fs.readFile(fileIn, (err, data) => {
-            if (err){
+            if (err) {
                 events.emit('error', { message: 'could not read file', error: err, file: fileIn });
             } else {
                 files[fileIn] = etag(data);
@@ -33,7 +33,7 @@ const etag = require('etag')
             , valid = isValid(etagObj, etagged);
 
         // if the file hasn't been etagged then etag it
-        if (not(etagged)){
+        if (not(etagged)) {
             addEtag(etagObj.file);
         } else {
             events.emit(`etag:get:${etagObj.file}`, files[etagObj.file]);

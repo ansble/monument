@@ -9,7 +9,7 @@ const isDefined = require('../utils').isDefined
     };
 
 module.exports = (config, res) => {
-    if (addHeader(config)){
+    if (addHeader(config)) {
         res.setHeader('X-Content-Type-Options', 'nosniff');
     }
 
