@@ -8,7 +8,7 @@ const contains = require('../utils').contains
 
         let matchesVerb;
 
-        if (matchedRoutes){
+        if (matchedRoutes) {
             matchesVerb = contains(routesJson[matchedRoutes].verbs, method);
         } else {
             matchesVerb = false;

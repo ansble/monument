@@ -7,7 +7,7 @@ const isDefined = require('./tools').isDefined
     }
 
     , getCompression = (header, config) => {
-        if (isUndefined(header) || dontCompress(config)){
+        if (isUndefined(header) || dontCompress(config)) {
             return 'none';
         } else if (header.match(/\bgzip\b/)) {
             return 'gzip';

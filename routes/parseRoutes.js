@@ -7,7 +7,7 @@ const parseRoutes = (routes) => {
 
         let routeRegex;
 
-        if (routeVariables){
+        if (routeVariables) {
             // generate the regex for laters and
             //  store the verbs and variables belonging to the route
 

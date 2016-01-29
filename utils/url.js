@@ -30,7 +30,7 @@ const url = require('url')
         urlObject.query = Object.keys(tempQuery).reduce((prevIn, key) => {
             const prev = prevIn;
 
-            if (Array.isArray(tempQuery[key])){
+            if (Array.isArray(tempQuery[key])) {
                 prev[key] = tempQuery[key].filter((element) => {
                     return isDefined(element);
                 });
