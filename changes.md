@@ -1,6 +1,6 @@
 # Change Log
 
-## v2.3.1
+## v2.3.2
 
 Small patch release that has som dependency updates and a change the the linting rules for the codebase. Very Very minor.
 
