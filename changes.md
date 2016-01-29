@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.3.2
+
+Small patch release that has som dependency updates and a change the the linting rules for the codebase. Very Very minor.
+
 ## v2.3.0
 
 The big enhancement for Liège–Bastogne–Liège (2.3.0) is the addition of file upload handling courtesy of busboy. The handling is essentially the same as it used to be but using busboy means that the form handling now appropriately handles file upload fields.
