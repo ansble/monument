@@ -1,3 +1,10 @@
+### - 2.3.1 * 1/28/2016, 7:52:00 AM *
+  - Merge pull request #200 from ansble/Liège–Bastogne–Liège
+  - Merge branch 'Liège–Bastogne–Liège' of https://github.com/ansble/monument into Liège–Bastogne–Liège
+  - Merge pull request #199 from ansble/feature/upgrade-deps
+  - Upgrades lodash.pick to 4.0.0 (latest)
+  - Upgrades the CSP builder package
+
 ### - 2.3.0 * 1/18/2016, 10:52:43 PM *
 
   - Merge pull request #191 from ansble/feature/parse-upload-files
