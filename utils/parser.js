@@ -49,7 +49,7 @@ const getRawBody = require('raw-body')
 
         let encoding = 'UTF-8';
 
-        if (isDefined(contentType)){
+        if (isDefined(contentType)) {
             encoding = typer.parse(contentType).parameters.charset || 'UTF-8';
         }
 
@@ -66,13 +66,13 @@ const getRawBody = require('raw-body')
                 , encoding: encoding
             }, (err, string) => {
 
-                if (err){
+                if (err) {
                     events.emit('error:parse', err);
                     callback.apply(scope, [ null, err ]);
                     return;
                 }
 
-                if (contentType === 'application/x-www-form-urlencoded'){
+                if (contentType === 'application/x-www-form-urlencoded') {
                     callback.apply(scope, [ querystring.parse(string) ]);
                     return;
                 }

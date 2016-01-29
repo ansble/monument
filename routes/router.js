@@ -67,17 +67,17 @@ module.exports = (routesJson, config) => {
             // read in the file and stream it to the client
 
             fs.stat(file, (err, exists) => {
-                if (!err && exists.isFile()){
+                if (!err && exists.isFile()) {
 
                     events.required([ `etag:check:${file}`, `etag:get:${file}` ], (valid) => {
-                        if (valid[0]){ // does the etag match? YES
+                        if (valid[0]) { // does the etag match? YES
                             res.statusCode = unmodifiedStatus;
                             return res.end();
                         }
                         // No match...
                         res.setHeader('ETag', valid[1]); // the etag is item 2 in the array
 
-                        if (req.method.toLowerCase() === 'head'){
+                        if (req.method.toLowerCase() === 'head') {
                             res.writeHead(succesStatus, {
                                 'Content-Type': mime.lookup(pathname)
                                 , 'Cache-Control': `maxage=${maxAge}`
@@ -86,7 +86,7 @@ module.exports = (routesJson, config) => {
                             });
 
                             res.end();
-                        } else if (not(compression === 'none')){
+                        } else if (not(compression === 'none')) {
                             // we have compression!
                             res.writeHead(succesStatus, {
                                 'Content-Type': mime.lookup(pathname)
@@ -95,9 +95,9 @@ module.exports = (routesJson, config) => {
                                 , 'Content-Encoding': compression
                             });
 
-                            if (compression === 'deflate'){
+                            if (compression === 'deflate') {
                                 fs.stat(`${file}.def`, (errDef, existsDef) => {
-                                    if (!errDef && existsDef.isFile()){
+                                    if (!errDef && existsDef.isFile()) {
                                         fs.createReadStream(`${file}.def`).pipe(res);
                                     } else {
                                         // no compressed file yet...
@@ -110,7 +110,7 @@ module.exports = (routesJson, config) => {
                                 });
                             } else {
                                 fs.stat(`${file}.tgz`, (errTgz, existsTgz) => {
-                                    if (!errTgz && existsTgz.isFile()){
+                                    if (!errTgz && existsTgz.isFile()) {
                                         fs.createReadStream(`${file}.tgz`).pipe(res);
                                     } else {
                                         // no compressed file yet...
@@ -150,7 +150,7 @@ module.exports = (routesJson, config) => {
             // matches a route in the routes.json
             events.emit(`route:${simpleRoute}:${method}`, connection);
 
-        } else if (path.join(process.cwd(), pathname) === routesPath){
+        } else if (path.join(process.cwd(), pathname) === routesPath) {
             res.writeHead(succesStatus, {
                 'Content-Type': mime.lookup('routes.json')
             });
