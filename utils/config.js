@@ -2,7 +2,8 @@
 
 const path = require('path')
     , http = require('http')
-    , configStore = {
+    , cloneDeep = require('lodash.cloneDeep')
+    , defaults = {
         port: 3000
         , maxAge: 31536000
 
@@ -31,6 +32,8 @@ const path = require('path')
         , http: http
     }
 
+    , configStore = cloneDeep(defaults)
+
     , getConfig = (key) => {
         if (typeof key === 'string') {
             return configStore[key];
@@ -42,10 +45,10 @@ const path = require('path')
     , setConfig = (key, value) => {
         if (typeof key === 'object') {
             Object.keys(key).forEach((item) => {
-                if (item === 'routeJSONPath' || item === 'routePath') {
+                if (!value && (item === 'routeJSONPath' || item === 'routePath')) {
                     configStore.routePath = path.join(process.cwd(), key[item]);
-                    configStore.routeJSONPath = configStore.routePath;
-                } else if (item === 'publicPath' || item === 'templatePath') {
+                    configStore.routeJSONPath = path.join(process.cwd(), key[item]);
+                } else if (!value && (item === 'publicPath' || item === 'templatePath')) {
                     configStore[item] = path.join(process.cwd(), key[item]);
                 } else {
                     configStore[item] = key[item];
@@ -61,4 +64,7 @@ const path = require('path')
 module.exports = {
     get: getConfig
     , set: setConfig
+    , reset: () => {
+          setConfig(defaults, true);
+      }
 };

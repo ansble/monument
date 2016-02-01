@@ -54,7 +54,7 @@ describe('Route Handler Tests', () => {
         events.off('route:/api/articles/:id:get');
     });
 
-    it('should be defined as a funciton', () => {
+    it('should be defined as a function', () => {
         assert.isFunction(router);
     });
 

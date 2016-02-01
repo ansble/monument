@@ -5,6 +5,7 @@ const path = require('path')
     , zlib = require('zlib')
     , events = require('harken')
     , mime = require('mime')
+    , configs = require('../utils/config')
     , parseRoutes = require('./parseRoutes')
     , matchSimpleRoute = require('./matchSimpleRoute')
     , isWildCardRoute = require('./isWildCardRoute')
@@ -22,12 +23,13 @@ const path = require('path')
     , succesStatus = 200
     , unmodifiedStatus = 304;
 
-module.exports = (routesJson, config) => {
-    const routesObj = parseRoutes(routesJson)
-            , publicPath = config.publicPath
-            , maxAge = config.maxAge
-            , routesPath = config.routesPath
-            , publicFolders = setupStaticRoutes(routesPath, publicPath);
+module.exports = (routesJson, configIn) => {
+    const config = configs.set(configIn)
+        , routesObj = parseRoutes(routesJson)
+        , publicPath = config.publicPath
+        , maxAge = config.maxAge
+        , routesPath = config.routesPath
+        , publicFolders = setupStaticRoutes(routesPath, publicPath);
 
     // the route handler... pulled out here for easier testing
     return (req, resIn) => {

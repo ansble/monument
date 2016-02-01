@@ -18,6 +18,7 @@ const path = require('path')
         // load in all the route handlers
         fs.readdirSync(routePathIn).forEach((file) => {
             if (isRouteFile(file)) {
+                console.log(routePathIn);
                 require(path.join(routePathIn, file));
             }
         });

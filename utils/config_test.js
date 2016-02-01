@@ -7,10 +7,19 @@ const assert = require('chai').assert
     , http = require('http');
 
 describe('config Tests', () => {
+    beforeEach(() => {
+        config.reset();
+    });
+
+    afterEach(() => {
+        config.reset();
+    });
+
     it('should return an object', () => {
         assert.isObject(config);
         assert.isFunction(config.set);
         assert.isFunction(config.get);
+        assert.isFunction(config.reset);
     });
 
     it('should set smart defaults', () => {
