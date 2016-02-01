@@ -1,9 +1,8 @@
 'use strict';
 
-const isDefined = require('./tools').isDefined
-    , isUndefined = require('./tools').isUndefined
+const isUndefined = require('./tools').isUndefined
     , dontCompress = (config) => {
-        return isDefined(config.compress) && !config.compress;
+        return !config.compress;
     }
 
     , getCompression = (header, config) => {

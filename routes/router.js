@@ -20,14 +20,13 @@ const path = require('path')
     , contains = require('../utils').contains
 
     , succesStatus = 200
-    , unmodifiedStatus = 304
-    , oneYearMS = 31658000000;
+    , unmodifiedStatus = 304;
 
 module.exports = (routesJson, config) => {
     const routesObj = parseRoutes(routesJson)
-            , publicPath = path.join(process.cwd(), config.publicPath || './public')
-            , maxAge = config.maxAge || oneYearMS
-            , routesPath = path.join(process.cwd(), config.routesPath || './routes')
+            , publicPath = config.publicPath
+            , maxAge = config.maxAge
+            , routesPath = config.routesPath
             , publicFolders = setupStaticRoutes(routesPath, publicPath);
 
     // the route handler... pulled out here for easier testing

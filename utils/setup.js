@@ -43,8 +43,6 @@ const glob = require('glob')
     }
 
     , compileTemplates = (config) => {
-        const templatePath = config.templatePath || './templates';
-
         // configure dotjs
         if (config.dotjs) {
             Object.keys(config.dotjs).forEach((opt) => {
@@ -53,7 +51,7 @@ const glob = require('glob')
         }
 
         // compile the templates
-        dot.process({ path: path.join(process.cwd(), templatePath) });
+        dot.process({ path: path.join(process.cwd(), config.templatePath) });
 
         events.emit('setup:templates');
     }
