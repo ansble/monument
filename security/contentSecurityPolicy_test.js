@@ -384,4 +384,19 @@ describe('content security policy', () => {
         csp(config, req, res);
         assert.match(res.headers[chrome.header], /style-src 'self' 'unsafe-inline'/);
     });
+
+    it('should not blow up if a string is passed instead of an array of options', () => {
+        const ff = AGENTS['Firefox 22'];
+
+        config.security.contentSecurity = {
+            defaultSrc: `'self'` // optional. This is the default setting and is very strict
+            , styleSrc: `'self' cdn-images.mailchimp.com 'unsafe-inline'`
+            , imgSrc: `'self' maps.googleapis.com images.vivintcdn.com www.masteryconnect.com smartrhinolabs.com cdn.hacknightslc.com cdn.sqhk.co *.cloudfront.net www.google-analytics.com data:`
+            , scriptSrc: `'self' 'sha256-ZmBLMRsmRpaF/hQbWKT9xhd6Ql2Wf2a1WXhO2tdH6Xg=' www.google-analytics.com`
+        };
+
+        req.headers['user-agent'] = ff.string;
+        csp(config, req, res);
+        assert.match(res.headers['X-Content-Security-Policy'], /style-src 'self' cdn-images.mailchimp.com 'unsafe-inline'/);
+    });
 });

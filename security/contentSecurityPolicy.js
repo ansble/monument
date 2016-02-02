@@ -22,7 +22,7 @@ const platform = require('platform')
             let value = options[key];
 
             if (isString(value)) {
-                value = value.trim().split(/\s+/);
+                options[key] = value = value.trim().split(/\s+/);
             } else if (!Array.isArray(value)) {
                 return;
             }
