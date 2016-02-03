@@ -12,6 +12,7 @@ const config = require('./contentSecurityPolicyConfig')
         const index = policyStringIn.indexOf(`'unsafe-inline'`)
             , policyString = policyStringIn;
 
+
         if (index >= 0) {
             if (key === 'scriptSrc') {
                 policyString[index] = `'inline-script'`;
