@@ -1,4 +1,15 @@
-### - 2.0.5 *10/9/2015, 6:01:39 PM*
+### - 2.1.1 * 11/18/2015, 8:34:27 AM *
+
+   - Merge pull request #153 from ansble/amstel-gold-race-2.1.x
+  - Merge pull request #151 from ansble/feature/docs
+  - removes some console.logs that were muddying up the tests
+  - more work on the readme file
+  - adds route documentation stub
+  - revises the main readme file to make more sense
+  - Adds documentation for testing 
+
+
+ ### - 2.0.5 *10/9/2015, 6:01:39 PM*
 
 
 
