@@ -72,13 +72,25 @@ const platform = require('platform')
 
             return policyString;
         }
+    }
+
+    , splitDirectives = (directivesIn) => {
+        return Object.keys(directivesIn).reduce((prev, current) => {
+            if (Array.isArray(directivesIn[current])) {
+                prev[current] = directivesIn[current];
+            } else {
+                prev[current] = directivesIn[current].split(' ');
+            }
+
+            return prev;
+        }, {});
     };
 
 module.exports = (config, req, res) => {
     const settings = getSettings(config.security)
         , browser = platform.parse(req.headers['user-agent'])
         , handler = getHandler(browser)
-        , directives = pick(settings, policyConfig.supportedDirectives)
+        , directives = splitDirectives(pick(settings, policyConfig.supportedDirectives))
         , headerData = handler(browser, directives, settings);
 
     let policyString;

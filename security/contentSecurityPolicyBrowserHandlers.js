@@ -17,7 +17,6 @@ const config = require('./contentSecurityPolicyConfig')
             if (key === 'scriptSrc') {
                 policyString[index] = `'inline-script'`;
             } else {
-                console.log(key, typeof policyString, index, policyString, '\n');
                 policyString.splice(index, 1);
             }
         }

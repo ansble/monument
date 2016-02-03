@@ -397,6 +397,6 @@ describe('content security policy', () => {
 
         req.headers['user-agent'] = ff.string;
         csp(config, req, res);
-        assert.match(res.headers['X-Content-Security-Policy'], /style-src 'self' cdn-images.mailchimp.com 'unsafe-inline'/);
+        assert.match(res.headers['X-Content-Security-Policy'], /style-src 'self' cdn-images.mailchimp.com/);
     });
 });
