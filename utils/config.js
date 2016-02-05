@@ -7,8 +7,8 @@ const path = require('path')
         port: 3000
         , maxAge: 31536000
 
-        , routePath: path.join(process.cwd(), './routes.json')
-        , routeJSONPath: path.join(process.cwd(), './routes.json')
+        , routesPath: path.join(process.cwd(), './routes.json')
+        , routesJSONPath: path.join(process.cwd(), './routes.json')
         , publicPath: path.join(process.cwd(), './public')
         , templatePath: path.join(process.cwd(), './templates')
 
@@ -18,7 +18,7 @@ const path = require('path')
 
         , security: {
             xssProtection: true
-            , poweredBy: ''
+            , poweredBy: undefined
             , noSniff: true
             , noCache: false
             , framegaurd: {

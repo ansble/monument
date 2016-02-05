@@ -27,8 +27,8 @@ describe('config Tests', () => {
 
         assert.strictEqual(configObj.port, 3000);
         assert.strictEqual(http, configObj.http);
-        assert.strictEqual(configObj.routePath, path.join(process.cwd(), './routes.json'));
-        assert.strictEqual(config.routeJSONPath, config.routePath);
+        assert.strictEqual(configObj.routesPath, path.join(process.cwd(), './routes.json'));
+        assert.strictEqual(config.routesJSONPath, config.routePath);
         assert.strictEqual(configObj.publicPath, path.join(process.cwd(), './public'));
         assert.strictEqual(configObj.compress, true);
         assert.strictEqual(configObj.webSockets, false);
@@ -37,7 +37,7 @@ describe('config Tests', () => {
         assert.strictEqual(configObj.etags, true);
         assert.isObject(configObj.security);
         assert.strictEqual(configObj.security.xssProtection, true);
-        assert.strictEqual(configObj.security.poweredBy, '');
+        assert.strictEqual(configObj.security.poweredBy, undefined);
         assert.strictEqual(configObj.security.noSniff, true);
         assert.strictEqual(configObj.security.noCache, false);
         assert.isObject(configObj.security.framegaurd);

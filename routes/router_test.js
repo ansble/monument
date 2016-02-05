@@ -6,6 +6,7 @@ const assert = require('chai').assert
     , events = require('harken')
     , routeObject = require('../test_stubs/routes_stub.json')
     , stream = require('stream')
+    , config = require('../utils/config')
     , req = {
         method: 'GET'
         , url: '/about'
@@ -17,7 +18,12 @@ let res
 
 describe('Route Handler Tests', () => {
     beforeEach(() => {
-        routeHandler = router(routeObject, { publicPath: './test_stubs/deletes' });
+        config.reset();
+
+        routeHandler = router(routeObject, {
+            publicPath: './test_stubs/deletes'
+            , routesPath: './test_stubs'
+        });
 
         res = new stream.Writable();
 
