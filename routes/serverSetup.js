@@ -16,11 +16,16 @@ const path = require('path')
         const publicFolders = [];
 
         // load in all the route handlers
-        fs.readdirSync(routePathIn).forEach((file) => {
-            if (isRouteFile(file)) {
-                require(path.join(routePathIn, file));
-            }
-        });
+        try {
+            fs.readdirSync(routePathIn).forEach((file) => {
+                if (isRouteFile(file)) {
+                    require(path.join(routePathIn, file));
+                }
+            });
+        } catch (err) {
+            console.log(err, routePathIn);
+            throw new Error(`This doesn't appear to be a directory full of route handlers`);
+        }
 
 
         // load in all the static routes
