@@ -5,7 +5,6 @@ const path = require('path')
     , zlib = require('zlib')
     , events = require('harken')
     , mime = require('mime')
-    , configs = require('../utils/config')
     , parseRoutes = require('./parseRoutes')
     , matchSimpleRoute = require('./matchSimpleRoute')
     , isWildCardRoute = require('./isWildCardRoute')
@@ -23,9 +22,8 @@ const path = require('path')
     , succesStatus = 200
     , unmodifiedStatus = 304;
 
-module.exports = (routesJson, configIn) => {
-    const config = configs.set(configIn)
-        , routesObj = parseRoutes(routesJson)
+module.exports = (routesJson, config) => {
+    const routesObj = parseRoutes(routesJson)
         , publicPath = config.publicPath
         , maxAge = config.maxAge
         , routesPath = config.routesPath
@@ -66,7 +64,6 @@ module.exports = (routesJson, configIn) => {
 
             file = path.join(publicPath, pathname);
             // read in the file and stream it to the client
-
             fs.stat(file, (err, exists) => {
                 if (!err && exists.isFile()) {
 

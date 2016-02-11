@@ -3,8 +3,7 @@
 
 const assert = require('chai').assert
     , config = require('./config')
-    , path = require('path')
-    , http = require('http');
+    , path = require('path');
 
 describe('config Tests', () => {
     beforeEach(() => {
@@ -26,7 +25,7 @@ describe('config Tests', () => {
         const configObj = config.get();
 
         assert.strictEqual(configObj.port, 3000);
-        assert.strictEqual(http, configObj.http);
+        assert.isObject(configObj.server);
         assert.strictEqual(configObj.routesPath, path.join(process.cwd(), './routes.json'));
         assert.strictEqual(config.routesJSONPath, config.routePath);
         assert.strictEqual(configObj.publicPath, path.join(process.cwd(), './public'));
@@ -64,11 +63,11 @@ describe('config Tests', () => {
         it('should accept an object of settings', () => {
             config.set({
                 port: 1234
-                , routePath: '/etc/bin'
+                , routesPath: '/etc/bin'
             });
 
             assert.strictEqual(config.get('port'), 1234);
-            assert.strictEqual(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
+            assert.strictEqual(config.get('routesPath'), path.join(process.cwd(), '/etc/bin'));
         });
 
         it('should accept a key value pair of a setting', () => {

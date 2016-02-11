@@ -20,7 +20,7 @@ const events = require('harken')
 
         // take care of any setup tasks before starting the server
         events.once('setup:complete', () => {
-            server = require('./routes/index.js').server(configObj.http, routes, configObj);
+            server = require('./routes/index.js').server(configObj.server, routes, configObj);
             server.listen(configObj.port);
 
             if (configIn.webSockets !== false) {
