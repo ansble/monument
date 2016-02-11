@@ -4,7 +4,7 @@ let configStore = {};
 
 const path = require('path')
     , http = require('http')
-    , cloneDeep = require('lodash.cloneDeep')
+    , cloneDeep = require('lodash.clonedeep')
     , defaults = {
         port: 3000
         , maxAge: 31536000
