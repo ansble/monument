@@ -278,7 +278,6 @@ describe('Route Handler Tests', () => {
             req.method = 'GET';
             req.url = '/static/main.js';
             req.headers['accept-encoding'] = 'gzip';
-            res.compress = true;
 
             res.on('finish', () => {
                 assert.strictEqual(res.statusCode, successStatus);
