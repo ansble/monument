@@ -5,7 +5,9 @@ const assert = require('chai').assert
     , router = require('./router')
     , events = require('harken')
     , routeObject = require('../test_stubs/routes_stub.json')
+    , path = require('path')
     , stream = require('stream')
+    , config = require('../utils/config')
     , req = {
         method: 'GET'
         , url: '/about'
@@ -15,9 +17,17 @@ const assert = require('chai').assert
 let res
     , routeHandler;
 
+require('../utils/staticFileEtags');
+
 describe('Route Handler Tests', () => {
     beforeEach(() => {
-        routeHandler = router(routeObject, { publicPath: './test_stubs/deletes' });
+        config.reset();
+
+        routeHandler = router(routeObject, {
+            publicPath: path.join(process.cwd(), './test_stubs/deletes')
+            , routesPath: path.join(process.cwd(), './test_stubs')
+            , compression: 'none'
+        });
 
         res = new stream.Writable();
 
@@ -54,12 +64,15 @@ describe('Route Handler Tests', () => {
         events.off('route:/api/articles/:id:get');
     });
 
-    it('should be defined as a funciton', () => {
+    it('should be defined as a function', () => {
         assert.isFunction(router);
     });
 
     it('should return a function', () => {
-        assert.isFunction(router(routeObject, { publicPath: './test_stubs/deletes' }));
+        assert.isFunction(router(routeObject, {
+            publicPath: './test_stubs/deletes'
+            , routesPath: './test_stubs'
+        }));
     });
 
     describe('simple routes', () => {
@@ -79,6 +92,8 @@ describe('Route Handler Tests', () => {
         it('should return x-powered-by only if it is set', (done) => {
             const tempHandler = router(routeObject, {
                 publicPath: './test_stubs/deletes'
+                , routesPath: './test_stubs'
+                , routesJSONPath: './test_stubs/routes_stub.json'
                 , security: { poweredBy: 'waffles' }
             });
 
@@ -254,7 +269,7 @@ describe('Route Handler Tests', () => {
 
     describe('route.json route', () => {
         it('should return the routes.json file when the router route is requested', (done) => {
-            req.url = '/routes';
+            req.url = '/test_stubs';
 
             events.once('response', (result) => {
                 const resultObject = JSON.parse(result);
@@ -268,6 +283,108 @@ describe('Route Handler Tests', () => {
                 routeHandler(req, res);
             });
 
+        });
+    });
+
+    describe('compression routes', () => {
+        it('should return status code 200 for valid gzip compression', (done) => {
+            const successStatus = 200;
+
+            req.method = 'GET';
+            req.url = '/static/main.js';
+            req.headers['accept-encoding'] = 'gzip';
+
+            res.on('finish', () => {
+                assert.strictEqual(res.statusCode, successStatus);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should have a content-encoding:gzip header for gzip compression', (done) => {
+            res.on('finish', () => {
+                assert.strictEqual(res.headers['Content-Encoding'], 'gzip');
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should serve a file as a response with gzip compression', (done) => {
+            events.once('response', (input) => {
+                assert.isString(input);
+                assert.isAbove(input.length, 0);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should emit served static events for files with gzip compression', (done) => {
+            events.once('static:served', (pathname) => {
+                assert.strictEqual(pathname, req.url);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should return status code 200 for valid deflate compression', (done) => {
+            const successStatus = 200;
+
+            req.headers['accept-encoding'] = 'deflate';
+
+            res.on('finish', () => {
+                assert.strictEqual(res.statusCode, successStatus);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should have a content-encoding:deflate header for deflate compression', (done) => {
+            res.on('finish', () => {
+                assert.strictEqual(res.headers['Content-Encoding'], 'deflate');
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should serve a file as a response with deflate compression', (done) => {
+            events.once('response', (input) => {
+                assert.isString(input);
+                assert.isAbove(input.length, 0);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should emit served static events for files with deflate compression', (done) => {
+            events.once('static:served', (pathname) => {
+                assert.strictEqual(pathname, req.url);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
         });
     });
 });

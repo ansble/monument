@@ -10,7 +10,8 @@ const assert = require('chai').assert
     , http2 = require('http2')
     , spdy = require('spdy')
     , fs = require('fs')
-    , path = require('path');
+    , path = require('path')
+    , configStore = require('./utils/config');
 
 describe('The main monument tests', () => {
 
@@ -27,6 +28,10 @@ describe('The main monument tests', () => {
     });
 
     describe('Wrapper Tests', () => {
+        beforeEach(() => {
+            configStore.reset();
+        });
+
         afterEach((done) => {
             const shutDownEvents = events.required([ 'complete' ], () => {
                 done();
@@ -45,6 +50,7 @@ describe('The main monument tests', () => {
         it('should return a server when run', (done) => {
             const server = app.server({
                 routeJSONPath: './test_stubs/routes_stub.json'
+                , routesPath: './test_stubs'
                 , templatePath: './test_stubs/templates'
                 , port: 9999
             });
@@ -60,6 +66,7 @@ describe('The main monument tests', () => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
                 , templatePath: './test_stubs/templates'
+                , routesPath: './test_stubs'
             });
 
             servers.push(server);
@@ -74,6 +81,7 @@ describe('The main monument tests', () => {
                 routeJSONPath: './test_stubs/routes_stub.json'
                 , templatePath: './test_stubs/templates'
                 , compress: false
+                , routesPath: './test_stubs'
             });
 
             servers.push(server);
@@ -88,6 +96,7 @@ describe('The main monument tests', () => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
                 , templatePath: './test_stubs/templates'
+                , routesPath: './test_stubs'
                 , compress: false
                 , server: http2
                 , serverOptions: {
@@ -108,6 +117,7 @@ describe('The main monument tests', () => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
                 , templatePath: './test_stubs/templates'
+                , routesPath: './test_stubs'
                 , compress: false
                 , server: spdy
                 , serverOptions: {
