@@ -16,7 +16,7 @@ module.exports = (config, resIn) => {
     };
 
     if (config.security && config.security.noCache) {
-        res.noCache(config.security.noCache.noEtag);
+        res.noCache(true);
     }
 
     return res;
