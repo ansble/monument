@@ -32,8 +32,8 @@ describe('setup Tests', () => {
 
             events.required([
                 'setup:compressed'
-                , `setup:delete:${path.join(process.cwd(), './test_stubs/deletes/old.js.tgz')}`
-                , `setup:delete:${path.join(process.cwd(), './test_stubs/deletes/old.js.def')}`
+                , `setup:delete:./test_stubs/deletes/old.js.tgz`
+                , `setup:delete:./test_stubs/deletes/old.js.def`
             ], () => {
                 const pass = [ false, false ];
 

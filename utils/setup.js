@@ -3,7 +3,6 @@
 const glob = require('glob')
     , fs = require('fs')
     , events = require('harken')
-    , path = require('path')
     , dot = require('dot')
 
     , deleteCompressed = (config) => {
@@ -14,7 +13,7 @@ const glob = require('glob')
             , tgzPath = `${config.publicPath}/**/*.tgz`
             , defPath = `${config.publicPath}/**/*.def`;
 
-        glob(path.join(process.cwd(), tgzPath), (er, files) => {
+        glob(tgzPath, (er, files) => {
             files.forEach((file) => {
                 const fileEvent = `setup:delete:${file}`;
 
@@ -26,7 +25,7 @@ const glob = require('glob')
             });
         });
 
-        glob(path.join(process.cwd(), defPath), (er, files) => {
+        glob(defPath, (er, files) => {
             files.forEach((file) => {
                 const fileEvent = `setup:delete:${file}`;
 
@@ -43,8 +42,6 @@ const glob = require('glob')
     }
 
     , compileTemplates = (config) => {
-        const templatePath = config.templatePath || './templates';
-
         // configure dotjs
         if (config.dotjs) {
             Object.keys(config.dotjs).forEach((opt) => {
@@ -53,7 +50,7 @@ const glob = require('glob')
         }
 
         // compile the templates
-        dot.process({ path: path.join(process.cwd(), templatePath) });
+        dot.process({ path: config.templatePath });
 
         events.emit('setup:templates');
     }
