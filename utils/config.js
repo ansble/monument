@@ -9,7 +9,7 @@ const path = require('path')
         port: 3000
         , maxAge: 31536000
 
-        , routesPath: path.join(process.cwd(), './routes.json')
+        , routePath: path.join(process.cwd(), './routes.json')
         , routeJSONPath: path.join(process.cwd(), './routes.json')
         , publicPath: path.join(process.cwd(), './public')
         , templatePath: path.join(process.cwd(), './templates')
@@ -50,7 +50,7 @@ const path = require('path')
 
         if (typeof key === 'object') {
             Object.keys(key).forEach((item) => {
-                if (item === 'routeJSONPath' || item === 'routesPath' || item === 'publicPath' || item === 'templatePath') {
+                if (item === 'routeJSONPath' || item === 'routePath' || item === 'publicPath' || item === 'templatePath') {
                     configStore[item] = path.join(process.cwd(), key[item]);
                 } else {
                     configStore[item] = key[item];
