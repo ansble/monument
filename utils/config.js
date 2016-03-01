@@ -69,6 +69,6 @@ module.exports = {
     get: getConfig
     , set: setConfig
     , reset: () => {
-          setDefaults();
-      }
+        setDefaults();
+    }
 };

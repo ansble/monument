@@ -6,14 +6,14 @@ module.exports = {
     }
 
     , not: (fn) => {
-          return !fn;
-      }
+        return !fn;
+    }
 
     , isUndefined: (item) => {
-          return typeof item === 'undefined';
-      }
+        return typeof item === 'undefined';
+    }
 
     , contains: (array, item) => {
-          return array.indexOf(item) >= 0;
-      }
+        return array.indexOf(item) >= 0;
+    }
 };
