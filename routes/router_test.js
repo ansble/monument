@@ -25,7 +25,7 @@ describe('Route Handler Tests', () => {
 
         routeHandler = router(routeObject, {
             publicPath: path.join(process.cwd(), './test_stubs/deletes')
-            , routesPath: path.join(process.cwd(), './test_stubs')
+            , routePath: path.join(process.cwd(), './test_stubs')
             , compression: 'none'
         });
 
@@ -71,7 +71,7 @@ describe('Route Handler Tests', () => {
     it('should return a function', () => {
         assert.isFunction(router(routeObject, {
             publicPath: './test_stubs/deletes'
-            , routesPath: './test_stubs'
+            , routePath: './test_stubs'
         }));
     });
 
@@ -92,7 +92,7 @@ describe('Route Handler Tests', () => {
         it('should return x-powered-by only if it is set', (done) => {
             const tempHandler = router(routeObject, {
                 publicPath: './test_stubs/deletes'
-                , routesPath: './test_stubs'
+                , routePath: './test_stubs'
                 , routesJSONPath: './test_stubs/routes_stub.json'
                 , security: { poweredBy: 'waffles' }
             });

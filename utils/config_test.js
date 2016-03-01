@@ -26,7 +26,7 @@ describe('config Tests', () => {
 
         assert.strictEqual(configObj.port, 3000);
         assert.isObject(configObj.server);
-        assert.strictEqual(configObj.routesPath, path.join(process.cwd(), './routes.json'));
+        assert.strictEqual(configObj.routePath, path.join(process.cwd(), './routes.json'));
         assert.strictEqual(config.routesJSONPath, config.routePath);
         assert.strictEqual(configObj.publicPath, path.join(process.cwd(), './public'));
         assert.strictEqual(configObj.compress, true);
@@ -63,11 +63,11 @@ describe('config Tests', () => {
         it('should accept an object of settings', () => {
             config.set({
                 port: 1234
-                , routesPath: '/etc/bin'
+                , routePath: '/etc/bin'
             });
 
             assert.strictEqual(config.get('port'), 1234);
-            assert.strictEqual(config.get('routesPath'), path.join(process.cwd(), '/etc/bin'));
+            assert.strictEqual(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
         });
 
         it('should accept a key value pair of a setting', () => {

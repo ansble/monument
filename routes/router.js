@@ -26,8 +26,8 @@ module.exports = (routesJson, config) => {
     const routesObj = parseRoutes(routesJson)
         , publicPath = config.publicPath
         , maxAge = config.maxAge
-        , routesPath = config.routesPath
-        , publicFolders = setupStaticRoutes(routesPath, publicPath);
+        , routePath = config.routePath
+        , publicFolders = setupStaticRoutes(routePath, publicPath);
 
     // the route handler... pulled out here for easier testing
     return (req, resIn) => {
@@ -148,7 +148,7 @@ module.exports = (routesJson, config) => {
             // matches a route in the routes.json
             events.emit(`route:${simpleRoute}:${method}`, connection);
 
-        } else if (path.join(process.cwd(), pathname) === routesPath) {
+        } else if (path.join(process.cwd(), pathname) === routePath) {
             res.writeHead(succesStatus, {
                 'Content-Type': mime.lookup('routes.json')
             });
