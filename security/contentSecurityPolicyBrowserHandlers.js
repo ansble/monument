@@ -9,13 +9,13 @@ const config = require('./contentSecurityPolicyConfig')
     , handlers = {}
 
     , setUnsafeInline = (policyStringIn, key) => {
-        const index = policyStringIn.indexOf(`'unsafe-inline'`)
+        const index = policyStringIn.indexOf("'unsafe-inline'")
             , policyString = policyStringIn;
 
 
         if (index >= 0) {
             if (key === 'scriptSrc') {
-                policyString[index] = `'inline-script'`;
+                policyString[index] = "'inline-script'";
             } else {
                 policyString.splice(index, 1);
             }
@@ -25,12 +25,12 @@ const config = require('./contentSecurityPolicyConfig')
     }
 
     , setUnsafeEval = (policyStringIn, key) => {
-        const index = policyStringIn.indexOf(`'unsafe-eval'`)
+        const index = policyStringIn.indexOf("'unsafe-eval'")
             , policyString = policyStringIn;
 
         if (index >= 0) {
             if (key === 'scriptSrc') {
-                policyString[index] = `'eval-script'`;
+                policyString[index] = "'eval-script'";
             } else {
                 policyString.splice(index, 1);
             }
@@ -148,10 +148,10 @@ handlers['Chrome Mobile'] = function (browser, directives) {
 
         if (!connect) {
             result.directives = shallowCopy(directives);
-            result.directives.connectSrc = [ `'self'` ];
-        } else if (not(contains(connect, `'self'`))) {
+            result.directives.connectSrc = [ "'self'" ];
+        } else if (not(contains(connect, "'self'"))) {
             result.directives = shallowCopy(directives);
-            result.directives.connectSrc.push(`'self'`);
+            result.directives.connectSrc.push("'self'");
         }
 
         return result;

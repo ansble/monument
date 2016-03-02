@@ -42,6 +42,6 @@ module.exports = {
     , events: events
     , parser: parser
     , createUUID: () => {
-          return uuid.v4();
-      }
+        return uuid.v4();
+    }
 };

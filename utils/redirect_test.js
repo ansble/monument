@@ -22,8 +22,8 @@ describe('Redirect Tests', () => {
                 fakeHeaders[key] = value;
             }
             , end: (data) => {
-                  fakeOut = data;
-              }
+                fakeOut = data;
+            }
             , statusCode: 200
         };
 
@@ -32,8 +32,8 @@ describe('Redirect Tests', () => {
                 fakeHeaders[key] = value;
             }
             , end: (data) => {
-                  fakeOut = data;
-              }
+                fakeOut = data;
+            }
             , statusCode: 200
         };
 
