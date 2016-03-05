@@ -28,10 +28,11 @@ module.exports = (type) => {
 
             if (type && type !== 'passthrough' && isDataEvent(message.event, setEvent)) {
                 events.on(setEvent, (data) => {
-
-                    socket.send({ event: setEvent, data: JSON.stringify(data) }, (err) => {
-                        events.emit('error:ws', { inboundMessage: message, error: err });
-                        console.warn(err);
+                    socket.send(JSON.stringify({ event: setEvent, data: data }), (err) => {
+                        if (err) {
+                            events.emit('error:ws', { inboundMessage: message, error: err });
+                            console.warn(err);
+                        }
                     });
                 });
 
