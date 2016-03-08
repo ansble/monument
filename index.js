@@ -25,7 +25,7 @@ const events = require('harken')
 
             if (configIn.webSockets !== false) {
                 // enables websockets for data requests
-                webSockets(server, config.webSockets);
+                webSockets(server, config.get("webSockets"));
             }
 
             console.log(`monument v${pkg.version} up and running on port: ${configObj.port}`);
