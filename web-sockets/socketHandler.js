@@ -7,7 +7,6 @@ const events = require('harken')
     };
 
 module.exports = (type) => {
-
     return (socket) => {
         socket.onmessage = (messageIn) => {
             const message = JSON.parse(messageIn.data)
@@ -20,13 +19,14 @@ module.exports = (type) => {
 
             if (type && type !== 'passthrough' && isDataEvent(message.event, setEvent)) {
                 events.on(setEvent, (data) => {
-
-                    socket.send({ event: setEvent, data: JSON.stringify(data) }, (err) => {
-                        console.warn(err);
+                    // set "event" property with new value equal to "setEvent"
+                    data.event = setEvent;
+                    socket.send(JSON.stringify(data), (err) => {
+                        if(err) console.warn(err);
                     });
                 });
 
-                events.emit(message.event);
+                events.emit(setEvent, message);
             } else if (type && type !== 'data') {
                 // passthrough
                 events.emit(message.event, { message: message, socket: socket });
