@@ -39,7 +39,7 @@ const platform = require('platform')
         if (isDefined(settings) && isDefined(settings.contentSecurity)) {
             return settings.contentSecurity;
         } else {
-            return { defaultSrc: `'self'` };
+            return { defaultSrc: "'self'" };
         }
     }
 

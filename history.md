@@ -1,3 +1,43 @@
+### - 2.3.5 * 3/9/2016, 9:33:00 PM *
+  - Merge pull request #224 from ansble/bug/web-sockets-sadness
+  - Adds the documentation and examples... and makes sure that everything is working right
+  - Adds some tests around the breaking behavior
+  - This fixes some isues with error handling and one that broke all
+  - Fixes a bug caused by the consolidation of config
+  - Merge pull request #219 from ansble/feature/update-deps-2.3.5
+  - Fixes all the things that eslint 2.0 now identifies as breaks
+  - Updates all dev-dependencies and dependencies to latest
+  - 2.3.4 release
+  - Merge pull request #217 from ansble/bug/broken-api-with-config-change
+  - Expands coverage in the server setup module a bit
+  - Merge branch 'RS-Crawford-features' into Liège–Bastogne–Liège
+  - Corrects a change that broke the API
+  - bump to new candidate
+  - Merge branch 'Liège–Bastogne–Liège' of https://github.com/ansble/monument into Liège–Bastogne–Liège
+  - Merge pull request #215 from RS-Crawford/features
+  - Merge branch 'features' of https://github.com/RS-Crawford/monument into RS-Crawford-features
+  - Tests for status codes, headers, file returns and event emits for gzip/deflate compression in router_test.js
+  - Committing routes_test changes targeting compression
+  - Committing fix to mistaken change to master branch
+  - Committing new router tests, specifically adding coverage to compression handling
+
+### - 2.3.4-0
+  - Merge branch 'master' of https://github.com/ansble/monument into Liège–Bastogne–Liège
+  - Merge pull request #214 from ansble/feature/consolidate-default-settings
+  - fixed a typo that worked locally but not globally
+  - All test are now passing with the config changes
+  - Fixes some of the tests, and renames a few defaults
+  - Merge pull request #211 from ansble/Liège–Bastogne–Liège
+  - Merge branch 'master' into Liège–Bastogne–Liège
+  
+### - 2.3.3
+  - Merge pull request #209 from ansble/bug/csp-non-string-error
+  - Bug fixed. Now supports strings with out blowing chunks
+  - Fixes a bug in the CSP code
+  - Almost have everything working now...
+  - Adds a config module that holds and returns server config
+  - Merge pull request #205 from ansble/Liège–Bastogne–Liège
+
 ### - 2.3.2 * 1/28/2016, 7:52:00 AM *
   - Merge pull request #200 from ansble/Liège–Bastogne–Liège
   - Merge branch 'Liège–Bastogne–Liège' of https://github.com/ansble/monument into Liège–Bastogne–Liège

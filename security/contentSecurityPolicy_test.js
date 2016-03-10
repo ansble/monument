@@ -9,7 +9,7 @@ const assert = require('chai').assert
         baseUri: '*'
         , childSrc: [ 'child.com' ]
         , connectSrc: [ 'connect.com' ]
-        , defaultSrc: [ `'self'` ]
+        , defaultSrc: [ "'self'" ]
         , fontSrc: [ 'font.com' ]
         , formAction: [ 'formaction.com' ]
         , frameAncestors: [ 'frameancestor.com' ]
@@ -21,18 +21,18 @@ const assert = require('chai').assert
         , pluginTypes: [ 'application/x-shockwave-flash' ]
         , reportUri: '/report-violation'
         , sandbox: []
-        , scriptSrc: [ `'unsafe-eval'`, 'scripts.com' ]
-        , styleSrc: [ 'styles.com', `'unsafe-inline'` ]
+        , scriptSrc: [ "'unsafe-eval'", 'scripts.com' ]
+        , styleSrc: [ 'styles.com', "'unsafe-inline'" ]
         , upgradeInsecureRequests: ''
     }
     , EXPECTED_POLICY = [
         'base-uri *; child-src child.com; connect-src connect.com; default-src '
-        , `'self'; font-src font.com; form-action formaction.com; frame-ancestors `
+        , "'self'; font-src font.com; form-action formaction.com; frame-ancestors "
         , 'frameancestor.com; frame-src frame.com; img-src data: img.com; '
         , 'manifest-src manifest.com; media-src media.com; object-src object.com; '
         , 'plugin-types application/x-shockwave-flash; report-uri /report-violation; '
-        , `sandbox; script-src 'unsafe-eval' scripts.com; style-src styles.com `
-        , `'unsafe-inline'; upgrade-insecure-requests`
+        , "sandbox; script-src 'unsafe-eval' scripts.com; style-src styles.com "
+        , "'unsafe-inline'; upgrade-insecure-requests"
     ].join('')
     , AGENTS = require('../test_stubs/userAgents');
 
@@ -84,22 +84,22 @@ describe('content security policy', () => {
     it('sets default-src to self by default', () => {
         csp(config, req, res);
 
-        assert.strictEqual(res.headers['Content-Security-Policy'], `default-src 'self'`);
+        assert.strictEqual(res.headers['Content-Security-Policy'], "default-src 'self'");
 
         config.security = undefined;
 
         csp(config, req, res);
 
-        assert.strictEqual(res.headers['Content-Security-Policy'], `default-src 'self'`);
+        assert.strictEqual(res.headers['Content-Security-Policy'], "default-src 'self'");
     });
 
     it('sets all the headers if you tell it to', () => {
-        const expected = `default-src 'self' domain.com`;
+        const expected = "default-src 'self' domain.com";
 
         req.headers['user-agent'] = AGENTS['Firefox 23'].string;
 
         config.security.contentSecurity = {
-            defaultSrc: [ `'self'`, 'domain.com' ]
+            defaultSrc: [ "'self'", 'domain.com' ]
             , setAllHeaders: true
         };
 
@@ -111,7 +111,7 @@ describe('content security policy', () => {
     });
 
     it('sets all the headers if you provide an unknown user-agent', () => {
-        const expected = `default-src 'self' domain.com`;
+        const expected = "default-src 'self' domain.com";
 
         req.headers['user-agent'] = 'Some Crazy Fake Browser';
 
@@ -141,7 +141,7 @@ describe('content security policy', () => {
         config.security.contentSecurity = {
             reportOnly: true
             , setAllHeaders: true
-            , defaultSrc: [ `'self'` ]
+            , defaultSrc: [ "'self'" ]
             , reportUri: '/reporter'
         };
 
@@ -244,7 +244,7 @@ describe('content security policy', () => {
 
         csp(config, req, res);
 
-        assert.include(res.headers[header], `default-src 'self'`);
+        assert.include(res.headers[header], "default-src 'self'");
         assert.include(res.headers[header], 'xhr-src connect.com');
     });
 
@@ -257,10 +257,10 @@ describe('content security policy', () => {
         csp(config, req, res);
 
         // assert.strictEqual(res.headers[header], EXPECTED_POLICY);
-        assert.include(res.headers[header], `'eval-script' scripts.com`);
+        assert.include(res.headers[header], "'eval-script' scripts.com");
         assert.include(res.headers[header], 'style-src styles.com;');
         assert.include(res.headers[header], 'xhr-src connect.com;');
-        assert.include(res.headers[header], `allow 'self'`);
+        assert.include(res.headers[header], "allow 'self'");
 
     });
 
@@ -338,7 +338,7 @@ describe('content security policy', () => {
     it('adds connect-src \'self\' in iOS Chrome when connect-src is undefined', () => {
         const iosChrome = AGENTS['iOS Chrome 40'];
 
-        config.security.contentSecurity = { styleSrc: [ `'self'` ] };
+        config.security.contentSecurity = { styleSrc: [ "'self'" ] };
         req.headers['user-agent'] = iosChrome.string;
 
         csp(config, req, res);
@@ -349,12 +349,12 @@ describe('content security policy', () => {
     it('does nothing in iOS Chrome if connect-src \'self\' is defined', () => {
         const iosChrome = AGENTS['iOS Chrome 40'];
 
-        config.security.contentSecurity = { connectSrc: [ 'somedomain.com', `'self'` ] };
+        config.security.contentSecurity = { connectSrc: [ 'somedomain.com', "'self'" ] };
         req.headers['user-agent'] = iosChrome.string;
 
         csp(config, req, res);
 
-        assert.strictEqual(res.headers[iosChrome.header], `connect-src somedomain.com 'self'`);
+        assert.strictEqual(res.headers[iosChrome.header], "connect-src somedomain.com 'self'");
     });
 
     it('doesn\'t splice the original array', () => {
@@ -363,8 +363,8 @@ describe('content security policy', () => {
 
         config.security.contentSecurity = {
             styleSrc: [
-                `'self'`
-                , `'unsafe-inline'`
+                "'self'"
+                , "'unsafe-inline'"
             ]
         };
 
@@ -389,10 +389,10 @@ describe('content security policy', () => {
         const ff = AGENTS['Firefox 22'];
 
         config.security.contentSecurity = {
-            defaultSrc: `'self'` // optional. This is the default setting and is very strict
-            , styleSrc: `'self' cdn-images.mailchimp.com 'unsafe-inline'`
-            , imgSrc: `'self' maps.googleapis.com images.vivintcdn.com www.masteryconnect.com smartrhinolabs.com cdn.hacknightslc.com cdn.sqhk.co *.cloudfront.net www.google-analytics.com data:`
-            , scriptSrc: `'self' 'sha256-ZmBLMRsmRpaF/hQbWKT9xhd6Ql2Wf2a1WXhO2tdH6Xg=' www.google-analytics.com`
+            defaultSrc: "'self'" // optional. This is the default setting and is very strict
+            , styleSrc: "'self' cdn-images.mailchimp.com 'unsafe-inline'"
+            , imgSrc: "'self' maps.googleapis.com images.vivintcdn.com www.masteryconnect.com smartrhinolabs.com cdn.hacknightslc.com cdn.sqhk.co *.cloudfront.net www.google-analytics.com data:"
+            , scriptSrc: "'self' 'sha256-ZmBLMRsmRpaF/hQbWKT9xhd6Ql2Wf2a1WXhO2tdH6Xg=' www.google-analytics.com"
         };
 
         req.headers['user-agent'] = ff.string;
