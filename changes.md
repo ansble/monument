@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.3.5 & 2.3.6
+
+Minor patch release that fixes several bugs in the web socket code. It also improves test coverage around web sockets and adds working examples of the web socket code in action.
+
+The other thing covered in this release is an update of all dependencies to their latest versions. Including the upgrade to eslint 2.0 which is pretty big.
+
+2.3.6 is being released because I forgot the documentation.
+
 ## v2.3.2
 
 Small patch release that has som dependency updates and a change the the linting rules for the codebase. Very Very minor.
