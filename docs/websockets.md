@@ -48,7 +48,7 @@ The payload of the event that is emitted by the `passthrough` method looks like 
 }
 ```
 
-As an example, let's say that you have recieve:
+As an example, let's say that you recieve:
 ```
 {
     event: 'authorize:user'
@@ -86,6 +86,115 @@ events.on('authorize:user', (payload) => {
 ```
 
 This is not meant to be example authorization code. Just makes for a useful example. The event listener responds either by emitting an event on the internal event system or by responding directly to the socket if it is present.
+
+## Example Server and Client code for `data`
+
+If you are using the `data` setting then you can set up your data stores like this:
+
+```
+'use strict';
+
+const events = require('monument').events
+    , fetchingStore = {}
+    , cache = require('node-cached');
+
+events.on('data:get:person', () => {
+    const cached = cache.get('data.person');
+
+    if (cached === null && !fetchingStore['data.person']) {
+        // get data from async source faked here by process.nextTick
+        fetchingStore['data.person'] = true;
+
+        process.nextTick(() => {
+            const result = {
+                some: 'data in here'
+            };
+
+            fetchingStore['data.person'] = false;
+            events.emit('data:set:person', result);
+            cache.add('data.person', result, 300000);
+        });
+    } else if (cached !== null) {
+        events.emit('data:set:person', cached);
+    }
+});
+```
+
+Then your client can do this:
+
+```
+const ws = new WebSocket('ws://localhost:4000');
+
+ws.onmessage = (msg) => {console.log(msg)};
+ws.send(JSON.stringify({event: 'data:get:person'}))
+```
+
+and you will get something that looks like this:
+
+```
+{
+    bubbles: false
+    , cancelBubble: false
+    , cancelable: false
+    , currentTarget: WebSocket
+    , data: "{"event":"data:set:person","data":{"some":"data in here"}}"
+    , defaultPrevented: false
+    , eventPhase: 0
+    , isTrusted: true
+    , isTrusted: true
+    , lastEventId: ""
+    , origin: "ws://localhost:4000"
+    , path: Array[0]
+    , ports: null
+    , returnValue: true
+    , source: null
+    , srcElement: WebSocket
+    , target: WebSocket
+    , timeStamp: 1457581373172
+    , type: "message"
+}
+```
+
+The important bit being the `data` part. It is a JSON string of the data returned by the `data:set:person` event.
+
+## Example Server and Client for `passthrough`
+
+First off the Server side component that handles the inbound data:
+
+```
+'use strict';
+
+const events = require('monument').events
+    , store = {};
+
+events.on('analytics:new', (data) => {
+    const analyticsEvent = data.message.data;
+
+    if (typeof store[analyticsEvent.type] === 'undefined') {
+        store[analyticsEvent.type] = [ analyticsEvent ];
+    } else {
+        store[analyticsEvent.type].push(analyticsEvent);
+    }
+
+    console.log(store);
+});
+```
+
+Ok, let's be clear. This is a super contrived and simplified example. Here is the client call:
+
+```
+const ws = new WebSocket('ws://localhost:4000');
+
+ws.send(JSON.stringify({event: 'analytics:new', data: { type: 'click'}}))
+```
+
+So the server on receiving the web socket message passes it off to the data handler, which is above, by emitting the `analytics:new` event with the entire socket message as its contents. So to get at the data we extract it from the `data.message` variable. `data.message` is equal to the value passed into `ws.send` on the client.
+
+The `passthrough` system does not return any events or data to the client, unless you do it explicitly.
+
+## Example Client and Server for `true`
+
+Punting on this one. It is literally a combination of the `data` and `passthrough` versions. If the event has the `data:set:SOMETHING` structure it is handled as a data event. If it isn't then it is handled like the `passthrough` style.
 
 ## parting thoughts
 
