@@ -25,7 +25,7 @@ const events = require('harken')
 
             if (configIn.webSockets !== false) {
                 // enables websockets for data requests
-                webSockets(server, config.webSockets);
+                webSockets(server, configIn.webSockets);
             }
 
             console.log(`monument v${pkg.version} up and running on port: ${configObj.port}`);
@@ -42,6 +42,6 @@ module.exports = {
     , events: events
     , parser: parser
     , createUUID: () => {
-          return uuid.v4();
-      }
+        return uuid.v4();
+    }
 };

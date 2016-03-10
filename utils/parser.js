@@ -42,7 +42,7 @@ const getRawBody = require('raw-body')
         connection.req.pipe(busboy);
     }
 
-    , parser = (connection, callback, scopeIn) => {// parse out the body
+    , parser = (connection, callback, scopeIn) => { // parse out the body
         const contentType = connection.req.headers['content-type'] ?
                 connection.req.headers['content-type'].split(';')[0] : 'application/json'
             , scope = scopeIn;

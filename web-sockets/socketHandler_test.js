@@ -31,7 +31,7 @@ describe('WebSocket handler Tests', () => {
             handler(socket);
 
             socket.onmessage({
-                data: `{ "event": "data:get:test" }`
+                data: '{ "event": "data:get:test" }'
             });
 
             assert.isUndefined(events.listeners('data:set:test'));
@@ -50,7 +50,7 @@ describe('WebSocket handler Tests', () => {
             });
 
             socket.onmessage({
-                data: `{ "event": "some:event" }`
+                data: '{ "event": "some:event" }'
             });
 
             setTimeout(() => {
@@ -83,7 +83,7 @@ describe('WebSocket handler Tests', () => {
             handler(socket);
 
             socket.onmessage({
-                data: `{ "event": "data:get:test" }`
+                data: '{ "event": "data:get:test" }'
             });
         });
 
@@ -103,7 +103,7 @@ describe('WebSocket handler Tests', () => {
             });
 
             socket.onmessage({
-                data: `{ "event": "data:new:person", "payload": { "name": "daniel" } }`
+                data: '{ "event": "data:new:person", "payload": { "name": "daniel" } }'
             });
         });
 
@@ -118,7 +118,7 @@ describe('WebSocket handler Tests', () => {
             });
 
             socket.onmessage({
-                data: `{ "event": "some:event" }`
+                data: '{ "event": "some:event" }'
             });
         });
 
@@ -137,7 +137,7 @@ describe('WebSocket handler Tests', () => {
             });
 
             socket.onmessage({
-                data: `{ "event": "some:event" }`
+                data: '{ "event": "some:event" }'
             });
         });
     });
@@ -166,7 +166,7 @@ describe('WebSocket handler Tests', () => {
             handler(socket);
 
             socket.onmessage({
-                data: `{ "event": "data:get:test" }`
+                data: '{ "event": "data:get:test" }'
             });
         });
 
@@ -176,10 +176,29 @@ describe('WebSocket handler Tests', () => {
             handler(socket);
 
             socket.onmessage({
-                data: `{ "event": "some:event" }`
+                data: '{ "event": "some:event" }'
             });
 
             assert.strictEqual(events.listeners('some:event').length, 0);
+        });
+
+        it('should return a string when responding to a socket', (done) => {
+            const socket = {
+                send: (message) => {
+                    assert.isString(message);
+                    done();
+                }
+            };
+
+            handler(socket);
+
+            events.once('data:get:test', () => {
+                events.emit('data:set:test', { test: true });
+            });
+
+            socket.onmessage({
+                data: '{ "event": "data:get:test" }'
+            });
         });
     });
 
@@ -202,7 +221,7 @@ describe('WebSocket handler Tests', () => {
             handler(socket);
 
             socket.onmessage({
-                data: `{ "event": "data:get:test" }`
+                data: '{ "event": "data:get:test" }'
             });
 
             assert.strictEqual(events.listeners('data:set:test').length, 0);
@@ -219,7 +238,7 @@ describe('WebSocket handler Tests', () => {
             });
 
             socket.onmessage({
-                data: `{ "event": "some:event" }`
+                data: '{ "event": "some:event" }'
             });
         });
 
@@ -238,7 +257,7 @@ describe('WebSocket handler Tests', () => {
             });
 
             socket.onmessage({
-                data: `{ "event": "some:event" }`
+                data: '{ "event": "some:event" }'
             });
         });
 
@@ -258,7 +277,7 @@ describe('WebSocket handler Tests', () => {
             });
 
             socket.onmessage({
-                data: `{ "event": "data:new:person", "payload": { "name": "daniel" } }`
+                data: '{ "event": "data:new:person", "payload": { "name": "daniel" } }'
             });
         });
     });
