@@ -181,6 +181,25 @@ describe('WebSocket handler Tests', () => {
 
             assert.strictEqual(events.listeners('some:event').length, 0);
         });
+
+        it('should return a string when responding to a socket', (done) => {
+            const socket = {
+                send: (message) => {
+                    assert.isString(message);
+                    done();
+                }
+            };
+
+            handler(socket);
+
+            events.once('data:get:test', () => {
+                events.emit('data:set:test', { test: true });
+            });
+
+            socket.onmessage({
+                data: '{ "event": "data:get:test" }'
+            });
+        });
     });
 
     describe('Web Socket Handler Type: passthrough tests', () => {
