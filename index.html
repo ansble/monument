@@ -99,11 +99,11 @@
 <p>Once you have laid down your route stubs they will all basically look like this:</p>
 <pre><code>
   events.on('route:/profile:get', function (connection) {
-    connection.res.end('route /profile now responding to get requests');
-    // If those more familiar with using ".send()" when finishing
+    connection.res.send('route /profile now responding to get requests');
+    // If those more familiar with using ".end()" when finishing
     // eventhandlers it is also available as an alternative,
     // like this:
-    // connection.res.send('route /profile now responding to get requests');
+    // connection.res.end('route /profile now responding to get requests');
   });
 </code></pre>
 <h4>The route event</h4>
