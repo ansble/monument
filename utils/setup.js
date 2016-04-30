@@ -10,29 +10,22 @@ const glob = require('glob')
         const complete = events.required([ 'cleanup:compressed:start' ], () => {
                 events.emit('setup:compressed');
             })
-            , tgzPath = `${config.publicPath}/**/*.tgz`
-            , defPath = `${config.publicPath}/**/*.def`;
+            , compressedFileGlobs = [
+                `${config.publicPath}/**/*.tgz`
+                , `${config.publicPath}/**/*.def`
+                , `${config.publicPath}/**/*.brot`
+            ];
 
-        glob(tgzPath, (er, files) => {
-            files.forEach((file) => {
-                const fileEvent = `setup:delete:${file}`;
+        compressedFileGlobs.forEach((fileGlob) => {
+            glob(fileGlob, (er, files) => {
+                files.forEach((file) => {
+                    const fileEvent = `setup:delete:${file}`;
 
-                complete.add(fileEvent);
+                    complete.add(fileEvent);
 
-                fs.unlink(file, () => {
-                    events.emit(fileEvent);
-                });
-            });
-        });
-
-        glob(defPath, (er, files) => {
-            files.forEach((file) => {
-                const fileEvent = `setup:delete:${file}`;
-
-                complete.add(fileEvent);
-
-                fs.unlink(file, () => {
-                    events.emit(fileEvent);
+                    fs.unlink(file, () => {
+                        events.emit(fileEvent);
+                    });
                 });
             });
         });

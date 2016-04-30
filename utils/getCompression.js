@@ -6,12 +6,26 @@ const isDefined = require('./tools').isDefined
         return isDefined(config.compress) && !config.compress;
     }
 
+    , supportsBrotli = (header) => {
+        return header.match(/\bbr\b/) || header.match(/\bbrotli\b/);
+    }
+
+    , supportsGzip = (header) => {
+        return header.match(/\bgzip\b/);
+    }
+
+    , supportsDeflate = (header) => {
+        return header.match(/\bdeflate\b/);
+    }
+
     , getCompression = (header, config) => {
         if (isUndefined(header) || dontCompress(config)) {
             return 'none';
-        } else if (header.match(/\bgzip\b/)) {
+        } else if (supportsBrotli(header)) {
+            return 'br';
+        } else if (supportsGzip(header)) {
             return 'gzip';
-        } else if (header.match(/\bdeflate\b/)) {
+        } else if (supportsDeflate(header)) {
             return 'deflate';
         } else {
             return 'none';
@@ -19,3 +33,4 @@ const isDefined = require('./tools').isDefined
     };
 
 module.exports = getCompression;
+module.exports.supportsBrotli = supportsBrotli;
