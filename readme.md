@@ -20,6 +20,8 @@
 
 [![Issue Stats](http://issuestats.com/github/ansble/monument/badge/issue?style=flat-square)](http://issuestats.com/github/ansble/monument)
 
+[![Known Vulnerabilities](https://snyk.io/test/npm/monument/badge.svg)](https://snyk.io/test/npm/monument)
+
 ## Table of Contents
 - [How to Get Started](#how-to-get-started)
 - [Config Object and the Server](#config-object-and-the-server)
