@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "test": "gulp test",
-    "codeship": "gulp test && gulp coveralls"
+    "test": "npm run lint && gulp test",
+    "codeship": "gulp test && gulp coveralls",
+    "lint": "bin/lint.js",
+    "release": "npm test && echo ' => releasing' && bin/release.js"
   },
   "repository": {
     "type": "git",
