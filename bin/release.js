@@ -50,7 +50,6 @@ cp.exec(gitLogCommand, (err, stdout) => {
                         });
                     });
                 });
-
             });
         });
     });
