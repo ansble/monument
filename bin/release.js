@@ -9,22 +9,7 @@ const minimist = require('minimist')
         , default: { type: 'patch' }
     }
     , options = minimist(process.argv.slice(2), knownOptions)
-    , incrementVersion = (version, type) => {
-        const versionArr = version.split('.');
-
-        if (type === 'major') {
-            versionArr[0] = parseInt(versionArr[0], 10) + 1;
-            versionArr[1] = 0;
-            versionArr[2] = 0;
-        } else if (type === 'minor') {
-            versionArr[1] = parseInt(versionArr[1], 10) + 1;
-            versionArr[2] = 0;
-        } else {
-            versionArr[2] = parseInt(versionArr[2], 10) + 1;
-        }
-
-        return versionArr.join('.');
-    }
+    , incrementVersion = require('increment')
     , pkg = require('../package.json')
     , newVersion = incrementVersion(pkg.version, options.type)
     , gitLogCommand = 'git log `git describe --tags --abbrev=0`..HEAD --pretty=format:"  - %s"';

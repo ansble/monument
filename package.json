@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "test": "npm run lint && gulp test",
-    "codeship": "gulp test && gulp coveralls",
+    "test": "istanbul cover _mocha -- *_test.js bin/*_test.js utils/**/*_test.js web-sockets/**/*_test.js security/**/*_test.js routes/**/*_test.js",
+    "codeship": "npm test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "bin/lint.js",
     "release": "npm test && echo ' => releasing' && bin/release.js"
   },
@@ -56,15 +56,13 @@
   "devDependencies": {
     "chai": "~3.5.0",
     "chalk": "~1.1.1",
+    "coveralls": "^2.11.11",
     "eslint": "^3.1.1",
     "form-data": "~1.0.0-rc3",
-    "gulp": "~3.9.0",
-    "gulp-coveralls": "~0.1.4",
-    "gulp-eslint": "^3.0.1",
-    "gulp-istanbul": "^1.0.0",
-    "gulp-mocha": "~2.2.0",
     "http2": "~3.3.2",
+    "istanbul": "^0.4.4",
     "minimist": "~1.2.0",
+    "mocha": "^2.5.3",
     "spdy": "^3.3.4",
     "v8-profiler": "~5.6.0"
   },
