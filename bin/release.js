@@ -1,7 +1,7 @@
-#!/bin/env node
+#!/usr/bin/env node
 'use strict';
 const minimist = require('minimist')
-    , cp = require('child-process')
+    , cp = require('child_process')
     , fs = require('fs')
     , chalk = require('chalk')
     , knownOptions = {
@@ -9,7 +9,7 @@ const minimist = require('minimist')
         , default: { type: 'patch' }
     }
     , options = minimist(process.argv.slice(2), knownOptions)
-    , incrementVersion = require('increment')
+    , incrementVersion = require('./increment.js')
     , pkg = require('../package.json')
     , newVersion = incrementVersion(pkg.version, options.type)
     , gitLogCommand = 'git log `git describe --tags --abbrev=0`..HEAD --pretty=format:"  - %s"';

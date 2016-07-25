@@ -1,4 +1,16 @@
-### - 2.3.5 * 3/9/2016, 9:33:00 PM *
+### - 2.3.8 * 7/25/2016, 9:41:44 AM *
+
+   - Merge pull request #240 from ansble/feature/update-all-the-things
+  - Fixes a few last things with deps
+  - Pretty much wraps up the switch to npm scripts
+  - Updates dependencies and switches to npm scripts
+  - Fixes vulnerable packages and upgrades others
+  - Merge branch 'master' into Liège–Bastogne–Liège
+  - Merge pull request #238 from ansble/master
+  - Merge pull request #231 from ansble/master 
+
+
+ ### - 2.3.5 * 3/9/2016, 9:33:00 PM *
   - Merge pull request #224 from ansble/bug/web-sockets-sadness
   - Adds the documentation and examples... and makes sure that everything is working right
   - Adds some tests around the breaking behavior
