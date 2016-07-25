@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "test": "istanbul cover _mocha -- *_test.js bin/*_test.js utils/**/*_test.js web-sockets/**/*_test.js security/**/*_test.js routes/**/*_test.js",
+    "test": "npm run lint && istanbul cover _mocha -- *_test.js bin/*_test.js utils/**/*_test.js web-sockets/**/*_test.js security/**/*_test.js routes/**/*_test.js",
     "codeship": "npm test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "bin/lint.js",
     "release": "npm test && echo ' => releasing' && bin/release.js"
