@@ -47,10 +47,16 @@ const path = require('path')
     }
 
     , setConfig = (key, value) => {
+        const pathKeyNames = [
+            'routeJSONPath'
+            , 'routePath'
+            , 'publicPath'
+            , 'templatePath'
+        ];
 
         if (typeof key === 'object') {
             Object.keys(key).forEach((item) => {
-                if (item === 'routeJSONPath' || item === 'routePath' || item === 'publicPath' || item === 'templatePath') {
+                if (pathKeyNames.indexOf(item) >= 0) {
                     configStore[item] = path.join(process.cwd(), key[item]);
                 } else {
                     configStore[item] = key[item];

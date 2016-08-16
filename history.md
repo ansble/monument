@@ -1,4 +1,10 @@
-### - 2.3.8 * 7/25/2016, 9:41:44 AM *
+### - 2.3.9 * 7/25/2016, 9:45:10 AM *
+
+   - Fixes a tiny whitespace issue...
+  - Fixes some issues with the release chain 
+
+
+ ### - 2.3.8 * 7/25/2016, 9:41:44 AM *
 
    - Merge pull request #240 from ansble/feature/update-all-the-things
   - Fixes a few last things with deps
