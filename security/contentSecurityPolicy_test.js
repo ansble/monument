@@ -155,9 +155,6 @@ describe('content security policy', () => {
     });
 
     it('can set empty directives', () => {
-        let header
-            , split;
-
         config.security.contentSecurity = {
             scriptSrc: []
             , sandbox: [ '' ]
@@ -168,10 +165,10 @@ describe('content security policy', () => {
         csp(config, req, res);
 
 
-        header = res.headers['Content-Security-Policy'];
-        split = header.split(';').map((str) => {
-            return str.trim();
-        }).sort();
+        const header = res.headers['Content-Security-Policy']
+            , split = header.split(';').map((str) => {
+                return str.trim();
+            }).sort();
 
         assert.strictEqual(split[0], 'sandbox');
         assert.strictEqual(split[1], 'script-src');
