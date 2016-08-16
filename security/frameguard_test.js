@@ -53,25 +53,21 @@ describe('frameguard', () => {
         });
 
         it('sets header properly when called with lowercase "allow-from"', () => {
-            let result;
-
             config.security.frameguard = {};
             config.security.frameguard.action = 'allow-from';
             config.security.frameguard.domain = 'designfrontier.net';
 
-            result = frameguard(config, res);
+            const result = frameguard(config, res);
 
             assert.strictEqual(result.headers['X-Frame-Options'], 'ALLOW-FROM designfrontier.net');
         });
 
         it('sets header properly when called with uppercase "ALLOW-FROM"', () => {
-            let result;
-
             config.security.frameguard = {};
             config.security.frameguard.action = 'ALLOW-FROM';
             config.security.frameguard.domain = 'designfrontier.net';
 
-            result = frameguard(config, res);
+            const result = frameguard(config, res);
 
             assert.strictEqual(result.headers['X-Frame-Options'], 'ALLOW-FROM designfrontier.net');
         });

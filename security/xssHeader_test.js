@@ -40,10 +40,10 @@ describe('Security Headers: X-XSS-Protection', () => {
         });
 
         it('should set the correct header if IE', () => {
-            let result;
-
             req.headers['user-agent'] = chromeOSXUA;
-            result = xssHeader(config, res, req);
+
+            const result = xssHeader(config, res, req);
+
             assert.strictEqual(result.headers['X-XSS-Protection'], '1; mode=block');
         });
 

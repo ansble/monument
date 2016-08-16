@@ -1,4 +1,16 @@
-### - 2.3.8 * 7/25/2016, 9:41:44 AM *
+### - 2.3.10 * 8/16/2016, 11:16:25 AM *
+
+   - Merge pull request #243 from ansble/update/bump-deps
+  - Cleans up some style warnings and updates deps 
+
+
+ ### - 2.3.9 * 7/25/2016, 9:45:10 AM *
+
+   - Fixes a tiny whitespace issue...
+  - Fixes some issues with the release chain 
+
+
+ ### - 2.3.8 * 7/25/2016, 9:41:44 AM *
 
    - Merge pull request #240 from ansble/feature/update-all-the-things
   - Fixes a few last things with deps
