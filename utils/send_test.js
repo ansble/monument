@@ -4,6 +4,7 @@
 const assert = require('chai').assert
     , send = require('./send')
     , zlib = require('zlib')
+    , brotli = require('iltorb')
     , etag = require('etag')
 
     , compressTimeout = 10;
@@ -48,6 +49,13 @@ describe('Send Tests', () => {
                 , 'if-none-match': ''
             }
         }, { compression: 'gzip' });
+
+        fakeRes.sendBrotli = send({
+            headers: {
+                'accept-encoding': 'br'
+                , 'if-none-match': ''
+            }
+        }, { compression: 'br' });
 
         fakeOut = '';
 
@@ -110,14 +118,11 @@ describe('Send Tests', () => {
     });
 
     it('should return deflate compressed results if deflate header is sent', (done) => {
-        let outString
-            , compareString;
-
         fakeRes.sendDeflate(obj);
 
         setTimeout(() => {
-            outString = JSON.stringify(fakeOut);
-            compareString = JSON.stringify(zlib.deflateSync(JSON.stringify(obj)));
+            const outString = JSON.stringify(fakeOut)
+                , compareString = JSON.stringify(zlib.deflateSync(JSON.stringify(obj)));
 
             assert.strictEqual(outString, compareString);
             assert.strictEqual(fakeHeaders['Content-Encoding'], 'deflate');
@@ -126,18 +131,29 @@ describe('Send Tests', () => {
     });
 
     it('should return gzip compressed results if gzip header is sent', (done) => {
-        let outString
-            , compareString;
-
         fakeRes.sendGzip(obj);
 
         setTimeout(() => {
-            outString = JSON.stringify(fakeOut);
-            compareString = JSON.stringify(zlib.gzipSync(JSON.stringify(obj)));
+            const outString = JSON.stringify(fakeOut)
+                , compareString = JSON.stringify(zlib.gzipSync(JSON.stringify(obj)));
 
             assert.strictEqual(outString, compareString);
             assert.strictEqual(fakeHeaders['Content-Encoding'], 'gzip');
             done();
+        }, compressTimeout);
+    });
+
+    it('should return brotli compressed results if brotli header is sent', (done) => {
+        fakeRes.sendBrotli(obj);
+
+        setTimeout(() => {
+            const outString = JSON.stringify(fakeOut);
+
+            brotli.compress(JSON.stringify(obj), (err, compareString) => {
+                assert.strictEqual(outString, JSON.stringify(compareString));
+                assert.strictEqual(fakeHeaders['Content-Encoding'], 'br');
+                done();
+            });
         }, compressTimeout);
     });
 
