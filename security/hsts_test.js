@@ -21,94 +21,80 @@ describe('Security Headers: Strict-Transport-Security Tests', () => {
     });
 
     it('should set a header if there is no option in config', () => {
-        let result;
-
         hsts(config, res);
-        result = res.headers['Strict-Transport-Security'];
+
+        const result = res.headers['Strict-Transport-Security'];
+
         assert.strictEqual(result, 'max-age=86400; includeSubdomains; preload');
     });
 
     it('should set a header if the config is true', () => {
-        let result;
-
         config.security.hsts = true;
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.strictEqual(result, 'max-age=86400; includeSubdomains; preload');
     });
 
     it('should set a header with a different max age if passed in', () => {
-        let result;
-
         config.security.hsts = {
             maxAge: 100
         };
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.strictEqual(result, 'max-age=100; includeSubdomains; preload');
     });
 
     it('should set a header with a different max age and no includeSubdomains if passed in', () => {
-        let result;
-
         config.security.hsts = {
             maxAge: 100
             , includeSubDomains: false
         };
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.strictEqual(result, 'max-age=100; preload');
     });
 
     it('should set a header with no includeSubdomains if passed in', () => {
-        let result;
-
         config.security.hsts = {
             includeSubDomains: false
         };
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.strictEqual(result, 'max-age=86400; preload');
     });
 
     it('should set a header with no preload if passed in', () => {
-        let result;
-
         config.security.hsts = {
             preload: false
         };
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.strictEqual(result, 'max-age=86400; includeSubdomains');
     });
 
     it('should set a header with a different max age and no preloads if passed in', () => {
-        let result;
-
         config.security.hsts = {
             maxAge: 100
             , preload: false
         };
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.strictEqual(result, 'max-age=100; includeSubdomains');
     });
 
     it('should set a header with a different max age and other options off if passed in', () => {
-        let result;
-
         config.security.hsts = {
             maxAge: 100
             , includeSubDomains: false
@@ -116,32 +102,28 @@ describe('Security Headers: Strict-Transport-Security Tests', () => {
         };
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.strictEqual(result, 'max-age=100');
     });
 
     it('should set a header with a default max age and other options off if passed in', () => {
-        let result;
-
         config.security.hsts = {
             includeSubDomains: false
             , preload: false
         };
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.strictEqual(result, 'max-age=86400');
     });
 
     it('should not set a header if the config is false', () => {
-        let result;
-
         config.security.hsts = false;
         hsts(config, res);
 
-        result = res.headers['Strict-Transport-Security'];
+        const result = res.headers['Strict-Transport-Security'];
 
         assert.isUndefined(result);
     });
