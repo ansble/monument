@@ -44,6 +44,7 @@
     "etag": "~1.7.0",
     "glob": "~7.0.0",
     "harken": "~1.0.4",
+    "iltorb": "^1.0.12",
     "lodash.clonedeep": "~4.5.0",
     "lodash.pick": "~4.4.0",
     "media-typer": "~0.3.0",

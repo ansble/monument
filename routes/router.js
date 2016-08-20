@@ -5,6 +5,7 @@ const path = require('path')
     , zlib = require('zlib')
     , events = require('harken')
     , mime = require('mime')
+    , brotli = require('iltorb')
     , parseRoutes = require('./parseRoutes')
     , matchSimpleRoute = require('./matchSimpleRoute')
     , isWildCardRoute = require('./isWildCardRoute')
@@ -104,6 +105,20 @@ module.exports = (routesJson, config) => {
 
                                         fs.createReadStream(file).pipe(zlib.createDeflate())
                                             .pipe(fs.createWriteStream(`${file}.def`));
+                                    }
+                                });
+                            } else if (compression === 'br') {
+                                // brotli compression handling
+                                fs.stat(`${file}.brot`, (errBrotli, existsBrotli) => {
+                                    if (!errBrotli && existsBrotli.isFile()) {
+                                        fs.createReadStream(`${file}.brot`).pipe(res);
+                                    } else {
+                                        // no compressed file yet...
+                                        fs.createReadStream(file).pipe(brotli.compressStream())
+                                            .pipe(res);
+
+                                        fs.createReadStream(file).pipe(brotli.compressStream())
+                                            .pipe(fs.createWriteStream(`${file}.brot`));
                                     }
                                 });
                             } else {
