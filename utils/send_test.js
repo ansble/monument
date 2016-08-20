@@ -24,6 +24,11 @@ describe('Send Tests', () => {
                 fakeHeaders[key] = value;
             }
             , end: (data) => {
+
+                fakeOut = data;
+            }
+            , send: (data) => {
+
                 fakeOut = data;
             }
             , statusCode: 200
@@ -149,7 +154,7 @@ describe('Send Tests', () => {
         setTimeout(() => {
             const outString = JSON.stringify(fakeOut);
 
-            brotli.compress(JSON.stringify(obj), (err, compareString) => {
+            brotli.compress(new Buffer(JSON.stringify(obj)), (err, compareString) => {
                 assert.strictEqual(outString, JSON.stringify(compareString));
                 assert.strictEqual(fakeHeaders['Content-Encoding'], 'br');
                 done();

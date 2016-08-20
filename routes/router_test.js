@@ -386,5 +386,45 @@ describe('Route Handler Tests', () => {
                 routeHandler(req, res);
             });
         });
+
+        it('should have a content-encoding:br header for brötli compression', (done) => {
+            req.headers['accept-encoding'] = 'br';
+
+            res.on('finish', () => {
+                assert.strictEqual(res.headers['Content-Encoding'], 'br');
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should serve a file as a response with brötli compression', (done) => {
+            req.headers['accept-encoding'] = 'br';
+
+            events.once('response', (input) => {
+                assert.isString(input);
+                assert.isAbove(input.length, 0);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should emit served static events for files with brötli compression', (done) => {
+            req.headers['accept-encoding'] = 'br';
+
+            events.once('static:served', (pathname) => {
+                assert.strictEqual(pathname, req.url);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
     });
 });
