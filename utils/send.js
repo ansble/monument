@@ -49,10 +49,6 @@ const etag = require('etag')
     }
 
     , send = (req, config) => {
-        // TODO: think about making this a constructor that returns the
-        //  modified response object instead of being added as it is
-        //  in the router.js file.
-
         return function (dataIn) {
             /* eslint-disable no-invalid-this */
             const that = this
