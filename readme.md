@@ -50,7 +50,7 @@ When you create your server it takes a config object that allows you to pass in 
 ```
 {
     port: 3000 // the port for the server to run on
-    , compress: true // turns on or off compression for static files (deflate/gzip)
+    , compress: true // turns on or off compression (deflate/gzip/br)
     , routePath: './routes' // the folder your routes live in
     , templatePath: './templates' // the folder where your templates live
     , dotjs: {
