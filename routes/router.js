@@ -6,7 +6,7 @@ const path = require('path')
     , events = require('harken')
     , mime = require('mime')
     , brotli = require('iltorb')
-    , parseRoutes = require('./parseRoutes')
+    , routeStore = require('./routeStore')
     , matchSimpleRoute = require('./matchSimpleRoute')
     , isWildCardRoute = require('./isWildCardRoute')
     , parseWildCardRoute = require('./parseWildCardRoute')
@@ -24,18 +24,19 @@ const path = require('path')
     , unmodifiedStatus = 304;
 
 module.exports = (routesJson, config) => {
-    const routesObj = parseRoutes(routesJson)
-        , publicPath = config.publicPath
+    const publicPath = config.publicPath
         , maxAge = config.maxAge
         , routePath = config.routePath
         , publicFolders = setupStaticRoutes(routePath, publicPath);
+
+    routeStore.parse(routesJson);
 
     // the route handler... pulled out here for easier testing
     return (req, resIn) => {
         const method = req.method.toLowerCase()
             , pathParsed = parsePath(req.url)
             , pathname = pathParsed.pathname
-            , simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
+            , simpleRoute = matchSimpleRoute(pathname, method, routeStore.getStandard())
             , expires = new Date().getTime()
             , connection = {
                 req: req
@@ -170,9 +171,9 @@ module.exports = (routesJson, config) => {
 
             res.send(routesJson);
 
-        } else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
+        } else if (isWildCardRoute(pathname, method, routeStore.getWildcard())) {
             // matches a route in the routes.json file that has params
-            routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
+            routeInfo = parseWildCardRoute(pathname, routeStore.getWildcard());
 
             connection.params = routeInfo.values;
 

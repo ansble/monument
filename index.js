@@ -7,6 +7,7 @@ const events = require('harken')
     , uuid = require('uuid')
     , config = require('./utils/config')
     , setup = require('./utils').setup
+    , routeStore = require('./routes/routeStore')
 
   // setup the routes and server
   //  pass in the http or https object and the routes.json
@@ -41,6 +42,7 @@ module.exports = {
     server: wrapper
     , events: events
     , parser: parser
+    , routes: routeStore
     , createUUID: () => {
         return uuid.v4();
     }
