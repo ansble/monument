@@ -105,41 +105,50 @@ describe('routeStore Tests', () => {
         beforeEach(() => {
             routeStore.add('/test', [ 'get', 'post', 'put' ]);
             routeStore.add('/hobbits', [ 'get' ]);
+            routeStore.add('/hobbits/:name', [ 'get' ]);
+            routeStore.add('/rangers/:name', [ 'get', 'post', 'put', 'delete' ]);
         });
 
         it('should remove all if no verbs are passed', () => {
             assert.isUndefined(routeStore.remove('/test').standard['/test']);
             assert.isDefined(routeStore.get().standard['/hobbits']);
             assert.isUndefined(routeStore.remove('/hobbits').standard['/hobbits']);
+            assert.isUndefined(routeStore.remove('/hobbits/:name').wildcard['/hobbits/:name']);
         });
 
         it('should remove the whole route if all verbs are passed to it', () => {
             assert.isUndefined(routeStore.remove('/test', [ 'get', 'put', 'post' ]).standard['/test']);
             assert.isDefined(routeStore.get().standard['/hobbits']);
             assert.isUndefined(routeStore.remove('/hobbits', 'get').standard['/hobbits']);
+            assert.isUndefined(routeStore.remove('/hobbits/:name', 'get').wildcard['/hobbits/:name']);
+            assert.isUndefined(routeStore.remove('/rangers/:name', [ 'get', 'post', 'put', 'delete' ]).wildcard['/rangers/:name']);
         });
 
         it('should remove only a verb if a route listens to multiple but one is passed', () => {
-            const routes = routeStore.remove('/test', [ 'get' ]).standard;
+            const routes = routeStore.remove('/test', [ 'get' ]).standard
+                , wild = routeStore.remove('/rangers/:name', [ 'get', 'post' ]);
 
-            assert.isUndefined(routes['/test']);
             assert.isArray(routes['/test']);
             assert.strictEqual(routes['/test'].length, 2);
+            assert.isArray(wild.wildcard['/rangers/:name'].verbs);
+            assert.strictEqual(wild.wildcard['/rangers/:name'].verbs.length, 2);
         });
 
         it('should remove only the verbs passed if a route listens to multiple', () => {
-            const routes = routeStore.remove('/test', [ 'put', 'post' ]).standard;
+            const routes = routeStore.remove('/test', [ 'put', 'post' ]).standard
+                , wild = routeStore.remove('/rangers/:name', [ 'put', 'post', 'delete' ]).wildcard;
 
-            assert.isUndefined(routes['/test']);
             assert.isArray(routes['/test']);
             assert.strictEqual(routes['/test'].length, 1);
             assert.strictEqual(routes['/test'][0], 'get');
+            assert.isArray(wild['/rangers/:name'].verbs);
+            assert.strictEqual(wild['/rangers/:name'].verbs.length, 1);
+            assert.strictEqual(wild['/rangers/:name'].verbs[0], 'get');
         });
 
         it('should do nothing if there is no match', () => {
             const routes = routeStore.remove('/sam', [ 'get' ]).standard;
 
-            assert.isUndefined(routes['/test']);
             assert.isArray(routes['/test']);
             assert.strictEqual(routes['/test'].length, 3);
         });

@@ -28,6 +28,26 @@ const pareseRoutes = require('./parseRoutes')
             standard: shallowMerge(routeObj.standard, parsed.standard)
             , wildcard: shallowMerge(routeObj.wildcard, parsed.wildcard)
         };
+    }
+
+    , isWildcard = (route, routes) => {
+        return Object.keys(routes.wildcard).find((rt) => {
+            return typeof routes.wildcard[rt] !== 'undefined' && route.match(routes.wildcard[rt].regex);
+        });
+    }
+
+    , notARoute = (route, routes) => {
+        return typeof routes.wildcard[route] === 'undefined' && typeof routes.standard[route] === 'undefined';
+    }
+
+    , cleanupRoute = (route, routes) => {
+        if (routes.wildcard[route] && routes.wildcard[route].verbs.length === 0) {
+            routes.wildcard[route] = undefined;
+        } else if (routes.standard[route] && routes.standard[route].length === 0) {
+            routes.standard[route] = undefined;
+        }
+
+        return routes;
     };
 
 let routes = {
@@ -47,41 +67,35 @@ module.exports = {
     }
 
     , remove: (route, verbs) => {
-        const isWildcard = Object.keys(routes.wildcard).find((rt) => {
-            return !!route.match(routes.wildcard[rt].regex);
-        });
+        const isWildcardRoute = isWildcard(route, routes);
 
-        if (isWildcard) {
-            // wildcard route to delete here
-            if (typeof verbs === 'string') {
-                // tst
-            } else if (Array.isArray(verbs)) {
-                // tst
-            } else {
-                // no verbs passed in clear it
-
-            }
-        } else {
-            // standard route to delete here
-            if (typeof verbs === 'string') {
-                routes.standard[route] = routes.standard[route].filter((verb) => {
-                    return verb !== verbs;
-                });
-            } else if (Array.isArray(verbs)) {
-                routes.standard[route] = routes.standard[route].filter((verb) => {
-                    return verbs.indexOf(verb) === -1;
-                });
-
-                if (routes.standard[route].length === 0) {
-                    routes.standard[route] = undefined;
-                }
-            } else {
-                // no verbs passed in clear it
-                routes.standard[route] = undefined;
-            }
+        if (notARoute(route, routes)) {
+            return routes;
         }
 
-        return routes;
+        if (typeof verbs === 'undefined') {
+            // safe to do this since a route can't be both
+            //  and this is really really cheap
+            routes.wildcard[route] = undefined;
+            routes.standard[route] = undefined;
+
+            return routes;
+        }
+
+        if (isWildcardRoute) {
+            // wildcard route to delete here
+            routes.wildcard[route].verbs = routes.wildcard[route].verbs.filter((verb) => {
+                return [].concat(verbs).indexOf(verb) === -1;
+            });
+
+        } else {
+            // standard route to delete here
+            routes.standard[route] = routes.standard[route].filter((verb) => {
+                return [].concat(verbs).indexOf(verb) === -1;
+            });
+        }
+
+        return cleanupRoute(route, routes);
     }
 
     , get: () => {
