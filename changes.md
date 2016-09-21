@@ -11,7 +11,10 @@ Brötli does have one quirk, that it is only supported by browsers over https. S
 ### Higher performance web sockets
 This release also adds a couple of binary dependencies that improve the performance of the `ws` library. See [the ws docs](https://www.npmjs.com/package/ws#opt-in-for-performance) for more details about that.
 
-###
+### Router API!
+There is now a route decleration API so that you can easily add and remove route handlers to the server while it is running. This is awesome! Not only does it provide a code-over-config option for creating route handlers it also makes it possible to create and destroy them as needed.
+
+For more information check out the [documentation](https://github.com/ansble/monument/blob/master/docs/routes.md).
 
 ## v2.3.5 & 2.3.6
 

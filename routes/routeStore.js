@@ -32,12 +32,14 @@ const pareseRoutes = require('./parseRoutes')
 
     , isWildcard = (route, routes) => {
         return Object.keys(routes.wildcard).find((rt) => {
-            return typeof routes.wildcard[rt] !== 'undefined' && route.match(routes.wildcard[rt].regex);
+            return typeof routes.wildcard[rt] !== 'undefined' &&
+                   route.match(routes.wildcard[rt].regex);
         });
     }
 
     , notARoute = (route, routes) => {
-        return typeof routes.wildcard[route] === 'undefined' && typeof routes.standard[route] === 'undefined';
+        return typeof routes.wildcard[route] === 'undefined' &&
+               typeof routes.standard[route] === 'undefined';
     }
 
     , cleanupRoute = (route, routes) => {
