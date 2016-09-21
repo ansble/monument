@@ -7,6 +7,7 @@ const assert = require('chai').assert
     , routeObject = require('../test_stubs/routes_stub.json')
     , path = require('path')
     , stream = require('stream')
+    , routerStore = require('./routeStore')
     , config = require('../utils/config')
     , req = {
         method: 'GET'
@@ -22,6 +23,7 @@ require('../utils/staticFileEtags');
 describe('Route Handler Tests', () => {
     beforeEach(() => {
         config.reset();
+        routerStore.clear();
 
         routeHandler = router(routeObject, {
             publicPath: path.join(process.cwd(), './test_stubs/deletes')
@@ -142,6 +144,10 @@ describe('Route Handler Tests', () => {
                 assert.strictEqual(connection.params.id, '1234');
                 assert.strictEqual(connection.params.item, 'daniel');
                 done();
+            });
+
+            events.once('error:404', () => {
+                throw new Error('bad route parsing');
             });
 
             process.nextTick(() => {
