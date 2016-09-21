@@ -18,6 +18,7 @@ describe('The main monument tests', () => {
     it('should be correctly defined', () => {
         assert.isFunction(app.server);
         assert.isFunction(app.parser);
+        assert.isObject(app.routes);
         assert.isObject(app.events);
     });
 
