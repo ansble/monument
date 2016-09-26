@@ -3,6 +3,7 @@
 const etag = require('etag')
     , getCompression = require('./getCompression')
     , zlib = require('zlib')
+    , brotli = require('iltorb')
     , tools = require('./tools')
     , not = tools.not
     , isDefined = tools.isDefined
@@ -49,10 +50,6 @@ const etag = require('etag')
     }
 
     , send = (req, config) => {
-        // TODO: think about making this a constructor that returns the
-        //  modified response object instead of being added as it is
-        //  in the router.js file.
-
         return function (dataIn) {
             /* eslint-disable no-invalid-this */
             const that = this
@@ -71,12 +68,16 @@ const etag = require('etag')
                 that.setHeader('ETag', reqEtag);
                 setCompressionHeader(compression, that);
 
-                if (compression === 'deflate') {
-                    zlib.deflate(data, (err, result) => {
-                        that.end(result, encoding);
+                if (compression === 'br') {
+                    brotli.compress(new Buffer(data, 'utf8'), (err, output) => {
+                        that.end(output);
                     });
                 } else if (compression === 'gzip') {
                     zlib.gzip(data, (err, result) => {
+                        that.end(result, encoding);
+                    });
+                } else if (compression === 'deflate') {
+                    zlib.deflate(data, (err, result) => {
                         that.end(result, encoding);
                     });
                 } else {

@@ -1,18 +1,51 @@
+### - 2.4.0 * 9/26/2016, 1:37:07 PM *
+  - 2.4.0-2
+  - Merge pull request #257 from ansble/feature/update-readme-docs
+  - Adds documentation for the route API
+  - 2.4.0-1
+  - 2.4.0-0
+  - Merge pull request #256 from ansble/feature/route-api
+  - Fixes a flakey test caused by the API change
+  - More test cleanup and the implementation of the wildcard API
+  - Adds the routes API
+  - Merge pull request #255 from ansble/feature/brotli-docs
+  - Adds details of brotli to the changes
+  - Merge pull request #254 from ansble/feature/ws-perf-deps
+  - Adds the optional C based deps for ws library
+  - Merge pull request #252 from ansble/feature/send-constructor-pattern
+  - Removes a TODO
+  - Merge pull request #251 from ansble/feature/npm-ignore
+  - Adds the .npmignore file
+  - Merge pull request #247 from ansble/feature/brotli
+  - Tests are now working and brötli is ready to ship
+  - Starts getting the tests updated and working
+  - catchup to current
+  - Implements brotli compression
+  - Merge pull request #245 from ansble/Liège–Bastogne–Liège
+  - Merge pull request #244 from ansble/Liège–Bastogne–Liège
+  - Merge pull request #242 from ansble/Liège–Bastogne–Liège
+  - Merge pull request #241 from ansble/Liège–Bastogne–Liège
+  - Merge pull request #239 from ansble/master
+  - Merge pull request #232 from ansble/master
+  - Merge pull request #226 from ansble/master
+  - Merge pull request #212 from ansble/master
+  - Merge pull request #210 from ansble/bug/csp-non-string-error
+
 ### - 2.3.10 * 8/16/2016, 11:16:25 AM *
 
-   - Merge pull request #243 from ansble/update/bump-deps
+  - Merge pull request #243 from ansble/update/bump-deps
   - Cleans up some style warnings and updates deps 
 
 
  ### - 2.3.9 * 7/25/2016, 9:45:10 AM *
 
-   - Fixes a tiny whitespace issue...
+  - Fixes a tiny whitespace issue...
   - Fixes some issues with the release chain 
 
 
  ### - 2.3.8 * 7/25/2016, 9:41:44 AM *
 
-   - Merge pull request #240 from ansble/feature/update-all-the-things
+  - Merge pull request #240 from ansble/feature/update-all-the-things
   - Fixes a few last things with deps
   - Pretty much wraps up the switch to npm scripts
   - Updates dependencies and switches to npm scripts

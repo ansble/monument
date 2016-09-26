@@ -1,0 +1,9 @@
+docs/
+coverage/
+test_stubs/
+bin/
+.codeclimate.yml
+.editorconfig
+.eslintrc
+.linthub.yml
+.gitignore

@@ -28,8 +28,16 @@ describe('Utils Tests', () => {
             assert.strictEqual(utils.getCompression('gzip', { compress: true }), 'gzip');
         });
 
+        it('should return br if brotli is in the header passed in', () => {
+            assert.strictEqual(utils.getCompression('br', { compress: true }), 'br');
+        });
+
         it('should return gzip if both gzip and deflate are in the header', () => {
             assert.strictEqual(utils.getCompression('deflate gzip', { compress: true }), 'gzip');
+        });
+
+        it('should return brotli if brotli, gzip and deflate are in the header', () => {
+            assert.strictEqual(utils.getCompression('deflate gzip br', { compress: true }), 'br');
         });
 
         it('should return none if no header is passed in', () => {

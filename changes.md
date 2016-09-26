@@ -1,5 +1,21 @@
 # Change Log
 
+## v2.4.0
+Minor release time!
+
+### Brötli Compression
+Starting with this release brötli compression is supported for both static and dynamic requests. It is amazingly tight compression that beats out gzip and deflate. To keep it snappy we are using a wrapper around the `c` implementation instead of a pure `js` implementation.
+
+Brötli does have one quirk, that it is only supported by browsers over https. So make sure you have https setup if you are going to use it. `monument` itself doesn't care, meaning that you could have monument speaking `http` behind an `https` load balancer and it will still serve up brötli if the browser supports it. But if you are running the `https` right off of `monument` make sure that you are passing in the `https` module to `server` in the config object. It should also work with `http2` or `spdy` which require certificates as well.
+
+### Higher performance web sockets
+This release also adds a couple of binary dependencies that improve the performance of the `ws` library. See [the ws docs](https://www.npmjs.com/package/ws#opt-in-for-performance) for more details about that.
+
+### Router API!
+There is now a route decleration API so that you can easily add and remove route handlers to the server while it is running. This is awesome! Not only does it provide a code-over-config option for creating route handlers it also makes it possible to create and destroy them as needed.
+
+For more information check out the [documentation](https://github.com/ansble/monument/blob/master/docs/routes.md).
+
 ## v2.3.5 & 2.3.6
 
 Minor patch release that fixes several bugs in the web socket code. It also improves test coverage around web sockets and adds working examples of the web socket code in action.

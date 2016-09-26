@@ -5,7 +5,8 @@ const path = require('path')
     , zlib = require('zlib')
     , events = require('harken')
     , mime = require('mime')
-    , parseRoutes = require('./parseRoutes')
+    , brotli = require('iltorb')
+    , routeStore = require('./routeStore')
     , matchSimpleRoute = require('./matchSimpleRoute')
     , isWildCardRoute = require('./isWildCardRoute')
     , parseWildCardRoute = require('./parseWildCardRoute')
@@ -23,18 +24,19 @@ const path = require('path')
     , unmodifiedStatus = 304;
 
 module.exports = (routesJson, config) => {
-    const routesObj = parseRoutes(routesJson)
-        , publicPath = config.publicPath
+    const publicPath = config.publicPath
         , maxAge = config.maxAge
         , routePath = config.routePath
         , publicFolders = setupStaticRoutes(routePath, publicPath);
+
+    routeStore.parse(routesJson);
 
     // the route handler... pulled out here for easier testing
     return (req, resIn) => {
         const method = req.method.toLowerCase()
             , pathParsed = parsePath(req.url)
             , pathname = pathParsed.pathname
-            , simpleRoute = matchSimpleRoute(pathname, method, routesObj.standard)
+            , simpleRoute = matchSimpleRoute(pathname, method, routeStore.getStandard())
             , expires = new Date().getTime()
             , connection = {
                 req: req
@@ -106,6 +108,20 @@ module.exports = (routesJson, config) => {
                                             .pipe(fs.createWriteStream(`${file}.def`));
                                     }
                                 });
+                            } else if (compression === 'br') {
+                                // brotli compression handling
+                                fs.stat(`${file}.brot`, (errBrotli, existsBrotli) => {
+                                    if (!errBrotli && existsBrotli.isFile()) {
+                                        fs.createReadStream(`${file}.brot`).pipe(res);
+                                    } else {
+                                        // no compressed file yet...
+                                        fs.createReadStream(file).pipe(brotli.compressStream())
+                                            .pipe(res);
+
+                                        fs.createReadStream(file).pipe(brotli.compressStream())
+                                            .pipe(fs.createWriteStream(`${file}.brot`));
+                                    }
+                                });
                             } else {
                                 fs.stat(`${file}.tgz`, (errTgz, existsTgz) => {
                                     if (!errTgz && existsTgz.isFile()) {
@@ -155,9 +171,9 @@ module.exports = (routesJson, config) => {
 
             res.send(routesJson);
 
-        } else if (isWildCardRoute(pathname, method, routesObj.wildcard)) {
+        } else if (isWildCardRoute(pathname, method, routeStore.getWildcard())) {
             // matches a route in the routes.json file that has params
-            routeInfo = parseWildCardRoute(pathname, routesObj.wildcard);
+            routeInfo = parseWildCardRoute(pathname, routeStore.getWildcard());
 
             connection.params = routeInfo.values;
 

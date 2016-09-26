@@ -61,3 +61,57 @@ events.on('route:/api/v1/team/:teamid:get', (connection) => {
 ```
 
 The handler listens for the route event and then responds with the connection object that is the payload of the event.
+
+## Route Decleration API
+
+### Adding new routes
+
+```
+// A simple route...
+routeStore.add('/this/is/a/test', 'get');
+
+// A wildcard route...
+routeStore.add('/rangers/:name', [ 'get', 'post', 'put', 'delete' ]);
+```
+
+The two parameters are the route... and the array of verbs that you want that route to respond to. Pretty simple.
+
+If you want to add verbs to an existing route then you call `.add` again with the route and additional verbs. They are added to the verbs that are being listened to. They do not become the only verbs, think composition not replacement.
+
+### Remove routes
+
+```
+// remove all of a standard route
+routeStore.remove('/this/is/a/test');
+
+// remove all of a wild card route
+routeStore.remove('/hobbits/:name');
+
+// remove a single verb from a wild card route
+routeStore.remove('/hobbits/:name', 'get');
+
+// remove multiple verbs from a wild card route
+routeStore.remove('/hobbits/:name', [ 'post', 'delete' ]);
+
+```
+
+The api for removing is pretty simple as well. Pass the route to change and then no verbs to remove all verbs and an array of verbs or a string containing a verb and the correct listeners will be removed.
+
+### Parse
+
+```
+routeStore.parse({'/this/is/a/route': ['get']})
+```
+
+You can pass a whole router full of route config as an object to the `parse` method and it will setup the router accordingly
+
+
+### Get the route objects
+
+```
+routeStore.get() // returns {wildcard: {}, standard: {}} with the standard and wildcard route objects populated
+
+routeStore.getWildcard() // Returns an object containing the wild card routes and their meta information
+
+routeStore.getStandard() // returns an object containing the standard routes and their meta information
+```

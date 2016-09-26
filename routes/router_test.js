@@ -7,6 +7,7 @@ const assert = require('chai').assert
     , routeObject = require('../test_stubs/routes_stub.json')
     , path = require('path')
     , stream = require('stream')
+    , routerStore = require('./routeStore')
     , config = require('../utils/config')
     , req = {
         method: 'GET'
@@ -22,6 +23,7 @@ require('../utils/staticFileEtags');
 describe('Route Handler Tests', () => {
     beforeEach(() => {
         config.reset();
+        routerStore.clear();
 
         routeHandler = router(routeObject, {
             publicPath: path.join(process.cwd(), './test_stubs/deletes')
@@ -142,6 +144,10 @@ describe('Route Handler Tests', () => {
                 assert.strictEqual(connection.params.id, '1234');
                 assert.strictEqual(connection.params.item, 'daniel');
                 done();
+            });
+
+            events.once('error:404', () => {
+                throw new Error('bad route parsing');
             });
 
             process.nextTick(() => {
@@ -377,6 +383,46 @@ describe('Route Handler Tests', () => {
         });
 
         it('should emit served static events for files with deflate compression', (done) => {
+            events.once('static:served', (pathname) => {
+                assert.strictEqual(pathname, req.url);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should have a content-encoding:br header for brötli compression', (done) => {
+            req.headers['accept-encoding'] = 'br';
+
+            res.on('finish', () => {
+                assert.strictEqual(res.headers['Content-Encoding'], 'br');
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should serve a file as a response with brötli compression', (done) => {
+            req.headers['accept-encoding'] = 'br';
+
+            events.once('response', (input) => {
+                assert.isString(input);
+                assert.isAbove(input.length, 0);
+                done();
+            });
+
+            process.nextTick(() => {
+                routeHandler(req, res);
+            });
+        });
+
+        it('should emit served static events for files with brötli compression', (done) => {
+            req.headers['accept-encoding'] = 'br';
+
             events.once('static:served', (pathname) => {
                 assert.strictEqual(pathname, req.url);
                 done();
