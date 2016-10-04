@@ -34,7 +34,6 @@ const events = require('harken')
 
 
         setup(configObj);
-
         return server;
     };
 
