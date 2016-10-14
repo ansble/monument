@@ -5,7 +5,7 @@ Feel free to edit away, just make sure that everything still passes its tests `n
 
 If the ticket you are working on is attached to a milestone please open the pull request to the branch that has the same name as the milestone for that ticket. Makes our release cycle work a little better.
 
-For things to do check out the [issues](issues/) and grab a ticket. Feel free to reach out if you need help or have questions about it. We want to help you contribute :-)
+For things to do check out the [issues](../../issues/) and grab a ticket. Feel free to reach out if you need help or have questions about it. We want to help you contribute :-)
 
 When we do the next release your name will be added to the AUTHORS file... you know, because you're an author now.
 
