@@ -15,6 +15,7 @@ const path = require('path')
 
     , not = require('../utils').not
     , send = require('../utils').send
+    , setStatus = require('../utils').setStatus
     , parsePath = require('../utils').parsePath
     , getCompression = require('../utils').getCompression
     , redirect = require('../utils').redirect
@@ -49,6 +50,9 @@ module.exports = (routesJson, config) => {
         let file
             , routeInfo
             , res = resIn;
+
+        // add .setStatus to response
+        res.setStatus = setStatus();
 
         // add .send to the response
         res.send = send(req, config);
