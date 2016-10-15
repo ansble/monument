@@ -124,6 +124,111 @@ monument.parser
 ```
 The body parser for dealing with forms
 
+
+#### Route API
+
+##### Adding new route with CLI:
+
+```
+npm install -g monument-cli
+```
+CLI tool used to create new project.
+
+The file routes.json will look like this in a brand new project:
+
+```
+{
+  "/": ["get"]
+}
+```
+
+#### Creating new routes in the routes.json file
+
+The file routes.json will by default located in root of the file, but it's location is changeable.
+
+Routes are defined as key value pairs where the key is the route and the value is an array of verbs that you want the route to respond to. For example a restful API for pro cycling teams might look like this:
+```
+{
+    "/api/v1/team": [ "get", "post" ],
+    "/api/v1/team/:teamid": [ "get", "put", "delete" ],
+    "/api/v1/team/:teamid/rider": [ "get", "post" ],
+    "/api/v1/team/:teamid/rider/:riderid": [ "get", "put", "delete" ]
+}
+```
+
+The structure of a route event is: 'route:/path/to/resource:http-verb'. The route events recieve an object right now, often called connection, that looks like this:
+
+```
+{
+  res: response,
+  req: request,
+  params: the url parameters as an object,
+  query: the queryparams as an object
+}
+```
+
+#### Adding new routes
+
+```
+routeStore.add('/this/is/a/test', 'get');
+```
+A simple route...
+
+```
+routeStore.add('/rangers/:name', [ 'get', 'post', 'put', 'delete' ]);
+```
+A wildcard route...
+
+
+#### Remove routes
+
+```
+routeStore.remove('/this/is/a/test');
+```
+Remove all of a standard route
+
+```
+routeStore.remove('/hobbits/:name');
+```
+Remove all of a wild card route
+
+```
+routeStore.remove('/hobbits/:name', 'get');
+```
+Remove a single verb from a wild card route
+
+```
+routeStore.remove('/hobbits/:name', [ 'post', 'delete' ]);
+```
+Remove multiple verbs from a wild card route
+
+
+#### Parse
+
+```
+routeStore.parse({'/this/is/a/route': ['get']})
+```
+
+#### Get the route objects
+
+```
+routeStore.get()
+```
+Returns {wildcard: {}, standard: {}} with the standard and wildcard route objects populated
+
+```
+routeStore.getWildcard()
+```
+Returns an object containing the wild card routes and their meta information
+
+```
+routeStore.getStandard()
+```
+Returns an object containing the standard routes and their meta information
+
+For more details, Have a look on /docs/routes.md file
+
+
 ### Etags
 Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
 
