@@ -41,7 +41,7 @@ It is also the easiest way to add routes and fata handlers!
 
 When you create your server it takes a config object that allows you to pass in some options for your particular environment. It looks like this and these are the default values:
 
-```
+```js
 {
     port: 3000 // the port for the server to run on
     , compress: true // turns on or off compression (deflate/gzip/br)
@@ -94,7 +94,7 @@ When you create your server it takes a config object that allows you to pass in 
 
 All the values are optional. It is used like this to create a server (heroku example of port):
 
-```
+```js
 var monument = require('monument');
 
 monument.server({
@@ -109,20 +109,125 @@ monument.server({
 
 In addition to the server `monument` exposes the following:
 
-```
+```js
 monument.uuid
 ```
 a v4 UUID generator which return a UUID when called with no paramters
 
-```
+```js
 monument.events
 ```
 The event emitter/subscriber api for your app
 
-```
+```js
 monument.parser
 ```
 The body parser for dealing with forms
+
+
+#### Route API
+
+##### Adding new route with CLI:
+
+```
+npm install -g monument-cli
+```
+CLI tool used to create new project.
+
+The file routes.json will look like this in a brand new project:
+
+```
+{
+  "/": ["get"]
+}
+```
+
+#### Creating new routes in the routes.json file
+
+The file routes.json will by default located in root of the file, but it's location is changeable.
+
+Routes are defined as key value pairs where the key is the route and the value is an array of verbs that you want the route to respond to. For example a restful API for pro cycling teams might look like this:
+```
+{
+    "/api/v1/team": [ "get", "post" ],
+    "/api/v1/team/:teamid": [ "get", "put", "delete" ],
+    "/api/v1/team/:teamid/rider": [ "get", "post" ],
+    "/api/v1/team/:teamid/rider/:riderid": [ "get", "put", "delete" ]
+}
+```
+
+The structure of a route event is: 'route:/path/to/resource:http-verb'. The route events recieve an object right now, often called connection, that looks like this:
+
+```
+{
+  res: response,
+  req: request,
+  params: the url parameters as an object,
+  query: the queryparams as an object
+}
+```
+
+#### Adding new routes
+
+```
+routeStore.add('/this/is/a/test', 'get');
+```
+A simple route...
+
+```
+routeStore.add('/rangers/:name', [ 'get', 'post', 'put', 'delete' ]);
+```
+A wildcard route...
+
+
+#### Remove routes
+
+```
+routeStore.remove('/this/is/a/test');
+```
+Remove all of a standard route
+
+```
+routeStore.remove('/hobbits/:name');
+```
+Remove all of a wild card route
+
+```
+routeStore.remove('/hobbits/:name', 'get');
+```
+Remove a single verb from a wild card route
+
+```
+routeStore.remove('/hobbits/:name', [ 'post', 'delete' ]);
+```
+Remove multiple verbs from a wild card route
+
+
+#### Parse
+
+```
+routeStore.parse({'/this/is/a/route': ['get']})
+```
+
+#### Get the route objects
+
+```
+routeStore.get()
+```
+Returns {wildcard: {}, standard: {}} with the standard and wildcard route objects populated
+
+```
+routeStore.getWildcard()
+```
+Returns an object containing the wild card routes and their meta information
+
+```
+routeStore.getStandard()
+```
+Returns an object containing the standard routes and their meta information
+
+For more details, Have a look on /docs/routes.md file
+
 
 ### Etags
 Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
@@ -171,7 +276,7 @@ Enough of the warnings! How do you configure it? The config object above explain
 
 If you specify a report URI it should be ready to recieve a POST from browsers in the form (described here)[https://tools.ietf.org/html/rfc7469#section-3]. The object you should expect looks like this (sourced from previous link):
 
-```
+```js
 {
     "date-time": date-time,
     "hostname": hostname,
@@ -208,7 +313,7 @@ One of the things that I heard from several users was the lack of response.send 
 
 At some point you are going to need to deal with body data from a form or ajax request. This is one of the areas where monument diverges from the mainstream you may be used to in server side js. We expose a parser function that you use like this in the event handler for the route you want:
 
-```
+```js
 var parser = require('monument').parser;
 
 events.on('route:/join:post', function (connection) {
@@ -225,7 +330,7 @@ events.on('route:/join:post', function (connection) {
 The `monument.parser` function returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});`
 
 #### Example object
-```
+```js
 {
     "file1": {
         "tempFile": "/tmp/some/file.jpg"
@@ -243,10 +348,10 @@ The `monument.parser` function returns `null` if an error occurs during parsing.
 #### Required Events (State Machine)
 We pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for.
 
-```
-  emitter.required(['event-1', 'event-2', 'event-3'], function (dataArray) {
+```js
+emitter.required(['event-1', 'event-2', 'event-3'], function (dataArray) {
     //do something here when all three events have triggered
-  });
+});
 ```
 
 More to come... but think about the idea of resource pooling and individual data modules that front DSLs.

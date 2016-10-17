@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.4.1
+This is a minor patch with test expansion and documentation updates. Nothing risky or terrifying.
+
+The tests have been expanded to cover config options for dotjs.
+
 ## v2.4.0
 Minor release time!
 

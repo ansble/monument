@@ -1,3 +1,17 @@
+### - 2.4.1 * 10/17/2016, 6:48:00 AM *
+  - Merge pull request #280 from ansble/paul-shibanov-expand-test-coverage-in-the-utils/setup.js
+  - Merge pull request #279 from ansble/paul-shibanov-fix-contributing-issues-404
+  - Merge pull request #278 from ansble/ming13-readme-formatting
+  - Merge pull request #277 from ansble/cosmologist10-master
+  - Issue #258 solved!
+  - Added dot config test Closes #262
+  - Fixed 404 for issues link on contributing.md
+  - Use syntax highlighting in the readme file
+  - Merge pull request #269 from ansble/master
+  - Merge pull request #268 from ewenchou/issue259
+  - Fix URLs in Monument-in-action.md
+  - Merge pull request #249 from ansble/Clásica-de-San-Sebastián
+
 ### - 2.4.0 * 9/26/2016, 1:37:07 PM *
   - 2.4.0-2
   - Merge pull request #257 from ansble/feature/update-readme-docs
