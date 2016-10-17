@@ -14,14 +14,17 @@ const statusCodes = require('http').STATUS_CODES
                 return true;
             }
 
-            return Object.keys(statusCodes).some((k) => {
-                if (statusCodes[k].toLowerCase() === status.toLowerCase()) {
-                    that.statusCode = parseInt(k, 10);
-                    that.statusMessage = statusCodes[k];
-                    return true;
-                }
-                return false;
-            });
+            if (typeof status === 'string') {
+                return Object.keys(statusCodes).some((k) => {
+                    if (statusCodes[k].toLowerCase() === status.toLowerCase()) {
+                        that.statusCode = parseInt(k, 10);
+                        that.statusMessage = statusCodes[k];
+                        return true;
+                    }
+                    return false;
+                });
+            }
+            return false;
         };
     };
 
