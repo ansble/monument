@@ -42,7 +42,7 @@
     "content-security-policy-builder": "~1.1.0",
     "dot": "~1.0.3",
     "etag": "~1.7.0",
-    "glob": "~7.0.0",
+    "glob": "~7.1.1",
     "harken": "~1.0.4",
     "iltorb": "^1.0.12",
     "lodash.clonedeep": "~4.5.0",
