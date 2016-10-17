@@ -5,7 +5,26 @@ const assert = require('chai').assert
   , setup = require('./setup')
   , events = require('harken')
   , fs = require('fs')
-  , path = require('path');
+  , path = require('path')
+  , dot = require('dot');
+
+describe('compile Tests', () => {
+
+    it('should allow to change dot template settings', (done) => {
+        const config = {
+            dotjs: {
+                append: false
+            }
+        };
+
+        setup.templates(config);
+        assert.strictEqual(dot.templateSettings.append, false);
+        config.dotjs.append = true; // reset default
+        setup.templates(config);
+        assert.strictEqual(dot.templateSettings.append, true);
+        done();
+    });
+});
 
 describe('setup Tests', () => {
 
