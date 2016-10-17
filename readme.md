@@ -41,7 +41,7 @@ It is also the easiest way to add routes and fata handlers!
 
 When you create your server it takes a config object that allows you to pass in some options for your particular environment. It looks like this and these are the default values:
 
-```
+```js
 {
     port: 3000 // the port for the server to run on
     , compress: true // turns on or off compression (deflate/gzip/br)
@@ -94,7 +94,7 @@ When you create your server it takes a config object that allows you to pass in 
 
 All the values are optional. It is used like this to create a server (heroku example of port):
 
-```
+```js
 var monument = require('monument');
 
 monument.server({
@@ -109,17 +109,17 @@ monument.server({
 
 In addition to the server `monument` exposes the following:
 
-```
+```js
 monument.uuid
 ```
 a v4 UUID generator which return a UUID when called with no paramters
 
-```
+```js
 monument.events
 ```
 The event emitter/subscriber api for your app
 
-```
+```js
 monument.parser
 ```
 The body parser for dealing with forms
@@ -276,7 +276,7 @@ Enough of the warnings! How do you configure it? The config object above explain
 
 If you specify a report URI it should be ready to recieve a POST from browsers in the form (described here)[https://tools.ietf.org/html/rfc7469#section-3]. The object you should expect looks like this (sourced from previous link):
 
-```
+```js
 {
     "date-time": date-time,
     "hostname": hostname,
@@ -313,7 +313,7 @@ One of the things that I heard from several users was the lack of response.send 
 
 At some point you are going to need to deal with body data from a form or ajax request. This is one of the areas where monument diverges from the mainstream you may be used to in server side js. We expose a parser function that you use like this in the event handler for the route you want:
 
-```
+```js
 var parser = require('monument').parser;
 
 events.on('route:/join:post', function (connection) {
@@ -330,7 +330,7 @@ events.on('route:/join:post', function (connection) {
 The `monument.parser` function returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});`
 
 #### Example object
-```
+```js
 {
     "file1": {
         "tempFile": "/tmp/some/file.jpg"
@@ -348,10 +348,10 @@ The `monument.parser` function returns `null` if an error occurs during parsing.
 #### Required Events (State Machine)
 We pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for.
 
-```
-  emitter.required(['event-1', 'event-2', 'event-3'], function (dataArray) {
+```js
+emitter.required(['event-1', 'event-2', 'event-3'], function (dataArray) {
     //do something here when all three events have triggered
-  });
+});
 ```
 
 More to come... but think about the idea of resource pooling and individual data modules that front DSLs.
