@@ -52,7 +52,7 @@ module.exports = (routesJson, config) => {
             , res = resIn;
 
         // add .setStatus to response
-        res.setStatus = setStatus();
+        res.setStatus = setStatus;
 
         // add .send to the response
         res.send = send(req, config);
