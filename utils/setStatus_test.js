@@ -31,8 +31,9 @@ describe('setStatus function of response object', () => {
     it('should be defined as a function', () => {
         assert.isFunction(fakeRes.setStatus);
     });
-    it('should return a boolean', () => {
-        assert.isBoolean(fakeRes.setStatus());
+    it('should return a the response object', () => {
+        assert.isObject(fakeRes.setStatus());
+        assert.strictEqual(fakeRes.setStatus(), fakeRes);
     });
 
     it('should set data by a string that is an http status message', () => {
@@ -55,24 +56,24 @@ describe('setStatus function of response object', () => {
 
 
 
-    it('should return true if values are set by status message string', () => {
-        assert.strictEqual(fakeRes.setStatus('Not Found'), true);
+    it('should return the response object if values are set by status message string', () => {
+        assert.strictEqual(fakeRes.setStatus('Not Found'), fakeRes);
     });
-    it('should return true if values are set by status message code', () => {
-        assert.strictEqual(fakeRes.setStatus(404), true);
+    it('should return response object if values are set by status message code', () => {
+        assert.strictEqual(fakeRes.setStatus(404), fakeRes);
     });
-    it('should return false if values are set by status message string', () => {
-        assert.strictEqual(fakeRes.setStatus('Testing Not Found'), false);
+    it('should return resonse Object if values are set by status message string', () => {
+        assert.strictEqual(fakeRes.setStatus('Testing Not Found'), fakeRes);
     });
-    it('should return false if values are set by status message code', () => {
-        assert.strictEqual(fakeRes.setStatus(4040), false);
+    it('should return response object if values are set by status message code', () => {
+        assert.strictEqual(fakeRes.setStatus(4040), fakeRes);
     });
 
-    it('should return true for string "Bad Request"', () => {
-        assert.strictEqual(fakeRes.setStatus('Bad Request'), true);
+    it('should return response object for string "Bad Request"', () => {
+        assert.strictEqual(fakeRes.setStatus('Bad Request'), fakeRes);
     });
-    it('should return true for status code 400', () => {
-        assert.strictEqual(fakeRes.setStatus(400), true);
+    it('should return response object for status code 400', () => {
+        assert.strictEqual(fakeRes.setStatus(400), fakeRes);
     });
     it('should set data for string "Bad Request"', () => {
         fakeRes.setStatus('Bad Request');
@@ -83,11 +84,11 @@ describe('setStatus function of response object', () => {
         assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled400));
     });
 
-    it('should return true for string "Internal Server Error"', () => {
-        assert.strictEqual(fakeRes.setStatus('Internal Server Error'), true);
+    it('should return resonse object for string "Internal Server Error"', () => {
+        assert.strictEqual(fakeRes.setStatus('Internal Server Error'), fakeRes);
     });
-    it('should return true for status code 500', () => {
-        assert.strictEqual(fakeRes.setStatus(500), true);
+    it('should return resonse object for status code 500', () => {
+        assert.strictEqual(fakeRes.setStatus(500), fakeRes);
     });
     it('should set data for string "Internal Server Error"', () => {
         fakeRes.setStatus('Internal Server Error');
