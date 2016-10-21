@@ -3,125 +3,420 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>monument: a high performance, high security, node application server</title>
+    <title>monumentjs by ansble</title>
 
-    <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
   <body>
+    <div class="wrapper">
       <header>
-        <h1>monument</h1>
-        <p>A fast, light secure event driven node server.</p>
+        <h1>monumentjs</h1>
+        <p>super simple event based routing for nodejs. The high cohesion, low coupling framework.</p>
 
         <p class="view"><a href="https://github.com/ansble/monument">View the Project on GitHub <small>ansble/monument</small></a></p>
 
 
-        <ul class="button-links">
-          <li class="button-links__item"><a href="https://github.com/ansble/monument/zipball/master" class="button-links__item__link">Download <strong>ZIP File</strong></a></li>
-          <li class="button-links__item"><a href="https://github.com/ansble/monument/tarball/master" class="button-links__item__link">Download <strong>TAR Ball</strong></a></li>
-          <li class="button-links__item"><a href="https://github.com/ansble/monument" class="button-links__item__link">View On <strong>GitHub</strong></a></li>
+        <ul>
+          <li><a href="https://github.com/ansble/monument/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ansble/monument/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ansble/monument">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
       <section>
-        <p>Monument doesn't just facilitate dealing with events; it fully embraces an event driven programming model. It does everything through events. Everything.</p>
+        <h1>
+<a id="monument" class="anchor" href="#monument" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>monument</h1>
 
-        <p>Data is passed through events, routes are handled through events, and things are logged through events.</p>
+<p><code>monument</code> is a super light event routed nodejs framework.</p>
 
-        <h2>Use it</h2>
-        <p>
-          <h4>Use NPM!</h4>
-          <code>npm install --save monument</code>
-        </p>
-        <p>
-          <h4>Use the CLI tools!</h4>
-          <code>npm install -g monument-cli</code>
-          <p>Then you can do <code>monument new &lt;path to project&gt;</code> to lay down new projects and a bunch more. Check out the <a href="https://github.com/ansble/monument-cli">docs over here</a></p>
-        </p>
+<h2>
+<a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table of Contents</h2>
 
-        <h2>
-        <a id="some-features" class="anchor" href="#some-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some features:</h2>
-
-        <ul>
-          <li>resource pooling - This is not connection pooling, this is resource pooling, where a thousand pages asking for the same data from the database at the same time result in one request to the database instead of a thousand. Or ten thousand. If a request comes in requesting the same data before the database responds it simple waits until the data comes back from the DB like whoever initiated the call to the DB to begin with.</li>
-          <li>isomorphic routing - The routing is completely event based, this means that a route document (JSON) can be shared between the server side code and the front end code, allowing true isomorphic routing. Handlers can be shared as well... but since they likely are a little different in their needs that might not be as common as we would like.</li>
-        </ul>
-      </section>
-<section>
-  <h2>Building your first application</h2>
-  <p>This is a quick walk through of building a simple application with monument that will get you from nothing to up and running. So here we go!</p>
-  <h3>Install the CLI tools</h3>
-  <p>The CLI tools are designed to automate many of the redundant tasks in the workflow for building a monument application. So you're going to want to grab them right up front. <code>npm install -g monument-cli</code>.</p>
-  <h3>Create your project base</h3>
-  <p>First create a folder for your project, then navigate a terminal (cmd) into it. A quick <code>monument new &lt;path to project&gt;</code> will generate a basic project with stubbed tests, basic error handlers, and an index route, everything you need to knock out an application fast.</p>
-  <a href="https://camo.githubusercontent.com/a5cf95e1150d2760ec8760ac8ef9812f0f562e2e/687474703a2f2f672e7265636f726469742e636f2f457762544f37784467792e676966" target="_blank"><img src="https://camo.githubusercontent.com/a5cf95e1150d2760ec8760ac8ef9812f0f562e2e/687474703a2f2f672e7265636f726469742e636f2f457762544f37784467792e676966" alt="getting started with monument gif" data-canonical-src="http://g.recordit.co/EwbTO7xDgy.gif" style="max-width:100%;"></a>
-  <p>Watch the slightly longer <a href="http://recordit.co/EwbTO7xDgy">video version here.</a><br><br>It is also the easiest way to add routes and data handlers!</p>
-  <p>Your project should now look like this:</p>
-  <pre><code>    project/
-        routes/
-            main.js
-        templates/
-            main.jst
-        .bowerrc
-        .editorconfig
-        .jshintrc
-        README.md
-        app.js
-        bower.json
-        package.json
-        routes.json
-</code></pre>
-<h3>Create your routes</h3>
-<p>Creating routes is a pain generally. Thanks to the decoupled way that monument applications are created we can take all the pain out of it.</p>
-<p>The routes.json file contains all the allowed routes and their verbs inside it. (It is also served up from /routes on your server so the front end can consume it easily) The base routes.json looks like this when you open it:</p>
-<pre><code>
-  {
-    "/": ["get"]
-  }
-</code></pre>
-<p>Adding routes is simple. We'll look at two examples, an about page and a profile page. The about page will only eer be accessed with a GET verb so adding it consists of adding <code>"/about": ["get"]</code> to our obejct. The profile page is going to be a little more complicated, so here are the changes and then we'll discuss them.</p>
-<pre><code>
-  {
-    "/": ["get"]
-    , "/about": ["get"]
-    , "/profile": ["get", "post"]
-    , "/profile/:id": ["get", "put", "delete"]
-  }
-</code></pre>
-<p>The first <code>/profile</code> accepts both <code>get</code> and <code>post</code> so that you can open a blank profile and then post a new profile to be added to the collection. The <code>/profile/:id</code> is a wildcard route. Anything that lands in the <code>:id</code> slot will be added to the request <code>params</code> as a variable named <code>id</code>. This should feel fairly familiar, hopefully. That URL is then allowed to have <code>put</code> for updates, <code>get</code> for viewing, and <code>delete</code> for removal.</p>
-<p>The last step in adding route is to use the CLI to stub out the handlers for each route. A quick <code>yo monument-cli:routes</code> lays down stubs for any route/verb combination that has not yet been created in the <code>/routes</code> folder. It creates a file for each toplevel route and adds the sub route handlers to it.</p>
-<p>This process can also be used to stub out new route handlers instead of writing them by hand throughout project development</p>
-<h3>Write your first route handler</h3>
-<p>Once you have laid down your route stubs they will all basically look like this:</p>
-<pre><code>
-  events.on('route:/profile:get', function (connection) {
-    connection.res.send('route /profile now responding to get requests');
-    // If those more familiar with using ".end()" when finishing
-    // eventhandlers it is also available as an alternative,
-    // like this:
-    // connection.res.end('route /profile now responding to get requests');
-  });
-</code></pre>
-<h4>The route event</h4>
-<p>Route events are structured like this: <code>route:PATH:VERB</code> and are triggered by the routing code. All you have to do is respond to them. The function that handles the route recieves a connection object that has 5 properties:</p>
 <ul>
-  <li><b>req</b>:</li>
-  <li><b>res</b>: The Request and Response, making it easy to access request variables and respond correctly to the request</li>
-  <li><b>query</b>: An object containing query params</li>
-  <li><b>body</b>: An object containing the body of the request</li>
-  <li><b>params</b>: An object containing the URL parameters</li>
+<li><a href="#how-to-get-started">How to Get Started</a></li>
+<li><a href="#config-object-and-the-server">Config Object and the Server</a></li>
+<li><a href="#data-and-events">Data and Events</a></li>
+<li><a href="#security-configuration">Security Configuration</a></li>
+<li><a href="#template-language">Template Language</a></li>
+<li><a href="docs/routes.md">Route Documentation</a></li>
+<li><a href="docs/testing.md">Testing Documentation</a></li>
+<li><a href="docs/websockets.md">Using Web Sockets with monument</a></li>
+<li><a href="docs/http2-server.md">HTTP2 and SPDY with monument</a></li>
+<li><a href="contributing.md">Contributing</a></li>
+<li><a href="docs/Monument-in-action.md">Sites Using Monument</a></li>
 </ul>
-<h4>An important thought...</h4>
-<p>You can do anything you need to within the function passed to <code>events.on</code> but you should avoid adding permenant event listeners. Pretty much any event listening that needs to happen inside of the handler should be <code>events.once</code>. This is because each instance of that handler corresponds to a single request and once you are done with that request all the events need to be unbound or they will eventually eat up your memory footprint.</p>
-<p>So either manually unbind them or use the built in <code>events.once</code> as it will unbind itself after the first time it triggers.</p>
-</section>
+
+<h2>
+<a id="how-to-get-started" class="anchor" href="#how-to-get-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to Get Started</h2>
+
+<p>The easiest way to get started with monument is to use the CLI tool which does project lay down. <code>npm install -g monument-cli</code> From there a simple <code>monument new &lt;path to project&gt;</code> will get you up and running with stubbed tests, basic error handlers and an index route and everything you need to knock out an application fast.</p>
+
+<p><img src="http://g.recordit.co/EwbTO7xDgy.gif" alt="getting started with monument gif"> or the <a href="http://recordit.co/EwbTO7xDgy">slightly longer video version</a></p>
+
+<p>It is also the easiest way to add routes and fata handlers!</p>
+
+<h2>
+<a id="config-object-and-the-server" class="anchor" href="#config-object-and-the-server" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Config Object and the Server</h2>
+
+<p>When you create your server it takes a config object that allows you to pass in some options for your particular environment. It looks like this and these are the default values:</p>
+
+<div class="highlight highlight-source-js"><pre>{
+    port<span class="pl-k">:</span> <span class="pl-c1">3000</span> <span class="pl-c">// the port for the server to run on</span>
+    , compress<span class="pl-k">:</span> <span class="pl-c1">true</span> <span class="pl-c">// turns on or off compression (deflate/gzip/br)</span>
+    , routePath<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>./routes<span class="pl-pds">'</span></span> <span class="pl-c">// the folder your routes live in</span>
+    , templatePath<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>./templates<span class="pl-pds">'</span></span> <span class="pl-c">// the folder where your templates live</span>
+    , dotjs<span class="pl-k">:</span> {
+        <span class="pl-c">//dotjs defaults</span>
+        <span class="pl-c">// see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.</span>
+    }
+    , publicPath<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>./public<span class="pl-pds">'</span></span> <span class="pl-c">// the folder where your static files live</span>
+    , maxAge<span class="pl-k">:</span> <span class="pl-c1">31536000</span> <span class="pl-c">// time to cache static files client side in milliseconds</span>
+    , etags<span class="pl-k">:</span> <span class="pl-c1">true</span> <span class="pl-c">// turns on or off etag generation and headers</span>
+    , webSockets<span class="pl-k">:</span> <span class="pl-c1">false</span> <span class="pl-c">// default setting disables websockets. can be (false, true, 'passthrough', 'data')</span>
+
+    <span class="pl-c">//the security object is brand new in this release</span>
+    , security<span class="pl-k">:</span> {
+        xssProtection<span class="pl-k">:</span> <span class="pl-c1">true</span> <span class="pl-c">//default, can be set to false to disable</span>
+        , poweredBy<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>bacon<span class="pl-pds">'</span></span> <span class="pl-c">//the default is blank can be any string</span>
+        , noSniff<span class="pl-k">:</span> <span class="pl-c1">true</span> <span class="pl-c">//default, can be set to false to disable</span>
+        , frameguard<span class="pl-k">:</span> {
+            action<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>SAMEORIGIN<span class="pl-pds">'</span></span> <span class="pl-c">//the default allows iframes from same domain</span>
+            , domain<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span> <span class="pl-c">//defaults to not used. Only used for 'ALLOW-ORIGIN' </span>
+        }
+        , hsts<span class="pl-k">:</span> {
+            maxAge<span class="pl-k">:</span> <span class="pl-c1">86400</span> <span class="pl-c">// defaults to 1 day in seconds. All times in seconds</span>
+            , includeSubDomains<span class="pl-k">:</span> <span class="pl-c1">true</span> <span class="pl-c">// optional. Defaults to true</span>
+            , preload<span class="pl-k">:</span> <span class="pl-c1">true</span> <span class="pl-c">// optional. Defaults to true</span>
+        }
+        , noCache<span class="pl-k">:</span> <span class="pl-c1">false</span> <span class="pl-c">// defaults to off. This is the nuclear option for caching</span>
+        , publicKeyPin<span class="pl-k">:</span> { <span class="pl-c">// default is off. This one is complicated read below...</span>
+            sha256s<span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">'</span>keynumberone<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>keynumbertwo<span class="pl-pds">'</span></span>] <span class="pl-c">// an array of SHA-256 public key pins see below for how to obtain</span>
+            , maxAge<span class="pl-k">:</span> <span class="pl-c1">100</span> <span class="pl-c">// time in seconds for the pin to be in effect</span>
+            , includeSubdomains<span class="pl-k">:</span> <span class="pl-c1">false</span> <span class="pl-c">// whether or not to pin for sub domains as well defaults to false</span>
+            , reportUri<span class="pl-k">:</span> <span class="pl-c1">false</span> <span class="pl-c">// whether or not to report problems to a URL more details below. Defaults to false</span>
+            , reportOnly<span class="pl-k">:</span> <span class="pl-c1">false</span> <span class="pl-c">// if a reportURI is passed and this is set to true it reports and terminates connection</span>
+        }
+        , contentSecurity<span class="pl-k">:</span> {
+            defaultSrc<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">`</span>'self'<span class="pl-pds">`</span></span> <span class="pl-c">// optional. This is the default setting and is very strict</span>
+        }
+    }
+
+    , server<span class="pl-k">:</span> spdy <span class="pl-c">//an http API compliant server module. See below for more info [optional]</span>
+    , serverOptions<span class="pl-k">:</span> { <span class="pl-c">// The options object to be passed to the createServer function [optional]</span>
+        key<span class="pl-k">:</span> <span class="pl-smi">fs</span>.<span class="pl-en">readFileSync</span>(<span class="pl-s"><span class="pl-pds">'</span>./server.key<span class="pl-pds">'</span></span>)
+        , cert<span class="pl-k">:</span> <span class="pl-smi">fs</span>.<span class="pl-en">readFileSync</span>(<span class="pl-s"><span class="pl-pds">'</span>./server.crt<span class="pl-pds">'</span></span>)
+        , ca<span class="pl-k">:</span> <span class="pl-smi">fs</span>.<span class="pl-en">readFileSync</span>(.<span class="pl-k">/</span><span class="pl-smi">ca</span>.<span class="pl-smi">pem</span>)
+    }
+}</pre></div>
+
+<p>All the values are optional. It is used like this to create a server (heroku example of port):</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> monument <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>monument<span class="pl-pds">'</span></span>);
+
+<span class="pl-smi">monument</span>.<span class="pl-en">server</span>({
+        routePath<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>./routes<span class="pl-pds">'</span></span>
+        , templatePath<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>./templates<span class="pl-pds">'</span></span>
+        , publicPath<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>./public<span class="pl-pds">'</span></span>
+        , port<span class="pl-k">:</span> <span class="pl-c1">process</span>.<span class="pl-smi">env</span>.<span class="pl-c1">PORT</span> <span class="pl-k">||</span> <span class="pl-c1">3000</span>
+      });</pre></div>
+
+<h3>
+<a id="monuments-api" class="anchor" href="#monuments-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>monument</code>'s API</h3>
+
+<p>In addition to the server <code>monument</code> exposes the following:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">monument</span>.<span class="pl-smi">uuid</span></pre></div>
+
+<p>a v4 UUID generator which return a UUID when called with no paramters</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">monument</span>.<span class="pl-smi">events</span></pre></div>
+
+<p>The event emitter/subscriber api for your app</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">monument</span>.<span class="pl-smi">parser</span></pre></div>
+
+<p>The body parser for dealing with forms</p>
+
+<h4>
+<a id="route-api" class="anchor" href="#route-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Route API</h4>
+
+<h5>
+<a id="adding-new-route-with-cli" class="anchor" href="#adding-new-route-with-cli" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding new route with CLI:</h5>
+
+<pre><code>npm install -g monument-cli
+</code></pre>
+
+<p>CLI tool used to create new project.</p>
+
+<p>The file routes.json will look like this in a brand new project:</p>
+
+<pre><code>{
+  "/": ["get"]
+}
+</code></pre>
+
+<h4>
+<a id="creating-new-routes-in-the-routesjson-file" class="anchor" href="#creating-new-routes-in-the-routesjson-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating new routes in the routes.json file</h4>
+
+<p>The file routes.json will by default located in root of the file, but it's location is changeable.</p>
+
+<p>Routes are defined as key value pairs where the key is the route and the value is an array of verbs that you want the route to respond to. For example a restful API for pro cycling teams might look like this:</p>
+
+<pre><code>{
+    "/api/v1/team": [ "get", "post" ],
+    "/api/v1/team/:teamid": [ "get", "put", "delete" ],
+    "/api/v1/team/:teamid/rider": [ "get", "post" ],
+    "/api/v1/team/:teamid/rider/:riderid": [ "get", "put", "delete" ]
+}
+</code></pre>
+
+<p>The structure of a route event is: 'route:/path/to/resource:http-verb'. The route events recieve an object right now, often called connection, that looks like this:</p>
+
+<pre><code>{
+  res: response,
+  req: request,
+  params: the url parameters as an object,
+  query: the queryparams as an object
+}
+</code></pre>
+
+<h4>
+<a id="adding-new-routes" class="anchor" href="#adding-new-routes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding new routes</h4>
+
+<pre><code>routeStore.add('/this/is/a/test', 'get');
+</code></pre>
+
+<p>A simple route...</p>
+
+<pre><code>routeStore.add('/rangers/:name', [ 'get', 'post', 'put', 'delete' ]);
+</code></pre>
+
+<p>A wildcard route...</p>
+
+<h4>
+<a id="remove-routes" class="anchor" href="#remove-routes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Remove routes</h4>
+
+<pre><code>routeStore.remove('/this/is/a/test');
+</code></pre>
+
+<p>Remove all of a standard route</p>
+
+<pre><code>routeStore.remove('/hobbits/:name');
+</code></pre>
+
+<p>Remove all of a wild card route</p>
+
+<pre><code>routeStore.remove('/hobbits/:name', 'get');
+</code></pre>
+
+<p>Remove a single verb from a wild card route</p>
+
+<pre><code>routeStore.remove('/hobbits/:name', [ 'post', 'delete' ]);
+</code></pre>
+
+<p>Remove multiple verbs from a wild card route</p>
+
+<h4>
+<a id="parse" class="anchor" href="#parse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parse</h4>
+
+<pre><code>routeStore.parse({'/this/is/a/route': ['get']})
+</code></pre>
+
+<h4>
+<a id="get-the-route-objects" class="anchor" href="#get-the-route-objects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get the route objects</h4>
+
+<pre><code>routeStore.get()
+</code></pre>
+
+<p>Returns {wildcard: {}, standard: {}} with the standard and wildcard route objects populated</p>
+
+<pre><code>routeStore.getWildcard()
+</code></pre>
+
+<p>Returns an object containing the wild card routes and their meta information</p>
+
+<pre><code>routeStore.getStandard()
+</code></pre>
+
+<p>Returns an object containing the standard routes and their meta information</p>
+
+<p>For more details, Have a look on /docs/routes.md file</p>
+
+<h3>
+<a id="etags" class="anchor" href="#etags" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Etags</h3>
+
+<p>Hash based etags are now available by default. You can turn them off by adding <code>'etags': false</code> to your config object (passed into <code>monument.server</code>).</p>
+
+<p>They are generated and used for all static files, and all responses that use <code>res.send</code>. One of the cooler things we did was have monumen cache the etags for static assets. That means they get created the first time they are requested after the server starts up, and for all subsequent requests the etag is pulled from an in memory cache so that the file i/o is only done if there is a reason to stream the file to the client. Makes them fast and light!</p>
+
+<h3>
+<a id="security-configuration" class="anchor" href="#security-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Security Configuration</h3>
+
+<p>Ths server config opbject provides a security object inside it for you to specify what security options you would like to turn on at the server level. They are detailed in the example object above but below is more information on each of the options.</p>
+
+<p>We have done our best to place an out-of-the-box monument server in a secure posture. For instance we autmatically enable HTTP Strict Transport Security headers, No Sniff headers, XSS Protection Headers (where it is secure to do so), Same origin Framegaurd headers, and a strict Content Security Poicy. All without you having to specify anything. We also shut down the powered by header out of the box because we care more about intruders getting information about your server then on seeing who is using monument.</p>
+
+<p>The one thing we don't do is handle Public Key Pinning without configuration. But you can easily add that if you want!  Most of the settings in security turn headers on and off, and documentation around those headers can be found on <a href="https://www.owasp.org/index.php/List_of_useful_HTTP_headers">OWASP</a> and in <a href="https://www.npmjs.com/package/helmet">helmet and its source code</a>. Much of the code here is inspired by and adapted from helmet.</p>
+
+<h4>
+<a id="powered-by" class="anchor" href="#powered-by" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Powered By</h4>
+
+<p>You can set this value to whatever you want it to look like your server is powered by. By default it is off and the server does not return the <code>X-Powered-By</code> header. This is more secure then specifying it so we receommend you leave this alone, but since you are an adult you are free to set a value here. Any string passed here will become the value of the <code>X-Powered-By</code> header.</p>
+
+<h4>
+<a id="xss-protection" class="anchor" href="#xss-protection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>XSS Protection</h4>
+
+<p>If set to false this turns off the X-XSS-Protection header for all browsers. This header is disabled in IE &lt; 9 because it opens up vulnerabilities. In everything else it is enabled by default.</p>
+
+<h4>
+<a id="no-sniff" class="anchor" href="#no-sniff" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>No Sniff</h4>
+
+<p>If set to false this turns off the X-Content-Type-Options header for all browsers. This header prevents browsers from trying to infer mime type when a file with a mime type is downloaded. This helps prevent download related vulnerabilities and the misinterpretation of file types.</p>
+
+<h4>
+<a id="frameguard" class="anchor" href="#frameguard" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Frameguard</h4>
+
+<p>Guard is a weird looking word. 
+Not that we have that out of the way frameguard allows you to specify under what conditions your application may be wrapped in an <code>iframe</code>. Setting <code>action: 'DENY'</code> means that your site may never be wrapped in an <code>iframe</code>. The default is 'SAMEORIGIN' which allows wrapping of your site by essentially your app. The last allowed setting, <code>action: 'ALLOW-ORIGIN'</code>, requires that you pass a <code>domain</code> value as well. It allows the specified domain to wrap your application in an iframe. All the calculations for <code>SAMEORIGIN</code> and <code>ALLOW-ORIGIN</code> follow the CORS rules for determining origin. So <code>www.designfrontier.net</code> and <code>designfrontier.net</code> are different origins.</p>
+
+<h4>
+<a id="hsts-http-strict-transport-security" class="anchor" href="#hsts-http-strict-transport-security" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>HSTS (HTTP Strict Transport Security)</h4>
+
+<p>This tells browsers to require HTTPS security if the connection started out as an HTTPS connection. It does not force the connection to switch, it just requires all subsequent requests by the page to use HTTPS if the page was requested with HTTPS. To disable it set <code>config.security.hsts</code> to <code>false</code>. It is set with a <code>maxAge</code> much like caching. The <code>maxAge</code> is set in seconds (not ms) and must be a positive number. </p>
+
+<p>The two optional settings: <code>includeSubDomains</code> and <code>preload</code> are turned on by default. <code>includeSubDomains</code> requires any request to a subdmain of the current domain to be HTTPS as well. <code>preload</code> is a Google Chrome specific extension that allows you to submit your site for baked-into-the-browser HSTS. With it set you can submit your site to <a href="https://hstspreload.appspot.com/">this page</a>. Both of these can be individually turned off by setting them to false in the config object.</p>
+
+<p>For more information the spec is <a href="http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04">available</a>.</p>
+
+<h4>
+<a id="no-cache" class="anchor" href="#no-cache" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>No Cache</h4>
+
+<p>Before using this think long and hard about it. It shuts down all client side caching for the server. All of it. As best as it can be shut down. You can set it to an object <code>{noEtag: true}</code> if you want to remove etags as well. If you merely set it to true then all no cache headers will be set but the ETag header will not be removed.</p>
+
+<p>There is now also a <code>res.noCache</code> function that allows you to do the same thing but on a per request/route/user (however you program it) basis. This is a much better option then setting noCache server wide.</p>
+
+<h4>
+<a id="public-key-pin" class="anchor" href="#public-key-pin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Public Key Pin</h4>
+
+<p>This one is a bit of a beast. Before setting it and using it please read: <a href="https://tools.ietf.org/html/rfc7469">the spec</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Public_Key_Pinning">this mdn article</a> and <a href="https://timtaubert.de/blog/2014/10/http-public-key-pinning-explained/">this tutorial</a>. It's a great security feature to help prevent man in the middle attacks, but it is also complex.</p>
+
+<p>Enough of the warnings! How do you configure it? The config object above explains it pretty well. Some details about <code>includeSubdomains</code>: it pins all sub domains of your site if it is set to true. Turned off by setting it to false.</p>
+
+<p><code>reportUri</code> takes a URL and changes the header so that the browser can corretly handle the reporting of mismatches between pins and your certificate keys. If this is set without <code>reportOnly</code> being set to false then it only reports it does not also terminate the connection. Setting <code>reportOnly</code> to false means that the connection will be terminated if it does not match the pins as well as reporting.</p>
+
+<p>If you specify a report URI it should be ready to recieve a POST from browsers in the form (described here)[<a href="https://tools.ietf.org/html/rfc7469#section-3">https://tools.ietf.org/html/rfc7469#section-3</a>]. The object you should expect looks like this (sourced from previous link):</p>
+
+<div class="highlight highlight-source-js"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>date-time<span class="pl-pds">"</span></span><span class="pl-k">:</span> date<span class="pl-k">-</span>time,
+    <span class="pl-s"><span class="pl-pds">"</span>hostname<span class="pl-pds">"</span></span><span class="pl-k">:</span> hostname,
+    <span class="pl-s"><span class="pl-pds">"</span>port<span class="pl-pds">"</span></span><span class="pl-k">:</span> port,
+    <span class="pl-s"><span class="pl-pds">"</span>effective-expiration-date<span class="pl-pds">"</span></span><span class="pl-k">:</span> expiration<span class="pl-k">-</span>date,
+    <span class="pl-s"><span class="pl-pds">"</span>include-subdomains<span class="pl-pds">"</span></span><span class="pl-k">:</span> include<span class="pl-k">-</span>subdomains,
+    <span class="pl-s"><span class="pl-pds">"</span>noted-hostname<span class="pl-pds">"</span></span><span class="pl-k">:</span> noted<span class="pl-k">-</span>hostname,
+    <span class="pl-s"><span class="pl-pds">"</span>served-certificate-chain<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+        pem1, <span class="pl-k">...</span> pemN
+    ],
+    <span class="pl-s"><span class="pl-pds">"</span>validated-certificate-chain<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+        pem1, <span class="pl-k">...</span> pemN
+    ],
+    <span class="pl-s"><span class="pl-pds">"</span>known-pins<span class="pl-pds">"</span></span><span class="pl-k">:</span> [
+        known<span class="pl-k">-</span>pin1, <span class="pl-k">...</span> known<span class="pl-k">-</span>pinN
+    ]
+}</pre></div>
+
+<h4>
+<a id="content-security-policy" class="anchor" href="#content-security-policy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Content Security Policy</h4>
+
+<p>This is the Content Security Policy configuration. Content Security Policies are amazing and if you aren't familiar with them you should <a href="https://developer.mozilla.org/en-US/docs/Web/Security/CSP">go read up on them</a>. Firefox pioneered them a long time ago and they have become a powerful standard for protecting your end users.</p>
+
+<p>Because of the extensive options available in configuring your CSP we recommend that you go take a look at <a href="https://developer.mozilla.org/en-US/docs/Web/Security/CSP/CSP_policy_directives">the MDN article on directives</a>. All of the options they spell out are supported. The directives need to be passed in camelCase though (<code>defaultSrc</code> not <code>default-src</code>).</p>
+
+<p>The default is a very strict <code>default-src 'self'</code> which prevents any files from outside the current domain from being loaded and/or executed. You will probably want to ease that off a hair. </p>
+
+<p>In the event that you don't want a Content Security Policy (why!? WHY!? Trust us you want one) you can disable it by setting <code>config.security.contentSecurity</code> to false in the config section of your server. This is not a good idea.</p>
+
+<h3>
+<a id="send" class="anchor" href="#send" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>.send()</code>
+</h3>
+
+<p>One of the things that I heard from several users was the lack of response.send was confusing for them. So we added it! It also allows etags and automatically handles strings or objects correctly. Basically it is a nice layer of sugar around res.end and res.setHeaders that correctly handles mimetype and serializing the data if needed.</p>
+
+<h3>
+<a id="put-post-update-and-parsing-out-body" class="anchor" href="#put-post-update-and-parsing-out-body" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PUT, POST, UPDATE and Parsing Out Body</h3>
+
+<p>At some point you are going to need to deal with body data from a form or ajax request. This is one of the areas where monument diverges from the mainstream you may be used to in server side js. We expose a parser function that you use like this in the event handler for the route you want:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> parser <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>monument<span class="pl-pds">'</span></span>).<span class="pl-smi">parser</span>;
+
+<span class="pl-smi">events</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>route:/join:post<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">connection</span>) {
+  <span class="pl-c">//parse out the request body</span>
+  <span class="pl-en">parser</span>(connection, <span class="pl-k">function</span> (<span class="pl-smi">err</span>, <span class="pl-smi">body</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err, body);
+    <span class="pl-smi">connection</span>.<span class="pl-smi">res</span>.<span class="pl-en">end</span>(<span class="pl-s"><span class="pl-pds">'</span>route /join now responding to post requests<span class="pl-pds">'</span></span>);
+  });
+});</pre></div>
+
+<p><code>body</code> is the parsed body of the request and is passed into the callback function.</p>
+
+<p>The <code>monument.parser</code> function returns <code>null</code> if an error occurs during parsing. If you would like to see the error you can subscribe to the <code>error:parse</code> event which recieves the contents of the error or grab the optional second param <code>err</code> which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a <code>connection.req.end</code>. One way to achieve this would be by <code>events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});</code></p>
+
+<h4>
+<a id="example-object" class="anchor" href="#example-object" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example object</h4>
+
+<div class="highlight highlight-source-js"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>file1<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">"</span>tempFile<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>/tmp/some/file.jpg<span class="pl-pds">"</span></span>
+        , <span class="pl-s"><span class="pl-pds">"</span>mimetype<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>image/jpg<span class="pl-pds">"</span></span>
+        , <span class="pl-s"><span class="pl-pds">"</span>file<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c">//this is the file stream</span>
+        , <span class="pl-s"><span class="pl-pds">"</span>encoding<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>
+    }
+    , <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Daniel<span class="pl-pds">"</span></span>
+    , <span class="pl-s"><span class="pl-pds">"</span>check<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>true<span class="pl-pds">"</span></span>
+}</pre></div>
+
+<h3>
+<a id="data-and-events" class="anchor" href="#data-and-events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Data and Events</h3>
+
+<h4>
+<a id="required-events-state-machine" class="anchor" href="#required-events-state-machine" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Required Events (State Machine)</h4>
+
+<p>We pulled in <a href="http://github.com/ansble/event-state">event-state</a> to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to <code>Promise.all</code> and it takes an array of events to listen for.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">emitter</span>.<span class="pl-en">required</span>([<span class="pl-s"><span class="pl-pds">'</span>event-1<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>event-2<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>event-3<span class="pl-pds">'</span></span>], <span class="pl-k">function</span> (<span class="pl-smi">dataArray</span>) {
+    <span class="pl-c">//do something here when all three events have triggered</span>
+});</pre></div>
+
+<p>More to come... but think about the idea of resource pooling and individual data modules that front DSLs.</p>
+
+<h3>
+<a id="web-socket-connections" class="anchor" href="#web-socket-connections" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Web Socket Connections</h3>
+
+<p>moument has a built in websocket server! So when you spin up a server you can connect either through normal <code>http</code> or through a web socket connection. Under the hoods it uses <a href="https://www.npmjs.com/package/ws">ws</a> which provides a light weight, performant, and standards compliant web socket server.</p>
+
+<p>For more information check out <a href="docs/websockets.md">Using Web Sockets with monument</a>.</p>
+
+<h3>
+<a id="static-assetts" class="anchor" href="#static-assetts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Static Assetts</h3>
+
+<p>Static assetts live in <code>/public</code> and can be organized in whatever way you see fit. All folders within public become routes on root. So, <code>/public/compnents</code> answers to requests on <code>/components</code> when the server is running. These static routes take precedent over evented routes and essentially prevent non-static route handling from happening on them.</p>
+
+<p>You can interact with these routes through events to a certain degree. They raise a <code>static:served</code> with a payload of the file url that was served, when the file exists. If the file does not exist they raise a <code>static:missing</code> with the file url as payload. This will let you log and handle these conditions as needed.</p>
+
+<h2>
+<a id="template-language" class="anchor" href="#template-language" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Template Language</h2>
+
+<p>The templates right now default to <a href="http://olado.github.io/doT/index.html">dot</a> it's documentation is pretty good... though there is definitely room for improvement there. It is still the best place to learn about templating at the moment though.</p>
+      </section>
       <footer>
-        <p>This project is maintained by <a href="https://github.com/ansble">ansble llc</a></p>
-        <p><small>Hosted on GitHub Pages &mdash;</small></p>
+        <p>This project is maintained by <a href="https://github.com/ansble">ansble</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
   </body>
 </html>
