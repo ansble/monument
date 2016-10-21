@@ -1,3 +1,25 @@
+### - 2.5.0 * 10/21/2016, 7:20:00 AM *
+  - Adds documentation for routes and other things
+  - Merge pull request #287 from ansble/feature/update-deps-for-2.5.0-release
+  - Updates dev dependencies
+  - 2.5.0-alpha.2
+  - Merge pull request #286 from ansble/feature/chainable-setStatus
+  - Changes the return value for the setStatus function
+  - 2.6.0-alpha.1
+  - 2.6.0-0
+  - 2.5.1-0
+  - 2.5.0
+  - Merge pull request #284 from ansble/andmckvr13-issue#260
+  - Merge pull request #283 from ansble/xRahul-res-setStatus
+  - Changes as per review and addition of Tests
+  - Added tests for setStatus function of response object
+  - Merge branch 'master' into res-setStatus
+  - upated to lastest glob version
+  - Merge pull request #281 from ansble/Clásica-de-San-Sebastián
+  - Changed function to reflect project coding style
+  - Changed setStatus function and added it to res object
+  - created Utility function setStatus
+
 ### - 2.4.1 * 10/17/2016, 6:48:00 AM *
   - Merge pull request #280 from ansble/paul-shibanov-expand-test-coverage-in-the-utils/setup.js
   - Merge pull request #279 from ansble/paul-shibanov-fix-contributing-issues-404
