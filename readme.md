@@ -26,6 +26,7 @@
 - [Testing Documentation](docs/testing.md)
 - [Using Web Sockets with monument](docs/websockets.md)
 - [HTTP2 and SPDY with monument](docs/http2-server.md)
+- [Writing Route Handlers](docs/writing-route-handlers.md)
 - [Contributing](contributing.md)
 - [Sites Using Monument](docs/Monument-in-action.md)
 
@@ -305,9 +306,6 @@ Because of the extensive options available in configuring your CSP we recommend 
 The default is a very strict `default-src 'self'` which prevents any files from outside the current domain from being loaded and/or executed. You will probably want to ease that off a hair. 
 
 In the event that you don't want a Content Security Policy (why!? WHY!? Trust us you want one) you can disable it by setting `config.security.contentSecurity` to false in the config section of your server. This is not a good idea.
-
-### `.send()`
-One of the things that I heard from several users was the lack of response.send was confusing for them. So we added it! It also allows etags and automatically handles strings or objects correctly. Basically it is a nice layer of sugar around res.end and res.setHeaders that correctly handles mimetype and serializing the data if needed.
 
 ### PUT, POST, UPDATE and Parsing Out Body
 
