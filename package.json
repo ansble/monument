@@ -1,6 +1,6 @@
 {
   "name": "monument",
-  "version": "2.4.1",
+  "version": "2.5.1",
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
@@ -42,7 +42,7 @@
     "content-security-policy-builder": "~1.1.0",
     "dot": "~1.0.3",
     "etag": "~1.7.0",
-    "glob": "~7.0.0",
+    "glob": "~7.1.1",
     "harken": "~1.0.4",
     "iltorb": "^1.0.12",
     "lodash.clonedeep": "~4.5.0",
@@ -58,12 +58,12 @@
     "chai": "~3.5.0",
     "chalk": "~1.1.1",
     "coveralls": "~2.11.11",
-    "eslint": "~3.3.1",
-    "form-data": "~1.0.0-rc3",
+    "eslint": "~3.8.1",
+    "form-data": "~2.1.1",
     "http2": "~3.3.2",
     "istanbul": "~0.4.4",
     "minimist": "~1.2.0",
-    "mocha": "~3.0.2",
+    "mocha": "~3.1.2",
     "spdy": "~3.4.0",
     "v8-profiler": "~5.6.0"
   },

@@ -1,5 +1,16 @@
 # Change Log
 
+## v2.5.0
+Another successful minor release!
+
+### connection.res.setStatus
+There is now a chainable convenience function for setting the status and statusMessage headers. It uses the HTTP_STATUS object that is part of node's core http to make sure the messages and codes are aligned. For more information on using it check out the [writing route handlers](docs/writing-route-handlers.md) docment!
+
+### Updates dependencies
+Brings us up to date with the latest versions of all the dev and non-dev dependencies.
+
+This is a much smaller minor release then 2.4.0 was but we couldn't add the setStatus API in a patch :-)
+
 ## v2.4.1
 This is a minor patch with test expansion and documentation updates. Nothing risky or terrifying.
 
