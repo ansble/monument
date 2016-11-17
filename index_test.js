@@ -52,7 +52,9 @@ describe('The main monument tests', () => {
             const server = app.server({
                 routeJSONPath: './test_stubs/routes_stub.json'
                 , routePath: './test_stubs'
-                , templatePath: './test_stubs/templates'
+                , templating: {
+                    path: './test_stubs/templates'
+                }
                 , port: 9999
             });
 
@@ -66,7 +68,9 @@ describe('The main monument tests', () => {
         it('should return a server when run and no port passed in', (done) => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
-                , templatePath: './test_stubs/templates'
+                , templating: {
+                    path: './test_stubs/templates'
+                }
                 , routePath: './test_stubs'
             });
 
@@ -80,7 +84,9 @@ describe('The main monument tests', () => {
         it('should return a server when run and compress passed in', (done) => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
-                , templatePath: './test_stubs/templates'
+                , templating: {
+                    path: './test_stubs/templates'
+                }
                 , compress: false
                 , routePath: './test_stubs'
             });
@@ -96,7 +102,9 @@ describe('The main monument tests', () => {
         it('should return an http2 server when http2 and correct params are passed in', (done) => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
-                , templatePath: './test_stubs/templates'
+                , templating: {
+                    path: './test_stubs/templates'
+                }
                 , routePath: './test_stubs'
                 , compress: false
                 , server: http2
@@ -117,7 +125,9 @@ describe('The main monument tests', () => {
         it('should return an spdy server when spdy and correct params are passed in', (done) => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
-                , templatePath: './test_stubs/templates'
+                , templating: {
+                    path: './test_stubs/templates'
+                }
                 , routePath: './test_stubs'
                 , compress: false
                 , server: spdy

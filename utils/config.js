@@ -12,11 +12,17 @@ const path = require('path')
         , routePath: path.join(process.cwd(), './routes.json')
         , routeJSONPath: path.join(process.cwd(), './routes.json')
         , publicPath: path.join(process.cwd(), './public')
-        , templatePath: path.join(process.cwd(), './templates')
 
         , webSockets: false
         , compress: true
         , etags: true
+
+        , templating: {
+            path: path.join(process.cwd(), './templates')
+            , engine: require('dot')
+            , options: {}
+            , preCompile: true
+        }
 
         , security: {
             xssProtection: true
@@ -51,12 +57,13 @@ const path = require('path')
             'routeJSONPath'
             , 'routePath'
             , 'publicPath'
-            , 'templatePath'
+            , 'path'
         ];
 
         if (typeof key === 'object') {
             Object.keys(key).forEach((item) => {
                 if (pathKeyNames.indexOf(item) >= 0) {
+                    // TODO: may need to modify for templating object
                     configStore[item] = path.join(process.cwd(), key[item]);
                 } else {
                     configStore[item] = key[item];
