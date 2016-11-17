@@ -12,11 +12,17 @@ const path = require('path')
         , routePath: path.join(process.cwd(), './routes.json')
         , routeJSONPath: path.join(process.cwd(), './routes.json')
         , publicPath: path.join(process.cwd(), './public')
-        , templatePath: path.join(process.cwd(), './templates')
 
         , webSockets: false
         , compress: true
         , etags: true
+
+        , templating: {
+            path: path.join(process.cwd(), './templates')
+            , engine: require('dot')
+            , options: {}
+            , preCompile: true
+        }
 
         , security: {
             xssProtection: true
@@ -48,20 +54,31 @@ const path = require('path')
 
     , setConfig = (key, value) => {
         const pathKeyNames = [
-            'routeJSONPath'
-            , 'routePath'
-            , 'publicPath'
-            , 'templatePath'
-        ];
+                'routeJSONPath'
+                , 'routePath'
+                , 'publicPath'
+                , 'path'
+            ]
+        , mergeObject = (obj, mergeInto) => {
+            Object.keys(obj).forEach((item) => {
+                if (typeof obj[item] === 'object' && !Array.isArray(obj[item])) {
+                    if (typeof mergeInto[item] === 'undefined') {
+                        mergeInto[item] = {};
+                    }
 
-        if (typeof key === 'object') {
-            Object.keys(key).forEach((item) => {
-                if (pathKeyNames.indexOf(item) >= 0) {
-                    configStore[item] = path.join(process.cwd(), key[item]);
+                    mergeObject(obj[item], mergeInto[item]);
                 } else {
-                    configStore[item] = key[item];
+                    if (pathKeyNames.indexOf(item) >= 0) {
+                        mergeInto[item] = path.join(process.cwd(), obj[item]);
+                    } else {
+                        mergeInto[item] = obj[item];
+                    }
                 }
             });
+        };
+
+        if (typeof key === 'object') {
+            mergeObject(key, configStore);
         } else if (typeof key === 'string') {
             configStore[key] = value;
         }

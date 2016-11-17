@@ -31,7 +31,12 @@ describe('config Tests', () => {
         assert.strictEqual(configObj.publicPath, path.join(process.cwd(), './public'));
         assert.strictEqual(configObj.compress, true);
         assert.strictEqual(configObj.webSockets, false);
-        assert.strictEqual(configObj.templatePath, path.join(process.cwd(), './templates'));
+
+        assert.strictEqual(configObj.templating.path, path.join(process.cwd(), './templates'));
+        assert.deepEqual(Object.keys(configObj.templating.engine), Object.keys(require('dot')));
+        assert.strictEqual(configObj.templating.preCompile, true);
+        assert.strictEqual(JSON.stringify(configObj.templating.options), JSON.stringify({}));
+
         assert.strictEqual(configObj.maxAge, 31536000);
         assert.strictEqual(configObj.etags, true);
         assert.isObject(configObj.security);
