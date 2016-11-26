@@ -35,7 +35,6 @@ const glob = require('glob')
 
     , compileTemplates = (config) => {
         // configure dotjs
-
         if (config.templating.options) {
             Object.keys(config.templating.options).forEach((opt) => {
                 config.templating.engine.templateSettings[opt] = config.templating.options[opt];

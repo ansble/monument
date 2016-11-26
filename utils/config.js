@@ -59,6 +59,7 @@ const path = require('path')
                 , 'publicPath'
                 , 'path'
             ]
+
         , mergeObject = (obj, mergeInto) => {
             Object.keys(obj).forEach((item) => {
                 if (typeof obj[item] === 'object' && !Array.isArray(obj[item])) {
