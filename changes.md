@@ -1,5 +1,69 @@
 # Change Log
 
+## v3.0.0
+
+### `templating` object
+
+The templatePath variable has been removed and replaced by the templating object. This will facilitate
+making it possible to do serverside rendering in a variety of templating engines and not just dotjs.
+The new base config looks like:
+
+```
+{
+    port: 3000 // the port for the server to run on
+    , compress: true // turns on or off compression for static files (deflate/gzip)
+    , routePath: './routes' // the folder your routes live in
+    , templating: {
+        path: './templates' // the folder where your templates live
+        , options: {
+            //dotjs defaults
+            // see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
+        }
+        , engine: //doTjs by default
+        , preComile: true // tells monument to precompile the templates before startup
+    }
+    , publicPath: './public' // the folder where your static files live
+    , maxAge: 31536000 // time to cache static files client side in milliseconds
+    , etags: true // turns on or off etag generation and headers
+    , security: {
+        xssProtection: true //default, can be set to false to disable
+        , poweredBy: 'bacon' //the default is blank can be any string
+        , noSniff: true //default, can be set to false to disable
+        , frameguard: {
+            action: 'SAMEORIGIN' //the default allows iframes from same domain
+            , domain: '' //defaults to not used. Only used for 'ALLOW-ORIGIN' 
+        }
+        , hsts: {
+            maxAge: 86400 // defaults to 1 day in seconds. All times in seconds
+            , includeSubDomains: true // optional. Defaults to true
+            , preload: true // optional. Defaults to true
+        }
+        , noCache: false // defaults to off. This is the nuclear option for caching
+        , publicKeyPin: { // default is off. This one is complicated read below...
+            sha256s: ['keynumberone', 'keynumbertwo'] // an array of SHA-256 public key pins see below for how to obtain
+            , maxAge: 100 // time in seconds for the pin to be in effect
+            , includeSubdomains: false // whether or not to pin for sub domains as well defaults to false
+            , reportUri: false // whether or not to report problems to a URL more details below. Defaults to false
+            , reportOnly: false // if a reportURI is passed and this is set to true it reports and terminates connection
+        }
+        , contentSecurity: {
+            defaultSrc: `'self'` // optional. This is the default setting and is very strict
+        }
+    }
+    
+    // Web Sockets is new for this release!
+    , webSockets: false // default setting disables websockets. can be (false, true, 'passthrough', 'data')
+
+    // Server and ServerOptions are new for this release!
+    , server: spdy
+    , serverOptions: { // anything set in this object will be passed to the server
+        key: fs.readFileSync('./server.key')
+        , cert: fs.readFileSync('./server.crt')
+        , ca: fs.readFileSync(./ca.pem)
+    }
+}
+```
+
 ## v2.5.0
 Another successful minor release!
 
