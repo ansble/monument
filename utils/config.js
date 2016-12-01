@@ -62,7 +62,7 @@ const path = require('path')
 
         , mergeObject = (obj, mergeInto) => {
             Object.keys(obj).forEach((item) => {
-                if (item !== 'server' && typeof obj[item] === 'object' && !Array.isArray(obj[item])) {
+                if (item !== 'server' && item !== 'engine' && typeof obj[item] === 'object' && !Array.isArray(obj[item])) {
                     if (typeof mergeInto[item] === 'undefined') {
                         mergeInto[item] = {};
                     }

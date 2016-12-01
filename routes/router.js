@@ -44,6 +44,7 @@ module.exports = (routesJson, config) => {
                 , res: resIn
                 , query: pathParsed.query
                 , params: {}
+                , render: config.templating.engine
             }
             , compression = getCompression(req.headers['accept-encoding'], config);
 
