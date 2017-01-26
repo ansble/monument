@@ -15,8 +15,7 @@ const events = require('harken')
 
     , wrapper = (configIn) => {
         const configObj = config.set(configIn)
-            , routes = require(configObj.routeJSONPath)
-            , statsd = require('./utils/statsd');
+            , routes = require(configObj.routeJSONPath);
 
         let server;
 
