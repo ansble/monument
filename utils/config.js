@@ -32,6 +32,7 @@ const path = require('path')
         }
 
         , server: http
+        , statsd: {}
     }
 
     , getConfig = (key) => {

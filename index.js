@@ -15,13 +15,14 @@ const events = require('harken')
 
     , wrapper = (configIn) => {
         const configObj = config.set(configIn)
-            , routes = require(configObj.routeJSONPath);
+            , routes = require(configObj.routeJSONPath)
+            , statsd = require('./utils/statsd');
 
         let server;
 
         // take care of any setup tasks before starting the server
         events.once('setup:complete', () => {
-            server = require('./routes/index.js').server(configObj.server, routes, configObj);
+            server = require('./routes/index').server(configObj.server, routes, configObj);
             server.listen(configObj.port);
 
             if (configIn.webSockets !== false) {
