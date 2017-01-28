@@ -51,6 +51,7 @@ module.exports = (routesJson, config) => {
             }
             , compression = getCompression(req.headers['accept-encoding'], config)
             , statsdStartTime = new Date().getTime()
+
             , cleanupStatsd = () => {
                 // one time exception to make cleanup work
                 /* eslint-disable no-use-before-define */
@@ -59,16 +60,29 @@ module.exports = (routesJson, config) => {
                 resIn.removeListener('error', cleanupStatsd);
                 resIn.removeListener('close', cleanupStatsd);
             }
+
             , sendStatsd = () => {
                 const duration = new Date().getTime() - statsdStartTime
                     , statusCode = resIn.statusCode || 'unknown_status'
-                    , key = [ 'http', method.toLowerCase(), pathname ].join('.');
+                    , key = [
+                        'http'
+                        , method.toLowerCase()
+                        , pathname.replace(/[.]/g, '_')
+                    ].join('.');
 
                 // Status Code
-                statsdClient.increment(`${key}status_code.${statusCode}`);
+                statsdClient.send(`${key}.status_code.${statusCode}`, 1, 'c', 1, [], (err) => {
+                    if (err) {
+                        console.error(`[statsd] request count send error: ${err}`);
+                    }
+                });
 
                 // Response Time
-                statsdClient.timing(`${key}response_time`, duration);
+                statsdClient.timing(`${key}.response_time`, duration, (err) => {
+                    if (err) {
+                        console.error(`[statsd] timing send error: ${err}`);
+                    }
+                });
 
                 cleanupStatsd();
             };

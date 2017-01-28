@@ -32,7 +32,9 @@ const path = require('path')
         }
 
         , server: http
-        , statsd: {}
+        , statsd: {
+            cacheDns: true
+        }
     }
 
     , getConfig = (key) => {
@@ -59,6 +61,10 @@ const path = require('path')
             Object.keys(key).forEach((item) => {
                 if (pathKeyNames.indexOf(item) >= 0) {
                     configStore[item] = path.join(process.cwd(), key[item]);
+                } else if (typeof key[item] === 'object') {
+                    Object.keys(key[item]).forEach((child) => {
+                        configStore[item][child] = key[item][child];
+                    });
                 } else {
                     configStore[item] = key[item];
                 }
