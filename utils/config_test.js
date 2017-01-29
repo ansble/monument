@@ -82,5 +82,7 @@ describe('config Tests', () => {
             assert.isObject(test);
             assert.strictEqual(test.port, 1211);
         });
+
+        it('should merge defaults in objects');
     });
 });

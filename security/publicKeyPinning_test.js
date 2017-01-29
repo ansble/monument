@@ -78,7 +78,8 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
     });
 
     it('should return a header if correct config + includeSubdomains passed in', () => {
-        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; includeSubdomains';
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo";'
+                        + ' max-age=100; includeSubdomains';
 
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
@@ -106,7 +107,8 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
     });
 
     it('should return a header if correct config + reportUri passed in', () => {
-        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; report-uri="http://ansble.com"';
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo";'
+                        + ' max-age=100; report-uri="http://ansble.com"';
 
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
@@ -121,7 +123,8 @@ describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', ()
     });
 
     it('should return a header if correct config + reportUri and reportOnly is passed in', () => {
-        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100; report-uri="http://ansble.com"';
+        const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; '
+                        + 'max-age=100; report-uri="http://ansble.com"';
 
         config.security.publicKeyPin = {
             sha256s: [ 'keynumberone', 'keynumbertwo' ]
