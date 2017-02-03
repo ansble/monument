@@ -90,7 +90,8 @@ describe('frameguard', () => {
                 };
             }
             , refError = 'X-Frame must be undefined, "DENY", "ALLOW-FROM", or "SAMEORIGIN"'
-            , optionError = 'X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter'
+            , optionError = 'X-Frame: ALLOW-FROM requires an option in' +
+                            ' config.security.frameguard parameter'
 
             , badNumericalInput = 123
             , badArrayOfURLs = [ 'http://website.com', 'http//otherwebsite.com' ]

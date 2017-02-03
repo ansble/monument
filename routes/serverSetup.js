@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path')
     , fs = require('fs')
+    , routeErrorText = 'This doesn\'t appear to be a directory full of route handlers'
 
     , isRouteFile = (fileName) => {
         return !fileName.match(/((index)|([._]test)).js$/) && fileName.match(/\.js$/);
@@ -24,7 +25,7 @@ const path = require('path')
             });
         } catch (err) {
             console.log(err, routePathIn);
-            throw new Error('This doesn\'t appear to be a directory full of route handlers');
+            throw new Error(routeErrorText);
         }
 
 

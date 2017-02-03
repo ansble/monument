@@ -322,14 +322,15 @@ describe('content security policy', () => {
     });
 
     it('appends connect-src \'self\' in iOS Chrome when connect-src is already defined', () => {
-        const iosChrome = AGENTS['iOS Chrome 40'];
+        const iosChrome = AGENTS['iOS Chrome 40']
+            , iosChromeRegex = /connect-src (?:'self' connect.com)|(?:connect.com 'self')/;
 
         config.security.contentSecurity = POLICY;
         req.headers['user-agent'] = iosChrome.string;
 
         csp(config, req, res);
 
-        assert.match(res.headers[iosChrome.header], /connect-src (?:'self' connect.com)|(?:connect.com 'self')/);
+        assert.match(res.headers[iosChrome.header], iosChromeRegex);
     });
 
     it('adds connect-src \'self\' in iOS Chrome when connect-src is undefined', () => {
@@ -383,17 +384,21 @@ describe('content security policy', () => {
     });
 
     it('should not blow up if a string is passed instead of an array of options', () => {
-        const ff = AGENTS['Firefox 22'];
+        const ff = AGENTS['Firefox 22']
+            , contentSecurityRegex = /style-src 'self' cdn-images.mailchimp.com/;
 
         config.security.contentSecurity = {
             defaultSrc: "'self'" // optional. This is the default setting and is very strict
             , styleSrc: "'self' cdn-images.mailchimp.com 'unsafe-inline'"
-            , imgSrc: "'self' maps.googleapis.com images.vivintcdn.com www.masteryconnect.com smartrhinolabs.com cdn.hacknightslc.com cdn.sqhk.co *.cloudfront.net www.google-analytics.com data:"
-            , scriptSrc: "'self' 'sha256-ZmBLMRsmRpaF/hQbWKT9xhd6Ql2Wf2a1WXhO2tdH6Xg=' www.google-analytics.com"
+            , imgSrc: "'self' maps.googleapis.com images.vivintcdn.com www.masteryconnect.com"
+                        + ' smartrhinolabs.com cdn.hacknightslc.com cdn.sqhk.co *.cloudfront.net'
+                        + ' www.google-analytics.com data:'
+            , scriptSrc: "'self' 'sha256-ZmBLMRsmRpaF/hQbWKT9xhd6Ql2Wf2a1WXhO2tdH6Xg='"
+                        + ' www.google-analytics.com'
         };
 
         req.headers['user-agent'] = ff.string;
         csp(config, req, res);
-        assert.match(res.headers['X-Content-Security-Policy'], /style-src 'self' cdn-images.mailchimp.com/);
+        assert.match(res.headers['X-Content-Security-Policy'], contentSecurityRegex);
     });
 });
