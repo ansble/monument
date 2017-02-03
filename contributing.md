@@ -11,5 +11,13 @@ When we do the next release your name will be added to the AUTHORS file... you k
 
 If you have questions pop into our [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/ansble/monument) and ask!
 
+### Getting things setup
+Generally a simple npm install in the repo will get you 80-90% of the way there. But there are a couple other things you will need to do to make testing and contributing a little bit easier. If you are planning on working with statsd or any of the other parts of `monument` that have external dependencies for testing then you will want to make sure you have:
+
+- docker (we use docker for mac)
+- dory (if you are on a mac, alternatly dinghy covers this on *nix)
+
+With those in place 
+
 ### Contributor List
 [Can be found here](AUTHORS)
