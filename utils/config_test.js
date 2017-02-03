@@ -83,6 +83,33 @@ describe('config Tests', () => {
             assert.strictEqual(test.port, 1211);
         });
 
-        it('should merge defaults in objects');
+        it('should merge defaults in objects', () => {
+            config.set({
+                port: 1234
+                , routePath: '/etc/bin'
+                , statsd: {
+                    host: 'test'
+                    , port: '42'
+                }
+            });
+
+            assert.strictEqual(config.get('port'), 1234);
+            assert.strictEqual(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
+            assert.strictEqual(config.get('statsd').host, 'test');
+            assert.strictEqual(config.get('statsd').port, '42');
+            assert.strictEqual(config.get('statsd').cacheDns, true);
+        });
+
+        it('should not merge defaults in objects if value is not object', () => {
+            config.set({
+                port: 1234
+                , routePath: '/etc/bin'
+                , statsd: false
+            });
+
+            assert.strictEqual(config.get('port'), 1234);
+            assert.strictEqual(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
+            assert.strictEqual(config.get('statsd'), false);
+        });
     });
 });

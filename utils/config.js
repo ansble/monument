@@ -5,6 +5,11 @@ let configStore = {};
 const path = require('path')
     , http = require('http')
     , cloneDeep = require('lodash.clonedeep')
+    , statsdDefaults = {
+        cacheDns: true
+        , port: 8125
+        , host: 'localhost'
+    }
     , defaults = {
         port: 3000
         , maxAge: 31536000
@@ -32,9 +37,7 @@ const path = require('path')
         }
 
         , server: http
-        , statsd: {
-            cacheDns: true
-        }
+        , statsd: false
     }
 
     , getConfig = (key) => {
@@ -61,8 +64,20 @@ const path = require('path')
             Object.keys(key).forEach((item) => {
                 if (pathKeyNames.indexOf(item) >= 0) {
                     configStore[item] = path.join(process.cwd(), key[item]);
+                } else if (typeof key[item] === 'object' && item === 'statsd') {
+                    Object.keys(key.statsd).forEach((child) => {
+                        if (typeof configStore.statsd !== 'object') {
+                            configStore.statsd = statsdDefaults;
+                        }
+
+                        configStore.statsd[child] = key.statsd[child];
+                    });
                 } else if (typeof key[item] === 'object') {
                     Object.keys(key[item]).forEach((child) => {
+                        if (typeof configStore[item] !== 'object') {
+                            configStore[item] = {};
+                        }
+
                         configStore[item][child] = key[item][child];
                     });
                 } else {
