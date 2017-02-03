@@ -3,6 +3,8 @@
 
 const assert = require('chai').assert
     , mock = require('mock-require')
+
+    /* eslint-disable no-unused-vars */
     , statsdReq = mock('../utils/statsd', {
         store: {
             send: ''
@@ -27,6 +29,7 @@ const assert = require('chai').assert
             };
         }
     })
+    /* eslint-enable no-unused-vars */
 
     , statsd = require('../utils/statsd')
     , router = require('./router')
