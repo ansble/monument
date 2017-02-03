@@ -5,6 +5,11 @@ let configStore = {};
 const path = require('path')
     , http = require('http')
     , cloneDeep = require('lodash.clonedeep')
+    , statsdDefaults = {
+        cacheDns: true
+        , port: 8125
+        , host: 'localhost'
+    }
     , defaults = {
         port: 3000
         , maxAge: 31536000
@@ -38,6 +43,7 @@ const path = require('path')
         }
 
         , server: http
+        , statsd: false
     }
 
     , getConfig = (key) => {
@@ -60,14 +66,27 @@ const path = require('path')
                 , 'path'
             ]
 
-        , mergeObject = (obj, mergeInto) => {
-            Object.keys(obj).forEach((item) => {
-                if (item !== 'server' && typeof obj[item] === 'object' && !Array.isArray(obj[item])) {
-                    if (typeof mergeInto[item] === 'undefined') {
-                        mergeInto[item] = {};
-                    }
+        if (typeof key === 'object') {
+            Object.keys(key).forEach((item) => {
+                if (pathKeyNames.indexOf(item) >= 0) {
+                    configStore[item] = path.join(process.cwd(), key[item]);
+                } else if (typeof key[item] === 'object' && item === 'statsd') {
+                    Object.keys(key.statsd).forEach((child) => {
+                        if (typeof configStore.statsd !== 'object') {
+                            configStore.statsd = statsdDefaults;
+                        }
 
-                    mergeObject(obj[item], mergeInto[item]);
+                        configStore.statsd[child] = key.statsd[child];
+                    });
+                } else if (typeof key[item] === 'object') {
+                    Object.keys(key[item]).forEach((child) => {
+                        if (typeof configStore[item] !== 'object') {
+                            configStore[item] = {};
+                        }
+
+                        configStore[item][child] = key[item][child];
+                    });
+
                 } else {
                     if (pathKeyNames.indexOf(item) >= 0) {
                         mergeInto[item] = path.join(process.cwd(), obj[item]);

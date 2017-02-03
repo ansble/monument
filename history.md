@@ -1,4 +1,22 @@
-### - 2.5.0 * 10/21/2016, 7:20:00 AM *
+### - 2.6.0 * 2/3/2017, 10:10:08 AM *
+
+  
+
+
+ ### - 2.5.4 * 2/3/2017, 10:09:46 AM *
+
+   - Merge pull request #309 from ansble/feature/statsd-integration
+  - fixes lint error
+  - Adds config updates and defaults
+  - cleansup lint errors related to line length
+  - updates all dependencies and works on statsd
+  - removed an unused var
+  - fixes a bad copy pasta job that should have been in a comment
+  - Adds statsd integration for timing and tracking
+  - Merge pull request #305 from ansble/Vattenfall-2.5.x 
+
+
+ ### - 2.5.0 * 10/21/2016, 7:20:00 AM *
   - Adds documentation for routes and other things
   - Merge pull request #287 from ansble/feature/update-deps-for-2.5.0-release
   - Updates dev dependencies

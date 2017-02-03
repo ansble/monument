@@ -63,6 +63,17 @@ The new base config looks like:
     }
 }
 ```
+## v2.6.0
+Adds statsd support!
+
+### statsd
+There is now the option to pass in config for statsd to the config object. This will send timing info and stats for all route requests to the configured statsd server. Handy for all sorts of things and pretty much free for you work wise.
+
+The statsd client defaults to caching the DNS for the statsd server and to port 8125 so all you really need to do is pass in the host. You can also pass a prefix and suffix which will be passed along to `node-statsd` which is what we are using under the hood.
+
+If you have other statsd info/metrics that you would like to collect let us know or send us a pull request!
+
+Other then that there isn't really anything that has changed at all!
 
 ## v2.5.0
 Another successful minor release!
