@@ -1,4 +1,9 @@
-### - 2.5.4 * 2/3/2017, 10:09:46 AM *
+### - 2.6.0 * 2/3/2017, 10:10:08 AM *
+
+  
+
+
+ ### - 2.5.4 * 2/3/2017, 10:09:46 AM *
 
    - Merge pull request #309 from ansble/feature/statsd-integration
   - fixes lint error
