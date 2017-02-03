@@ -29,6 +29,15 @@ module.exports = {
             setupSteps.add(`setup:${key}`);
             setup[key](config);
         });
+
+        // Check for statsd and message it out
+        if (config.statsd) {
+            console.log(`
+Awesome you're statsd config is running!
+Connected to statsd at ${config.statsd.host}:${config.statsd.port}
+`);
+        }
+
         events.emit('setup:start');
     }
 };

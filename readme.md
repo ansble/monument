@@ -94,6 +94,14 @@ When you create your server it takes a config object that allows you to pass in 
         , cert: fs.readFileSync('./server.crt')
         , ca: fs.readFileSync(./ca.pem)
     }
+
+    // options for hooking into the statsd internal to monument
+    , statsd: {
+        host: 'server-address'
+        , port: 'port'
+        , prefix: 'string prefix'
+        , suffix: 'string suffix'
+    }
 }
 ```
 

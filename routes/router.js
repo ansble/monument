@@ -21,6 +21,8 @@ const path = require('path')
     , redirect = require('../utils').redirect
     , contains = require('../utils').contains
 
+    , statsd = require('../utils/statsd')
+
     , succesStatus = 200
     , unmodifiedStatus = 304;
 
@@ -28,7 +30,9 @@ module.exports = (routesJson, config) => {
     const publicPath = config.publicPath
         , maxAge = config.maxAge
         , routePath = config.routePath
-        , publicFolders = setupStaticRoutes(routePath, publicPath);
+        , publicFolders = setupStaticRoutes(routePath, publicPath)
+        , statsdClient = config.statsd === false ? false :
+                            statsd.create(config.statsd);
 
     routeStore.parse(routesJson);
 
@@ -45,11 +49,55 @@ module.exports = (routesJson, config) => {
                 , query: pathParsed.query
                 , params: {}
             }
-            , compression = getCompression(req.headers['accept-encoding'], config);
+            , compression = getCompression(req.headers['accept-encoding'], config)
+            , statsdStartTime = new Date().getTime()
+
+            , cleanupStatsd = () => {
+                // one time exception to make cleanup work
+                /* eslint-disable no-use-before-define */
+                resIn.removeListener('finish', sendStatsd);
+                /* eslint-enable no-use-before-define */
+                resIn.removeListener('error', cleanupStatsd);
+                resIn.removeListener('close', cleanupStatsd);
+            }
+
+            , sendStatsd = () => {
+                const duration = new Date().getTime() - statsdStartTime
+                    , statusCode = resIn.statusCode || 'unknown_status'
+                    , key = [
+                        'http'
+                        , method.toLowerCase()
+                        , pathname.replace(/[.]/g, '_')
+                    ].join('.');
+
+                // Status Code
+                statsdClient.send(`${key}.status_code.${statusCode}`, 1, 'c', 1, [], (err) => {
+                    if (err) {
+                        console.error(`[statsd] request count send error: ${err}`);
+                    }
+                });
+
+                // Response Time
+                statsdClient.timing(`${key}.response_time`, duration, (err) => {
+                    if (err) {
+                        console.error(`[statsd] timing send error: ${err}`);
+                    }
+                });
+
+                cleanupStatsd();
+            };
 
         let file
             , routeInfo
             , res = resIn;
+
+        // set up the statsd timing listeners
+        if (statsdClient) {
+            // Add response listeners
+            res.once('finish', sendStatsd);
+            res.once('error', cleanupStatsd);
+            res.once('close', cleanupStatsd);
+        }
 
         // add .setStatus to response
         res.setStatus = setStatus;
