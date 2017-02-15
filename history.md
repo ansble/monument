@@ -1,4 +1,10 @@
-### - 2.5.0 * 10/21/2016, 7:20:00 AM *
+### - 2.5.4 * 2/15/2017, 8:36:23 AM *
+
+   - Merge pull request #317 from ansble/security/upgrade-ws-2.5
+  - fixes vulnerable version of ws 
+
+
+ ### - 2.5.0 * 10/21/2016, 7:20:00 AM *
   - Adds documentation for routes and other things
   - Merge pull request #287 from ansble/feature/update-deps-for-2.5.0-release
   - Updates dev dependencies
