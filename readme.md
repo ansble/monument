@@ -47,15 +47,11 @@ When you create your server it takes a config object that allows you to pass in 
     port: 3000 // the port for the server to run on
     , compress: true // turns on or off compression (deflate/gzip/br)
     , routePath: './routes' // the folder your routes live in
-    , templating: {
-        path: './templates' // the folder where your templates live
-        , engine: //dotjs by default
-        , options: {
-            //dotjs defaults
-            // see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
-        }
-        , preCompile: true // whether the templates should be compiled before server start
-    } 
+    , templatePath: './templates' // the folder where your templates live
+    , dotjs: {
+        //dotjs defaults
+        // see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
+    }
     , publicPath: './public' // the folder where your static files live
     , maxAge: 31536000 // time to cache static files client side in milliseconds
     , etags: true // turns on or off etag generation and headers
@@ -112,9 +108,7 @@ var monument = require('monument');
 
 monument.server({
         routePath: './routes'
-        , templating: {
-            path: './templates'
-        }
+        , templatePath: './templates'
         , publicPath: './public'
         , port: process.env.PORT || 3000
       });
