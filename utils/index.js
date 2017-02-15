@@ -26,10 +26,8 @@ module.exports = {
           //  not functionally pure... has sideeffects in the file system
           //  sorry world
           Object.keys(setup).forEach((key) => {
-              if (typeof setup[key] === 'function'){
-                  setupSteps.add(`setup:${key}`);
-                  setup[key](config);
-              }
+              setupSteps.add(`setup:${key}`);
+              setup[key](config);
           });
 
           events.emit('setup:start');

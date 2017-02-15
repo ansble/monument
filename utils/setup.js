@@ -58,13 +58,13 @@ const glob = require('glob')
         events.emit('setup:templates');
     }
 
-  , etagSetup = () => {
-      // set up the etag listeners and emitters
-      require('./staticFileEtags');
+    , etagSetup = () => {
+        // set up the etag listeners and emitters
+        require('./staticFileEtags');
 
-      events.emit('setup:etags');
-      console.log('etags setup...');
-  };
+        events.emit('setup:etags');
+        console.log('etags setup...');
+    };
 
 module.exports = {
     compressed: deleteCompressed

@@ -2,12 +2,14 @@
 
 const http = require('http')
     , path = require('path')
-    , utils = require('./utils')
     , events = require('harken')
     , pkg = require('./package.json')
     , parser = require('./utils/parser')
     , webSockets = require('./web-sockets')
     , uuid = require('uuid')
+
+    , isDefined = require('./utils').isDefined
+    , setup = require('./utils').setup
 
     , defaultPort = 3000
 
@@ -20,20 +22,21 @@ const http = require('http')
             , routePath = configIn.routeJSONPath || './routes.json'
             , publicPath = configIn.publicPath || './public'
             , routes = require(path.join(process.cwd(), routePath))
-            , config = configIn;
+            , config = configIn
+            , httpServer = config.server || http;
 
         let server;
 
         config.routeJSONPath = routePath;
         config.publicPath = publicPath;
-        config.compress = utils.isDefined(config.compress) ? config.compreess : true;
+        config.compress = isDefined(config.compress) ? config.compreess : true;
 
         // take care of any setup tasks before starting the server
         events.once('setup:complete', () => {
-            server = require('./routes/index.js').server(http, routes, config);
+            server = require('./routes/index.js').server(httpServer, routes, config);
             server.listen(port);
 
-            if (utils.not(configIn.webSockets === false)) {
+            if (configIn.webSockets !== false) {
                 // enables websockets for data requests
                 webSockets(server, config.webSockets);
             }
@@ -42,7 +45,7 @@ const http = require('http')
         });
 
 
-        utils.setup(config);
+        setup(config);
 
         return server;
     };

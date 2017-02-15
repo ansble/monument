@@ -5,7 +5,12 @@ const assert = require('chai').assert
     , app = require('./index')
     , http = require('http')
     , servers = []
-    , events = require('harken');
+    , events = require('harken')
+
+    , http2 = require('http2')
+    , spdy = require('spdy')
+    , fs = require('fs')
+    , path = require('path');
 
 describe('The main monument tests', () => {
 
@@ -78,11 +83,47 @@ describe('The main monument tests', () => {
                 done();
             }, 50);
         });
-    });
 
-    describe('Compression Tests', () => {
-        it('should compress things by default');
-        it('should not compress things if compression is turned off');
+        it('should return an http2 server when http2 and correct params are passed in', (done) => {
+            const server = require('./index').server({
+                routeJSONPath: './test_stubs/routes_stub.json'
+                , templatePath: './test_stubs/templates'
+                , compress: false
+                , server: http2
+                , serverOptions: {
+                    cert: fs.readFileSync(path.join(__dirname, './test_stubs/certs/test.crt'))
+                    , key: fs.readFileSync(path.join(__dirname, './test_stubs/certs/tests.key'))
+                }
+            });
+
+            servers.push(server);
+
+            setTimeout(() => {
+                assert.instanceOf(server, http2.Server);
+                done();
+            }, 50);
+        });
+
+        it('should return an spdy server when spdy and correct params are passed in', (done) => {
+            const server = require('./index').server({
+                routeJSONPath: './test_stubs/routes_stub.json'
+                , templatePath: './test_stubs/templates'
+                , compress: false
+                , server: spdy
+                , serverOptions: {
+                    cert: fs.readFileSync(path.join(__dirname, './test_stubs/certs/test.crt'))
+                    , key: fs.readFileSync(path.join(__dirname, './test_stubs/certs/tests.key'))
+                    , ca: fs.readFileSync(path.join(__dirname, './test_stubs/certs/rootCA.key'))
+                }
+            });
+
+            servers.push(server);
+
+            setTimeout(() => {
+                assert.instanceOf(server, spdy.Server);
+                done();
+            }, 50);
+        });
     });
 
     describe('doTjs Tests', () => {
@@ -97,7 +138,9 @@ describe('The main monument tests', () => {
         });
 
         it('should return a uuid when called', () => {
-            assert.match(app.createUUID(), /[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i);
+            const regex = /[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
+
+            assert.match(app.createUUID(), regex);
         });
 
         it('should not return the same uuid when called multiple times', () => {
