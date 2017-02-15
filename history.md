@@ -1,4 +1,10 @@
-### - 2.4.1 * 10/17/2016, 6:48:00 AM *
+### - 2.4.2 * 2/15/2017, 8:29:48 AM *
+
+   - Merge pull request #316 from ansble/security-ws-cdss
+  - Fixes security vulnerability in ws 
+
+
+ ### - 2.4.1 * 10/17/2016, 6:48:00 AM *
   - Merge pull request #280 from ansble/paul-shibanov-expand-test-coverage-in-the-utils/setup.js
   - Merge pull request #279 from ansble/paul-shibanov-fix-contributing-issues-404
   - Merge pull request #278 from ansble/ming13-readme-formatting
