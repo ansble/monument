@@ -3,7 +3,6 @@
 const glob = require('glob')
     , fs = require('fs')
     , events = require('harken')
-    , dot = require('dot')
 
     , deleteCompressed = (config) => {
         // run through and delete all the compressed files in the file system
@@ -36,14 +35,16 @@ const glob = require('glob')
 
     , compileTemplates = (config) => {
         // configure dotjs
-        if (config.dotjs) {
-            Object.keys(config.dotjs).forEach((opt) => {
-                dot.templateSettings[opt] = config.dotjs[opt];
+        if (config.templating.options) {
+            Object.keys(config.templating.options).forEach((opt) => {
+                config.templating.engine.templateSettings[opt] = config.templating.options[opt];
             });
         }
 
-        // compile the templates
-        dot.process({ path: config.templatePath });
+        if (config.templating.preCompile) {
+            // compile the templates
+            config.templating.engine.process({ path: config.templating.path });
+        }
 
         events.emit('setup:templates');
     }
