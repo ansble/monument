@@ -41,7 +41,7 @@ cp.exec(gitLogCommand, (err, stdout) => {
                     cp.exec('npm publish', () => {
                         console.log('pushing to origin');
 
-                        cp.exec('git push origin master', Function.prototype);
+                        cp.exec('git push origin HEAD', Function.prototype);
                         cp.exec(`git push origin v${newVersion}`, (errPush) => {
                             if (errPush) {
                                 console.log(errPush);

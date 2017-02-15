@@ -1,4 +1,15 @@
-### - 2.6.0 * 2/3/2017, 10:10:08 AM *
+### - 2.6.1 * 2/15/2017, 8:38:12 AM *
+
+   - Merge pull request #318 from ansble/security/upgrade-ws-2.6.x
+  - fixes vulnerable version of ws lib
+  - Merge branch 'Coppa-Ugo-Agostoni_2.6.x' of https://github.com/ansble/monument into Coppa-Ugo-Agostoni_2.6.x
+  - more documentation
+  - Merge branch 'master' into Coppa-Ugo-Agostoni_2.6.x
+  - added a dropped author
+  - Merge pull request #310 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.0 * 2/3/2017, 10:10:08 AM *
 
   
 
