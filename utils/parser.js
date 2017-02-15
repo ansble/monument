@@ -7,7 +7,7 @@ const getRawBody = require('raw-body')
     , isDefined = require('./tools').isDefined
     , parseForm = require('./parseForm')
 
-    , parser = (connection, callback, scope) => {// parse out the body
+    , parser = (connection, callback, scope) => { // parse out the body
         const contentType = connection.req.headers['content-type'];
 
         let encoding = 'UTF-8';
