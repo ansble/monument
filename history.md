@@ -1,4 +1,11 @@
-### - 2.2.0 * 11/18/2015, 7:46:10 AM *
+### - 2.2.4 * 2/15/2017, 8:22:59 AM *
+
+   - Merge pull request #314 from ansble/security/upgrade-ws
+  - Merge branch 'la-fleche-wallone-2.2.x' into security/upgrade-ws
+  - Fixes a vulnerability in ws lib and a lint issue 
+
+
+ ### - 2.2.0 * 11/18/2015, 7:46:10 AM *
 
   - Merge pull request #176 from ansble/feature/docs
   - Closes #172 and gets documentation ready for the release of 2.2.0
