@@ -1,5 +1,7 @@
 # monument
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ansble/monument.svg)](https://greenkeeper.io/)
+
 `monument` is a super light event routed nodejs framework.
 
 [![NPM](https://nodei.co/npm/monument.png?downloadRank=true&stars=true)](https://nodei.co/npm/monument/)
