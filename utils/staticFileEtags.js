@@ -10,12 +10,12 @@ const etag = require('etag')
     , files = {}
 
     , addEtag = (fileIn) => {
-
         fs.readFile(fileIn, (err, data) => {
             if (err) {
                 events.emit('error', { message: 'could not read file', error: err, file: fileIn });
             } else {
                 files[fileIn] = etag(data);
+                console.log('ETAG: ', files[fileIn]);
                 events.emit(`etag:get:${fileIn}`, files[fileIn]);
             }
         });
@@ -28,7 +28,6 @@ const etag = require('etag')
     }
 
     , checkEtag = (etagObj) => {
-
         const etagged = isDefined(files[etagObj.file])
             , valid = isValid(etagObj, etagged);
 
