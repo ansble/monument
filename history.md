@@ -1,4 +1,27 @@
-### - 2.6.1 * 2/15/2017, 8:38:12 AM *
+### - 2.6.2 * 3/16/2017, 8:33:55 AM *
+
+   - Merge pull request #322 from ansble/greenkeeper/initial
+  - Fixes the format of the etag in the test
+  - docs(readme): add Greenkeeper badge
+  - chore(package): update dependencies
+  - Merge pull request #319 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Revert "Merge branch 'Strade-Bianchi-3.0.x' into Coppa-Ugo-Agostoni_2.6.x"
+  - Merge branch 'Strade-Bianchi-3.0.x' into Coppa-Ugo-Agostoni_2.6.x
+  - fixed bug in Authors
+  - Merge branch 'master' into Strade-Bianchi-3.0.x
+  - Merge pull request #311 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 3.0.0-alpha.1
+  - updates the package.json and resolves the conflict
+  - Merge pull request #301 from ansble/feature/swappable-template-engines-add-config-objects
+  - fixes the last broken test
+  - Merge branch 'feature/swappable-template-engines-add-config-objects' of https://github.com/ansble/monument into feature/swappable-template-engines-add-config-objects
+  - Starts the work of decoupling rendering
+  - Merge pull request #302 from ansble/update/dependencies-nov-2016
+  - Updates dpendencies to lates
+  - Starts the work of decoupling rendering 
+
+
+ ### - 2.6.1 * 2/15/2017, 8:38:12 AM *
 
    - Merge pull request #318 from ansble/security/upgrade-ws-2.6.x
   - fixes vulnerable version of ws lib
