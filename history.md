@@ -1,4 +1,12 @@
-### - 2.6.2 * 3/16/2017, 8:33:55 AM *
+### - 2.6.3 * 3/21/2017, 9:06:57 AM *
+
+   - Merge pull request #325 from ansble/greenkeeper/eslint-3.18.0
+  - chore(package): update eslint to version 3.18.0
+  - Merge pull request #323 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Update AUTHORS 
+
+
+ ### - 2.6.2 * 3/16/2017, 8:33:55 AM *
 
    - Merge pull request #322 from ansble/greenkeeper/initial
   - Fixes the format of the etag in the test
