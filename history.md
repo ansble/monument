@@ -1,4 +1,11 @@
-### - 2.6.3 * 3/21/2017, 9:06:57 AM *
+### - 2.6.4 * 3/23/2017, 5:22:01 PM *
+
+   - Merge pull request #327 from ansble/greenkeeper/v8-profiler-5.7.0
+  - chore(package): update v8-profiler to version 5.7.0
+  - Merge pull request #326 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.3 * 3/21/2017, 9:06:57 AM *
 
    - Merge pull request #325 from ansble/greenkeeper/eslint-3.18.0
   - chore(package): update eslint to version 3.18.0
