@@ -1,4 +1,11 @@
-### - 2.6.4 * 3/23/2017, 5:22:01 PM *
+### - 2.6.5 * 3/30/2017, 4:08:40 PM *
+
+   - Merge pull request #329 from ansble/greenkeeper/coveralls-2.13.0
+  - chore(package): update coveralls to version 2.13.0
+  - Merge pull request #328 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.4 * 3/23/2017, 5:22:01 PM *
 
    - Merge pull request #327 from ansble/greenkeeper/v8-profiler-5.7.0
   - chore(package): update v8-profiler to version 5.7.0
