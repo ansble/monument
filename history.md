@@ -1,4 +1,11 @@
-### - 2.6.5 * 3/30/2017, 4:08:40 PM *
+### - 2.6.6 * 4/3/2017, 12:51:30 PM *
+
+   - Merge pull request #331 from ansble/greenkeeper/eslint-3.19.0
+  - chore(package): update eslint to version 3.19.0
+  - Merge pull request #330 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.5 * 3/30/2017, 4:08:40 PM *
 
    - Merge pull request #329 from ansble/greenkeeper/coveralls-2.13.0
   - chore(package): update coveralls to version 2.13.0
