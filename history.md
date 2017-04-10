@@ -1,4 +1,11 @@
-### - 2.6.6 * 4/3/2017, 12:51:30 PM *
+### - 2.6.7 * 4/10/2017, 1:56:56 PM *
+
+   - Merge pull request #333 from ansble/greenkeeper/iltorb-1.1.0
+  - fix(package): update iltorb to version 1.1.0
+  - Merge pull request #332 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.6 * 4/3/2017, 12:51:30 PM *
 
    - Merge pull request #331 from ansble/greenkeeper/eslint-3.19.0
   - chore(package): update eslint to version 3.19.0
