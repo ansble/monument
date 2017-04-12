@@ -1,4 +1,11 @@
-### - 2.6.7 * 4/10/2017, 1:56:56 PM *
+### - 2.6.8 * 4/12/2017, 9:32:31 AM *
+
+   - Merge pull request #335 from ansble/greenkeeper/iltorb-1.2.0
+  - fix(package): update iltorb to version 1.2.0
+  - Merge pull request #334 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.7 * 4/10/2017, 1:56:56 PM *
 
    - Merge pull request #333 from ansble/greenkeeper/iltorb-1.1.0
   - fix(package): update iltorb to version 1.1.0
