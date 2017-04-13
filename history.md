@@ -1,4 +1,81 @@
-### - 2.6.0 * 2/3/2017, 10:10:08 AM *
+### - 2.6.8 * 4/12/2017, 9:32:31 AM *
+
+   - Merge pull request #335 from ansble/greenkeeper/iltorb-1.2.0
+  - fix(package): update iltorb to version 1.2.0
+  - Merge pull request #334 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.7 * 4/10/2017, 1:56:56 PM *
+
+   - Merge pull request #333 from ansble/greenkeeper/iltorb-1.1.0
+  - fix(package): update iltorb to version 1.1.0
+  - Merge pull request #332 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.6 * 4/3/2017, 12:51:30 PM *
+
+   - Merge pull request #331 from ansble/greenkeeper/eslint-3.19.0
+  - chore(package): update eslint to version 3.19.0
+  - Merge pull request #330 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.5 * 3/30/2017, 4:08:40 PM *
+
+   - Merge pull request #329 from ansble/greenkeeper/coveralls-2.13.0
+  - chore(package): update coveralls to version 2.13.0
+  - Merge pull request #328 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.4 * 3/23/2017, 5:22:01 PM *
+
+   - Merge pull request #327 from ansble/greenkeeper/v8-profiler-5.7.0
+  - chore(package): update v8-profiler to version 5.7.0
+  - Merge pull request #326 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.3 * 3/21/2017, 9:06:57 AM *
+
+   - Merge pull request #325 from ansble/greenkeeper/eslint-3.18.0
+  - chore(package): update eslint to version 3.18.0
+  - Merge pull request #323 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Update AUTHORS 
+
+
+ ### - 2.6.2 * 3/16/2017, 8:33:55 AM *
+
+   - Merge pull request #322 from ansble/greenkeeper/initial
+  - Fixes the format of the etag in the test
+  - docs(readme): add Greenkeeper badge
+  - chore(package): update dependencies
+  - Merge pull request #319 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Revert "Merge branch 'Strade-Bianchi-3.0.x' into Coppa-Ugo-Agostoni_2.6.x"
+  - Merge branch 'Strade-Bianchi-3.0.x' into Coppa-Ugo-Agostoni_2.6.x
+  - fixed bug in Authors
+  - Merge branch 'master' into Strade-Bianchi-3.0.x
+  - Merge pull request #311 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 3.0.0-alpha.1
+  - updates the package.json and resolves the conflict
+  - Merge pull request #301 from ansble/feature/swappable-template-engines-add-config-objects
+  - fixes the last broken test
+  - Merge branch 'feature/swappable-template-engines-add-config-objects' of https://github.com/ansble/monument into feature/swappable-template-engines-add-config-objects
+  - Starts the work of decoupling rendering
+  - Merge pull request #302 from ansble/update/dependencies-nov-2016
+  - Updates dpendencies to lates
+  - Starts the work of decoupling rendering 
+
+
+ ### - 2.6.1 * 2/15/2017, 8:38:12 AM *
+
+   - Merge pull request #318 from ansble/security/upgrade-ws-2.6.x
+  - fixes vulnerable version of ws lib
+  - Merge branch 'Coppa-Ugo-Agostoni_2.6.x' of https://github.com/ansble/monument into Coppa-Ugo-Agostoni_2.6.x
+  - more documentation
+  - Merge branch 'master' into Coppa-Ugo-Agostoni_2.6.x
+  - added a dropped author
+  - Merge pull request #310 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.0 * 2/3/2017, 10:10:08 AM *
 
   
 

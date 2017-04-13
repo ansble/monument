@@ -175,7 +175,7 @@ describe('Route Handler Tests', () => {
         let etag;
 
         beforeEach(() => {
-            etag = '"4b-ah1/iPV1wknehHVYGkU4jQ"';
+            etag = '"4b-qzkEy4H5DZokRI43RIWQiRVxz1k"';
         });
 
         it('should emit 404 & missing static events for missing file in sub of public', (done) => {

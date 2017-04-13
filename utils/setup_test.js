@@ -8,39 +8,25 @@ const assert = require('chai').assert
   , path = require('path')
   , dot = require('dot');
 
-let oldConsole;
-
 describe('compile Tests', () => {
 
-    it('should allow to change dot template settings', () => {
+    it('should allow to change dot template settings', (done) => {
         const config = {
-            templating: {
-                engine: dot
-                , options: {
-                    append: false
-                }
-                , preCompile: false
+            dotjs: {
+                append: false
             }
         };
 
         setup.templates(config);
         assert.strictEqual(dot.templateSettings.append, false);
-
-        config.templating.options.append = true; // reset default
+        config.dotjs.append = true; // reset default
         setup.templates(config);
         assert.strictEqual(dot.templateSettings.append, true);
+        done();
     });
 });
 
 describe('setup Tests', () => {
-    beforeEach(() => {
-        oldConsole = console.log;
-        console.log = () => {};
-    });
-
-    afterEach(() => {
-        console.log = oldConsole;
-    });
 
     it('should be an object of setup functions', () => {
         assert.isObject(setup);
