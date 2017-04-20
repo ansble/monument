@@ -1,4 +1,11 @@
-### - 2.6.8 * 4/12/2017, 9:32:31 AM *
+### - 2.6.9 * 4/20/2017, 8:55:04 AM *
+
+   - Merge pull request #338 from ansble/greenkeeper/ws-2.3.0
+  - fix(package): update ws to version 2.3.0
+  - Merge pull request #336 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.8 * 4/12/2017, 9:32:31 AM *
 
    - Merge pull request #335 from ansble/greenkeeper/iltorb-1.2.0
   - fix(package): update iltorb to version 1.2.0
