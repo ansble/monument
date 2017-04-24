@@ -1,4 +1,11 @@
-### - 2.6.9 * 4/20/2017, 8:55:04 AM *
+### - 2.6.10 * 4/24/2017, 10:12:12 AM *
+
+   - Merge pull request #340 from ansble/greenkeeper/mocha-3.3.0
+  - chore(package): update mocha to version 3.3.0
+  - Merge pull request #339 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.9 * 4/20/2017, 8:55:04 AM *
 
    - Merge pull request #338 from ansble/greenkeeper/ws-2.3.0
   - fix(package): update ws to version 2.3.0
