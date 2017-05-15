@@ -1,4 +1,13 @@
-### - 2.6.10 * 4/24/2017, 10:12:12 AM *
+### - 2.6.11 * 5/15/2017, 1:42:37 PM *
+
+   - Merge pull request #344 from ansble/greenkeeper/mocha-3.4.0
+  - Merge pull request #343 from ansble/greenkeeper/iltorb-1.3.0
+  - chore(package): update mocha to version 3.4.0
+  - fix(package): update iltorb to version 1.3.0
+  - Merge pull request #341 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.10 * 4/24/2017, 10:12:12 AM *
 
    - Merge pull request #340 from ansble/greenkeeper/mocha-3.3.0
   - chore(package): update mocha to version 3.3.0
