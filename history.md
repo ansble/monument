@@ -1,4 +1,98 @@
-### - 2.6.10 * 4/24/2017, 10:12:12 AM *
+### - 2.6.12 * 5/22/2017, 6:56:26 AM *
+
+   - Merge pull request #346 from ansble/greenkeeper/ws-3.0.0
+  - fix(package): update ws to version 3.0.0
+  - Merge pull request #345 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.11
+  - preparing for release of v2.6.11
+  - Merge pull request #344 from ansble/greenkeeper/mocha-3.4.0
+  - Merge pull request #343 from ansble/greenkeeper/iltorb-1.3.0
+  - chore(package): update mocha to version 3.4.0
+  - fix(package): update iltorb to version 1.3.0
+  - Merge pull request #341 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.10
+  - preparing for release of v2.6.10
+  - Merge pull request #340 from ansble/greenkeeper/mocha-3.3.0
+  - chore(package): update mocha to version 3.3.0
+  - Merge pull request #339 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.9
+  - preparing for release of v2.6.9
+  - Merge pull request #338 from ansble/greenkeeper/ws-2.3.0
+  - fix(package): update ws to version 2.3.0
+  - Merge pull request #336 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.8
+  - preparing for release of v2.6.8
+  - Merge pull request #335 from ansble/greenkeeper/iltorb-1.2.0
+  - fix(package): update iltorb to version 1.2.0
+  - Merge pull request #334 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.7
+  - preparing for release of v2.6.7
+  - Merge pull request #333 from ansble/greenkeeper/iltorb-1.1.0
+  - fix(package): update iltorb to version 1.1.0
+  - Merge pull request #332 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.6
+  - preparing for release of v2.6.6
+  - Merge pull request #331 from ansble/greenkeeper/eslint-3.19.0
+  - chore(package): update eslint to version 3.19.0
+  - Merge pull request #330 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.5
+  - preparing for release of v2.6.5
+  - Merge pull request #329 from ansble/greenkeeper/coveralls-2.13.0
+  - chore(package): update coveralls to version 2.13.0
+  - Merge pull request #328 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.4
+  - preparing for release of v2.6.4
+  - Merge pull request #327 from ansble/greenkeeper/v8-profiler-5.7.0
+  - chore(package): update v8-profiler to version 5.7.0
+  - Merge pull request #326 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 2.6.3
+  - preparing for release of v2.6.3
+  - Merge pull request #325 from ansble/greenkeeper/eslint-3.18.0
+  - chore(package): update eslint to version 3.18.0
+  - Merge pull request #323 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Update AUTHORS
+  - 2.6.2
+  - preparing for release of v2.6.2
+  - Merge pull request #322 from ansble/greenkeeper/initial
+  - Fixes the format of the etag in the test
+  - docs(readme): add Greenkeeper badge
+  - chore(package): update dependencies
+  - Merge pull request #319 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Revert "Merge branch 'Strade-Bianchi-3.0.x' into Coppa-Ugo-Agostoni_2.6.x"
+  - Merge branch 'Strade-Bianchi-3.0.x' into Coppa-Ugo-Agostoni_2.6.x
+  - fixed bug in Authors
+  - 2.6.1
+  - preparing for release of v2.6.1
+  - Merge pull request #318 from ansble/security/upgrade-ws-2.6.x
+  - fixes vulnerable version of ws lib
+  - Merge branch 'master' into Strade-Bianchi-3.0.x
+  - Merge pull request #311 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Merge branch 'Coppa-Ugo-Agostoni_2.6.x' of https://github.com/ansble/monument into Coppa-Ugo-Agostoni_2.6.x
+  - more documentation
+  - Merge branch 'master' into Coppa-Ugo-Agostoni_2.6.x
+  - added a dropped author
+  - Merge pull request #310 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - 3.0.0-alpha.1
+  - updates the package.json and resolves the conflict
+  - Merge pull request #301 from ansble/feature/swappable-template-engines-add-config-objects
+  - fixes the last broken test
+  - Merge branch 'feature/swappable-template-engines-add-config-objects' of https://github.com/ansble/monument into feature/swappable-template-engines-add-config-objects
+  - Starts the work of decoupling rendering
+  - Merge pull request #302 from ansble/update/dependencies-nov-2016
+  - Updates dpendencies to lates
+  - Starts the work of decoupling rendering 
+
+
+ ### - 2.6.11 * 5/15/2017, 1:42:37 PM *
+
+   - Merge pull request #344 from ansble/greenkeeper/mocha-3.4.0
+  - Merge pull request #343 from ansble/greenkeeper/iltorb-1.3.0
+  - chore(package): update mocha to version 3.4.0
+  - fix(package): update iltorb to version 1.3.0
+  - Merge pull request #341 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.10 * 4/24/2017, 10:12:12 AM *
 
    - Merge pull request #340 from ansble/greenkeeper/mocha-3.3.0
   - chore(package): update mocha to version 3.3.0
