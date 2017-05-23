@@ -66,7 +66,7 @@
     "minimist": "~1.2.0",
     "mocha": "~3.4.0",
     "mock-require": "^2.0.1",
-    "spdy": "~3.4.4",
+    "spdy": "3.4.5",
     "v8-profiler": "~5.7.0"
   },
   "engines": {
