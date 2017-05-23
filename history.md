@@ -1,4 +1,14 @@
-### - 2.6.12 * 5/22/2017, 6:56:26 AM *
+### - 2.6.13 * 5/22/2017, 8:21:05 PM *
+
+   - Merge pull request #352 from ansble/greenkeeper/coveralls-2.13.1
+  - Merge pull request #351 from ansble/greenkeeper/spdy-3.4.7
+  - Merge branch 'master' into greenkeeper/coveralls-2.13.1
+  - chore(package): update spdy to version 3.4.7
+  - Merge pull request #347 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - chore(package): update coveralls to version 2.13.1 
+
+
+ ### - 2.6.12 * 5/22/2017, 6:56:26 AM *
 
    - Merge pull request #346 from ansble/greenkeeper/ws-3.0.0
   - fix(package): update ws to version 3.0.0
