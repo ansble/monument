@@ -13,8 +13,6 @@ const assert = require('chai').assert
     , path = require('path')
     , configStore = require('./utils/config');
 
-let oldConsole;
-
 describe('The main monument tests', () => {
 
     it('should be correctly defined', () => {
@@ -33,9 +31,6 @@ describe('The main monument tests', () => {
     describe('Wrapper Tests', () => {
         beforeEach(() => {
             configStore.reset();
-
-            oldConsole = console.log;
-            console.log = () => {};
         });
 
         afterEach((done) => {
@@ -51,17 +46,13 @@ describe('The main monument tests', () => {
             });
 
             events.emit('complete');
-
-            console.log = oldConsole;
         });
 
         it('should return a server when run', (done) => {
             const server = app.server({
                 routeJSONPath: './test_stubs/routes_stub.json'
                 , routePath: './test_stubs'
-                , templating: {
-                    path: './test_stubs/templates'
-                }
+                , templatePath: './test_stubs/templates'
                 , port: 9999
             });
 
@@ -75,9 +66,7 @@ describe('The main monument tests', () => {
         it('should return a server when run and no port passed in', (done) => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
-                , templating: {
-                    path: './test_stubs/templates'
-                }
+                , templatePath: './test_stubs/templates'
                 , routePath: './test_stubs'
             });
 
@@ -91,9 +80,7 @@ describe('The main monument tests', () => {
         it('should return a server when run and compress passed in', (done) => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
-                , templating: {
-                    path: './test_stubs/templates'
-                }
+                , templatePath: './test_stubs/templates'
                 , compress: false
                 , routePath: './test_stubs'
             });
@@ -109,9 +96,7 @@ describe('The main monument tests', () => {
         it('should return an http2 server when http2 and correct params are passed in', (done) => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
-                , templating: {
-                    path: './test_stubs/templates'
-                }
+                , templatePath: './test_stubs/templates'
                 , routePath: './test_stubs'
                 , compress: false
                 , server: http2
@@ -132,9 +117,7 @@ describe('The main monument tests', () => {
         it('should return an spdy server when spdy and correct params are passed in', (done) => {
             const server = require('./index').server({
                 routeJSONPath: './test_stubs/routes_stub.json'
-                , templating: {
-                    path: './test_stubs/templates'
-                }
+                , templatePath: './test_stubs/templates'
                 , routePath: './test_stubs'
                 , compress: false
                 , server: spdy

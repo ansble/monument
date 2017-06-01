@@ -20,6 +20,7 @@ console.log(`\n\nPreparing for a ${chalk.bgGreen.bold(options.type)} release...\
 
 cp.exec(gitLogCommand, (err, stdout) => {
     const history = fs.readFileSync('./history.md')
+        , authors = fs.readFileSync('./AUTHORS').toString().split('\n')
         , historyHeader = `### - ${newVersion} * ${new Date().toLocaleString()} *\n\n`;
 
     console.log('Updating the history.md file');
@@ -27,10 +28,18 @@ cp.exec(gitLogCommand, (err, stdout) => {
     fs.writeFile('./history.md', `${historyHeader} ${stdout} \n\n\n ${history}`);
 
     cp.exec('git log --all --format="%aN <%aE>" | sort -u', (errLog, stdoutLog) => {
+        const newAuthors = [].concat(authors, stdoutLog.split('\n')).reduce((accum, author) => {
+            if (accum.indexOf(author) < 0) {
+                accum.push(author);
+            }
+
+            return accum;
+        }, []);
+
         // write out the Authors file with all contributors
         console.log('Updating the AUTHORS file');
 
-        fs.writeFileSync('./AUTHORS', stdoutLog);
+        fs.writeFileSync('./AUTHORS', newAuthors.join('\n'));
 
         cp.exec('git add .', () => {
             cp.exec(`git commit -m "preparing for release of v${newVersion}"`, () => {
@@ -41,7 +50,7 @@ cp.exec(gitLogCommand, (err, stdout) => {
                     cp.exec('npm publish', () => {
                         console.log('pushing to origin');
 
-                        cp.exec('git push origin master', Function.prototype);
+                        cp.exec('git push origin HEAD', Function.prototype);
                         cp.exec(`git push origin v${newVersion}`, (errPush) => {
                             if (errPush) {
                                 console.log(errPush);

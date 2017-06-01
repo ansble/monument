@@ -3,6 +3,7 @@
 const glob = require('glob')
     , fs = require('fs')
     , events = require('harken')
+    , dot = require('dot')
 
     , deleteCompressed = (config) => {
         // run through and delete all the compressed files in the file system
@@ -58,7 +59,7 @@ const glob = require('glob')
             });
         }
 
-        if (config.templating.preCompile) {
+        if (config.templating.preCompile || isDot) {
             // compile the templates
             if (isDot) {
                 config.templating.engine.process({ path: config.templating.path });

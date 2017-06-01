@@ -20,9 +20,7 @@ const monument = require('monument')
 
 monument.server({
     routePath: './routes'
-    , templating: {
-        path: './templates'
-    }
+    , templatePath: './templates'
     , publicPath: './public'
     , port: process.env.PORT || defaultPort
     , security: {
