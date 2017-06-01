@@ -64,7 +64,7 @@
     "http2": "~3.3.6",
     "istanbul": "~0.4.5",
     "minimist": "~1.2.0",
-    "mocha": "~3.4.0",
+    "mocha": "~3.4.2",
     "mock-require": "^2.0.1",
     "spdy": "~3.4.7",
     "v8-profiler": "~5.7.0"
