@@ -5,10 +5,15 @@ let configStore = {};
 const path = require('path')
     , http = require('http')
     , cloneDeep = require('lodash.clonedeep')
+    , dot = require('dot')
     , statsdDefaults = {
         cacheDns: true
         , port: 8125
         , host: 'localhost'
+    }
+    , templateDefaults = {
+        engine: dot
+        , path: path.join(process.cwd(), './templates')
     }
     , defaults = {
         port: 3000
@@ -35,6 +40,8 @@ const path = require('path')
                 maxAge: 86400
             }
         }
+
+        , templating: templateDefaults
 
         , server: http
         , statsd: false
@@ -99,4 +106,5 @@ module.exports = {
     , reset: () => {
         setDefaults();
     }
+    , templateDefaults: templateDefaults
 };

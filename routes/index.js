@@ -6,14 +6,13 @@ const parseRoutes = require('./parseRoutes')
     , parseWildCardRoute = require('./parseWildCardRoute')
     , isDefined = require('../utils').isDefined
 
-
-    , serverInstance = (serverType, routesJson, config) => {
-        const options = config.serverOptions;
+    , serverInstance = (serverType, routesJson, configObj) => {
+        const options = configObj.serverOptions;
 
         if (isDefined(options)) {
-            return serverType.createServer(options, require('./router.js')(routesJson, config));
+            return serverType.createServer(options, require('./router.js')(routesJson, configObj));
         } else {
-            return serverType.createServer(require('./router.js')(routesJson, config));
+            return serverType.createServer(require('./router.js')(routesJson, configObj));
         }
     };
 

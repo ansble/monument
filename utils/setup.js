@@ -3,7 +3,6 @@
 const glob = require('glob')
     , fs = require('fs')
     , events = require('harken')
-    , dot = require('dot')
 
     , deleteCompressed = (config) => {
         // run through and delete all the compressed files in the file system
