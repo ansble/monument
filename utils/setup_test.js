@@ -9,7 +9,6 @@ const assert = require('chai').assert
   , dot = require('dot');
 
 describe('compile Tests', () => {
-
     it('should allow to change dot template settings', (done) => {
         const config = {
             dotjs: {
@@ -24,6 +23,8 @@ describe('compile Tests', () => {
         assert.strictEqual(dot.templateSettings.append, true);
         done();
     });
+
+
 });
 
 describe('setup Tests', () => {

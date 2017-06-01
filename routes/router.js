@@ -20,7 +20,7 @@ const path = require('path')
     , getCompression = require('../utils').getCompression
     , redirect = require('../utils').redirect
     , contains = require('../utils').contains
-
+    , configure = require('../utils').config
     , statsd = require('../utils/statsd')
 
     , succesStatus = 200
@@ -36,6 +36,12 @@ module.exports = (routesJson, config) => {
 
     routeStore.parse(routesJson);
 
+    console.log(config);
+
+    if (typeof config.templating === 'undefined') {
+        config.templating = configure.templateDefaults;
+    }
+
     // the route handler... pulled out here for easier testing
     return (req, resIn) => {
         const method = req.method.toLowerCase()
@@ -48,6 +54,7 @@ module.exports = (routesJson, config) => {
                 , res: resIn
                 , query: pathParsed.query
                 , params: {}
+                , render: config.templating.engine
             }
             , compression = getCompression(req.headers['accept-encoding'], config)
             , statsdStartTime = new Date().getTime()
