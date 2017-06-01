@@ -1,4 +1,10 @@
-### - 2.6.14 * 5/31/2017, 7:46:28 PM *
+### - 2.6.15 * 5/31/2017, 7:55:57 PM *
+
+   - Merge pull request #360 from ansble/greenkeeper/iltorb-1.3.1
+  - chore(package): update iltorb to version 1.3.1 
+
+
+ ### - 2.6.14 * 5/31/2017, 7:46:28 PM *
 
    - Merge pull request #356 from ansble/greenkeeper/utf-8-validate-3.0.2
   - Merge pull request #358 from ansble/greenkeeper/chai-4.0.1
