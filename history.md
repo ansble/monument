@@ -1,4 +1,11 @@
-### - 2.6.15 * 5/31/2017, 7:55:57 PM *
+### - 2.6.16 * 6/5/2017, 9:27:41 PM *
+
+   - Merge pull request #362 from ansble/greenkeeper/chai-4.0.2
+  - chore(package): update chai to version 4.0.2
+  - Merge pull request #359 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.15 * 5/31/2017, 7:55:57 PM *
 
    - Merge pull request #360 from ansble/greenkeeper/iltorb-1.3.1
   - chore(package): update iltorb to version 1.3.1 
