@@ -1,4 +1,9 @@
-### - 2.6.16 * 6/5/2017, 9:27:41 PM *
+### - 2.6.17 * 6/12/2017, 6:00:09 AM *
+
+  
+
+
+ ### - 2.6.16 * 6/5/2017, 9:27:41 PM *
 
    - Merge pull request #362 from ansble/greenkeeper/chai-4.0.2
   - chore(package): update chai to version 4.0.2
