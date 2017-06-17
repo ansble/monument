@@ -1,82 +1,82 @@
 'use strict';
 const not = require('../utils').not
-    , contains = require('../utils').contains
-    , reqGuard = 'X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter'
-    , invalidOption = 'X-Frame must be undefined, "DENY", "ALLOW-FROM", or "SAMEORIGIN"'
+      , contains = require('../utils').contains
+      , reqGuard = 'X-Frame: ALLOW-FROM requires an option in config.security.frameguard parameter'
+      , invalidOption = 'X-Frame must be undefined, "DENY", "ALLOW-FROM", or "SAMEORIGIN"'
 
-    , allowedOptions = [ 'DENY', 'ALLOW-FROM', 'SAMEORIGIN' ]
+      , allowedOptions = [ 'DENY', 'ALLOW-FROM', 'SAMEORIGIN' ]
 
-    , actionValid = (action) => {
+      , actionValid = (action) => {
         const type = typeof action;
 
         let valid = true;
 
         if (type === 'undefined') {
-            return valid;
+          return valid;
         }
 
         if (type === 'string') {
-            if (not(contains(allowedOptions, action.toUpperCase()))) {
-                valid = false;
-            }
-        } else {
+          if (not(contains(allowedOptions, action.toUpperCase()))) {
             valid = false;
+          }
+        } else {
+          valid = false;
         }
 
 
         return valid;
-    }
+      }
 
-    , headerValid = (header, domain) => {
+      , headerValid = (header, domain) => {
         let valid = header === 'ALLOW-FROM' && typeof domain === 'string';
 
         if (!valid && header !== 'ALLOW-FROM') {
-            valid = true;
+          valid = true;
         }
 
         return valid;
-    }
+      }
 
-    , setHeader = (header, domain) => {
+      , setHeader = (header, domain) => {
         const allowFromError = () => {
-            throw new Error(reqGuard);
+          throw new Error(reqGuard);
         };
 
         let headerValue = '';
 
         if (headerValid(header, domain)) {
-            if (header === 'ALLOW-FROM') {
-                headerValue = `ALLOW-FROM ${domain}`;
-            } else {
-                headerValue = header;
-            }
+          if (header === 'ALLOW-FROM') {
+            headerValue = `ALLOW-FROM ${domain}`;
+          } else {
+            headerValue = header;
+          }
         } else {
-            allowFromError();
+          allowFromError();
         }
 
         return headerValue;
-    };
+      };
 
 module.exports = (config, res) => {
-    const options = config.security.frameguard || {}
+  const options = config.security.frameguard || {}
         , typeError = () => {
-            throw new Error(invalidOption);
+          throw new Error(invalidOption);
         };
 
 
-    let header = 'SAMEORIGIN';
+  let header = 'SAMEORIGIN';
 
-    if (not(actionValid(options.action))) {
-        typeError();
-    }
+  if (not(actionValid(options.action))) {
+    typeError();
+  }
 
-    if (options.action) {
-        header = options.action.toUpperCase();
-    }
+  if (options.action) {
+    header = options.action.toUpperCase();
+  }
 
-    header = setHeader(header, options.domain);
+  header = setHeader(header, options.domain);
 
-    res.setHeader('X-Frame-Options', header);
+  res.setHeader('X-Frame-Options', header);
 
-    return res;
+  return res;
 };

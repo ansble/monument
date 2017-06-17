@@ -2,11 +2,11 @@
 'use strict';
 
 const assert = require('chai').assert
-    , statsd = require('./statsd');
+      , statsd = require('./statsd');
 
 describe('statsd Tests', () => {
-    it('should return an object', () => {
-        assert.isObject(statsd);
-        assert.isFunction(statsd.create);
-    });
+  it('should return an object', () => {
+    assert.isObject(statsd);
+    assert.isFunction(statsd.create);
+  });
 });
