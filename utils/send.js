@@ -1,90 +1,89 @@
 'use strict';
 
 const etag = require('etag')
-    , getCompression = require('./getCompression')
-    , zlib = require('zlib')
-    , brotli = require('iltorb')
-    , tools = require('./tools')
-    , not = tools.not
-    , isDefined = tools.isDefined
-    , encoding = 'utf-8'
+      , getCompression = require('./getCompression')
+      , zlib = require('zlib')
+      , brotli = require('iltorb')
+      , tools = require('./tools')
+      , not = tools.not
+      , isDefined = tools.isDefined
+      , encoding = 'utf-8'
 
-    , etagMatch = (ifNoneMatch, etagIn) => {
+      , etagMatch = (ifNoneMatch, etagIn) => {
         return isDefined(ifNoneMatch) && ifNoneMatch === etagIn;
-    }
+      }
 
-    , setContentTypeHeaders = (data, isBuffer, response) => {
+      , setContentTypeHeaders = (data, isBuffer, response) => {
         const type = typeof data;
 
         if (type === 'undefined') {
-            response.setHeader('Content-Type', `text/plain; charset=${encoding}`);
+          response.setHeader('Content-Type', `text/plain; charset=${encoding}`);
         } else if (type === 'string') {
-            response.setHeader('Content-Type', `text/html; charset=${encoding}`);
+          response.setHeader('Content-Type', `text/html; charset=${encoding}`);
         } else if (type === 'object' && not(isBuffer)) {
-            response.setHeader('Content-Type', `application/json; charset=${encoding}`);
+          response.setHeader('Content-Type', `application/json; charset=${encoding}`);
         } else if (type === 'object') {
-            response.setHeader('Content-Type', `text/html; charset=${encoding}`);
+          response.setHeader('Content-Type', `text/html; charset=${encoding}`);
         }
 
         return response;
-    }
+      }
 
-    , prepareData = (data, isBuffer) => {
+      , prepareData = (data, isBuffer) => {
         const type = typeof data;
 
         if (type === 'undefined') {
-            return '';
+          return '';
         } else if (type === 'object' && isBuffer) {
-            return data.toString();
+          return data.toString();
         } else if (type === 'string') {
-            return data;
+          return data;
         } else {
-            return JSON.stringify(data);
+          return JSON.stringify(data);
         }
-    }
+      }
 
-    , setCompressionHeader = (compression, response) => {
+      , setCompressionHeader = (compression, response) => {
         if (compression !== 'none') {
-            response.setHeader('Content-Encoding', compression);
+          response.setHeader('Content-Encoding', compression);
         }
-    }
+      }
 
-    , send = (req, config) => {
+      , send = (req, config) => {
         return function (dataIn) {
-            /* eslint-disable no-invalid-this */
-            const that = this
-            /* eslint-enable no-invalid-this */
+          // eslint-disable-next-line no-invalid-this
+          const that = this
                 , isBuffer = Buffer.isBuffer(dataIn)
                 , compression = getCompression(req.headers['accept-encoding'], config)
                 , data = prepareData(dataIn, isBuffer)
                 , reqEtag = etag(data);
 
-            setContentTypeHeaders(dataIn, isBuffer, that);
+          setContentTypeHeaders(dataIn, isBuffer, that);
 
-            if (etagMatch(req.headers['if-none-match'], reqEtag)) {
-                that.statusCode = 304;
-                that.end();
+          if (etagMatch(req.headers['if-none-match'], reqEtag)) {
+            that.statusCode = 304;
+            that.end();
+          } else {
+            that.setHeader('ETag', reqEtag);
+            setCompressionHeader(compression, that);
+
+            if (compression === 'br') {
+              brotli.compress(new Buffer(data, 'utf8'), (err, output) => {
+                that.end(output);
+              });
+            } else if (compression === 'gzip') {
+              zlib.gzip(data, (err, result) => {
+                that.end(result, encoding);
+              });
+            } else if (compression === 'deflate') {
+              zlib.deflate(data, (err, result) => {
+                that.end(result, encoding);
+              });
             } else {
-                that.setHeader('ETag', reqEtag);
-                setCompressionHeader(compression, that);
-
-                if (compression === 'br') {
-                    brotli.compress(new Buffer(data, 'utf8'), (err, output) => {
-                        that.end(output);
-                    });
-                } else if (compression === 'gzip') {
-                    zlib.gzip(data, (err, result) => {
-                        that.end(result, encoding);
-                    });
-                } else if (compression === 'deflate') {
-                    zlib.deflate(data, (err, result) => {
-                        that.end(result, encoding);
-                    });
-                } else {
-                    that.end(data, encoding);
-                }
+              that.end(data, encoding);
             }
+          }
         };
-    };
+      };
 
 module.exports = send;

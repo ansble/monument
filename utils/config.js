@@ -3,14 +3,14 @@
 let configStore = {};
 
 const path = require('path')
-    , http = require('http')
-    , cloneDeep = require('lodash.clonedeep')
-    , statsdDefaults = {
+      , http = require('http')
+      , cloneDeep = require('lodash.clonedeep')
+      , statsdDefaults = {
         cacheDns: true
         , port: 8125
         , host: 'localhost'
-    }
-    , defaults = {
+      }
+      , defaults = {
         port: 3000
         , maxAge: 31536000
 
@@ -24,79 +24,79 @@ const path = require('path')
         , etags: true
 
         , security: {
-            xssProtection: true
-            , poweredBy: undefined
-            , noSniff: true
-            , noCache: false
-            , framegaurd: {
-                action: 'SAMEORIGIN'
-            }
-            , hsts: {
-                maxAge: 86400
-            }
+          xssProtection: true
+          , poweredBy: undefined
+          , noSniff: true
+          , noCache: false
+          , framegaurd: {
+            action: 'SAMEORIGIN'
+          }
+          , hsts: {
+            maxAge: 86400
+          }
         }
 
         , server: http
         , statsd: false
-    }
+      }
 
-    , getConfig = (key) => {
+      , getConfig = (key) => {
         if (typeof key === 'string') {
-            return configStore[key];
+          return configStore[key];
         } else {
-            return configStore;
+          return configStore;
         }
-    }
+      }
 
-    , setDefaults = () => {
+      , setDefaults = () => {
         configStore = cloneDeep(defaults);
-    }
+      }
 
-    , setConfig = (key, value) => {
+      , setConfig = (key, value) => {
         const pathKeyNames = [
-            'routeJSONPath'
-            , 'routePath'
-            , 'publicPath'
-            , 'templatePath'
+          'routeJSONPath'
+          , 'routePath'
+          , 'publicPath'
+          , 'templatePath'
         ];
 
         if (typeof key === 'object') {
-            Object.keys(key).forEach((item) => {
-                if (pathKeyNames.indexOf(item) >= 0) {
-                    configStore[item] = path.join(process.cwd(), key[item]);
-                } else if (typeof key[item] === 'object' && item === 'statsd') {
-                    Object.keys(key.statsd).forEach((child) => {
-                        if (typeof configStore.statsd !== 'object') {
-                            configStore.statsd = statsdDefaults;
-                        }
-
-                        configStore.statsd[child] = key.statsd[child];
-                    });
-                } else if (typeof key[item] === 'object') {
-                    Object.keys(key[item]).forEach((child) => {
-                        if (typeof configStore[item] !== 'object') {
-                            configStore[item] = {};
-                        }
-
-                        configStore[item][child] = key[item][child];
-                    });
-                } else {
-                    configStore[item] = key[item];
+          Object.keys(key).forEach((item) => {
+            if (pathKeyNames.indexOf(item) >= 0) {
+              configStore[item] = path.join(process.cwd(), key[item]);
+            } else if (typeof key[item] === 'object' && item === 'statsd') {
+              Object.keys(key.statsd).forEach((child) => {
+                if (typeof configStore.statsd !== 'object') {
+                  configStore.statsd = statsdDefaults;
                 }
-            });
+
+                configStore.statsd[child] = key.statsd[child];
+              });
+            } else if (typeof key[item] === 'object') {
+              Object.keys(key[item]).forEach((child) => {
+                if (typeof configStore[item] !== 'object') {
+                  configStore[item] = {};
+                }
+
+                configStore[item][child] = key[item][child];
+              });
+            } else {
+              configStore[item] = key[item];
+            }
+          });
         } else if (typeof key === 'string') {
-            configStore[key] = value;
+          configStore[key] = value;
         }
 
         return configStore;
-    };
+      };
 
 configStore = cloneDeep(defaults);
 
 module.exports = {
-    get: getConfig
-    , set: setConfig
-    , reset: () => {
-        setDefaults();
-    }
+  get: getConfig
+  , set: setConfig
+  , reset: () => {
+    setDefaults();
+  }
 };
