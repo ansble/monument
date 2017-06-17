@@ -1,4 +1,20 @@
-### - 2.6.16 * 6/5/2017, 9:27:41 PM *
+### - 2.6.18 * 6/17/2017, 3:00:40 PM *
+
+   - Merge pull request #367 from ansble/greenkeeper/uuid-3.1.0
+  - fix(package): update uuid to version 3.1.0
+  - Merge pull request #366 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Merge branch 'master' into Coppa-Ugo-Agostoni_2.6.x
+  - Merge pull request #364 from ansble/greenkeeper/form-data-2.2.0
+  - chore(package): update form-data to version 2.2.0
+  - Merge pull request #363 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.17 * 6/12/2017, 6:00:09 AM *
+
+  
+
+
+ ### - 2.6.16 * 6/5/2017, 9:27:41 PM *
 
    - Merge pull request #362 from ansble/greenkeeper/chai-4.0.2
   - chore(package): update chai to version 4.0.2
