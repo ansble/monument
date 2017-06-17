@@ -2,11 +2,11 @@
 'use strict';
 
 const assert = require('chai').assert
-  , setup = require('./setup')
-  , events = require('harken')
-  , fs = require('fs')
-  , path = require('path')
-  , dot = require('dot');
+    , setup = require('./setup')
+    , events = require('harken')
+    , fs = require('fs')
+    , path = require('path')
+    , dot = require('dot');
 
 describe('compile Tests', () => {
 

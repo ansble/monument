@@ -51,9 +51,8 @@ const etag = require('etag')
 
     , send = (req, config) => {
         return function (dataIn) {
-            /* eslint-disable no-invalid-this */
+            // eslint-disable-next-line no-invalid-this
             const that = this
-            /* eslint-enable no-invalid-this */
                 , isBuffer = Buffer.isBuffer(dataIn)
                 , compression = getCompression(req.headers['accept-encoding'], config)
                 , data = prepareData(dataIn, isBuffer)

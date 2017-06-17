@@ -9,10 +9,6 @@ const events = require('harken')
     , setup = require('./utils').setup
     , routeStore = require('./routes/routeStore')
 
-  // setup the routes and server
-  //  pass in the http or https object and the routes.json
-  //  then listen below on port/address you want to
-
     , wrapper = (configIn) => {
         const configObj = config.set(configIn)
             , routes = require(configObj.routeJSONPath);

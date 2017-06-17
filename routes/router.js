@@ -31,8 +31,7 @@ module.exports = (routesJson, config) => {
         , maxAge = config.maxAge
         , routePath = config.routePath
         , publicFolders = setupStaticRoutes(routePath, publicPath)
-        , statsdClient = config.statsd === false ? false :
-                            statsd.create(config.statsd);
+        , statsdClient = config.statsd === false ? false : statsd.create(config.statsd);
 
     routeStore.parse(routesJson);
 

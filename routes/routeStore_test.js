@@ -6,11 +6,6 @@ const assert = require('chai').assert
 
 
 describe('routeStore Tests', () => {
-    // let routeObject;
-
-    // beforeEach(() => {
-    //     routeObject = require('../test_stubs/routes_stub.json');
-    // });
     afterEach(() => {
         routeStore.clear();
     });
@@ -38,30 +33,38 @@ describe('routeStore Tests', () => {
             assert.strictEqual(step1.standard['/this/is/a/test'].length, 1);
             assert.strictEqual(step1.standard['/this/is/a/test'][0], 'get');
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', 'post')
-                                         .standard['/this/is/a/test'].length, 2);
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', 'post')
+              .standard['/this/is/a/test'].length, 2);
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', 'post')
-                                         .standard['/this/is/a/test'][0], 'get');
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', 'post')
+              .standard['/this/is/a/test'][0], 'get');
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', 'post')
-                                         .standard['/this/is/a/test'][1], 'post');
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', 'post')
+              .standard['/this/is/a/test'][1], 'post');
 
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
-                                         .standard['/this/is/a/test'].length, 4);
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
+              .standard['/this/is/a/test'].length, 4);
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
-                                         .standard['/this/is/a/test'][0], 'get');
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
+              .standard['/this/is/a/test'][0], 'get');
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
-                                         .standard['/this/is/a/test'][1], 'post');
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
+              .standard['/this/is/a/test'][1], 'post');
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
-                                         .standard['/this/is/a/test'][2], 'put');
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
+              .standard['/this/is/a/test'][2], 'put');
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
-                                         .standard['/this/is/a/test'][3], 'report');
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', [ 'put', 'report' ])
+              .standard['/this/is/a/test'][3], 'report');
 
         });
 
@@ -71,9 +74,10 @@ describe('routeStore Tests', () => {
             assert.strictEqual(step1.standard['/this/is/a/test'].length, 1);
             assert.strictEqual(step1.standard['/this/is/a/test'][0], 'get');
 
-            assert.strictEqual(routeStore.add('/this/is/a/test', 'get')
-                                         .standard['/this/is/a/test']
-                                         .length, 1);
+            assert
+              .strictEqual(routeStore.add('/this/is/a/test', 'get')
+              .standard['/this/is/a/test']
+              .length, 1);
         });
     });
 
@@ -134,19 +138,23 @@ describe('routeStore Tests', () => {
         it('should remove the whole route if all verbs are passed to it', () => {
             const allVerbs = [ 'get', 'post', 'put', 'delete' ];
 
-            assert.isUndefined(routeStore.remove('/test', [ 'get', 'put', 'post' ])
-                                         .standard['/test']);
+            assert
+              .isUndefined(routeStore.remove('/test', [ 'get', 'put', 'post' ])
+              .standard['/test']);
 
             assert.isDefined(routeStore.get().standard['/hobbits']);
 
-            assert.isUndefined(routeStore.remove('/hobbits', 'get')
-                                         .standard['/hobbits']);
+            assert
+              .isUndefined(routeStore.remove('/hobbits', 'get')
+              .standard['/hobbits']);
 
-            assert.isUndefined(routeStore.remove('/hobbits/:name', 'get')
-                                         .wildcard['/hobbits/:name']);
+            assert
+              .isUndefined(routeStore.remove('/hobbits/:name', 'get')
+              .wildcard['/hobbits/:name']);
 
-            assert.isUndefined(routeStore.remove('/rangers/:name', allVerbs)
-                                         .wildcard['/rangers/:name']);
+            assert
+              .isUndefined(routeStore.remove('/rangers/:name', allVerbs)
+              .wildcard['/rangers/:name']);
         });
 
         it('should remove only a verb if a route listens to multiple but one is passed', () => {

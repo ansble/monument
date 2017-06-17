@@ -12,14 +12,18 @@ const events = require('harken')
         } catch (err) {
             return {};
         }
+    }
+    , getSetEventString = (message) => {
+        const shouldReplace = message.event && message.event.replace;
+
+        return shouldReplace ? message.event.replace(':get:', ':set:') : '';
     };
 
 module.exports = (type) => {
     return (socket) => {
         socket.onmessage = (messageIn) => {
             const message = getMessage(messageIn.data)
-                , setEvent = message.event && message.event.replace ?
-                                    message.event.replace(':get:', ':set:') : '';
+                , setEvent = getSetEventString(message);
 
             if (!type || isUndefined(message.event)) {
                 // no event then we can't really do anything...

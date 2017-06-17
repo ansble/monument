@@ -94,9 +94,8 @@ handlers.Firefox = function (browser, directives) {
 
 handlers.Chrome = function (browser) {
     const version = parseFloat(browser.version)
-
-    , TWENTYFIVE = 25
-    , FOURTEEN = 14;
+        , TWENTYFIVE = 25
+        , FOURTEEN = 14;
 
     if (version >= FOURTEEN && version < TWENTYFIVE) {
         return { headers: [ 'X-WebKit-CSP' ] };
