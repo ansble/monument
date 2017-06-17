@@ -1,4 +1,14 @@
-### - 2.6.18 * 6/17/2017, 3:00:40 PM *
+### - 2.6.19 * 6/17/2017, 4:22:54 PM *
+
+   - Merge pull request #365 from ansble/greenkeeper/eslint-4.0.0
+  - fixed broken test
+  - Merge branch 'Coppa-Ugo-Agostoni_2.6.x' into greenkeeper/eslint-4.0.0
+  - finished up the eslint cleanup and conversion to 2 spaces for indent
+  - first round of reconfigure and clean up
+  - chore(package): update eslint to version 4.0.0 
+
+
+ ### - 2.6.18 * 6/17/2017, 3:00:40 PM *
 
    - Merge pull request #367 from ansble/greenkeeper/uuid-3.1.0
   - fix(package): update uuid to version 3.1.0
