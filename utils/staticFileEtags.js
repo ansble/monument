@@ -3,7 +3,6 @@
 const etag = require('etag')
       , fs = require('fs')
       , events = require('harken')
-
       , not = require('./tools').not
       , isDefined = require('./tools').isDefined
 
@@ -12,7 +11,11 @@ const etag = require('etag')
       , addEtag = (fileIn) => {
         fs.readFile(fileIn, (err, data) => {
           if (err) {
-            events.emit('error', { message: 'could not read file', error: err, file: fileIn });
+            events.emit('error', {
+              message: 'could not read file'
+              , error: err
+              , file: fileIn
+            });
           } else {
             files[fileIn] = etag(data);
             console.log('ETAG: ', files[fileIn]);
