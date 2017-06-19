@@ -13,11 +13,10 @@ const events = require('harken')
         const configObj = config.set(configIn)
               , routes = require(configObj.routeJSONPath);
 
-        let server;
-
         // take care of any setup tasks before starting the server
         events.once('setup:complete', () => {
-          server = require('./routes/index').server(configObj.server, routes, configObj);
+          const server = require('./routes/index').server(configObj.server, routes, configObj);
+
           server.listen(configObj.port);
 
           if (configIn.webSockets !== false) {
@@ -26,12 +25,14 @@ const events = require('harken')
           }
 
           console.log(`monument v${pkg.version} up and running on port: ${configObj.port}`);
+          events.emit('server:started', {
+            version: pkg.version
+            , port: configObj.port
+            , server: server
+          });
         });
 
-
         setup(configObj);
-
-        return server;
       };
 
 module.exports = {

@@ -116,6 +116,18 @@ monument.server({
       });
 ```
 
+If you need to get access to the server object listen to the `server:started` event.
+For example do this:
+```
+monument.events.once('server:started', (settings) => {
+    // settings.server is the server object
+    // there is also a settings.port and settings.version that
+    //  are the port you are running on and the version of monument you are
+    //  running.
+    servers.push(settings.server);
+});
+```
+
 ### `monument`'s API
 
 In addition to the server `monument` exposes the following:

@@ -49,52 +49,57 @@ describe('The main monument tests', () => {
     });
 
     it('should return a server when run', (done) => {
-      const server = app.server({
+      app.server({
         routeJSONPath: './test_stubs/routes_stub.json'
         , routePath: './test_stubs'
         , templatePath: './test_stubs/templates'
         , port: 9999
       });
 
-      servers.push(server);
-      setTimeout(() => {
-        assert.instanceOf(server, http.Server);
+      app.events.once('server:started', (settings) => {
+        servers.push(settings.server);
+        assert.instanceOf(settings.server, http.Server);
         done();
-      }, 50);
+      });
     });
 
     it('should return a server when run and no port passed in', (done) => {
-      const server = require('./index').server({
+      const noPortApp = require('./index');
+
+      noPortApp.server({
         routeJSONPath: './test_stubs/routes_stub.json'
         , templatePath: './test_stubs/templates'
         , routePath: './test_stubs'
       });
 
-      servers.push(server);
-      setTimeout(() => {
-        assert.instanceOf(server, http.Server);
+      noPortApp.events.once('server:started', (settings) => {
+        servers.push(settings.server);
+        assert.instanceOf(settings.server, http.Server);
         done();
-      }, 50);
+      });
     });
 
     it('should return a server when run and compress passed in', (done) => {
-      const server = require('./index').server({
+      const compressApp = require('./index');
+
+      compressApp.server({
         routeJSONPath: './test_stubs/routes_stub.json'
         , templatePath: './test_stubs/templates'
         , compress: false
         , routePath: './test_stubs'
       });
 
-      servers.push(server);
-
-      setTimeout(() => {
-        assert.instanceOf(server, http.Server);
+      compressApp.events.once('server:started', (settings) => {
+        servers.push(settings.server);
+        assert.instanceOf(settings.server, http.Server);
         done();
-      }, 50);
+      });
     });
 
     it('should return an http2 server when http2 and correct params are passed in', (done) => {
-      const server = require('./index').server({
+      const http2App = require('./index');
+
+      http2App.server({
         routeJSONPath: './test_stubs/routes_stub.json'
         , templatePath: './test_stubs/templates'
         , routePath: './test_stubs'
@@ -106,16 +111,17 @@ describe('The main monument tests', () => {
         }
       });
 
-      servers.push(server);
-
-      setTimeout(() => {
-        assert.instanceOf(server, http2.Server);
+      http2App.events.once('server:started', (settings) => {
+        servers.push(settings.server);
+        assert.instanceOf(settings.server, http2.Server);
         done();
-      }, 50);
+      });
     });
 
     it('should return an spdy server when spdy and correct params are passed in', (done) => {
-      const server = require('./index').server({
+      const spdyApp = require('./index');
+
+      spdyApp.server({
         routeJSONPath: './test_stubs/routes_stub.json'
         , templatePath: './test_stubs/templates'
         , routePath: './test_stubs'
@@ -128,12 +134,11 @@ describe('The main monument tests', () => {
         }
       });
 
-      servers.push(server);
-
-      setTimeout(() => {
-        assert.instanceOf(server, spdy.Server);
+      spdyApp.events.once('server:started', (settings) => {
+        servers.push(settings.server);
+        assert.instanceOf(settings.server, spdy.Server);
         done();
-      }, 50);
+      });
     });
   });
 
