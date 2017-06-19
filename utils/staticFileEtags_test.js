@@ -37,4 +37,16 @@ describe('Static File Etags', () => {
 
     events.emit('etag:check', { file: './test_stubs/routes_stub.json', etag: etagTest });
   });
+
+  it('should raise an error if the file is no there', (done) => {
+    events.once('error', (stuff) => {
+      assert.strictEqual(stuff.file, './test_stubs/daniel.json');
+      assert.strictEqual(stuff.message, 'could not read file');
+      assert.isDefined(stuff.error);
+
+      done();
+    });
+
+    events.emit('etag:add', './test_stubs/daniel.json');
+  });
 });
