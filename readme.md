@@ -1,10 +1,9 @@
 # monument
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/ansble/monument.svg)](https://greenkeeper.io/)
-
 `monument` is a super light event routed nodejs framework.
 
 [![NPM](https://nodei.co/npm/monument.png?downloadRank=true&stars=true)](https://nodei.co/npm/monument/)
+
 [![npm version](https://img.shields.io/npm/v/monument.svg?style=flat-square)](https://www.npmjs.com/package/monument)
 [![downloads](https://img.shields.io/npm/dm/monument.svg?style=flat-square)](http://npm-stat.com/charts.html?package=monument&from=2016-08-01)
 ![build status](https://codeship.com/projects/881ed090-9c54-0132-655c-263ab955f60c/status?branch=master) 
@@ -17,6 +16,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/npm/monument/badge.svg)](https://snyk.io/test/npm/monument)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square)](https://github.com/ansble/monument/blob/master/CODE_OF_CONDUCT.md)
+[![Greenkeeper badge](https://badges.greenkeeper.io/ansble/monument.svg)](https://greenkeeper.io/)
 
 ## Table of Contents
 - [How to Get Started](#how-to-get-started)
