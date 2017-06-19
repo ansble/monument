@@ -1,4 +1,15 @@
-### - 2.6.19 * 6/17/2017, 4:22:54 PM *
+### - 2.6.20 * 6/19/2017, 2:33:41 PM *
+
+   - Merge pull request #372 from ansble/greenkeeper/harken-1.1.1
+  - adds some tests and test tweaks
+  - Changes the result of the starting a server... and gets all tests passing again
+  - fix(package): update harken to version 1.1.1
+  - Merge pull request #369 from ansble/Coppa-Ugo-Agostoni_2.6.x
+  - Merge branch 'master' into Coppa-Ugo-Agostoni_2.6.x
+  - Merge pull request #368 from ansble/Coppa-Ugo-Agostoni_2.6.x 
+
+
+ ### - 2.6.19 * 6/17/2017, 4:22:54 PM *
 
    - Merge pull request #365 from ansble/greenkeeper/eslint-4.0.0
   - fixed broken test
