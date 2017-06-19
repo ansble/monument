@@ -1,4 +1,9 @@
-### - 2.6.20 * 6/19/2017, 2:33:41 PM *
+### - 3.0.0 * 6/19/2017, 2:33:58 PM *
+
+  
+
+
+ ### - 2.6.20 * 6/19/2017, 2:33:41 PM *
 
    - Merge pull request #372 from ansble/greenkeeper/harken-1.1.1
   - adds some tests and test tweaks
