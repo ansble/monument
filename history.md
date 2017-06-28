@@ -1,4 +1,17 @@
-### - 3.0.0 * 6/19/2017, 2:33:58 PM *
+### - 3.0.1 * 6/27/2017, 9:57:15 PM *
+
+   - updates harken to latest
+  - Merge pull request #375 from ansble/greenkeeper/eslint-4.1.0
+  - Merge pull request #376 from ansble/greenkeeper/eslint-4.1.1
+  - Merge branch 'greenkeeper/eslint-4.1.0' into greenkeeper/eslint-4.1.1
+  - chore(package): update eslint to version 4.1.1
+  - chore(package): update eslint to version 4.1.0
+  - Merge pull request #374 from ansble/bug/misnamed-test
+  - fixed a misnamed test
+  - Merge pull request #373 from ansble/Coppa-Bernocchi-3.0.x 
+
+
+ ### - 3.0.0 * 6/19/2017, 2:33:58 PM *
 
   
 
