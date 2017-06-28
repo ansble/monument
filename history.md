@@ -1,4 +1,10 @@
-### - 3.0.1 * 6/27/2017, 9:57:15 PM *
+### - 3.0.2 * 6/27/2017, 10:09:28 PM *
+
+   - Merge pull request #378 from ansble/designfrontier-patch-1
+  - cleans up the layout of the readme a bit 
+
+
+ ### - 3.0.1 * 6/27/2017, 9:57:15 PM *
 
    - updates harken to latest
   - Merge pull request #375 from ansble/greenkeeper/eslint-4.1.0
