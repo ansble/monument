@@ -1,4 +1,19 @@
-### - 3.0.2 * 6/27/2017, 10:09:28 PM *
+### - 3.0.3 * 7/6/2017, 1:00:42 PM *
+
+   - Merge pull request #384 from ansble/master
+  - Merge pull request #383 from ansble/greenkeeper/chalk-2.0.1
+  - Merge pull request #382 from ansble/greenkeeper/iltorb-1.3.3
+  - Merge branch 'Coppa-Bernocchi-3.0.x' into greenkeeper/chalk-2.0.1
+  - Merge pull request #380 from ansble/greenkeeper/chalk-2.0.0
+  - chore(package): update iltorb to version 1.3.3
+  - chore(package): update chalk to version 2.0.1
+  - chore(package): update chalk to version 2.0.0
+  - Merge pull request #379 from ansble/Coppa-Bernocchi-3.0.x
+  - Merge branch 'master' into Coppa-Bernocchi-3.0.x
+  - Merge pull request #377 from ansble/Coppa-Bernocchi-3.0.x 
+
+
+ ### - 3.0.2 * 6/27/2017, 10:09:28 PM *
 
    - Merge pull request #378 from ansble/designfrontier-patch-1
   - cleans up the layout of the readme a bit 
