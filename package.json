@@ -59,7 +59,7 @@
     "chai": "~4.1.0",
     "chalk": "~2.0.1",
     "coveralls": "~2.13.1",
-    "eslint": "~4.1.1",
+    "eslint": "~4.2.0",
     "form-data": "~2.2.0",
     "http2": "~3.3.6",
     "istanbul": "~0.4.5",
