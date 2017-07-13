@@ -1,4 +1,13 @@
-### - 3.0.3 * 7/6/2017, 1:00:42 PM *
+### - 3.0.4 * 7/13/2017, 6:37:23 AM *
+
+   - Merge pull request #386 from ansble/greenkeeper/eslint-4.2.0
+  - Merge pull request #387 from ansble/greenkeeper/chai-4.1.0
+  - chore(package): update chai to version 4.1.0
+  - chore(package): update eslint to version 4.2.0
+  - Merge pull request #385 from ansble/Coppa-Bernocchi-3.0.x 
+
+
+ ### - 3.0.3 * 7/6/2017, 1:00:42 PM *
 
    - Merge pull request #384 from ansble/master
   - Merge pull request #383 from ansble/greenkeeper/chalk-2.0.1
