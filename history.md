@@ -1,4 +1,49 @@
-### - 3.0.4 * 7/13/2017, 6:37:23 AM *
+### - 3.0.5 * 7/27/2017, 8:20:23 AM *
+
+   - update harken to latest
+  - Merge pull request #389 from ansble/greenkeeper/eslint-4.3.0
+  - Merge pull request #390 from ansble/greenkeeper/ws-3.1.0
+  - fix(package): update ws to version 3.1.0
+  - chore(package): update eslint to version 4.3.0
+  - Merge pull request #388 from ansble/Coppa-Bernocchi-3.0.x
+  - 3.0.4
+  - preparing for release of v3.0.4
+  - Merge pull request #386 from ansble/greenkeeper/eslint-4.2.0
+  - Merge pull request #387 from ansble/greenkeeper/chai-4.1.0
+  - chore(package): update chai to version 4.1.0
+  - chore(package): update eslint to version 4.2.0
+  - Merge pull request #385 from ansble/Coppa-Bernocchi-3.0.x
+  - 3.0.3
+  - preparing for release of v3.0.3
+  - Merge pull request #384 from ansble/master
+  - Merge pull request #383 from ansble/greenkeeper/chalk-2.0.1
+  - Merge pull request #382 from ansble/greenkeeper/iltorb-1.3.3
+  - Merge branch 'Coppa-Bernocchi-3.0.x' into greenkeeper/chalk-2.0.1
+  - Merge pull request #380 from ansble/greenkeeper/chalk-2.0.0
+  - chore(package): update iltorb to version 1.3.3
+  - chore(package): update chalk to version 2.0.1
+  - chore(package): update chalk to version 2.0.0
+  - Merge pull request #379 from ansble/Coppa-Bernocchi-3.0.x
+  - Merge branch 'master' into Coppa-Bernocchi-3.0.x
+  - 3.0.2
+  - preparing for release of v3.0.2
+  - Merge pull request #378 from ansble/designfrontier-patch-1
+  - cleans up the layout of the readme a bit
+  - Merge pull request #377 from ansble/Coppa-Bernocchi-3.0.x
+  - 3.0.1
+  - preparing for release of v3.0.1
+  - updates harken to latest
+  - Merge pull request #375 from ansble/greenkeeper/eslint-4.1.0
+  - Merge pull request #376 from ansble/greenkeeper/eslint-4.1.1
+  - Merge branch 'greenkeeper/eslint-4.1.0' into greenkeeper/eslint-4.1.1
+  - chore(package): update eslint to version 4.1.1
+  - chore(package): update eslint to version 4.1.0
+  - Merge pull request #374 from ansble/bug/misnamed-test
+  - fixed a misnamed test
+  - Merge pull request #373 from ansble/Coppa-Bernocchi-3.0.x 
+
+
+ ### - 3.0.4 * 7/13/2017, 6:37:23 AM *
 
    - Merge pull request #386 from ansble/greenkeeper/eslint-4.2.0
   - Merge pull request #387 from ansble/greenkeeper/chai-4.1.0
