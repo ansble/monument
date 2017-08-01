@@ -1,4 +1,11 @@
-### - 3.0.5 * 7/27/2017, 8:20:23 AM *
+### - 3.0.6 * 7/31/2017, 9:10:43 PM *
+
+   - Merge pull request #392 from ansble/greenkeeper/mocha-3.5.0
+  - chore(package): update mocha to version 3.5.0
+  - Merge pull request #391 from ansble/Coppa-Bernocchi-3.0.x 
+
+
+ ### - 3.0.5 * 7/27/2017, 8:20:23 AM *
 
    - update harken to latest
   - Merge pull request #389 from ansble/greenkeeper/eslint-4.3.0

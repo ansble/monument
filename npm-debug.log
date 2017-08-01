@@ -1,0 +1,184 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@3.10.10
+3 info using node@v6.10.3
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/designfrontier/projects/monumentjs',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/designfrontier/.npm/monument/3.0.5/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/designfrontier/.npm correctMkdir not in flight; initializing
+10 info lifecycle monument@3.0.5~prepublish: monument@3.0.5
+11 silly lifecycle monument@3.0.5~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/designfrontier/.npm/monument/3.0.5/package.tgz',
+12 verbose tar pack   '/Users/designfrontier/projects/monumentjs' ]
+13 verbose tarball /Users/designfrontier/.npm/monument/3.0.5/package.tgz
+14 verbose folder /Users/designfrontier/projects/monumentjs
+15 verbose addLocalTarball adding from inside cache /Users/designfrontier/.npm/monument/3.0.5/package.tgz
+16 verbose correctMkdir /Users/designfrontier/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd monument@3.0.5
+18 verbose afterAdd /Users/designfrontier/.npm/monument/3.0.5/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/designfrontier/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/designfrontier/.npm/monument/3.0.5/package/package.json written
+21 silly publish { name: 'monument',
+21 silly publish   version: '3.0.5',
+21 silly publish   description: 'evented routing for nodejs for use on the server and in the client. Isomorphic!',
+21 silly publish   main: 'index.js',
+21 silly publish   scripts:
+21 silly publish    { start: 'node app.js',
+21 silly publish      test: 'npm run lint && istanbul cover _mocha -- *_test.js bin/*_test.js utils/**/*_test.js web-sockets/**/*_test.js security/**/*_test.js routes/**/*_test.js',
+21 silly publish      codeship: 'npm test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage',
+21 silly publish      lint: 'bin/lint.js',
+21 silly publish      release: 'npm test && echo \' => releasing\' && bin/release.js' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/designfrontier/monumentjs.git' },
+21 silly publish   bugs: { url: 'https://github.com/designfrontier/monumentjs/issues' },
+21 silly publish   author: { name: 'Daniel Sellers', email: 'daniel@designfrontier.net' },
+21 silly publish   license: 'MIT',
+21 silly publish   keywords:
+21 silly publish    [ 'nodejs',
+21 silly publish      'events',
+21 silly publish      'routing',
+21 silly publish      'isomorphic',
+21 silly publish      'browser',
+21 silly publish      'event',
+21 silly publish      'eda',
+21 silly publish      'server',
+21 silly publish      'http',
+21 silly publish      'web',
+21 silly publish      'webserver',
+21 silly publish      'framework',
+21 silly publish      'api',
+21 silly publish      'app',
+21 silly publish      'rest',
+21 silly publish      'restful' ],
+21 silly publish   dependencies:
+21 silly publish    { busboy: '~0.2.14',
+21 silly publish      'content-security-policy-builder': '~1.1.0',
+21 silly publish      dot: '~1.1.1',
+21 silly publish      etag: '~1.8.0',
+21 silly publish      glob: '~7.1.1',
+21 silly publish      harken: '~1.1.3',
+21 silly publish      iltorb: '~1.3.3',
+21 silly publish      'lodash.clonedeep': '~4.5.0',
+21 silly publish      'lodash.pick': '~4.4.0',
+21 silly publish      'media-typer': '~0.3.0',
+21 silly publish      mime: '~1.3.4',
+21 silly publish      'node-statsd': '~0.1.1',
+21 silly publish      platform: '~1.3.3',
+21 silly publish      'raw-body': '~2.2.0',
+21 silly publish      uuid: '~3.1.0',
+21 silly publish      ws: '~3.1.0',
+21 silly publish      bufferutil: '~3.0.0',
+21 silly publish      'utf-8-validate': '~3.0.2' },
+21 silly publish   devDependencies:
+21 silly publish    { chai: '~4.1.0',
+21 silly publish      chalk: '~2.0.1',
+21 silly publish      coveralls: '~2.13.1',
+21 silly publish      eslint: '~4.3.0',
+21 silly publish      'form-data': '~2.2.0',
+21 silly publish      http2: '~3.3.6',
+21 silly publish      istanbul: '~0.4.5',
+21 silly publish      minimist: '~1.2.0',
+21 silly publish      mocha: '~3.5.0',
+21 silly publish      'mock-require': '^2.0.1',
+21 silly publish      spdy: '~3.4.7',
+21 silly publish      'v8-profiler': '~5.7.0' },
+21 silly publish   engines: { node: '>4.0.0' },
+21 silly publish   optionalDependencies: { bufferutil: '~3.0.0', 'utf-8-validate': '~3.0.2' },
+21 silly publish   contributors:
+21 silly publish    [ { name: 'Adrian Bobev', email: 'adrian.bobev@gmail.com' },
+21 silly publish      { name: 'Andrew McKeever', email: 'andmckvr@gmail.com' },
+21 silly publish      { name: 'Artur Dryomov',
+21 silly publish        email: 'ming13@users.noreply.github.com' },
+21 silly publish      { name: 'Bruce Campbell', email: 'campbellbd@ldschurch.org' },
+21 silly publish      { name: 'Cory Brown', email: 'oh.wise.man@gmail.com' },
+21 silly publish      { name: 'Daniel Sellers', email: 'd.sellers@ldschurch.org' },
+21 silly publish      { name: 'Daniel Sellers', email: 'daniel@designfrontier.net' },
+21 silly publish      { name: 'Daniel Sellers', email: 'dsellers@instructure.com' },
+21 silly publish      { name: 'Darryl Dixon', email: 'piecedigitalstudios@gmail.com' },
+21 silly publish      { name: 'Ewen Chou', email: 'ewenchou@gmail.com' },
+21 silly publish      { name: 'Kelly Innes', email: 'kinnes@gmail.com' },
+21 silly publish      { name: 'Paul Shibanov', email: 'paul.shibanov@gmail.com' },
+21 silly publish      { name: 'Rahul Jain', email: 'rahul_jain@live.in' },
+21 silly publish      { name: 'Robert S Crawford', email: 'craw.rs@gmail.com' },
+21 silly publish      { name: 'ariessa', email: 'ariessa.norramli@gmail.com' },
+21 silly publish      { name: 'cosmologist10',
+21 silly publish        email: 'cosmologist10@localhost.localdomain' },
+21 silly publish      { name: 'greenkeeper[bot]',
+21 silly publish        email: 'greenkeeper[bot]@users.noreply.github.com' },
+21 silly publish      { name: 'Mattie Kenny', email: 'mattie@matsie.net' } ],
+21 silly publish   readme: '# monument\n\n`monument` is a super light event routed nodejs framework.\n\n[![NPM](https://nodei.co/npm/monument.png?downloadRank=true&stars=true)](https://nodei.co/npm/monument/)\n\n[![npm version](https://img.shields.io/npm/v/monument.svg?style=flat-square)](https://www.npmjs.com/package/monument)\n[![downloads](https://img.shields.io/npm/dm/monument.svg?style=flat-square)](http://npm-stat.com/charts.html?package=monument&from=2016-08-01)\n![build status](https://codeship.com/projects/881ed090-9c54-0132-655c-263ab955f60c/status?branch=master) \n[![David](https://img.shields.io/david/ansble/monument.svg?style=flat-square)](https://david-dm.org/ansble/monument)\n[![Coveralls branch](https://img.shields.io/coveralls/ansble/monument/master.svg?style=flat-square)](https://coveralls.io/r/ansble/monument?branch=master)\n[![Code Climate](https://img.shields.io/codeclimate/github/ansble/monument.svg?style=flat-square)](https://codeclimate.com/github/ansble/monument)\n[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/ansble/monument)\n[![Issue Stats](http://issuestats.com/github/ansble/monument/badge/pr?style=flat-square)](http://issuestats.com/github/ansble/monument)\n[![Issue Stats](http://issuestats.com/github/ansble/monument/badge/issue?style=flat-square)](http://issuestats.com/github/ansble/monument)\n[![Known Vulnerabilities](https://snyk.io/test/npm/monument/badge.svg)](https://snyk.io/test/npm/monument)\n[![Greenkeeper badge](https://badges.greenkeeper.io/ansble/monument.svg)](https://greenkeeper.io/)\n[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)\n[![Code of Conduct](https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square)](https://github.com/ansble/monument/blob/master/CODE_OF_CONDUCT.md)\n\n## Table of Contents\n- [How to Get Started](#how-to-get-started)\n- [Config Object and the Server](#config-object-and-the-server)\n- [Data and Events](#data-and-events)\n- [Security Configuration](#security-configuration)\n- [Template Language](#template-language)\n- [Route Documentation](docs/routes.md)\n- [Testing Documentation](docs/testing.md)\n- [Using Web Sockets with monument](docs/websockets.md)\n- [HTTP2 and SPDY with monument](docs/http2-server.md)\n- [Writing Route Handlers](docs/writing-route-handlers.md)\n- [Contributing](contributing.md)\n- [Sites Using Monument](docs/Monument-in-action.md)\n\n## How to Get Started\n\nThe easiest way to get started with monument is to use the CLI tool which does project lay down. `npm install -g monument-cli` From there a simple `monument new <path to project>` will get you up and running with stubbed tests, basic error handlers and an index route and everything you need to knock out an application fast.\n\n![getting started with monument gif](http://g.recordit.co/EwbTO7xDgy.gif) or the [slightly longer video version](http://recordit.co/EwbTO7xDgy)\n\nIt is also the easiest way to add routes and fata handlers!\n\n## Config Object and the Server\n\nWhen you create your server it takes a config object that allows you to pass in some options for your particular environment. It looks like this and these are the default values:\n\n```js\n{\n    port: 3000 // the port for the server to run on\n    , compress: true // turns on or off compression (deflate/gzip/br)\n    , routePath: \'./routes\' // the folder your routes live in\n    , templatePath: \'./templates\' // the folder where your templates live\n    , dotjs: {\n        //dotjs defaults\n        // see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.\n    }\n    , publicPath: \'./public\' // the folder where your static files live\n    , maxAge: 31536000 // time to cache static files client side in milliseconds\n    , etags: true // turns on or off etag generation and headers\n    , webSockets: false // default setting disables websockets. can be (false, true, \'passthrough\', \'data\')\n    \n    //the security object is brand new in this release\n    , security: {\n        xssProtection: true //default, can be set to false to disable\n        , poweredBy: \'bacon\' //the default is blank can be any string\n        , noSniff: true //default, can be set to false to disable\n        , frameguard: {\n            action: \'SAMEORIGIN\' //the default allows iframes from same domain\n            , domain: \'\' //defaults to not used. Only used for \'ALLOW-ORIGIN\' \n        }\n        , hsts: {\n            maxAge: 86400 // defaults to 1 day in seconds. All times in seconds\n            , includeSubDomains: true // optional. Defaults to true\n            , preload: true // optional. Defaults to true\n        }\n        , noCache: false // defaults to off. This is the nuclear option for caching\n        , publicKeyPin: { // default is off. This one is complicated read below...\n            sha256s: [\'keynumberone\', \'keynumbertwo\'] // an array of SHA-256 public key pins see below for how to obtain\n            , maxAge: 100 // time in seconds for the pin to be in effect\n            , includeSubdomains: false // whether or not to pin for sub domains as well defaults to false\n            , reportUri: false // whether or not to report problems to a URL more details below. Defaults to false\n            , reportOnly: false // if a reportURI is passed and this is set to true it reports and terminates connection\n        }\n        , contentSecurity: {\n            defaultSrc: `\'self\'` // optional. This is the default setting and is very strict\n        }\n    }\n\n    , server: spdy //an http API compliant server module. See below for more info [optional]\n    , serverOptions: { // The options object to be passed to the createServer function [optional]\n        key: fs.readFileSync(\'./server.key\')\n        , cert: fs.readFileSync(\'./server.crt\')\n        , ca: fs.readFileSync(./ca.pem)\n    }\n\n    // options for hooking into the statsd internal to monument\n    , statsd: {\n        host: \'server-address\'\n        , port: \'port\'\n        , prefix: \'string prefix\'\n        , suffix: \'string suffix\'\n    }\n}\n```\n\nAll the values are optional. It is used like this to create a server (heroku example of port):\n\n```js\nvar monument = require(\'monument\');\n\nmonument.server({\n        routePath: \'./routes\'\n        , templatePath: \'./templates\'\n        , publicPath: \'./public\'\n        , port: process.env.PORT || 3000\n      });\n```\n\nIf you need to get access to the server object listen to the `server:started` event.\nFor example do this:\n```\nmonument.events.once(\'server:started\', (settings) => {\n    // settings.server is the server object\n    // there is also a settings.port and settings.version that\n    //  are the port you are running on and the version of monument you are\n    //  running.\n    servers.push(settings.server);\n});\n```\n\n### `monument`\'s API\n\nIn addition to the server `monument` exposes the following:\n\n```js\nmonument.uuid\n```\na v4 UUID generator which return a UUID when called with no paramters\n\n```js\nmonument.events\n```\nThe event emitter/subscriber api for your app\n\n```js\nmonument.parser\n```\nThe body parser for dealing with forms\n\n\n#### Route API\n\n##### Adding new route with CLI:\n\n```\nnpm install -g monument-cli\n```\nCLI tool used to create new project.\n\nThe file routes.json will look like this in a brand new project:\n\n```\n{\n  "/": ["get"]\n}\n```\n\n#### Creating new routes in the routes.json file\n\nThe file routes.json will by default located in root of the file, but it\'s location is changeable.\n\nRoutes are defined as key value pairs where the key is the route and the value is an array of verbs that you want the route to respond to. For example a restful API for pro cycling teams might look like this:\n```\n{\n    "/api/v1/team": [ "get", "post" ],\n    "/api/v1/team/:teamid": [ "get", "put", "delete" ],\n    "/api/v1/team/:teamid/rider": [ "get", "post" ],\n    "/api/v1/team/:teamid/rider/:riderid": [ "get", "put", "delete" ]\n}\n```\n\nThe structure of a route event is: \'route:/path/to/resource:http-verb\'. The route events recieve an object right now, often called connection, that looks like this:\n\n```\n{\n  res: response,\n  req: request,\n  params: the url parameters as an object,\n  query: the queryparams as an object\n}\n```\n\n#### Adding new routes\n\n```\nrouteStore.add(\'/this/is/a/test\', \'get\');\n```\nA simple route...\n\n```\nrouteStore.add(\'/rangers/:name\', [ \'get\', \'post\', \'put\', \'delete\' ]);\n```\nA wildcard route...\n\n\n#### Remove routes\n\n```\nrouteStore.remove(\'/this/is/a/test\');\n```\nRemove all of a standard route\n\n```\nrouteStore.remove(\'/hobbits/:name\');\n```\nRemove all of a wild card route\n\n```\nrouteStore.remove(\'/hobbits/:name\', \'get\');\n```\nRemove a single verb from a wild card route\n\n```\nrouteStore.remove(\'/hobbits/:name\', [ \'post\', \'delete\' ]);\n```\nRemove multiple verbs from a wild card route\n\n\n#### Parse\n\n```\nrouteStore.parse({\'/this/is/a/route\': [\'get\']})\n```\n\n#### Get the route objects\n\n```\nrouteStore.get()\n```\nReturns {wildcard: {}, standard: {}} with the standard and wildcard route objects populated\n\n```\nrouteStore.getWildcard()\n```\nReturns an object containing the wild card routes and their meta information\n\n```\nrouteStore.getStandard()\n```\nReturns an object containing the standard routes and their meta information\n\nFor more details, Have a look on /docs/routes.md file\n\n\n### Etags\nHash based etags are now available by default. You can turn them off by adding `\'etags\': false` to your config object (passed into `monument.server`).\n\nThey are generated and used for all static files, and all responses that use `res.send`. One of the cooler things we did was have monumen cache the etags for static assets. That means they get created the first time they are requested after the server starts up, and for all subsequent requests the etag is pulled from an in memory cache so that the file i/o is only done if there is a reason to stream the file to the client. Makes them fast and light!\n\n### Security Configuration\n\nThs server config opbject provides a security object inside it for you to specify what security options you would like to turn on at the server level. They are detailed in the example object above but below is more information on each of the options.\n\nWe have done our best to place an out-of-the-box monument server in a secure posture. For instance we autmatically enable HTTP Strict Transport Security headers, No Sniff headers, XSS Protection Headers (where it is secure to do so), Same origin Framegaurd headers, and a strict Content Security Poicy. All without you having to specify anything. We also shut down the powered by header out of the box because we care more about intruders getting information about your server then on seeing who is using monument.\n\nThe one thing we don\'t do is handle Public Key Pinning without configuration. But you can easily add that if you want!  Most of the settings in security turn headers on and off, and documentation around those headers can be found on [OWASP](https://www.owasp.org/index.php/List_of_useful_HTTP_headers) and in [helmet and its source code](https://www.npmjs.com/package/helmet). Much of the code here is inspired by and adapted from helmet.\n\n#### Powered By\nYou can set this value to whatever you want it to look like your server is powered by. By default it is off and the server does not return the `X-Powered-By` header. This is more secure then specifying it so we receommend you leave this alone, but since you are an adult you are free to set a value here. Any string passed here will become the value of the `X-Powered-By` header.\n\n#### XSS Protection\nIf set to false this turns off the X-XSS-Protection header for all browsers. This header is disabled in IE < 9 because it opens up vulnerabilities. In everything else it is enabled by default.\n\n#### No Sniff\nIf set to false this turns off the X-Content-Type-Options header for all browsers. This header prevents browsers from trying to infer mime type when a file with a mime type is downloaded. This helps prevent download related vulnerabilities and the misinterpretation of file types.\n\n#### Frameguard\nGuard is a weird looking word. \nNot that we have that out of the way frameguard allows you to specify under what conditions your application may be wrapped in an `iframe`. Setting `action: \'DENY\'` means that your site may never be wrapped in an `iframe`. The default is \'SAMEORIGIN\' which allows wrapping of your site by essentially your app. The last allowed setting, `action: \'ALLOW-ORIGIN\'`, requires that you pass a `domain` value as well. It allows the specified domain to wrap your application in an iframe. All the calculations for `SAMEORIGIN` and `ALLOW-ORIGIN` follow the CORS rules for determining origin. So `www.designfrontier.net` and `designfrontier.net` are different origins.\n\n#### HSTS (HTTP Strict Transport Security)\nThis tells browsers to require HTTPS security if the connection started out as an HTTPS connection. It does not force the connection to switch, it just requires all subsequent requests by the page to use HTTPS if the page was requested with HTTPS. To disable it set `config.security.hsts` to `false`. It is set with a `maxAge` much like caching. The `maxAge` is set in seconds (not ms) and must be a positive number. \n\nThe two optional settings: `includeSubDomains` and `preload` are turned on by default. `includeSubDomains` requires any request to a subdmain of the current domain to be HTTPS as well. `preload` is a Google Chrome specific extension that allows you to submit your site for baked-into-the-browser HSTS. With it set you can submit your site to [this page](https://hstspreload.appspot.com/). Both of these can be individually turned off by setting them to false in the config object.\n\nFor more information the spec is [available](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04).\n\n#### No Cache\nBefore using this think long and hard about it. It shuts down all client side caching for the server. All of it. As best as it can be shut down. You can set it to an object `{noEtag: true}` if you want to remove etags as well. If you merely set it to true then all no cache headers will be set but the ETag header will not be removed.\n\nThere is now also a `res.noCache` function that allows you to do the same thing but on a per request/route/user (however you program it) basis. This is a much better option then setting noCache server wide.\n\n#### Public Key Pin\nThis one is a bit of a beast. Before setting it and using it please read: [the spec](https://tools.ietf.org/html/rfc7469), [this mdn article](https://developer.mozilla.org/en-US/docs/Web/Security/Public_Key_Pinning) and [this tutorial](https://timtaubert.de/blog/2014/10/http-public-key-pinning-explained/). It\'s a great security feature to help prevent man in the middle attacks, but it is also complex.\n\nEnough of the warnings! How do you configure it? The config object above explains it pretty well. Some details about `includeSubdomains`: it pins all sub domains of your site if it is set to true. Turned off by setting it to false.\n\n`reportUri` takes a URL and changes the header so that the browser can corretly handle the reporting of mismatches between pins and your certificate keys. If this is set without `reportOnly` being set to false then it only reports it does not also terminate the connection. Setting `reportOnly` to false means that the connection will be terminated if it does not match the pins as well as reporting.\n\nIf you specify a report URI it should be ready to recieve a POST from browsers in the form (described here)[https://tools.ietf.org/html/rfc7469#section-3]. The object you should expect looks like this (sourced from previous link):\n\n```js\n{\n    "date-time": date-time,\n    "hostname": hostname,\n    "port": port,\n    "effective-expiration-date": expiration-date,\n    "include-subdomains": include-subdomains,\n    "noted-hostname": noted-hostname,\n    "served-certificate-chain": [\n        pem1, ... pemN\n    ],\n    "validated-certificate-chain": [\n        pem1, ... pemN\n    ],\n    "known-pins": [\n        known-pin1, ... known-pinN\n    ]\n}\n```\n\n#### Content Security Policy\n\nThis is the Content Security Policy configuration. Content Security Policies are amazing and if you aren\'t familiar with them you should [go read up on them](https://developer.mozilla.org/en-US/docs/Web/Security/CSP). Firefox pioneered them a long time ago and they have become a powerful standard for protecting your end users.\n\nBecause of the extensive options available in configuring your CSP we recommend that you go take a look at [the MDN article on directives](https://developer.mozilla.org/en-US/docs/Web/Security/CSP/CSP_policy_directives). All of the options they spell out are supported. The directives need to be passed in camelCase though (`defaultSrc` not `default-src`).\n\nThe default is a very strict `default-src \'self\'` which prevents any files from outside the current domain from being loaded and/or executed. You will probably want to ease that off a hair. \n\nIn the event that you don\'t want a Content Security Policy (why!? WHY!? Trust us you want one) you can disable it by setting `config.security.contentSecurity` to false in the config section of your server. This is not a good idea.\n\n### PUT, POST, UPDATE and Parsing Out Body\n\nAt some point you are going to need to deal with body data from a form or ajax request. This is one of the areas where monument diverges from the mainstream you may be used to in server side js. We expose a parser function that you use like this in the event handler for the route you want:\n\n```js\nvar parser = require(\'monument\').parser;\n\nevents.on(\'route:/join:post\', function (connection) {\n  //parse out the request body\n  parser(connection, function (err, body) {\n    console.log(err, body);\n    connection.res.end(\'route /join now responding to post requests\');\n  });\n});\n```\n\n`body` is the parsed body of the request and is passed into the callback function.\n\nThe `monument.parser` function returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit(\'error:500\', {message: \'The data you sent wasn\'t properly formatted\', connection: connection});`\n\n#### Example object\n```js\n{\n    "file1": {\n        "tempFile": "/tmp/some/file.jpg"\n        , "mimetype": "image/jpg"\n        , "file": //this is the file stream\n        , "encoding": "UTF-8"\n    }\n    , "name": "Daniel"\n    , "check": "true"\n}\n```\n\n### Data and Events\n\n#### Required Events (State Machine)\nWe pulled in [event-state](http://github.com/ansble/event-state) to provide a simple way to do something after multiple events have been fired. Its syntax is very simliar to `Promise.all` and it takes an array of events to listen for.\n\n```js\nemitter.required([\'event-1\', \'event-2\', \'event-3\'], function (dataArray) {\n    //do something here when all three events have triggered\n});\n```\n\nMore to come... but think about the idea of resource pooling and individual data modules that front DSLs.\n\n### Web Socket Connections\n\nmoument has a built in websocket server! So when you spin up a server you can connect either through normal `http` or through a web socket connection. Under the hoods it uses [ws](https://www.npmjs.com/package/ws) which provides a light weight, performant, and standards compliant web socket server.\n\nFor more information check out [Using Web Sockets with monument](docs/websockets.md).\n\n\n### Static Assetts\n\nStatic assetts live in `/public` and can be organized in whatever way you see fit. All folders within public become routes on root. So, `/public/compnents` answers to requests on `/components` when the server is running. These static routes take precedent over evented routes and essentially prevent non-static route handling from happening on them.\n\nYou can interact with these routes through events to a certain degree. They raise a `static:served` with a payload of the file url that was served, when the file exists. If the file does not exist they raise a `static:missing` with the file url as payload. This will let you log and handle these conditions as needed.\n\n## Template Language\nThe templates right now default to [dot](http://olado.github.io/doT/index.html) it\'s documentation is pretty good... though there is definitely room for improvement there. It is still the best place to learn about templating at the moment though.\n',
+21 silly publish   readmeFilename: 'readme.md',
+21 silly publish   gitHead: '1f43156e3d470492b6676faf79f5ca44e257f2e2',
+21 silly publish   homepage: 'https://github.com/designfrontier/monumentjs#readme',
+21 silly publish   _id: 'monument@3.0.5',
+21 silly publish   _shasum: 'fdca73ae334e9beb59555414ab839d8641d80186',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name monument
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry http://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'monument',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'monument',
+26 silly mapToRegistry   name: 'monument',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri http://registry.npmjs.org/monument
+28 verbose publish registryBase http://registry.npmjs.org/
+29 silly publish uploading /Users/designfrontier/.npm/monument/3.0.5/package.tgz
+30 verbose request uri http://registry.npmjs.org/monument
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 9:10:04 PM
+33 verbose request using bearer token for auth
+34 verbose request id 9b5a7378cabc23c4
+35 http request PUT http://registry.npmjs.org/monument
+36 http 403 http://registry.npmjs.org/monument
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '95',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Tue, 01 Aug 2017 03:10:05 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-sjc3150-SJC',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1501557005.350138,VS0,VE344',
+37 verbose headers   vary: 'Accept-Encoding, Accept' }
+38 verbose request invalidating /Users/designfrontier/.npm/registry.npmjs.org/monument on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: "You cannot publish over the previously published version 3.0.5." : monument
+40 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+40 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+40 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:187:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1048:10)
+40 verbose stack     at emitOne (events.js:96:13)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:969:12)
+41 verbose statusCode 403
+42 verbose pkgid monument
+43 verbose cwd /Users/designfrontier/projects/monumentjs
+44 error Darwin 16.7.0
+45 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+46 error node v6.10.3
+47 error npm  v3.10.10
+48 error code E403
+49 error "You cannot publish over the previously published version 3.0.5." : monument
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
