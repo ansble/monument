@@ -1,4 +1,9 @@
-### - 3.0.6 * 7/31/2017, 9:10:43 PM *
+### - 3.0.7 * 7/31/2017, 9:11:00 PM *
+
+  
+
+
+ ### - 3.0.6 * 7/31/2017, 9:10:43 PM *
 
    - Merge pull request #392 from ansble/greenkeeper/mocha-3.5.0
   - chore(package): update mocha to version 3.5.0
