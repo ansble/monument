@@ -1,4 +1,24 @@
- ### - 3.0.8 * 7/31/2017, 9:11:13 PM *
+### - 3.0.9 * 8/8/2017, 9:50:50 AM *
+
+   - Merge branch 'Coppa-Bernocchi-3.0.x' of https://github.com/ansble/monument into Coppa-Bernocchi-3.0.x
+  - Merge pull request #397 from ansble/greenkeeper/eslint-4.4.1
+  - Merge pull request #394 from ansble/greenkeeper/raw-body-2.3.0
+  - Merge pull request #396 from ansble/greenkeeper/chalk-2.1.0
+  - chore(package): update eslint to version 4.4.1
+  - chore(package): update chalk to version 2.1.0
+  - fix(package): update raw-body to version 2.3.0
+  - 3.0.8
+  - preparing for release of v3.0.8
+  - 3.0.7
+  - preparing for release of v3.0.7
+  - 3.0.6
+  - preparing for release of v3.0.6
+  - Merge pull request #393 from ansble/Coppa-Bernocchi-3.0.x
+  - Merge pull request #392 from ansble/greenkeeper/mocha-3.5.0
+  - chore(package): update mocha to version 3.5.0 
+
+
+  ### - 3.0.8 * 7/31/2017, 9:11:13 PM *
 
  ### - 3.0.7 * 7/31/2017, 8:36:54 PM *
   
