@@ -47,7 +47,7 @@ cp.exec(gitLogCommand, (err, stdout) => {
         // run npm version
         cp.exec(`npm version ${options.type}`, () => {
           console.log('npm version to rev for release');
-          cp.exec('npm publish', () => {
+          cp.exec('npm publish --registry https://registry.npmjs.com', () => {
             console.log('pushing to origin');
 
             cp.exec('git push origin HEAD', Function.prototype);
