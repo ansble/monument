@@ -1,11 +1,12 @@
-### - 3.0.7 * 7/31/2017, 8:36:54 PM *
+ ### - 3.0.8 * 7/31/2017, 9:11:13 PM *
 
+ ### - 3.0.7 * 7/31/2017, 8:36:54 PM *
   
-
-
  ### - 3.0.6 * 7/31/2017, 8:28:57 PM *
 
-   - Merge pull request #391 from ansble/Coppa-Bernocchi-3.0.x
+  - Merge pull request #392 from ansble/greenkeeper/mocha-3.5.0
+  - chore(package): update mocha to version 3.5.0
+  - Merge pull request #391 from ansble/Coppa-Bernocchi-3.0.x
   - 3.0.5
   - preparing for release of v3.0.5
   - update harken to latest
