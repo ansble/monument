@@ -1,6 +1,6 @@
 {
   "name": "monument",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
@@ -59,7 +59,7 @@
     "chai": "~4.1.0",
     "chalk": "~2.1.0",
     "coveralls": "~2.13.1",
-    "eslint": "~4.4.1",
+    "eslint": "~4.5.0",
     "form-data": "~2.2.0",
     "http2": "~3.3.6",
     "istanbul": "~0.4.5",
