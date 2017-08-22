@@ -1,6 +1,6 @@
 {
   "name": "monument",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
