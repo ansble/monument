@@ -1,4 +1,11 @@
-### - 3.0.9 * 8/8/2017, 9:50:50 AM *
+### - 3.0.10 * 8/21/2017, 10:00:28 PM *
+
+   - Merge pull request #399 from ansble/greenkeeper/eslint-4.5.0
+  - chore(package): update eslint to version 4.5.0
+  - Merge pull request #398 from ansble/Coppa-Bernocchi-3.0.x 
+
+
+ ### - 3.0.9 * 8/8/2017, 9:50:50 AM *
 
    - Merge branch 'Coppa-Bernocchi-3.0.x' of https://github.com/ansble/monument into Coppa-Bernocchi-3.0.x
   - Merge pull request #397 from ansble/greenkeeper/eslint-4.4.1
