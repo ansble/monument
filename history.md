@@ -1,4 +1,18 @@
-### - 3.0.10 * 8/21/2017, 10:00:28 PM *
+### - 3.0.11 * 8/25/2017, 7:38:00 AM *
+
+   - Merge pull request #401 from ansble/greenkeeper/harken-1.2.0
+  - Merge pull request #402 from ansble/greenkeeper/form-data-2.3.1
+  - chore(package): update form-data to version 2.3.1
+  - fix(package): update harken to version 1.2.0
+  - Merge pull request #400 from ansble/Coppa-Bernocchi-3.0.x
+  - 3.0.10
+  - preparing for release of v3.0.10
+  - Merge pull request #399 from ansble/greenkeeper/eslint-4.5.0
+  - chore(package): update eslint to version 4.5.0
+  - Merge pull request #398 from ansble/Coppa-Bernocchi-3.0.x 
+
+
+ ### - 3.0.10 * 8/21/2017, 10:00:28 PM *
 
    - Merge pull request #399 from ansble/greenkeeper/eslint-4.5.0
   - chore(package): update eslint to version 4.5.0
