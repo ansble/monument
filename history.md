@@ -1,4 +1,12 @@
-### - 3.1.0 * 8/25/2017, 2:34:21 PM *
+### - 3.1.1 * 8/28/2017, 9:49:36 PM *
+
+   - Merge pull request #405 from ansble/greenkeeper/mime-1.4.0
+  - fix(package): update mime to version 1.4.0
+  - Merge pull request #404 from ansble/Tre-Valli-Varesine-3.1.x
+  - Merge pull request #403 from ansble/Coppa-Bernocchi-3.0.x 
+
+
+ ### - 3.1.0 * 8/25/2017, 2:34:21 PM *
 
   
 
