@@ -1,4 +1,11 @@
-### - 3.1.1 * 8/28/2017, 9:49:36 PM *
+### - 3.1.2 * 9/4/2017, 8:32:02 PM *
+
+   - Merge pull request #407 from ansble/greenkeeper/eslint-4.6.0
+  - chore(package): update eslint to version 4.6.0
+  - Merge pull request #406 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.1 * 8/28/2017, 9:49:36 PM *
 
    - Merge pull request #405 from ansble/greenkeeper/mime-1.4.0
   - fix(package): update mime to version 1.4.0
