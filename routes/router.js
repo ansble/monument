@@ -6,11 +6,13 @@ const path = require('path')
       , events = require('harken')
       , mime = require('mime')
       , brotli = require('iltorb')
+      , onHeader = require('on-header')
       , routeStore = require('./routeStore')
       , matchSimpleRoute = require('./matchSimpleRoute')
       , isWildCardRoute = require('./isWildCardRoute')
       , parseWildCardRoute = require('./parseWildCardRoute')
       , setupStaticRoutes = require('./serverSetup')
+      , performanceHeaders = require('./performanceHeaders')
       , setSecurityHeaders = require('../security')
 
       , not = require('../utils').not
@@ -90,7 +92,9 @@ module.exports = (routesJson, config) => {
         , routeInfo
         , res = resIn;
 
-        // set up the statsd timing listeners
+    performanceHeaders.start(res);
+    onHeader(res, performanceHeaders.end(res));
+    // set up the statsd timing listeners
     if (statsdClient) {
       // Add response listeners
       res.once('finish', sendStatsd);
