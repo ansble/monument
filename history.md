@@ -1,4 +1,12 @@
-### - 3.1.2 * 9/4/2017, 8:32:02 PM *
+### - 3.1.3 * 9/12/2017, 6:54:14 AM *
+
+   - Merge pull request #411 from ansble/master
+  - Merge pull request #410 from ansble/greenkeeper/mocha-3.5.3
+  - chore(package): update mocha to version 3.5.3
+  - Merge pull request #408 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.2 * 9/4/2017, 8:32:02 PM *
 
    - Merge pull request #407 from ansble/greenkeeper/eslint-4.6.0
   - chore(package): update eslint to version 4.6.0
