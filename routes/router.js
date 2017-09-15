@@ -130,7 +130,7 @@ module.exports = (routesJson, config) => {
 
             if (req.method.toLowerCase() === 'head') {
               res.writeHead(succesStatus, {
-                'Content-Type': mime.lookup(pathname)
+                'Content-Type': mime.getType(pathname)
                 , 'Cache-Control': `maxage=${maxAge}`
                 , Expires: new Date(expires + maxAge).toUTCString()
                 , 'Content-Encoding': compression
@@ -140,7 +140,7 @@ module.exports = (routesJson, config) => {
             } else if (not(compression === 'none')) {
               // we have compression!
               res.writeHead(succesStatus, {
-                'Content-Type': mime.lookup(pathname)
+                'Content-Type': mime.getType(pathname)
                 , 'Cache-Control': `maxage=${maxAge}`
                 , Expires: new Date(expires + maxAge).toUTCString()
                 , 'Content-Encoding': compression
@@ -194,7 +194,7 @@ module.exports = (routesJson, config) => {
               // no compression carry on...
               // return with the correct heders for the file type
               res.writeHead(succesStatus, {
-                'Content-Type': mime.lookup(pathname)
+                'Content-Type': mime.getType(pathname)
                 , 'Cache-Control': `maxage=${maxAge}`
                 , Expires: new Date(expires + maxAge).toUTCString()
               });
@@ -217,7 +217,7 @@ module.exports = (routesJson, config) => {
 
     } else if (path.join(process.cwd(), pathname) === routePath) {
       res.writeHead(succesStatus, {
-        'Content-Type': mime.lookup('routes.json')
+        'Content-Type': mime.getType('routes.json')
       });
 
       res.send(routesJson);
