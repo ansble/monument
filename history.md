@@ -1,4 +1,10 @@
-### - 3.1.4 * 9/14/2017, 9:14:15 PM *
+### - 3.1.5 * 9/15/2017, 7:54:04 AM *
+
+   - Merge pull request #417 from ansble/greenkeeper/ws-3.2.0
+  - fix(package): update ws to version 3.2.0 
+
+
+ ### - 3.1.4 * 9/14/2017, 9:14:15 PM *
 
    - Merge pull request #415 from ansble/greenkeeper/mime-2.0.1
   - changes the usage of mime to match the new signatures
