@@ -1,4 +1,27 @@
-### - 3.1.5 * 9/15/2017, 7:54:04 AM *
+### - 3.1.6 * 9/18/2017, 7:40:39 PM *
+
+   - Merge pull request #419 from ansble/greenkeeper/eslint-4.7.1
+  - chore(package): update eslint to version 4.7.1
+  - Merge pull request #416 from ansble/Tre-Valli-Varesine-3.1.x
+  - 3.1.5
+  - preparing for release of v3.1.5
+  - Merge pull request #417 from ansble/greenkeeper/ws-3.2.0
+  - fix(package): update ws to version 3.2.0
+  - 3.1.4
+  - preparing for release of v3.1.4
+  - Merge pull request #415 from ansble/greenkeeper/mime-2.0.1
+  - changes the usage of mime to match the new signatures
+  - fix(package): update mime to version 2.0.1
+  - Merge pull request #412 from ansble/Tre-Valli-Varesine-3.1.x
+  - 3.1.3
+  - preparing for release of v3.1.3
+  - Merge pull request #411 from ansble/master
+  - Merge pull request #410 from ansble/greenkeeper/mocha-3.5.3
+  - chore(package): update mocha to version 3.5.3
+  - Merge pull request #408 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.5 * 9/15/2017, 7:54:04 AM *
 
    - Merge pull request #417 from ansble/greenkeeper/ws-3.2.0
   - fix(package): update ws to version 3.2.0 
