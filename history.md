@@ -1,4 +1,11 @@
-### - 3.1.6 * 9/18/2017, 7:40:39 PM *
+### - 3.1.7 * 9/22/2017, 8:03:10 AM *
+
+   - Merge pull request #422 from ansble/greenkeeper/eslint-4.7.2
+  - chore(package): update eslint to version 4.7.2
+  - Merge pull request #420 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.6 * 9/18/2017, 7:40:39 PM *
 
    - Merge pull request #419 from ansble/greenkeeper/eslint-4.7.1
   - chore(package): update eslint to version 4.7.1
