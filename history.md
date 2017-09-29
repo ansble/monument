@@ -1,4 +1,15 @@
-### - 3.1.7 * 9/22/2017, 8:03:10 AM *
+### - 3.1.8 * 9/28/2017, 11:55:02 AM *
+
+   - Merge pull request #426 from ansble/mime-2.0.3-security-fix
+  - Update package.json
+  - Merge pull request #425 from ansble/greenkeeper/coveralls-2.13.3
+  - Merge pull request #424 from ansble/greenkeeper/mime-2.0.2
+  - chore(package): update coveralls to version 2.13.3
+  - Merge pull request #423 from ansble/Tre-Valli-Varesine-3.1.x
+  - chore(package): update mime to version 2.0.2 
+
+
+ ### - 3.1.7 * 9/22/2017, 8:03:10 AM *
 
    - Merge pull request #422 from ansble/greenkeeper/eslint-4.7.2
   - chore(package): update eslint to version 4.7.2
