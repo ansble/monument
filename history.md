@@ -1,4 +1,12 @@
-### - 3.1.8 * 9/28/2017, 11:55:02 AM *
+### - 3.1.9 * 9/29/2017, 7:53:40 AM *
+
+   - Merge pull request #428 from ansble/greenkeeper/coveralls-3.0.0
+  - Update package.json
+  - Merge branch 'Tre-Valli-Varesine-3.1.x' into greenkeeper/coveralls-3.0.0
+  - chore(package): update coveralls to version 3.0.0 
+
+
+ ### - 3.1.8 * 9/28/2017, 11:55:02 AM *
 
    - Merge pull request #426 from ansble/mime-2.0.3-security-fix
   - Update package.json
