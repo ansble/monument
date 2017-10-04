@@ -1,4 +1,21 @@
-### - 3.1.9 * 9/29/2017, 7:53:40 AM *
+### - 3.1.10 * 10/4/2017, 6:23:43 AM *
+
+   - Merge pull request #436 from ansble/greenkeeper/mocha-4.0.0
+  - Merge branch 'Tre-Valli-Varesine-3.1.x' into greenkeeper/mocha-4.0.0
+  - Merge pull request #435 from ansble/greenkeeper/eslint-4.8.0
+  - Merge branch 'Tre-Valli-Varesine-3.1.x' into greenkeeper/eslint-4.8.0
+  - chore(package): update mocha to version 4.0.0
+  - Merge pull request #433 from brunolm/429/yarn-lock
+  - Merge pull request #431 from elementh/update/lock-down-dependecies
+  - Added package-lock to prevent sub-dependencies from updating.
+  - Add yarn lock
+  - chore(package): update eslint to version 4.8.0
+  - Locked down dependencies version.
+  - Merge pull request #430 from ansble/Tre-Valli-Varesine-3.1.x
+  - Merge pull request #427 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.9 * 9/29/2017, 7:53:40 AM *
 
    - Merge pull request #428 from ansble/greenkeeper/coveralls-3.0.0
   - Update package.json
