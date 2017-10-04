@@ -24,7 +24,6 @@ const path = require('path')
             }
           });
         } catch (err) {
-          console.log(err, routePathIn);
           throw new Error(routeErrorText);
         }
 
