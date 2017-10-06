@@ -1,4 +1,13 @@
-### - 3.1.10 * 10/4/2017, 6:23:43 AM *
+### - 3.1.11 * 10/5/2017, 9:16:46 PM *
+
+   - Merge pull request #438 from ansble/greenkeeper/harken-1.2.3
+  - Merge pull request #442 from juliusMbu1/master
+  - Corrects a typo
+  - fix(package): update harken to version 1.2.3
+  - Merge pull request #437 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.10 * 10/4/2017, 6:23:43 AM *
 
    - Merge pull request #436 from ansble/greenkeeper/mocha-4.0.0
   - Merge branch 'Tre-Valli-Varesine-3.1.x' into greenkeeper/mocha-4.0.0
