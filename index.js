@@ -11,6 +11,7 @@ const events = require('harken')
 
       , wrapper = (configIn) => {
         const configObj = config.set(configIn)
+              , logger = configObj.log
               , routes = require(configObj.routeJSONPath);
 
         // take care of any setup tasks before starting the server
@@ -24,7 +25,7 @@ const events = require('harken')
             webSockets(server, configIn.webSockets);
           }
 
-          console.log(`monument v${pkg.version} up and running on port: ${configObj.port}`);
+          logger.info(`monument v${pkg.version} up and running on port: ${configObj.port}`);
           events.emit('server:started', {
             version: pkg.version
             , port: configObj.port
