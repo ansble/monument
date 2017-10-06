@@ -38,7 +38,7 @@ The easiest way to get started with monument is to use the CLI tool which does p
 
 ![getting started with monument gif](http://g.recordit.co/EwbTO7xDgy.gif) or the [slightly longer video version](http://recordit.co/EwbTO7xDgy)
 
-It is also the easiest way to add routes and fata handlers!
+It is also the easiest way to add routes and data handlers!
 
 ## Config Object and the Server
 
