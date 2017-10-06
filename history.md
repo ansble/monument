@@ -1,4 +1,10 @@
-### - 3.1.11 * 10/5/2017, 9:16:46 PM *
+### - 3.2.0 * 10/5/2017, 9:34:16 PM *
+
+   - Merge pull request #446 from ansble/feature/refactor-some-complex-functions
+  - Refactors two of the complex functions to be a little simpler 
+
+
+ ### - 3.1.11 * 10/5/2017, 9:16:46 PM *
 
    - Merge pull request #438 from ansble/greenkeeper/harken-1.2.3
   - Merge pull request #442 from juliusMbu1/master
