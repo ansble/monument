@@ -7,7 +7,7 @@ Route creation in monument is based on convention and it requires you to edit a 
 First, get the CLI tools (`npm install -g monument-cli` ) and use them to create a new project.
 
 Part of the project structure for `monument` is the routes.json file. It will look like this in a brand new project:
-```
+```js
 {
   "/": ["get"]
 }
@@ -22,7 +22,7 @@ This is fairly simple but it would probably make sense to talk about what the va
 The location of the routes.json file is specified in the confining object, so you can put it wherever, but the default location is at the root of your project.
 
 Routes are defined as key value pairs where the key is the route and the value is an array of verbs that you want the route to respond to. For example a restful API for pro cycling teams might look like this:
-```
+```js
 {
     "/api/v1/team": [ "get", "post" ],
     "/api/v1/team/:teamid": [ "get", "put", "delete" ],
@@ -39,7 +39,7 @@ The structure of a route event is: 'route:/path/to/resource:http-verb'. So if yo
 
 The route events recieve an object right now, often called connection, that looks like this
 
-```
+```js
 {
   res: response,
   req: request,
@@ -54,7 +54,7 @@ these are the request and response objects from node. The other thing of interes
 
 Generally rout handlers live in the /routes directory, however this is configurable in the server's configure object. No matter where they live though they look like this:
 
-```
+```js
 events.on('route:/api/v1/team/:teamid:get', (connection) => {
     connection.res.send('hello team');
 });
@@ -66,7 +66,7 @@ The handler listens for the route event and then responds with the connection ob
 
 ### Adding new routes
 
-```
+```js
 // A simple route...
 routeStore.add('/this/is/a/test', 'get');
 
@@ -80,7 +80,7 @@ If you want to add verbs to an existing route then you call `.add` again with th
 
 ### Remove routes
 
-```
+```js
 // remove all of a standard route
 routeStore.remove('/this/is/a/test');
 
@@ -99,7 +99,7 @@ The api for removing is pretty simple as well. Pass the route to change and then
 
 ### Parse
 
-```
+```js
 routeStore.parse({'/this/is/a/route': ['get']})
 ```
 
@@ -108,7 +108,7 @@ You can pass a whole router full of route config as an object to the `parse` met
 
 ### Get the route objects
 
-```
+```js
 routeStore.get() // returns {wildcard: {}, standard: {}} with the standard and wildcard route objects populated
 
 routeStore.getWildcard() // Returns an object containing the wild card routes and their meta information
