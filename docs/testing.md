@@ -43,7 +43,7 @@ describe('main route file tests', () => {
 
 ```
 
-Ok let's take a closer look at what is going on.
+Okay, let's take a closer look at what is going on.
 
 ```
 /* eslint-env node, mocha */
@@ -93,7 +93,7 @@ This gets a bit more complicated when we start dealing with data, but not that m
 ## Testing Data modules
 This is going to feel very familiar if you read the section on testing routes. The process is essentially the same.
 
-The basic pattern here is: 1) listen for the event that the data module will respond with 2) emit the event that the data module listens too 3) check to see that the value you recieve is what you expected.
+The basic pattern here is: 1) listen for the event that the data module will respond with 2) emit the event that the data module listens too 3) check to see that the value you receive is what you expected.
 
 In a simple module this looks like:
 ```
@@ -118,9 +118,9 @@ describe('new Handler tests', () => {
 ```
 The top part should look familiar, though we aren't using the fakeConnection here because data models are not concerned with the connection.
 
-We setup the test with `events.once` so that it will recieve the response of the data module, and then emit the data event that our module is listening too.
+We setup the test with `events.once` so that it will receive the response of the data module, and then emit the data event that our module is listening too.
 
-Once we recieve our response we check to see that it is the correct data and then call `done()` letting mocha know that the test has completed.
+Once we receive our response we check to see that it is the correct data and then call `done()` letting mocha know that the test has completed.
 
 The one thing that gets tricky here is that you may need to insert stubs or initial data into your module so that it doesn't make database/network calls. How you do this is largely up to you. You could export a function for recieving stub data from your data module for instance. We are working to find a consistent way to make this easy, and will have more information once we nail it down.
 
@@ -162,4 +162,4 @@ describe('main route file tests', () => {
 ```
 We emit all of the events it is looking for, stubbing the ones that need to be stubbed, and then check to see that the result is what it should be. 
 
-That wasn't too hard was it?
+That wasn't too hard, was it?

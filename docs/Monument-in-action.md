@@ -5,6 +5,6 @@
 - [ansble store](http://www.ansble.com) a generic REST API data store. Hosted and self-hosted options
 - [door prizes for eventbrite events](http://prizes.ansble.com)
 
-## add yours!
+## Add yours!
 
 Send us a pull request as you get your site setup!

@@ -18,7 +18,7 @@ Any other value passed to the `config.webSocket` will be treated as `true` turni
 
 ## message structure
 
-This is the main opinion that monumen enforces. For your message to go anywhere once it hits the server you will need to give it a little bit of meta information and structure. Web Sockets is just a pipeline so it doesn't really care about what you pass through it other then that it is text.
+This is the main opinion that `monument` enforces. For your message to go anywhere once it hits the server you will need to give it a little bit of meta information and structure. Web Sockets is just a pipeline so it doesn't really care about what you pass through it other then that it is text.
 
 ```
 {
