@@ -15,12 +15,12 @@ describe('The Setup tests', () => {
   });
 
   it('should throw if an invalid value for routePath is passed', () => {
-    assert.throws(setup, "This doesn't appear to be a directory full of route handlers");
+    assert.throws(setup, 'TypeError: path must be a string or Buffer', TypeError);
     assert.throws(() => {
       setup('somewhere', 'else');
-    }, "This doesn't appear to be a directory full of route handlers");
+    }, 'Error: ENOENT: no such file or directory, scandir \'somewhere\'');
     assert.throws(() => {
       setup('./test_stubs/routes_stub.json', 'else');
-    }, "This doesn't appear to be a directory full of route handlers");
+    }, 'Error: ENOTDIR: not a directory, scandir \'./test_stubs/routes_stub.json\'');
   });
 });

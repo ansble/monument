@@ -1,7 +1,6 @@
 'use strict';
 const path = require('path')
       , fs = require('fs')
-      , routeErrorText = 'This doesn\'t appear to be a directory full of route handlers'
 
       , isRouteFile = (fileName) => {
         return !fileName.match(/((index)|([._]test)).js$/) && fileName.match(/\.js$/);
@@ -24,10 +23,8 @@ const path = require('path')
             }
           });
         } catch (err) {
-          console.log(err, routePathIn);
-          throw new Error(routeErrorText);
+          throw new Error(err);
         }
-
 
         // load in all the static routes
         fs.stat(publicPathIn, (err, exists) => {

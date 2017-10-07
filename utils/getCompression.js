@@ -6,29 +6,37 @@ const isDefined = require('./tools').isDefined
         return isDefined(config.compress) && !config.compress;
       }
 
-      , supportsBrotli = (header) => {
+      , supportsBrotli = (header = '') => {
         return header.match(/\bbr\b/) || header.match(/\bbrotli\b/);
       }
 
-      , supportsGzip = (header) => {
+      , supportsGzip = (header = '') => {
         return header.match(/\bgzip\b/);
       }
 
-      , supportsDeflate = (header) => {
+      , supportsDeflate = (header = '') => {
         return header.match(/\bdeflate\b/);
       }
 
-      , getCompression = (header, config) => {
-        if (isUndefined(header) || dontCompress(config)) {
-          return 'none';
-        } else if (supportsBrotli(header)) {
+      , supportsCompression = (header = '') => {
+        if (supportsBrotli(header)) {
           return 'br';
         } else if (supportsGzip(header)) {
           return 'gzip';
         } else if (supportsDeflate(header)) {
           return 'deflate';
-        } else {
+        }
+
+        return 'none';
+      }
+
+      , getCompression = (header, config) => {
+        const supported = header ? supportsCompression(header) : 'none';
+
+        if (isUndefined(header) || dontCompress(config) || supported === 'none') {
           return 'none';
+        } else {
+          return supported;
         }
       };
 
