@@ -60,6 +60,7 @@ describe('Route Handler Tests', () => {
     /* eslint-enable no-underscore-dangle */
 
     events.off('error:404');
+    events.off('static:served');
     events.off('static:missing');
     events.off('response');
     events.off('route:/about:get');
