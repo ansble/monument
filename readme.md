@@ -135,7 +135,8 @@ monument.server({
 
 If you need to get access to the server object listen to the `server:started` event.
 For example do this:
-```
+
+```js
 monument.events.once('server:started', (settings) => {
     // settings.server is the server object
     // there is also a settings.port and settings.version that
@@ -172,11 +173,12 @@ The body parser for dealing with forms
 ```
 npm install -g monument-cli
 ```
+
 CLI tool used to create new project.
 
 The file routes.json will look like this in a brand new project:
 
-```
+```js
 {
   "/": ["get"]
 }
@@ -187,7 +189,7 @@ The file routes.json will look like this in a brand new project:
 The file routes.json will by default located in root of the file, but it's location is changeable.
 
 Routes are defined as key value pairs where the key is the route and the value is an array of verbs that you want the route to respond to. For example a restful API for pro cycling teams might look like this:
-```
+```js
 {
     "/api/v1/team": [ "get", "post" ],
     "/api/v1/team/:teamid": [ "get", "put", "delete" ],
@@ -198,7 +200,7 @@ Routes are defined as key value pairs where the key is the route and the value i
 
 The structure of a route event is: 'route:/path/to/resource:http-verb'. The route events recieve an object right now, often called connection, that looks like this:
 
-```
+```js
 {
   res: response,
   req: request,
@@ -209,65 +211,72 @@ The structure of a route event is: 'route:/path/to/resource:http-verb'. The rout
 
 #### Adding new routes
 
-```
+```js
 routeStore.add('/this/is/a/test', 'get');
 ```
+
 A simple route...
 
-```
+```js
 routeStore.add('/rangers/:name', [ 'get', 'post', 'put', 'delete' ]);
 ```
+
 A wildcard route...
 
 
 #### Remove routes
 
-```
+```js
 routeStore.remove('/this/is/a/test');
 ```
+
 Remove all of a standard route
 
-```
+```js
 routeStore.remove('/hobbits/:name');
 ```
+
 Remove all of a wild card route
 
-```
+```js
 routeStore.remove('/hobbits/:name', 'get');
 ```
+
 Remove a single verb from a wild card route
 
-```
+```js
 routeStore.remove('/hobbits/:name', [ 'post', 'delete' ]);
 ```
-Remove multiple verbs from a wild card route
 
+Remove multiple verbs from a wild card route
 
 #### Parse
 
-```
+```js
 routeStore.parse({'/this/is/a/route': ['get']})
 ```
 
 #### Get the route objects
 
-```
+```js
 routeStore.get()
 ```
+
 Returns {wildcard: {}, standard: {}} with the standard and wildcard route objects populated
 
-```
+```js
 routeStore.getWildcard()
 ```
+
 Returns an object containing the wild card routes and their meta information
 
-```
+```js
 routeStore.getStandard()
 ```
+
 Returns an object containing the standard routes and their meta information
 
 For more details, Have a look on /docs/routes.md file
-
 
 ### Etags
 Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
@@ -367,6 +376,7 @@ events.on('route:/join:post', function (connection) {
 The `monument.parser` function returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});`
 
 #### Example object
+
 ```js
 {
     "file1": {
