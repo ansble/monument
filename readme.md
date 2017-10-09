@@ -58,6 +58,23 @@ When you create your server it takes a config object that allows you to pass in 
     , maxAge: 31536000 // time to cache static files client side in milliseconds
     , etags: true // turns on or off etag generation and headers
     , webSockets: false // default setting disables websockets. can be (false, true, 'passthrough', 'data')
+
+
+    , log: { // configurable logger with the same bunyan/pino API
+        debug: (payload) => {
+            console.log(payload);
+        }
+        , info: (payload) => {
+            console.info(payload);
+        }
+        , warn: (payload) => {
+            console.warn(payload);
+        }
+        , error: (payload) => {
+            console.error(payload);
+        }
+        , trace: () => {}
+    }
     
     //the security object is brand new in this release
     , security: {
@@ -398,6 +415,34 @@ For more information check out [Using Web Sockets with monument](docs/websockets
 Static assetts live in `/public` and can be organized in whatever way you see fit. All folders within public become routes on root. So, `/public/compnents` answers to requests on `/components` when the server is running. These static routes take precedent over evented routes and essentially prevent non-static route handling from happening on them.
 
 You can interact with these routes through events to a certain degree. They raise a `static:served` with a payload of the file url that was served, when the file exists. If the file does not exist they raise a `static:missing` with the file url as payload. This will let you log and handle these conditions as needed.
+
+## Logging
+Monument has a built-in logging functionality that relies on a custom logger residing inside the configuration object. The default one is a simple logging object that exposes these functions:
+
+- the `debug` function, a shorthand for `console.log`
+- the `info` function, a shorthand for `console.info`
+- the `warn` function, a shorthand for `console.warn`
+- the `error` function, a shorthand for `console.error`
+- the `trace` function, a noop in our original implementation
+
+The purpose of this behavior is, say you want to implement your custom logger or replace the default logger with [bunyan](https://github.com/trentm/node-bunyan) or [pino](https://github.com/pinojs/pino), you can just pass them inside the configuration object.
+
+An example:
+
+```js
+var monument = require('monument');
+var pino = require('pino');
+
+monument.server({
+        routePath: './routes'
+        , templatePath: './templates'
+        , publicPath: './public'
+        , port: process.env.PORT || 3000
+        , log: pino
+      });
+```
+
+We just require `pino`, then pass it as a logger to the configuration object. Pino has the same API as our default logger, so can be directly dropped in. That's the same with bunyan.
 
 ## Template Language
 The templates right now default to [dot](http://olado.github.io/doT/index.html) it's documentation is pretty good... though there is definitely room for improvement there. It is still the best place to learn about templating at the moment though.

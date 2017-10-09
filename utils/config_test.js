@@ -43,6 +43,12 @@ describe('config Tests', () => {
     assert.strictEqual(configObj.security.framegaurd.action, 'SAMEORIGIN');
     assert.isObject(configObj.security.hsts);
     assert.strictEqual(configObj.security.hsts.maxAge, 86400);
+    assert.isObject(configObj.log);
+    assert.isFunction(configObj.log.info);
+    assert.isFunction(configObj.log.debug);
+    assert.isFunction(configObj.log.warn);
+    assert.isFunction(configObj.log.error);
+    assert.isFunction(configObj.log.trace);
   });
 
   describe('config.get tests', () => {

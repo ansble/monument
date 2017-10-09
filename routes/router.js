@@ -25,6 +25,7 @@ module.exports = (routesJson, config) => {
   const publicPath = config.publicPath
         , routePath = config.routePath
         , publicFolders = setupStaticRoutes(routePath, publicPath)
+        , logger = config.log
         , statsdClient = config.statsd === false ? false : statsd.create(config.statsd)
 
         , setupStatsdListeners = (res, sendStatsd, cleanup) => {
@@ -74,14 +75,14 @@ module.exports = (routesJson, config) => {
             // Status Code
             statsdClient.send(`${key}.status_code.${statusCode}`, 1, 'c', 1, [], (err) => {
               if (err) {
-                console.error(`[statsd] request count send error: ${err}`);
+                logger.error(`[statsd] request count send error: ${err}`);
               }
             });
 
             // Response Time
             statsdClient.timing(`${key}.response_time`, duration, (err) => {
               if (err) {
-                console.error(`[statsd] timing send error: ${err}`);
+                logger.error(`[statsd] timing send error: ${err}`);
               }
             });
 

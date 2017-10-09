@@ -14,7 +14,8 @@ const glob = require('glob')
                 `${config.publicPath}/**/*.tgz`
                 , `${config.publicPath}/**/*.def`
                 , `${config.publicPath}/**/*.brot`
-              ];
+              ]
+              , logger = config.log;
 
         compressedFileGlobs.forEach((fileGlob) => {
           glob(fileGlob, (er, files) => {
@@ -30,7 +31,7 @@ const glob = require('glob')
           });
         });
 
-        console.log('Cleaned up old compressed files...');
+        logger.info('Cleaned up old compressed files...');
         events.emit('cleanup:compressed:start');
       }
 
