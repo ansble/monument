@@ -18,9 +18,9 @@ Any other value passed to the `config.webSocket` will be treated as `true` turni
 
 ## message structure
 
-This is the main opinion that monumen enforces. For your message to go anywhere once it hits the server you will need to give it a little bit of meta information and structure. Web Sockets is just a pipeline so it doesn't really care about what you pass through it other then that it is text.
+This is the main opinion that `monument` enforces. For your message to go anywhere once it hits the server you will need to give it a little bit of meta information and structure. Web Sockets is just a pipeline so it doesn't really care about what you pass through it other then that it is text.
 
-```
+```js
 {
     event: 'some-event-name'
 }
@@ -32,24 +32,26 @@ The integration falls into two categories:
 
 ## data style events
 
-data style events follow a pattern of emitting an event like `data:get:this-item` and listening to a response on `data:set:this-item`. It's how the data objects laid down by the CLI work. If the websocket server recieves an event like this (or any event with `:get:` in it) it automatically sets up a listener for the corresponding `:set:` event. This makes it very very easy to pass data back through the socket with essentially no intervention on your part. It handles the `socket.send` for you once the event has resolved.
+data style events follow a pattern of emitting an event like `data:get:this-item` and listening to a response on `data:set:this-item`. It's how the data objects laid down by the CLI work. If the websocket server receives an event like this (or any event with `:get:` in it) it automatically sets up a listener for the corresponding `:set:` event. This makes it very very easy to pass data back through the socket with essentially no intervention on your part. It handles the `socket.send` for you once the event has resolved.
 
 This is the easiest and weakest form of integration with websockets. But it makes it pretty easy to start pushing data to the client with no extra work on your part.
 
 ## passthrough events
 
-For more control or more complex situations the `passthrough` system lets you recieve events from the client and then respond to them as you wish to. Meaning it doesn't send any response to the client, it does however recieve a reference to the `socket` so that you can handle that in your applications code.
+For more control or more complex situations the `passthrough` system lets you receive events from the client and then respond to them as you wish to. Meaning it doesn't send any response to the client, it does however receive a reference to the `socket` so that you can handle that in your applications code.
 
 The payload of the event that is emitted by the `passthrough` method looks like this:
-```
+
+```js
 {
     message: {} // The payload sent by the client including the event as shown above
     , socket: {} // The socket that is being used to communicate with the client
 }
 ```
 
-As an example, let's say that you recieve:
-```
+As an example, let's say that you receive:
+
+```js
 {
     event: 'authorize:user'
     , credentialsObj: {
@@ -59,7 +61,8 @@ As an example, let's say that you recieve:
 ```
 
 The web socket server will then emit `authorize:user` passing it: 
-```
+
+```js
 {
     message: {
         event: 'authorize:user'
@@ -71,9 +74,9 @@ The web socket server will then emit `authorize:user` passing it:
 }
 ```
 
-So your authorization code would listen to `authrize:user` and determine that it was dealing with a web socket request by looking at the payload for a `socket` variable. Your code would then need to diverge just a hair in how it responds to this from the normal http side which would probably respond to the event by appending a hash of the users credentialsObj. For the web socket code you would just respond to the socket. This would look something like this:
+So your authorization code would listen to `authorize:user` and determine that it was dealing with a web socket request by looking at the payload for a `socket` variable. Your code would then need to diverge just a hair in how it responds to this from the normal http side which would probably respond to the event by appending a hash of the users credentialsObj. For the web socket code you would just respond to the socket. This would look something like this:
 
-```
+```js
 events.on('authorize:user', (payload) => {
     const credentialsObj = payload.socket ? payload.message.credentialsObj : payload;
 
@@ -91,7 +94,7 @@ This is not meant to be example authorization code. Just makes for a useful exam
 
 If you are using the `data` setting then you can set up your data stores like this:
 
-```
+```js
 'use strict';
 
 const events = require('monument').events
@@ -122,7 +125,7 @@ events.on('data:get:person', () => {
 
 Then your client can do this:
 
-```
+```js
 const ws = new WebSocket('ws://localhost:4000');
 
 ws.onmessage = (msg) => {console.log(msg)};
@@ -131,7 +134,7 @@ ws.send(JSON.stringify({event: 'data:get:person'}))
 
 and you will get something that looks like this:
 
-```
+```js
 {
     bubbles: false
     , cancelBubble: false
@@ -161,7 +164,7 @@ The important bit being the `data` part. It is a JSON string of the data returne
 
 First off the Server side component that handles the inbound data:
 
-```
+```js
 'use strict';
 
 const events = require('monument').events
@@ -182,7 +185,7 @@ events.on('analytics:new', (data) => {
 
 Ok, let's be clear. This is a super contrived and simplified example. Here is the client call:
 
-```
+```js
 const ws = new WebSocket('ws://localhost:4000');
 
 ws.send(JSON.stringify({event: 'analytics:new', data: { type: 'click'}}))
