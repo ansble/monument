@@ -78,6 +78,7 @@ module.exports = (file, connection, config) => {
           });
 
           res.end();
+          events.emit('static:headed', pathname);
         } else if (not(compression === 'none')) {
           // we have compression!
           res.writeHead(succesStatus, {

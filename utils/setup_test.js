@@ -73,7 +73,12 @@ describe('setup Tests', () => {
         done();
       });
 
-      setup.compressed({ publicPath: './test_stubs/deletes' });
+      setup.compressed({
+        publicPath: './test_stubs/deletes'
+        , log: {
+          info: () => {}
+        }
+      });
     });
   });
 });

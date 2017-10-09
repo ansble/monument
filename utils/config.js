@@ -19,6 +19,22 @@ const path = require('path')
         , publicPath: path.join(process.cwd(), './public')
         , templatePath: path.join(process.cwd(), './templates')
 
+        , log: {
+          debug: (payload) => {
+            console.log(payload);
+          }
+          , info: (payload) => {
+            console.info(payload);
+          }
+          , warn: (payload) => {
+            console.warn(payload);
+          }
+          , error: (payload) => {
+            console.error(payload);
+          }
+          , trace: () => {}
+        }
+
         , webSockets: false
         , compress: true
         , etags: true
