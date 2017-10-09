@@ -14,6 +14,9 @@
     "type": "git",
     "url": "https://github.com/designfrontier/monumentjs"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "bugs": {
     "url": "https://github.com/designfrontier/monumentjs/issues"
   },
