@@ -1,4 +1,35 @@
-### - 3.2.0 * 10/5/2017, 9:34:16 PM *
+### - 3.2.1 * 10/9/2017, 5:24:12 AM *
+
+   - Merge pull request #455 from ansble/greenkeeper/iltorb-1.3.9
+  - Merge pull request #452 from dottorblaster/logger-function-in-options
+  - Merge branch 'Bretagne-Classic-3.2.x' into logger-function-in-options
+  - Merge pull request #454 from dottorblaster/add-handlestaticfile-test
+  - Merge pull request #453 from glhrmv/grammar-fixes
+  - fix(package): update iltorb to version 1.3.9
+  - Fix static file serving event being listened to in other tests
+  - Add an event to be fired on a static file HEAD, mainly for unit testing purposes
+  - Add handleStaticFile unit tests
+  - Add documentation in the README about the custom logging functions
+  - Grammar fix
+  - Update readme with proper syntax highlighting codeblocks
+  - Add syntax highlighting to codeblocks. General grammar fixes
+  - General grammar and typo fixes
+  - Merge branch 'Bretagne-Classic-3.2.x' into logger-function-in-options
+  - Merge pull request #443 from haroon-sheikh/master
+  - Update test: 'should set smart defaults' - with defaults for config.log
+  - Fix test: Delete Old Compressed Files
+  - Replace console invocations with logger from config
+  - Add a logging function to the preferences
+  - Updates the error messages
+  - Merge pull request #451 from ansble/greenkeeper/mocha-4.0.1
+  - Merge pull request #447 from ansble/Bretagne-Classic-3.2.x
+  - Merge branch 'master' into Bretagne-Classic-3.2.x
+  - Merge pull request #445 from ansble/Tre-Valli-Varesine-3.1.x
+  - chore(package): update mocha to version 4.0.1
+  - Fixes #441 removes the console log error from the test 
+
+
+ ### - 3.2.0 * 10/5/2017, 9:34:16 PM *
 
    - Merge pull request #446 from ansble/feature/refactor-some-complex-functions
   - Refactors two of the complex functions to be a little simpler 
