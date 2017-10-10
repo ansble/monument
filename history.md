@@ -1,4 +1,11 @@
-### - 3.2.2 * 10/9/2017, 5:38:36 AM *
+### - 3.2.3 * 10/9/2017, 10:00:41 PM *
+
+   - Merge pull request #458 from ansble/greenkeeper/iltorb-1.3.10
+  - fix(package): update iltorb to version 1.3.10
+  - Merge pull request #457 from ansble/Bretagne-Classic-3.2.x 
+
+
+ ### - 3.2.2 * 10/9/2017, 5:38:36 AM *
 
    - Merge pull request #456 from ansble/feature/better-publish
   - tweaks publish and docs 

@@ -1,0 +1,6 @@
+node_modules/
+coverage/
+.DS_Store
+.coveralls.yml
+**/.DS_Store
+test_stubs/templates/*.js
