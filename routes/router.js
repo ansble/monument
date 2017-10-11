@@ -3,7 +3,7 @@
 const path = require('path')
       , events = require('harken')
       , mime = require('mime')
-      , onHeader = require('on-header')
+      , onHeader = require('on-headers')
       , routeStore = require('./routeStore')
       , matchSimpleRoute = require('./matchSimpleRoute')
       , isWildCardRoute = require('./isWildCardRoute')
@@ -89,13 +89,30 @@ module.exports = (routesJson, config) => {
             });
 
             cleanupStatsd();
-          };
+          }
+          , timers = {};
 
     let routeInfo
         , res = resIn;
 
-    performanceHeaders.start(res);
-    onHeader(res, performanceHeaders.end(res));
+    // performanceHeaders.start(res);
+    res.timers = {
+      start: performanceHeaders.start(timers)
+      , end: performanceHeaders.end(timers)
+    };
+
+    res.timers.start('Request');
+
+
+    onHeader(res, () => {
+      const mapping = Object.keys(timers).map((key, i) => {
+        const delta = timers[key].delta || performanceHeaders.end(timers)(key);
+
+        return `${i}=${delta}; "${key}"`;
+      }).join(', ');
+
+      res.setHeader('Server-Timing', mapping);
+    });
 
     // set up the statsd timing listeners
     setupStatsdListeners(res, sendStatsd, cleanupStatsd);
