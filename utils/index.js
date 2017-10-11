@@ -18,9 +18,10 @@ module.exports = {
   , not: tools.not
   , contains: tools.contains
   , setup: (config) => {
-    const setupSteps = events.required([ 'setup:start' ], () => {
-      events.emit('setup:complete');
-    });
+    const logger = config.log
+          , setupSteps = events.required([ 'setup:start' ], () => {
+            events.emit('setup:complete');
+          });
 
     // execute all of the setup tasks in the setup obejct
     //  not functionally pure... has sideeffects in the file system
@@ -32,7 +33,7 @@ module.exports = {
 
     // Check for statsd and message it out
     if (config.statsd) {
-      console.log(`
+      logger.info(`
 Awesome you're statsd config is running!
 Connected to statsd at ${config.statsd.host}:${config.statsd.port}
 `);

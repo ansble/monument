@@ -1,5 +1,19 @@
 # Change Log
 
+## v3.2.1
+Adds a log entry with default of console.log in the config object. This lets you
+provide a logger for use with the internal log messages in monument. It also
+makes testing a little cleaner.
+
+3.2.0 introduced a new `path` object on the connection to make it easy to simplify
+the routing code and to open up some more information to route handlers.
+
+3.2.1 probably should have been minor... but because of proximity to 3.2.0
+chronologically we let it remain on the 3.2.x branch.
+
+It also cleans up a huge swath of typos and make the documentation and testing
+generally better.
+
 ## v2.6.0
 Adds statsd support!
 

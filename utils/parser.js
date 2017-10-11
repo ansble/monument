@@ -42,16 +42,15 @@ const getRawBody = require('raw-body')
         connection.req.pipe(busboy);
       }
 
+      , getCharset = (contentType) => {
+        return typer.parse(contentType).parameters.charset || 'UTF-8';
+      }
+
       , parser = (connection, callback, scopeIn) => { // parse out the body
         const contentType = connection.req.headers['content-type'] ?
                 connection.req.headers['content-type'].split(';')[0] : 'application/json'
-              , scope = scopeIn;
-
-        let encoding = 'UTF-8';
-
-        if (isDefined(contentType)) {
-          encoding = typer.parse(contentType).parameters.charset || 'UTF-8';
-        }
+              , scope = scopeIn
+              , encoding = isDefined(contentType) ? getCharset(contentType) : 'UTF-8';
 
         if (contentType === 'multipart/form-data') {
           try {

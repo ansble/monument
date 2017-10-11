@@ -38,7 +38,7 @@ The easiest way to get started with monument is to use the CLI tool which does p
 
 ![getting started with monument gif](http://g.recordit.co/EwbTO7xDgy.gif) or the [slightly longer video version](http://recordit.co/EwbTO7xDgy)
 
-It is also the easiest way to add routes and fata handlers!
+It is also the easiest way to add routes and data handlers!
 
 ## Config Object and the Server
 
@@ -58,6 +58,23 @@ When you create your server it takes a config object that allows you to pass in 
     , maxAge: 31536000 // time to cache static files client side in milliseconds
     , etags: true // turns on or off etag generation and headers
     , webSockets: false // default setting disables websockets. can be (false, true, 'passthrough', 'data')
+
+
+    , log: { // configurable logger with the same bunyan/pino API
+        debug: (payload) => {
+            console.log(payload);
+        }
+        , info: (payload) => {
+            console.info(payload);
+        }
+        , warn: (payload) => {
+            console.warn(payload);
+        }
+        , error: (payload) => {
+            console.error(payload);
+        }
+        , trace: () => {}
+    }
     
     //the security object is brand new in this release
     , security: {
@@ -118,7 +135,8 @@ monument.server({
 
 If you need to get access to the server object listen to the `server:started` event.
 For example do this:
-```
+
+```js
 monument.events.once('server:started', (settings) => {
     // settings.server is the server object
     // there is also a settings.port and settings.version that
@@ -155,11 +173,12 @@ The body parser for dealing with forms
 ```
 npm install -g monument-cli
 ```
+
 CLI tool used to create new project.
 
 The file routes.json will look like this in a brand new project:
 
-```
+```js
 {
   "/": ["get"]
 }
@@ -170,7 +189,7 @@ The file routes.json will look like this in a brand new project:
 The file routes.json will by default located in root of the file, but it's location is changeable.
 
 Routes are defined as key value pairs where the key is the route and the value is an array of verbs that you want the route to respond to. For example a restful API for pro cycling teams might look like this:
-```
+```js
 {
     "/api/v1/team": [ "get", "post" ],
     "/api/v1/team/:teamid": [ "get", "put", "delete" ],
@@ -181,7 +200,7 @@ Routes are defined as key value pairs where the key is the route and the value i
 
 The structure of a route event is: 'route:/path/to/resource:http-verb'. The route events recieve an object right now, often called connection, that looks like this:
 
-```
+```js
 {
   res: response,
   req: request,
@@ -192,65 +211,72 @@ The structure of a route event is: 'route:/path/to/resource:http-verb'. The rout
 
 #### Adding new routes
 
-```
+```js
 routeStore.add('/this/is/a/test', 'get');
 ```
+
 A simple route...
 
-```
+```js
 routeStore.add('/rangers/:name', [ 'get', 'post', 'put', 'delete' ]);
 ```
+
 A wildcard route...
 
 
 #### Remove routes
 
-```
+```js
 routeStore.remove('/this/is/a/test');
 ```
+
 Remove all of a standard route
 
-```
+```js
 routeStore.remove('/hobbits/:name');
 ```
+
 Remove all of a wild card route
 
-```
+```js
 routeStore.remove('/hobbits/:name', 'get');
 ```
+
 Remove a single verb from a wild card route
 
-```
+```js
 routeStore.remove('/hobbits/:name', [ 'post', 'delete' ]);
 ```
-Remove multiple verbs from a wild card route
 
+Remove multiple verbs from a wild card route
 
 #### Parse
 
-```
+```js
 routeStore.parse({'/this/is/a/route': ['get']})
 ```
 
 #### Get the route objects
 
-```
+```js
 routeStore.get()
 ```
+
 Returns {wildcard: {}, standard: {}} with the standard and wildcard route objects populated
 
-```
+```js
 routeStore.getWildcard()
 ```
+
 Returns an object containing the wild card routes and their meta information
 
-```
+```js
 routeStore.getStandard()
 ```
+
 Returns an object containing the standard routes and their meta information
 
 For more details, Have a look on /docs/routes.md file
-
 
 ### Etags
 Hash based etags are now available by default. You can turn them off by adding `'etags': false` to your config object (passed into `monument.server`).
@@ -350,6 +376,7 @@ events.on('route:/join:post', function (connection) {
 The `monument.parser` function returns `null` if an error occurs during parsing. If you would like to see the error you can subscribe to the `error:parse` event which recieves the contents of the error or grab the optional second param `err` which only exists when an error has occured. The recommended action at this point is to return an error to the user, terminating the connection with a `connection.req.end`. One way to achieve this would be by `events.emit('error:500', {message: 'The data you sent wasn't properly formatted', connection: connection});`
 
 #### Example object
+
 ```js
 {
     "file1": {
@@ -388,6 +415,34 @@ For more information check out [Using Web Sockets with monument](docs/websockets
 Static assetts live in `/public` and can be organized in whatever way you see fit. All folders within public become routes on root. So, `/public/compnents` answers to requests on `/components` when the server is running. These static routes take precedent over evented routes and essentially prevent non-static route handling from happening on them.
 
 You can interact with these routes through events to a certain degree. They raise a `static:served` with a payload of the file url that was served, when the file exists. If the file does not exist they raise a `static:missing` with the file url as payload. This will let you log and handle these conditions as needed.
+
+## Logging
+Monument has a built-in logging functionality that relies on a custom logger residing inside the configuration object. The default one is a simple logging object that exposes these functions:
+
+- the `debug` function, a shorthand for `console.log`
+- the `info` function, a shorthand for `console.info`
+- the `warn` function, a shorthand for `console.warn`
+- the `error` function, a shorthand for `console.error`
+- the `trace` function, a noop in our original implementation
+
+The purpose of this behavior is, say you want to implement your custom logger or replace the default logger with [bunyan](https://github.com/trentm/node-bunyan) or [pino](https://github.com/pinojs/pino), you can just pass them inside the configuration object.
+
+An example:
+
+```js
+var monument = require('monument');
+var pino = require('pino');
+
+monument.server({
+        routePath: './routes'
+        , templatePath: './templates'
+        , publicPath: './public'
+        , port: process.env.PORT || 3000
+        , log: pino
+      });
+```
+
+We just require `pino`, then pass it as a logger to the configuration object. Pino has the same API as our default logger, so can be directly dropped in. That's the same with bunyan.
 
 ## Template Language
 The templates right now default to [dot](http://olado.github.io/doT/index.html) it's documentation is pretty good... though there is definitely room for improvement there. It is still the best place to learn about templating at the moment though.

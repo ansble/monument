@@ -1,4 +1,158 @@
-### - 3.1.1 * 8/28/2017, 9:49:36 PM *
+### - 3.2.3 * 10/9/2017, 10:00:41 PM *
+
+   - Merge pull request #458 from ansble/greenkeeper/iltorb-1.3.10
+  - fix(package): update iltorb to version 1.3.10
+  - Merge pull request #457 from ansble/Bretagne-Classic-3.2.x 
+
+
+ ### - 3.2.2 * 10/9/2017, 5:38:36 AM *
+
+   - Merge pull request #456 from ansble/feature/better-publish
+  - tweaks publish and docs 
+
+
+ ### - 3.2.1 * 10/9/2017, 5:24:12 AM *
+
+   - Merge pull request #455 from ansble/greenkeeper/iltorb-1.3.9
+  - Merge pull request #452 from dottorblaster/logger-function-in-options
+  - Merge branch 'Bretagne-Classic-3.2.x' into logger-function-in-options
+  - Merge pull request #454 from dottorblaster/add-handlestaticfile-test
+  - Merge pull request #453 from glhrmv/grammar-fixes
+  - fix(package): update iltorb to version 1.3.9
+  - Fix static file serving event being listened to in other tests
+  - Add an event to be fired on a static file HEAD, mainly for unit testing purposes
+  - Add handleStaticFile unit tests
+  - Add documentation in the README about the custom logging functions
+  - Grammar fix
+  - Update readme with proper syntax highlighting codeblocks
+  - Add syntax highlighting to codeblocks. General grammar fixes
+  - General grammar and typo fixes
+  - Merge branch 'Bretagne-Classic-3.2.x' into logger-function-in-options
+  - Merge pull request #443 from haroon-sheikh/master
+  - Update test: 'should set smart defaults' - with defaults for config.log
+  - Fix test: Delete Old Compressed Files
+  - Replace console invocations with logger from config
+  - Add a logging function to the preferences
+  - Updates the error messages
+  - Merge pull request #451 from ansble/greenkeeper/mocha-4.0.1
+  - Merge pull request #447 from ansble/Bretagne-Classic-3.2.x
+  - Merge branch 'master' into Bretagne-Classic-3.2.x
+  - Merge pull request #445 from ansble/Tre-Valli-Varesine-3.1.x
+  - chore(package): update mocha to version 4.0.1
+  - Fixes #441 removes the console log error from the test 
+
+
+ ### - 3.2.0 * 10/5/2017, 9:34:16 PM *
+
+   - Merge pull request #446 from ansble/feature/refactor-some-complex-functions
+  - Refactors two of the complex functions to be a little simpler 
+
+
+ ### - 3.1.11 * 10/5/2017, 9:16:46 PM *
+
+   - Merge pull request #438 from ansble/greenkeeper/harken-1.2.3
+  - Merge pull request #442 from juliusMbu1/master
+  - Corrects a typo
+  - fix(package): update harken to version 1.2.3
+  - Merge pull request #437 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.10 * 10/4/2017, 6:23:43 AM *
+
+   - Merge pull request #436 from ansble/greenkeeper/mocha-4.0.0
+  - Merge branch 'Tre-Valli-Varesine-3.1.x' into greenkeeper/mocha-4.0.0
+  - Merge pull request #435 from ansble/greenkeeper/eslint-4.8.0
+  - Merge branch 'Tre-Valli-Varesine-3.1.x' into greenkeeper/eslint-4.8.0
+  - chore(package): update mocha to version 4.0.0
+  - Merge pull request #433 from brunolm/429/yarn-lock
+  - Merge pull request #431 from elementh/update/lock-down-dependecies
+  - Added package-lock to prevent sub-dependencies from updating.
+  - Add yarn lock
+  - chore(package): update eslint to version 4.8.0
+  - Locked down dependencies version.
+  - Merge pull request #430 from ansble/Tre-Valli-Varesine-3.1.x
+  - Merge pull request #427 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.9 * 9/29/2017, 7:53:40 AM *
+
+   - Merge pull request #428 from ansble/greenkeeper/coveralls-3.0.0
+  - Update package.json
+  - Merge branch 'Tre-Valli-Varesine-3.1.x' into greenkeeper/coveralls-3.0.0
+  - chore(package): update coveralls to version 3.0.0 
+
+
+ ### - 3.1.8 * 9/28/2017, 11:55:02 AM *
+
+   - Merge pull request #426 from ansble/mime-2.0.3-security-fix
+  - Update package.json
+  - Merge pull request #425 from ansble/greenkeeper/coveralls-2.13.3
+  - Merge pull request #424 from ansble/greenkeeper/mime-2.0.2
+  - chore(package): update coveralls to version 2.13.3
+  - Merge pull request #423 from ansble/Tre-Valli-Varesine-3.1.x
+  - chore(package): update mime to version 2.0.2 
+
+
+ ### - 3.1.7 * 9/22/2017, 8:03:10 AM *
+
+   - Merge pull request #422 from ansble/greenkeeper/eslint-4.7.2
+  - chore(package): update eslint to version 4.7.2
+  - Merge pull request #420 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.6 * 9/18/2017, 7:40:39 PM *
+
+   - Merge pull request #419 from ansble/greenkeeper/eslint-4.7.1
+  - chore(package): update eslint to version 4.7.1
+  - Merge pull request #416 from ansble/Tre-Valli-Varesine-3.1.x
+  - 3.1.5
+  - preparing for release of v3.1.5
+  - Merge pull request #417 from ansble/greenkeeper/ws-3.2.0
+  - fix(package): update ws to version 3.2.0
+  - 3.1.4
+  - preparing for release of v3.1.4
+  - Merge pull request #415 from ansble/greenkeeper/mime-2.0.1
+  - changes the usage of mime to match the new signatures
+  - fix(package): update mime to version 2.0.1
+  - Merge pull request #412 from ansble/Tre-Valli-Varesine-3.1.x
+  - 3.1.3
+  - preparing for release of v3.1.3
+  - Merge pull request #411 from ansble/master
+  - Merge pull request #410 from ansble/greenkeeper/mocha-3.5.3
+  - chore(package): update mocha to version 3.5.3
+  - Merge pull request #408 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.5 * 9/15/2017, 7:54:04 AM *
+
+   - Merge pull request #417 from ansble/greenkeeper/ws-3.2.0
+  - fix(package): update ws to version 3.2.0 
+
+
+ ### - 3.1.4 * 9/14/2017, 9:14:15 PM *
+
+   - Merge pull request #415 from ansble/greenkeeper/mime-2.0.1
+  - changes the usage of mime to match the new signatures
+  - fix(package): update mime to version 2.0.1
+  - Merge pull request #412 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.3 * 9/12/2017, 6:54:14 AM *
+
+   - Merge pull request #411 from ansble/master
+  - Merge pull request #410 from ansble/greenkeeper/mocha-3.5.3
+  - chore(package): update mocha to version 3.5.3
+  - Merge pull request #408 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.2 * 9/4/2017, 8:32:02 PM *
+
+   - Merge pull request #407 from ansble/greenkeeper/eslint-4.6.0
+  - chore(package): update eslint to version 4.6.0
+  - Merge pull request #406 from ansble/Tre-Valli-Varesine-3.1.x 
+
+
+ ### - 3.1.1 * 8/28/2017, 9:49:36 PM *
 
    - Merge pull request #405 from ansble/greenkeeper/mime-1.4.0
   - fix(package): update mime to version 1.4.0

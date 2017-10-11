@@ -8,9 +8,9 @@ So the first thing that you need to do to make thinge work is you will need an `
 
 For local use the simplest way to go is generating a self signed certificate. Your browser will complain about it, but you will still be able to test everything and do your development without buying an actual certificate.
 
-Heroku has a [great writeup on the process](https://devcenter.heroku.com/articles/ssl-certificate-self) that will get you up and running. If you are using the [spdy](https://www.npmjs.com/package/spdy) module then you will need to [create a CA as well](http://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/). Once you have a cert generated in the root of your new `monument` project you will need to setup your server config appropriately. Your new app.js file should look something like this:
+Heroku has a [great writeup on the process](https://devcenter.heroku.com/articles/ssl-certificate-self) that will get you up and running. If you are using the [spdy](https://www.npmjs.com/package/spdy) module then you will need to [create a CA as well](http://datacenteroverlords.com/2012/03/01/creating-your-own-ssl-certificate-authority/). Once you have a cert generated in the root of your new `monument` project you will need to setup your server config appropriately. Your new `app.js` file should look something like this:
 
-```
+```js
 'use strict';
 
 const monument = require('monument')
@@ -46,7 +46,7 @@ When the browser connecting to your server supports spdy a new method will ba av
 
 You can use `connection.res.push` to push additional files down to the server over the same connection. For instance, if you want to push down `app.js` with your `/` route you would do something like this:
 
-```
+```js
 events.on('route:/:get', (connection) => {
     let push;
 
