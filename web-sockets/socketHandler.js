@@ -1,7 +1,8 @@
 'use strict';
 const events = require('harken')
       , isUndefined = require('../utils').isUndefined
-      , socketUtils = require('./utils');
+      , socketUtils = require('./utils')
+      , logger = require('../utils/config').get('log');
 
 module.exports = (type) => {
   return (socketIn) => {
@@ -21,7 +22,7 @@ module.exports = (type) => {
           socket.send(JSON.stringify({ event: setEvent, data: data }), (err) => {
             if (err) {
               events.emit('error:ws', { inboundMessage: message, error: err });
-              console.warn(err);
+              logger.warn(err);
             }
           });
         });
