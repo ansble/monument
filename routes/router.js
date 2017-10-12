@@ -3,11 +3,13 @@
 const path = require('path')
       , events = require('harken')
       , mime = require('mime')
+      , onHeader = require('on-headers')
       , routeStore = require('./routeStore')
       , matchSimpleRoute = require('./matchSimpleRoute')
       , isWildCardRoute = require('./isWildCardRoute')
       , parseWildCardRoute = require('./parseWildCardRoute')
       , setupStaticRoutes = require('./serverSetup')
+      , performanceHeaders = require('./performanceHeaders')
       , setSecurityHeaders = require('../security')
       , handleStaticFile = require('./handleStaticFile')
 
@@ -87,10 +89,26 @@ module.exports = (routesJson, config) => {
             });
 
             cleanupStatsd();
-          };
+          }
+          , timers = {};
 
     let routeInfo
         , res = resIn;
+
+    res.timers = performanceHeaders(timers);
+
+    res.timers.start('Request');
+
+
+    onHeader(res, () => {
+      const mapping = Object.keys(timers).map((key, i) => {
+        const delta = timers[key].delta || res.timers.end(key);
+
+        return `${i}=${delta}; "${key}"`;
+      }).join(', ');
+
+      res.setHeader('Server-Timing', mapping);
+    });
 
     // set up the statsd timing listeners
     setupStatsdListeners(res, sendStatsd, cleanupStatsd);

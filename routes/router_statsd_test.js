@@ -109,7 +109,7 @@ describe('statsd tests', () => {
   });
 
   describe('when configured', () => {
-    it('sends route and route status to statsd for each request', (done) => {
+    it('sends route and route status to statsd for each complex request', (done) => {
       const sendKey = 'http.get./api/articles/1234/links/daniel.status_code.200';
 
       req.url = '/api/articles/1234/links/daniel';
@@ -123,6 +123,33 @@ describe('statsd tests', () => {
           done();
         });
 
+        connection.res.end();
+      });
+
+      events.once('error:404', () => {
+        throw new Error('bad route parsing');
+      });
+
+      process.nextTick(() => {
+        routeHandler(req, res);
+      });
+    });
+
+    it('sends route and unknown_status to statsd for each request with no status', (done) => {
+      const sendKey = 'http.get./api/articles/1234/links/daniel.status_code.unknown_status';
+
+      req.url = '/api/articles/1234/links/daniel';
+
+      events.once('route:/api/articles/:id/links/:item:get', (connection) => {
+        assert.isObject(connection);
+
+        connection.res.once('finish', () => {
+          assert.strictEqual(statsd.store.send, sendKey);
+
+          done();
+        });
+
+        connection.res.statusCode = undefined;
         connection.res.end();
       });
 

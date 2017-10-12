@@ -42,7 +42,9 @@ const pareseRoutes = require('./parseRoutes')
                typeof routes.standard[route] === 'undefined';
       }
 
-      , cleanupRoute = (route, routes) => {
+      , cleanupRoute = (route, routesIn) => {
+        const routes = routesIn;
+
         if (routes.wildcard[route] && routes.wildcard[route].verbs.length === 0) {
           routes.wildcard[route] = undefined;
         } else if (routes.standard[route] && routes.standard[route].length === 0) {

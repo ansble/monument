@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "test": "npm run lint && istanbul cover _mocha -- *_test.js bin/*_test.js utils/**/*_test.js web-sockets/**/*_test.js security/**/*_test.js routes/**/*_test.js",
+    "test": "npm run lint && istanbul cover -x \"**/*_test.js\" _mocha -- *_test.js bin/*_test.js utils/**/*_test.js web-sockets/**/*_test.js security/**/*_test.js routes/**/*_test.js",
     "codeship": "npm test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "bin/lint.js",
     "release": "npm test && echo ' => releasing' && bin/release.js"
@@ -53,6 +53,7 @@
     "media-typer": "0.3.0",
     "mime": "2.0.3",
     "node-statsd": "0.1.1",
+    "on-headers": "1.0.1",
     "platform": "1.3.4",
     "raw-body": "2.3.2",
     "uuid": "3.1.0",
