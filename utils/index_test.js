@@ -69,5 +69,24 @@ describe('Utils Tests', () => {
     it('utils should have a setup function', () => {
       assert.isFunction(utils.setup);
     });
+
+    it('utils should log info about statsd', () => {
+      let logMessage;
+      const config = {
+        log: {
+          info: (msg) => {
+            logMessage = msg;
+          }
+        }
+        , statsd: {
+          host: 'test'
+          , port: '8080'
+        }
+      };
+
+      utils.setup(config);
+      assert.include(logMessage, config.statsd.host);
+      assert.include(logMessage, config.statsd.port);
+    });
   });
 });
