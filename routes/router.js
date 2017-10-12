@@ -95,18 +95,14 @@ module.exports = (routesJson, config) => {
     let routeInfo
         , res = resIn;
 
-    // performanceHeaders.start(res);
-    res.timers = {
-      start: performanceHeaders.start(timers)
-      , end: performanceHeaders.end(timers)
-    };
+    res.timers = performanceHeaders(timers);
 
     res.timers.start('Request');
 
 
     onHeader(res, () => {
       const mapping = Object.keys(timers).map((key, i) => {
-        const delta = timers[key].delta || performanceHeaders.end(timers)(key);
+        const delta = timers[key].delta || res.timers.end(key);
 
         return `${i}=${delta}; "${key}"`;
       }).join(', ');

@@ -20,7 +20,9 @@ const events = require('harken')
       };
 
 module.exports = (type) => {
-  return (socket) => {
+  return (socketIn) => {
+    const socket = socketIn;
+
     socket.onmessage = (messageIn) => {
       const message = getMessage(messageIn.data)
             , setEvent = getSetEventString(message);
