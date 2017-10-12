@@ -1,4 +1,14 @@
-### - 3.2.3 * 10/9/2017, 10:00:41 PM *
+### - 3.2.4 * 10/12/2017, 5:27:39 AM *
+
+   - removed a directory
+  - Merge pull request #463 from lazycoder9/test/improve_statsd_test_coverage
+  - Merge pull request #464 from geritol/master
+  - added test for stated log
+  - expand statsd.js test coverage to 100%
+  - Merge pull request #459 from ansble/Bretagne-Classic-3.2.x 
+
+
+ ### - 3.2.3 * 10/9/2017, 10:00:41 PM *
 
    - Merge pull request #458 from ansble/greenkeeper/iltorb-1.3.10
   - fix(package): update iltorb to version 1.3.10
