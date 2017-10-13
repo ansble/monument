@@ -1,4 +1,11 @@
-### - 3.2.4 * 10/12/2017, 5:27:39 AM *
+### - 3.2.5 * 10/12/2017, 7:38:50 PM *
+
+   - Merge pull request #467 from ansble/greenkeeper/iltorb-2.0.0
+  - fix(package): update iltorb to version 2.0.0
+  - Merge pull request #465 from ansble/Bretagne-Classic-3.2.x 
+
+
+ ### - 3.2.4 * 10/12/2017, 5:27:39 AM *
 
    - removed a directory
   - Merge pull request #463 from lazycoder9/test/improve_statsd_test_coverage
