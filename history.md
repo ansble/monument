@@ -1,4 +1,11 @@
-### - 3.2.5 * 10/12/2017, 7:38:50 PM *
+### - 3.2.6 * 10/14/2017, 2:46:10 PM *
+
+   - Merge pull request #470 from lazycoder9/test/expand_socket_test_coverage
+  - expand test coverage in socketHandler to 100%
+  - Merge pull request #468 from ansble/Bretagne-Classic-3.2.x 
+
+
+ ### - 3.2.5 * 10/12/2017, 7:38:50 PM *
 
    - Merge pull request #467 from ansble/greenkeeper/iltorb-2.0.0
   - fix(package): update iltorb to version 2.0.0
