@@ -1,4 +1,12 @@
-### - 3.2.6 * 10/14/2017, 2:46:10 PM *
+### - 3.2.7 * 10/14/2017, 3:01:38 PM *
+
+   - Merge pull request #472 from ansble/greenkeeper/eslint-4.9.0
+  - Merge branch 'master' into greenkeeper/eslint-4.9.0
+  - Merge pull request #471 from ansble/Bretagne-Classic-3.2.x
+  - chore(package): update eslint to version 4.9.0 
+
+
+ ### - 3.2.6 * 10/14/2017, 2:46:10 PM *
 
    - Merge pull request #470 from lazycoder9/test/expand_socket_test_coverage
   - expand test coverage in socketHandler to 100%
