@@ -140,6 +140,30 @@ describe('WebSocket handler Tests', () => {
         data: '{ "event": "some:event" }'
       });
     });
+
+    it('should emit error:ws when error is occuring', (done) => {
+      const socket = {
+        send: (message, callback) => {
+          callback('Some error');
+          assert.strictEqual(events.listeners('error:ws').length, 1);
+          done();
+        }
+      };
+
+      handler(socket);
+
+      socket.onmessage({
+        data: '{ "event": "data:get:test" }'
+      });
+
+      events.once('data:get:test', () => {
+        events.emit('data:set:test', { test: true });
+      });
+
+      events.once('error:ws', (message) => {
+        assert.isObject(message);
+      });
+    });
   });
 
   describe('Web Socket Handler Type: data tests', () => {
@@ -177,6 +201,18 @@ describe('WebSocket handler Tests', () => {
 
       socket.onmessage({
         data: '{ "event": "some:event" }'
+      });
+
+      assert.strictEqual(events.listeners('some:event').length, 0);
+    });
+
+    it('should not emit events for invalid JSON data', () => {
+      const socket = {};
+
+      handler(socket);
+
+      socket.onmessage({
+        data: '"event" : "some:event"'
       });
 
       assert.strictEqual(events.listeners('some:event').length, 0);
