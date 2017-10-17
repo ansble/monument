@@ -1,4 +1,15 @@
-### - 3.2.7 * 10/14/2017, 3:01:38 PM *
+### - 3.2.8 * 10/17/2017, 8:32:53 AM *
+
+   - Merge pull request #477 from ansble/feature/travis-ci
+  - trying to use coveralls
+  - switches out the build image
+  - Merge pull request #474 from ansble/greenkeeper/iltorb-2.0.1
+  - Switching to travisci
+  - fix(package): update iltorb to version 2.0.1
+  - Merge pull request #473 from ansble/Bretagne-Classic-3.2.x 
+
+
+ ### - 3.2.7 * 10/14/2017, 3:01:38 PM *
 
    - Merge pull request #472 from ansble/greenkeeper/eslint-4.9.0
   - Merge branch 'master' into greenkeeper/eslint-4.9.0
