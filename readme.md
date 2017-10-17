@@ -6,7 +6,7 @@
 
 [![npm version](https://img.shields.io/npm/v/monument.svg?style=flat-square)](https://www.npmjs.com/package/monument)
 [![downloads](https://img.shields.io/npm/dm/monument.svg?style=flat-square)](http://npm-stat.com/charts.html?package=monument&from=2016-08-01)
-![build status](https://codeship.com/projects/881ed090-9c54-0132-655c-263ab955f60c/status?branch=master) 
+![build status](https://travis-ci.org/ansble/monument.svg?branch=master) 
 [![David](https://img.shields.io/david/ansble/monument.svg?style=flat-square)](https://david-dm.org/ansble/monument)
 [![Coveralls branch](https://img.shields.io/coveralls/ansble/monument/master.svg?style=flat-square)](https://coveralls.io/r/ansble/monument?branch=master)
 [![Code Climate](https://img.shields.io/codeclimate/github/ansble/monument.svg?style=flat-square)](https://codeclimate.com/github/ansble/monument)
