@@ -5,4 +5,5 @@ node_js:
   - "node"
   - "lts/*"
 
-
+script:
+  - "npm run codeship"
