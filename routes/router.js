@@ -38,7 +38,6 @@ module.exports = (routesJson, config) => {
         };
 
   routeStore.parse(routesJson);
-
   // the route handler... pulled out here for easier testing
   return (req, resIn) => {
     const method = req.method.toLowerCase()
@@ -105,8 +104,6 @@ module.exports = (routesJson, config) => {
 
     // match the first part of the url... for public stuff
     if (contains(publicFolders, pathname.split('/')[1])) {
-      // static assets y'all
-
       // this header allows proxies to cache different version based on
       //  the accept-encoding header. So (gzip/deflate/no compression)
       res.setHeader('Vary', 'Accept-Encoding');

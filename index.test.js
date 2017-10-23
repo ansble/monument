@@ -13,7 +13,7 @@ const assert = require('chai').assert
       , path = require('path')
       , configStore = require('./utils/config');
 
-describe('The main monument tests', () => {
+describe('The Main monument Tests', () => {
 
   it('should be correctly defined', () => {
     assert.isFunction(app.server);

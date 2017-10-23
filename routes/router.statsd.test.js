@@ -21,6 +21,7 @@ const assert = require('chai').assert
         , create: function () {
           return {
             send: (message) => {
+              console.log('mocked statsd send!');
               this.store.send = message;
             }
             , timing: (message) => {
@@ -50,7 +51,7 @@ let res
     , routeHandler;
 
 
-describe('statsd tests', () => {
+describe('Router Tests:: statsd tests', () => {
   beforeEach(() => {
     config.reset();
     routerStore.clear();
@@ -63,13 +64,20 @@ describe('statsd tests', () => {
         host: 'statsd.server'
         , port: '42'
       }
+      , log: {
+        log: () => {}
+        , error: () => {}
+      }
+    });
+
+    Object.keys(routeObject).forEach((key) => {
+      events.off(`route:${key}:get`);
     });
 
     events.off('error:404');
+    events.off('static:served');
     events.off('static:missing');
     events.off('response');
-    events.off('route:/about:get');
-    events.off('route:/api/articles/:id:get');
 
     res = new stream.Writable();
 
