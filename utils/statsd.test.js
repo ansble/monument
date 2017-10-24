@@ -1,17 +1,15 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , StatsD = require('node-statsd')
       , statsd = require('./statsd');
 
-describe('statsd Tests', () => {
-  it('should return an object', () => {
-    assert.isObject(statsd);
-    assert.isFunction(statsd.create);
-  });
+test('should return an object', (t) => {
+  t.is(typeof statsd, 'object');
+  t.is(typeof statsd.create, 'function');
+});
 
-  it('statsd.create should return StatsD object', () => {
-    assert.isTrue(statsd.create({}) instanceof StatsD);
-  });
+test('statsd.create should return StatsD object', (t) => {
+  t.true(statsd.create({}) instanceof StatsD);
 });

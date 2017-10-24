@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , send = require('./send')
       , zlib = require('zlib')
       , brotli = require('iltorb')
@@ -15,157 +15,155 @@ let fakeRes
     , obj
     , buf;
 
-describe('Send Tests', () => {
-  beforeEach(() => {
-    fakeHeaders = {};
+test.beforeEach(() => {
+  fakeHeaders = {};
 
-    fakeRes = {
-      setHeader: (key, value) => {
-        fakeHeaders[key] = value;
-      }
-      , end: (data) => {
+  fakeRes = {
+    setHeader: (key, value) => {
+      fakeHeaders[key] = value;
+    }
+    , end: (data) => {
 
-        fakeOut = data;
-      }
-      , send: (data) => {
+      fakeOut = data;
+    }
+    , send: (data) => {
 
-        fakeOut = data;
-      }
-      , statusCode: 200
-    };
+      fakeOut = data;
+    }
+    , statusCode: 200
+  };
 
-    fakeRes.send = send({
-      headers: {
-        'accept-encoding': 'none'
-        , 'if-none-match': ''
-      }
-    }, { compression: false });
+  fakeRes.send = send({
+    headers: {
+      'accept-encoding': 'none'
+      , 'if-none-match': ''
+    }
+  }, { compression: false });
 
-    fakeRes.sendDeflate = send({
-      headers: {
-        'accept-encoding': 'deflate'
-        , 'if-none-match': ''
-      }
-    }, { compression: 'deflate' });
+  fakeRes.sendDeflate = send({
+    headers: {
+      'accept-encoding': 'deflate'
+      , 'if-none-match': ''
+    }
+  }, { compression: 'deflate' });
 
-    fakeRes.sendGzip = send({
-      headers: {
-        'accept-encoding': 'gzip'
-        , 'if-none-match': ''
-      }
-    }, { compression: 'gzip' });
+  fakeRes.sendGzip = send({
+    headers: {
+      'accept-encoding': 'gzip'
+      , 'if-none-match': ''
+    }
+  }, { compression: 'gzip' });
 
-    fakeRes.sendBrotli = send({
-      headers: {
-        'accept-encoding': 'br'
-        , 'if-none-match': ''
-      }
-    }, { compression: 'br' });
+  fakeRes.sendBrotli = send({
+    headers: {
+      'accept-encoding': 'br'
+      , 'if-none-match': ''
+    }
+  }, { compression: 'br' });
 
-    fakeOut = '';
+  fakeOut = '';
 
-    obj = {
-      title: 'Tom Sawyer'
-      , Author: 'Samuel Langhorne Clemens'
-    };
+  obj = {
+    title: 'Tom Sawyer'
+    , Author: 'Samuel Langhorne Clemens'
+  };
 
-    buf = new Buffer('this is a buffer', 'utf8');
+  buf = new Buffer('this is a buffer', 'utf8');
 
-    fakeRes.sendEtag = send({
-      headers: {
-        'accept-encoding': 'none'
-        , 'if-none-match': etag(JSON.stringify(obj))
-      }
-    }, { compression: false });
-  });
+  fakeRes.sendEtag = send({
+    headers: {
+      'accept-encoding': 'none'
+      , 'if-none-match': etag(JSON.stringify(obj))
+    }
+  }, { compression: false });
+});
 
-  it('should be defined as a function', () => {
-    assert.isFunction(send);
-  });
+test('should be defined as a function', (t) => {
+  t.is(typeof send, 'function');
+});
 
-  it('should return a function', () => {
-    assert.isFunction(send({}, {}));
-  });
+test('should return a function', (t) => {
+  t.is(typeof send({}, {}), 'function');
+});
 
-  it('should handle an empty data object', () => {
-    fakeRes.send();
-    assert.strictEqual(fakeOut, '');
-  });
+test('should handle an empty data object', (t) => {
+  fakeRes.send();
+  t.is(fakeOut, '');
+});
 
-  it('should handle a string', () => {
-    fakeRes.send('The Walrus is Paul');
-    assert.strictEqual(fakeOut, 'The Walrus is Paul');
-  });
+test('should handle a string', (t) => {
+  fakeRes.send('The Walrus is Paul');
+  t.is(fakeOut, 'The Walrus is Paul');
+});
 
-  it('should handle an object', () => {
-    fakeRes.send(obj);
-    assert.strictEqual(fakeOut, JSON.stringify(obj));
-  });
+test('should handle an object', (t) => {
+  fakeRes.send(obj);
+  t.is(fakeOut, JSON.stringify(obj));
+});
 
-  it('should handle a buffer', () => {
-    fakeRes.send(buf);
-    assert.strictEqual(fakeOut, 'this is a buffer');
-  });
+test('should handle a buffer', (t) => {
+  fakeRes.send(buf);
+  t.is(fakeOut, 'this is a buffer');
+});
 
-  it('should handle an array', () => {
-    fakeRes.send([ 'one', 'two' ]);
-    assert.strictEqual(fakeOut, JSON.stringify([ 'one', 'two' ]));
-  });
+test('should handle an array', (t) => {
+  fakeRes.send([ 'one', 'two' ]);
+  t.is(fakeOut, JSON.stringify([ 'one', 'two' ]));
+});
 
-  it('should handle a number and other weird data', () => {
-    fakeRes.send(1);
-    assert.strictEqual(fakeOut, '1');
-  });
+test('should handle a number and other weird data', (t) => {
+  fakeRes.send(1);
+  t.is(fakeOut, '1');
+});
 
-  it('should handle a bool', () => {
-    fakeRes.send(true);
-    assert.strictEqual(fakeOut, JSON.stringify(true));
-  });
+test('should handle a bool', (t) => {
+  fakeRes.send(true);
+  t.is(fakeOut, JSON.stringify(true));
+});
 
-  it('should return deflate compressed results if deflate header is sent', (done) => {
-    fakeRes.sendDeflate(obj);
+test.cb('should return deflate compressed results if deflate header is sent', (t) => {
+  fakeRes.sendDeflate(obj);
 
-    setTimeout(() => {
-      const outString = JSON.stringify(fakeOut)
-            , compareString = JSON.stringify(zlib.deflateSync(JSON.stringify(obj)));
+  setTimeout(() => {
+    const outString = JSON.stringify(fakeOut)
+          , compareString = JSON.stringify(zlib.deflateSync(JSON.stringify(obj)));
 
-      assert.strictEqual(outString, compareString);
-      assert.strictEqual(fakeHeaders['Content-Encoding'], 'deflate');
-      done();
-    }, compressTimeout);
-  });
+    t.is(outString, compareString);
+    t.is(fakeHeaders['Content-Encoding'], 'deflate');
+    t.end();
+  }, compressTimeout);
+});
 
-  it('should return gzip compressed results if gzip header is sent', (done) => {
-    fakeRes.sendGzip(obj);
+test.cb('should return gzip compressed results if gzip header is sent', (t) => {
+  fakeRes.sendGzip(obj);
 
-    setTimeout(() => {
-      const outString = JSON.stringify(fakeOut)
-            , compareString = JSON.stringify(zlib.gzipSync(JSON.stringify(obj)));
+  setTimeout(() => {
+    const outString = JSON.stringify(fakeOut)
+          , compareString = JSON.stringify(zlib.gzipSync(JSON.stringify(obj)));
 
-      assert.strictEqual(outString, compareString);
-      assert.strictEqual(fakeHeaders['Content-Encoding'], 'gzip');
-      done();
-    }, compressTimeout);
-  });
+    t.is(outString, compareString);
+    t.is(fakeHeaders['Content-Encoding'], 'gzip');
+    t.end();
+  }, compressTimeout);
+});
 
-  it('should return brotli compressed results if brotli header is sent', (done) => {
-    fakeRes.sendBrotli(obj);
+test.cb('should return brotli compressed results if brotli header is sent', (t) => {
+  fakeRes.sendBrotli(obj);
 
-    setTimeout(() => {
-      const outString = JSON.stringify(fakeOut);
+  setTimeout(() => {
+    const outString = JSON.stringify(fakeOut);
 
-      brotli.compress(new Buffer(JSON.stringify(obj)), (err, compareString) => {
-        assert.strictEqual(outString, JSON.stringify(compareString));
-        assert.strictEqual(fakeHeaders['Content-Encoding'], 'br');
-        done();
-      });
-    }, compressTimeout);
-  });
+    brotli.compress(new Buffer(JSON.stringify(obj)), (err, compareString) => {
+      t.is(outString, JSON.stringify(compareString));
+      t.is(fakeHeaders['Content-Encoding'], 'br');
+      t.end();
+    });
+  }, compressTimeout);
+});
 
-  it('should return a 304 if the content has not changed', () => {
-    const notModifiedStatus = 304;
+test('should return a 304 if the content has not changed', (t) => {
+  const notModifiedStatus = 304;
 
-    fakeRes.sendEtag(obj);
-    assert.strictEqual(fakeRes.statusCode, notModifiedStatus);
-  });
+  fakeRes.sendEtag(obj);
+  t.is(fakeRes.statusCode, notModifiedStatus);
 });

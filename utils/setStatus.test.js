@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , setStatus = require('./setStatus')
       , fakeResFilled404 = {
         statusCode: 404
@@ -21,81 +21,87 @@ const assert = require('chai').assert
 
 let fakeRes;
 
-describe('setStatus function of response object', () => {
-  beforeEach(() => {
-    fakeRes = {
-      setStatus: setStatus
-    };
-  });
+// describe('setStatus function of response object', (t) => {
+test.beforeEach(() => {
+  fakeRes = {
+    setStatus: setStatus
+  };
+});
 
-  it('should be defined as a function', () => {
-    assert.isFunction(fakeRes.setStatus);
-  });
-  it('should return a the response object', () => {
-    assert.isObject(fakeRes.setStatus());
-    assert.strictEqual(fakeRes.setStatus(), fakeRes);
-  });
+test('should be defined as a function', (t) => {
+  t.is(typeof fakeRes.setStatus, 'function');
+});
 
-  it('should set data by a string that is an http status message', () => {
-    fakeRes.setStatus('Not Found');
-    assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled404));
-  });
-  it('should set data by a number that is an http status code', () => {
-    fakeRes.setStatus(404);
-    assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled404));
-  });
-  it('should not set data by a string that is not http status message', () => {
-    fakeRes.setStatus('Testing Not Found');
-    assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify({}));
-  });
-  it('should not set data by a number that is not http status code', () => {
-    fakeRes.setStatus(4040);
-    assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify({}));
-  });
+test('should return a the response object', (t) => {
+  t.is(typeof fakeRes.setStatus(), 'object');
+  t.is(fakeRes.setStatus(), fakeRes);
+});
 
+test('should set data by a string that is an http status message', (t) => {
+  fakeRes.setStatus('Not Found');
+  t.is(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled404));
+});
 
+test('should set data by a number that is an http status code', (t) => {
+  fakeRes.setStatus(404);
+  t.is(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled404));
+});
 
+test('should not set data by a string that is not http status message', (t) => {
+  fakeRes.setStatus('Testing Not Found');
+  t.is(JSON.stringify(fakeRes), JSON.stringify({}));
+});
 
-  it('should return the response object if values are set by status message string', () => {
-    assert.strictEqual(fakeRes.setStatus('Not Found'), fakeRes);
-  });
-  it('should return response object if values are set by status message code', () => {
-    assert.strictEqual(fakeRes.setStatus(404), fakeRes);
-  });
-  it('should return resonse Object if values are set by status message string', () => {
-    assert.strictEqual(fakeRes.setStatus('Testing Not Found'), fakeRes);
-  });
-  it('should return response object if values are set by status message code', () => {
-    assert.strictEqual(fakeRes.setStatus(4040), fakeRes);
-  });
+test('should not set data by a number that is not http status code', (t) => {
+  fakeRes.setStatus(4040);
+  t.is(JSON.stringify(fakeRes), JSON.stringify({}));
+});
 
-  it('should return response object for string "Bad Request"', () => {
-    assert.strictEqual(fakeRes.setStatus('Bad Request'), fakeRes);
-  });
-  it('should return response object for status code 400', () => {
-    assert.strictEqual(fakeRes.setStatus(400), fakeRes);
-  });
-  it('should set data for string "Bad Request"', () => {
-    fakeRes.setStatus('Bad Request');
-    assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled400));
-  });
-  it('should set data for status code 400', () => {
-    fakeRes.setStatus(400);
-    assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled400));
-  });
+test('should return the response object if values are set by status message string', (t) => {
+  t.is(fakeRes.setStatus('Not Found'), fakeRes);
+});
 
-  it('should return resonse object for string "Internal Server Error"', () => {
-    assert.strictEqual(fakeRes.setStatus('Internal Server Error'), fakeRes);
-  });
-  it('should return resonse object for status code 500', () => {
-    assert.strictEqual(fakeRes.setStatus(500), fakeRes);
-  });
-  it('should set data for string "Internal Server Error"', () => {
-    fakeRes.setStatus('Internal Server Error');
-    assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled500));
-  });
-  it('should set data for status code 500', () => {
-    fakeRes.setStatus(500);
-    assert.strictEqual(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled500));
-  });
+test('should return response object if values are set by status message code', (t) => {
+  t.is(fakeRes.setStatus(404), fakeRes);
+});
+
+test('should return resonse Object if values are set by status message string', (t) => {
+  t.is(fakeRes.setStatus('Testing Not Found'), fakeRes);
+});
+
+test('should return response object if values are set by status message code', (t) => {
+  t.is(fakeRes.setStatus(4040), fakeRes);
+});
+
+test('should return response object for string "Bad Request"', (t) => {
+  t.is(fakeRes.setStatus('Bad Request'), fakeRes);
+});
+
+test('should return response object for status code 400', (t) => {
+  t.is(fakeRes.setStatus(400), fakeRes);
+});
+
+test('should set data for string "Bad Request"', (t) => {
+  fakeRes.setStatus('Bad Request');
+  t.is(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled400));
+});
+
+test('should set data for status code 400', (t) => {
+  fakeRes.setStatus(400);
+  t.is(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled400));
+});
+
+test('should return resonse object for string "Internal Server Error"', (t) => {
+  t.is(fakeRes.setStatus('Internal Server Error'), fakeRes);
+});
+test('should return resonse object for status code 500', (t) => {
+  t.is(fakeRes.setStatus(500), fakeRes);
+});
+test('should set data for string "Internal Server Error"', (t) => {
+  fakeRes.setStatus('Internal Server Error');
+  t.is(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled500));
+});
+test('should set data for status code 500', (t) => {
+  fakeRes.setStatus(500);
+  t.is(JSON.stringify(fakeRes), JSON.stringify(fakeResFilled500));
 });

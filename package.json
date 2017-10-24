@@ -4,7 +4,7 @@
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
-    "mocha": "mocha -- *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
+    "mocha": "ava bin/*.test.js utils/*.test.js",
     "start": "node app.js",
     "test": "npm run lint && istanbul cover _mocha -- *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
     "codeship": "npm test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
@@ -60,6 +60,7 @@
     "ws": "3.2.0"
   },
   "devDependencies": {
+    "ava": "^0.22.0",
     "chai": "4.1.2",
     "chalk": "2.2.0",
     "coveralls": "3.0.0",

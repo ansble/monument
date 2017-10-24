@@ -1,26 +1,24 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , parseForm = require('./parseForm')
       , fs = require('fs')
       , path = require('path')
       , fileToRead = path.join(process.cwd(), '/test_stubs/formDataBody.txt')
       , validString = fs.readFileSync(fileToRead, 'utf-8');
 
-describe('parseForm Tests', () => {
-  it('should return a function ', () => {
-    assert.isFunction(parseForm);
-  });
+test('should return a function ', (t) => {
+  t.is(typeof parseForm, 'function');
+});
 
-  it('should parse a form string out correctly', () => {
-    assert.isObject(parseForm(validString));
-    assert.strictEqual(parseForm(validString).cont, 'some random content');
-    assert.strictEqual(parseForm(validString).pass, 'some random pass');
-  });
+test('should parse a form string out correctly', (t) => {
+  t.is(typeof parseForm(validString), 'object');
+  t.is(parseForm(validString).cont, 'some random content');
+  t.is(parseForm(validString).pass, 'some random pass');
+});
 
-  it('should return an empty object if no form string', () => {
-    assert.isObject(parseForm('this is bogus'));
-    assert.strictEqual(Object.keys(parseForm('this is something')).length, 0);
-  });
+test('should return an empty object if no form string', (t) => {
+  t.is(typeof parseForm('this is bogus'), 'object');
+  t.is(Object.keys(parseForm('this is something')).length, 0);
 });

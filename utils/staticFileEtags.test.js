@@ -1,52 +1,49 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , events = require('harken');
 
 let etagTest;
 
 require('./staticFileEtags');
 
-describe('Static File Etags', () => {
-
-  it('should be able to add a file\'s etag and return it through events', (done) => {
-    events.once('etag:get:./test_stubs/routes_stub.json', (etag) => {
-      etagTest = etag;
-      assert.isString(etag);
-      done();
-    });
-
-    events.emit('etag:add', './test_stubs/routes_stub.json');
+test.cb('should be able to add a file\'s etag and return it through events', (t) => {
+  events.once('etag:get:./test_stubs/routes_stub.json', (etag) => {
+    etagTest = etag;
+    t.is(typeof etag, 'string');
+    t.end();
   });
 
-  it('should be able to check a file\'s etag and say if it is valid', (done) => {
-    events.once('etag:check:./test_stubs/routes_stub.json', (valid) => {
-      assert.ok(valid);
-      done();
-    });
+  events.emit('etag:add', './test_stubs/routes_stub.json');
+});
 
-    events.emit('etag:check', { file: './test_stubs/routes_stub.json', etag: etagTest });
+test.cb('should be able to check a file\'s etag and say if it is valid', (t) => {
+  events.once('etag:check:./test_stubs/routes_stub.json', (valid) => {
+    t.truthy(valid);
+    t.end();
   });
 
-  it('should be able to udpate a file\'s etag', (done) => {
-    events.once('etag:get:./test_stubs/routes_stub.json', (etag) => {
-      assert.ok(etag);
-      done();
-    });
+  events.emit('etag:check', { file: './test_stubs/routes_stub.json', etag: etagTest });
+});
 
-    events.emit('etag:check', { file: './test_stubs/routes_stub.json', etag: etagTest });
+test.cb('should be able to udpate a file\'s etag', (t) => {
+  events.once('etag:get:./test_stubs/routes_stub.json', (etag) => {
+    t.truthy(etag);
+    t.end();
   });
 
-  it('should raise an error if the file is not there', (done) => {
-    events.once('error', (stuff) => {
-      assert.strictEqual(stuff.file, './test_stubs/daniel.json');
-      assert.strictEqual(stuff.message, 'could not read file');
-      assert.isDefined(stuff.error);
+  events.emit('etag:check', { file: './test_stubs/routes_stub.json', etag: etagTest });
+});
 
-      done();
-    });
+test.cb('should raise an error if the file is not there', (t) => {
+  events.once('error', (stuff) => {
+    t.is(stuff.file, './test_stubs/daniel.json');
+    t.is(stuff.message, 'could not read file');
+    t.not(typeof stuff.error, 'undefined');
 
-    events.emit('etag:add', './test_stubs/daniel.json');
+    t.end();
   });
+
+  events.emit('etag:add', './test_stubs/daniel.json');
 });

@@ -1,65 +1,56 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , tools = require('./tools');
 
-describe('Tools Tests', () => {
-  it('should return an object', () => {
-    assert.isObject(tools);
-    assert.isFunction(tools.isDefined);
-    assert.isFunction(tools.isUndefined);
-    assert.isFunction(tools.not);
-  });
+test('should return an object', (t) => {
+  t.is(typeof tools, 'object');
+  t.is(typeof tools.isDefined, 'function');
+  t.is(typeof tools.isUndefined, 'function');
+  t.is(typeof tools.not, 'function');
+});
 
-  describe('.isDefined tests', () => {
-    it('should return false it the item is undefined', () => {
-      const some = {};
+test('.isDefined::should return false it the item is undefined', (t) => {
+  const some = {};
 
-      assert.strictEqual(tools.isDefined(some.test), false);
-    });
+  t.is(tools.isDefined(some.test), false);
+});
 
-    it('should return true it the item is defined', () => {
-      const some = {
-        test: true
-      };
+test('.isDefined::should return true it the item is defined', (t) => {
+  const some = {
+    test: true
+  };
 
-      assert.strictEqual(tools.isDefined(some.test), true);
-    });
-  });
+  t.is(tools.isDefined(some.test), true);
+});
 
-  describe('.isUndefined tests', () => {
-    it('should return true it the item is undefined', () => {
-      const some = {};
+test('.isUndefined::should return true it the item is undefined', (t) => {
+  const some = {};
 
-      assert.strictEqual(tools.isUndefined(some.test), true);
-    });
+  t.is(tools.isUndefined(some.test), true);
+});
 
-    it('should return false it the item is defined', () => {
-      const some = {
-        test: true
-      };
+test('.isUndefined::should return false it the item is defined', (t) => {
+  const some = {
+    test: true
+  };
 
-      assert.strictEqual(tools.isUndefined(some.test), false);
-    });
-  });
+  t.is(tools.isUndefined(some.test), false);
+});
 
-  describe('.not tests', () => {
-    it('should return false if true is passed to it', () => {
-      assert.strictEqual(tools.not(true), false);
-    });
-  });
+test('.not::should return false if true is passed to it', (t) => {
+  t.is(tools.not(true), false);
+});
 
-  describe('.contains tests', () => {
-    it('should be a function', () => {
-      assert.isFunction(tools.contains);
-    });
+test('.contains::should be a function', (t) => {
+  t.is(typeof tools.contains, 'function');
+});
 
-    it('should return true if it is in the array', () => {
-      assert.strictEqual(tools.contains([ '1', '2', '3' ], '1'), true);
-    });
-    it('should return false if it is not in the array', () => {
-      assert.strictEqual(tools.contains([ '1', '2', '3' ], '4'), false);
-    });
-  });
+test('.contains::should return true if it is in the array', (t) => {
+  t.is(tools.contains([ '1', '2', '3' ], '1'), true);
+});
+
+test('.contains::should return false if it is not in the array', (t) => {
+  t.is(tools.contains([ '1', '2', '3' ], '4'), false);
 });

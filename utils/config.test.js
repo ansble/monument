@@ -1,121 +1,114 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , config = require('./config')
       , path = require('path');
 
-describe('config Tests', () => {
-  beforeEach(() => {
-    config.reset();
+test.beforeEach(() => {
+  config.reset();
+});
+
+test.afterEach(() => {
+  config.reset();
+});
+
+test('should return an object', (t) => {
+  t.is(typeof config.set, 'function');
+  t.is(typeof config.get, 'function');
+  t.is(typeof config.reset, 'function');
+});
+
+test('should set smart defaults', (t) => {
+  const configObj = config.get();
+
+  t.is(configObj.port, 3000);
+  t.is(typeof configObj.server, 'object');
+  t.is(configObj.routePath, path.join(process.cwd(), './routes.json'));
+  t.is(config.routesJSONPath, config.routePath);
+  t.is(configObj.publicPath, path.join(process.cwd(), './public'));
+  t.is(configObj.compress, true);
+  t.is(configObj.webSockets, false);
+  t.is(configObj.templatePath, path.join(process.cwd(), './templates'));
+  t.is(configObj.maxAge, 31536000);
+  t.is(configObj.etags, true);
+  t.is(typeof configObj.security, 'object');
+  t.is(configObj.security.xssProtection, true);
+  t.is(configObj.security.poweredBy, undefined);
+  t.is(configObj.security.noSniff, true);
+  t.is(configObj.security.noCache, false);
+  t.is(typeof configObj.security.framegaurd, 'object');
+  t.is(configObj.security.framegaurd.action, 'SAMEORIGIN');
+  t.is(typeof configObj.security.hsts, 'object');
+  t.is(configObj.security.hsts.maxAge, 86400);
+  t.is(typeof configObj.log, 'object');
+  t.is(typeof configObj.log.info, 'function');
+  t.is(typeof configObj.log.debug, 'function');
+  t.is(typeof configObj.log.warn, 'function');
+  t.is(typeof configObj.log.error, 'function');
+  t.is(typeof configObj.log.trace, 'function');
+});
+
+test('.get tests::should return the whole config option when called with no value', (t) => {
+  const configObj = config.get();
+
+  t.is(typeof configObj, 'object');
+});
+
+test('.get tests::should return the value if a key is passed in', (t) => {
+  const value = config.get('port');
+
+  t.is(typeof value, 'number');
+});
+
+test('.set tests::should accept an object of settings', (t) => {
+  config.set({
+    port: 1234
+    , routePath: '/etc/bin'
   });
 
-  afterEach(() => {
-    config.reset();
+  t.is(config.get('port'), 1234);
+  t.is(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
+});
+
+test('.set tests::should accept a key value pair of a setting', (t) => {
+  config.set('port', 1212);
+
+  t.is(config.get('port'), 1212);
+});
+
+test('.set tests::should return the configObject after setting', (t) => {
+  const testObj = config.set('port', 1211);
+
+  t.is(typeof testObj, 'object');
+  t.is(testObj.port, 1211);
+});
+
+test('.set tests::should merge defaults in objects', (t) => {
+  config.set({
+    port: 1234
+    , routePath: '/etc/bin'
+    , statsd: {
+      host: 'test'
+      , port: '42'
+    }
   });
 
-  it('should return an object', () => {
-    assert.isObject(config);
-    assert.isFunction(config.set);
-    assert.isFunction(config.get);
-    assert.isFunction(config.reset);
+  t.is(config.get('port'), 1234);
+  t.is(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
+  t.is(config.get('statsd').host, 'test');
+  t.is(config.get('statsd').port, '42');
+  t.is(config.get('statsd').cacheDns, true);
+});
+
+test('.set tests::should not merge defaults in objects if value is not object', (t) => {
+  config.set({
+    port: 1234
+    , routePath: '/etc/bin'
+    , statsd: false
   });
 
-  it('should set smart defaults', () => {
-    const configObj = config.get();
-
-    assert.strictEqual(configObj.port, 3000);
-    assert.isObject(configObj.server);
-    assert.strictEqual(configObj.routePath, path.join(process.cwd(), './routes.json'));
-    assert.strictEqual(config.routesJSONPath, config.routePath);
-    assert.strictEqual(configObj.publicPath, path.join(process.cwd(), './public'));
-    assert.strictEqual(configObj.compress, true);
-    assert.strictEqual(configObj.webSockets, false);
-    assert.strictEqual(configObj.templatePath, path.join(process.cwd(), './templates'));
-    assert.strictEqual(configObj.maxAge, 31536000);
-    assert.strictEqual(configObj.etags, true);
-    assert.isObject(configObj.security);
-    assert.strictEqual(configObj.security.xssProtection, true);
-    assert.strictEqual(configObj.security.poweredBy, undefined);
-    assert.strictEqual(configObj.security.noSniff, true);
-    assert.strictEqual(configObj.security.noCache, false);
-    assert.isObject(configObj.security.framegaurd);
-    assert.strictEqual(configObj.security.framegaurd.action, 'SAMEORIGIN');
-    assert.isObject(configObj.security.hsts);
-    assert.strictEqual(configObj.security.hsts.maxAge, 86400);
-    assert.isObject(configObj.log);
-    assert.isFunction(configObj.log.info);
-    assert.isFunction(configObj.log.debug);
-    assert.isFunction(configObj.log.warn);
-    assert.isFunction(configObj.log.error);
-    assert.isFunction(configObj.log.trace);
-  });
-
-  describe('config.get tests', () => {
-    it('should return the whole config option when called with no value', () => {
-      const configObj = config.get();
-
-      assert.isObject(configObj);
-    });
-
-    it('should return the value if a key is passed in', () => {
-      const value = config.get('port');
-
-      assert.isNumber(value);
-    });
-  });
-
-  describe('config.set tests', () => {
-    it('should accept an object of settings', () => {
-      config.set({
-        port: 1234
-        , routePath: '/etc/bin'
-      });
-
-      assert.strictEqual(config.get('port'), 1234);
-      assert.strictEqual(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
-    });
-
-    it('should accept a key value pair of a setting', () => {
-      config.set('port', 1212);
-
-      assert.strictEqual(config.get('port'), 1212);
-    });
-
-    it('should return the configObject after setting', () => {
-      const test = config.set('port', 1211);
-
-      assert.isObject(test);
-      assert.strictEqual(test.port, 1211);
-    });
-
-    it('should merge defaults in objects', () => {
-      config.set({
-        port: 1234
-        , routePath: '/etc/bin'
-        , statsd: {
-          host: 'test'
-          , port: '42'
-        }
-      });
-
-      assert.strictEqual(config.get('port'), 1234);
-      assert.strictEqual(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
-      assert.strictEqual(config.get('statsd').host, 'test');
-      assert.strictEqual(config.get('statsd').port, '42');
-      assert.strictEqual(config.get('statsd').cacheDns, true);
-    });
-
-    it('should not merge defaults in objects if value is not object', () => {
-      config.set({
-        port: 1234
-        , routePath: '/etc/bin'
-        , statsd: false
-      });
-
-      assert.strictEqual(config.get('port'), 1234);
-      assert.strictEqual(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
-      assert.strictEqual(config.get('statsd'), false);
-    });
-  });
+  t.is(config.get('port'), 1234);
+  t.is(config.get('routePath'), path.join(process.cwd(), '/etc/bin'));
+  t.is(config.get('statsd'), false);
 });
