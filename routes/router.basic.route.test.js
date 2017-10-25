@@ -1,12 +1,13 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , router = require('./router')
       , events = require('harken')
       , routeObject = require('../test_stubs/routes_stub.json')
-      , stream = require('stream')
+      // , stream = require('stream')
       , routerStore = require('./routeStore')
+      , createRes = require('../test_stubs/utils/createRes')
       , config = require('../utils/config')
       , req = {
         method: 'GET'
@@ -17,115 +18,113 @@ const assert = require('chai').assert
 let res
     , routeHandler;
 
-describe('Router Tests:: simple routes', () => {
-  beforeEach(() => {
-    config.reset();
-    routerStore.clear();
+test.beforeEach(() => {
+  config.reset();
+  routerStore.clear();
 
-    routeHandler = router(routeObject, config.set({
-      publicPath: './test_stubs/deletes'
-      , routePath: './test_stubs'
-      , compression: 'none'
-    }));
+  routeHandler = router(routeObject, config.set({
+    publicPath: './test_stubs/deletes'
+    , routePath: './test_stubs'
+    , compression: 'none'
+  }));
 
-    res = new stream.Writable();
+  res = createRes();
 
-    res.setHeader = function (name, value) {
-      this.headers[name] = value;
-    };
+  // res.setHeader = function (name, value) {
+  //   this.headers[name] = value;
+  // };
 
-    res.writeHead = function (status, headers = {}) {
-      this.statusCode = status;
-      this.headers = Object.keys(headers).reduce((prevIn, key) => {
-        const prev = prevIn;
+  // res.writeHead = function (status, headers = {}) {
+  //   this.statusCode = status;
+  //   this.headers = Object.keys(headers).reduce((prevIn, key) => {
+  //     const prev = prevIn;
 
-        prev[key] = headers[key];
+  //     prev[key] = headers[key];
 
-        return prev;
-      }, this.headers);
-    };
+  //     return prev;
+  //   }, this.headers);
+  // };
 
-    res.statusCode = 0;
-    res.headers = {};
-    /* eslint-disable no-underscore-dangle */
-    res._write = function (chunk, enc, cb) {
-      const buffer = Buffer.isBuffer(chunk) ? chunk : new Buffer(chunk, enc);
+  // res.statusCode = 0;
+  // res.headers = {};
+  // /* eslint-disable no-underscore-dangle */
+  // res._write = function (chunk, enc, cb) {
+  //   const buffer = Buffer.isBuffer(chunk) ? chunk : new Buffer(chunk, enc);
 
-      events.emit('response', buffer.toString());
-      cb();
-    };
-    /* eslint-enable no-underscore-dangle */
+  //   events.emit('response', buffer.toString());
+  //   cb();
+  // };
+  /* eslint-enable no-underscore-dangle */
 
-    Object.keys(routeObject).forEach((key) => {
-      events.off(`route:${key}:get`);
-    });
-
-    events.off('error:404');
-    events.off('static:served');
-    events.off('static:missing');
-    events.off('response');
+  Object.keys(routeObject).forEach((key) => {
+    events.off(`route:${key}:get`);
   });
 
-  it('should emit the correct route event for a simple route', (done) => {
-    events.once('route:/about:get', (connection) => {
-      assert.isObject(connection);
-      done();
-    });
+  events.off('error:404');
+  events.off('static:served');
+  events.off('static:missing');
+  events.off('response');
+});
 
-    process.nextTick(() => {
-      routeHandler(req, res);
-    });
+test.cb('should emit the correct route event for a simple route', (t) => {
+  events.once('route:/about:get', (connection) => {
+    t.is(typeof connection, 'object');
+    t.end();
   });
 
-  it('should emit the correct route event for a simple root route', (done) => {
-    req.url = '/';
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
 
-    events.once('route:/:get', (connection) => {
-      assert.isObject(connection);
-      done();
-    });
+test.cb('should emit the correct route event for a simple root route', (t) => {
+  req.url = '/';
 
-    process.nextTick(() => {
-      routeHandler(req, res);
-    });
+  events.once('route:/:get', (connection) => {
+    t.is(typeof connection, 'object');
+    t.end();
   });
 
-  it('should emit the correct event for a two level deep simple route', (done) => {
-    req.url = '/api/articles';
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
 
-    events.once('route:/api/articles:get', (connection) => {
-      assert.isObject(connection);
-      done();
-    });
+test.cb('should emit the correct event for a two level deep simple route', (t) => {
+  req.url = '/api/articles';
 
-    process.nextTick(() => {
-      routeHandler(req, res);
-    });
+  events.once('route:/api/articles:get', (connection) => {
+    t.is(typeof connection, 'object');
+    t.end();
   });
 
-  it('should emit the correct route event for another simple route', (done) => {
-    req.url = '/search';
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
 
-    events.once('route:/search:get', (connection) => {
-      assert.isObject(connection);
-      done();
-    });
+test.cb('should emit the correct route event for another simple route', (t) => {
+  req.url = '/search';
 
-    process.nextTick(() => {
-      routeHandler(req, res);
-    });
+  events.once('route:/search:get', (connection) => {
+    t.is(typeof connection, 'object');
+    t.end();
   });
 
-  it('should emit the correct route event for the api simple route', (done) => {
-    req.url = '/api';
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
 
-    events.once('route:/api:get', (connection) => {
-      assert.isObject(connection);
-      done();
-    });
+test.cb('should emit the correct route event for the api simple route', (t) => {
+  req.url = '/api';
 
-    process.nextTick(() => {
-      routeHandler(req, res);
-    });
+  events.once('route:/api:get', (connection) => {
+    t.is(typeof connection, 'object');
+    t.end();
+  });
+
+  process.nextTick(() => {
+    routeHandler(req, res);
   });
 });

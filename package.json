@@ -60,7 +60,7 @@
     "ws": "3.2.0"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
+    "ava": "^0.23.0",
     "chai": "4.1.2",
     "chalk": "2.2.0",
     "coveralls": "3.0.0",

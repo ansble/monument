@@ -1,9 +1,9 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , mock = require('mock-require')
-
+      , createRes = require('../test_stubs/utils/createRes')
       /* eslint-disable no-unused-vars */
       , statsdReq = mock('../utils/statsd', {
         store: {
@@ -50,238 +50,234 @@ const assert = require('chai').assert
 let res
     , routeHandler;
 
+test.beforeEach(() => {
+  config.reset();
+  routerStore.clear();
 
-describe('Router Tests:: statsd tests', () => {
-  beforeEach(() => {
-    config.reset();
-    routerStore.clear();
-
-    routeHandler = router(routeObject, {
-      publicPath: path.join(process.cwd(), './test_stubs/deletes')
-      , routePath: path.join(process.cwd(), './test_stubs')
-      , compression: 'none'
-      , statsd: {
-        host: 'statsd.server'
-        , port: '42'
-      }
-      , log: {
-        log: () => {}
-        , error: () => {}
-      }
-    });
-
-    Object.keys(routeObject).forEach((key) => {
-      events.off(`route:${key}:get`);
-    });
-
-    events.off('error:404');
-    events.off('static:served');
-    events.off('static:missing');
-    events.off('response');
-
-    res = new stream.Writable();
-
-    res.setHeader = function (name, value) {
-      this.headers[name] = value;
-    };
-
-    res.writeHead = function (status, headers) {
-      this.statusCode = status;
-      this.headers = Object.keys(headers).reduce((prevIn, key) => {
-        const prev = prevIn;
-
-        prev[key] = headers[key];
-
-        return prev;
-      }, this.headers);
-    };
-
-    res.statusCode = 200;
-    res.headers = {};
-    /* eslint-disable no-underscore-dangle */
-    res._write = function (chunk, enc, cb) {
-      const buffer = Buffer.isBuffer(chunk) ? chunk : new Buffer(chunk, enc);
-
-      events.emit('response', buffer.toString());
-      cb();
-    };
-    /* eslint-enable no-underscore-dangle */
+  routeHandler = router(routeObject, {
+    publicPath: path.join(process.cwd(), './test_stubs/deletes')
+    , routePath: path.join(process.cwd(), './test_stubs')
+    , compression: 'none'
+    , statsd: {
+      host: 'statsd.server'
+      , port: '42'
+    }
+    , log: {
+      log: () => {}
+      , error: () => {}
+    }
   });
 
-  after(() => {
-    mock.stopAll();
+  Object.keys(routeObject).forEach((key) => {
+    events.off(`route:${key}:get`);
   });
 
-  afterEach(() => {
-    statsd.clear();
+  events.off('error:404');
+  events.off('static:served');
+  events.off('static:missing');
+  events.off('response');
+
+  res = createRes();
+
+  // res.setHeader = function (name, value) {
+  //   this.headers[name] = value;
+  // };
+
+  // res.writeHead = function (status, headers) {
+  //   this.statusCode = status;
+  //   this.headers = Object.keys(headers).reduce((prevIn, key) => {
+  //     const prev = prevIn;
+
+  //     prev[key] = headers[key];
+
+  //     return prev;
+  //   }, this.headers);
+  // };
+
+  // res.statusCode = 200;
+  // res.headers = {};
+  // /* eslint-disable no-underscore-dangle */
+  // res._write = function (chunk, enc, cb) {
+  //   const buffer = Buffer.isBuffer(chunk) ? chunk : new Buffer(chunk, enc);
+
+  //   events.emit('response', buffer.toString());
+  //   cb();
+  // };
+  /* eslint-enable no-underscore-dangle */
+});
+
+test.after(() => {
+  mock.stopAll();
+});
+
+test.afterEach(() => {
+  statsd.clear();
+});
+
+test.cb('when configured sends route and route status to statsd for each request', (t) => {
+  const sendKey = 'http.get./api/articles/1234/links/daniel.status_code.200';
+
+  req.url = '/api/articles/1234/links/daniel';
+
+  events.once('route:/api/articles/:id/links/:item:get', (connection) => {
+    t.is(typeof connection, 'object');
+
+    connection.res.once('finish', () => {
+      t.is(statsd.store.send, sendKey);
+
+      t.end();
+    });
+
+    connection.res.end();
   });
 
-  describe('when configured', () => {
-    it('sends route and route status to statsd for each request', (done) => {
-      const sendKey = 'http.get./api/articles/1234/links/daniel.status_code.200';
-
-      req.url = '/api/articles/1234/links/daniel';
-
-      events.once('route:/api/articles/:id/links/:item:get', (connection) => {
-        assert.isObject(connection);
-
-        connection.res.once('finish', () => {
-          assert.strictEqual(statsd.store.send, sendKey);
-
-          done();
-        });
-
-        connection.res.end();
-      });
-
-      events.once('error:404', () => {
-        throw new Error('bad route parsing');
-      });
-
-      process.nextTick(() => {
-        routeHandler(req, res);
-      });
-    });
-
-    it('sends route and route status to statsd for each request', (done) => {
-      const sendKey = 'http.get./about.status_code.200';
-
-      req.url = '/about';
-
-      events.once('route:/about:get', (connection) => {
-        assert.isObject(connection);
-
-        connection.res.once('finish', () => {
-          assert.strictEqual(statsd.store.send, sendKey);
-
-          done();
-        });
-
-        connection.res.end();
-      });
-
-      events.once('error:404', () => {
-        throw new Error('bad route parsing');
-      });
-
-      process.nextTick(() => {
-        routeHandler(req, res);
-      });
-    });
-
-    it('sends timing information and route with each wildcard request', (done) => {
-      const timingKey = 'http.get./api/articles/1234/links/daniel.response_time';
-
-      req.url = '/api/articles/1234/links/daniel';
-
-      events.once('route:/api/articles/:id/links/:item:get', (connection) => {
-        assert.isObject(connection);
-
-        connection.res.once('finish', () => {
-          assert.strictEqual(statsd.store.timing, timingKey);
-
-          done();
-        });
-
-        connection.res.end();
-      });
-
-      events.once('error:404', () => {
-        throw new Error('bad route parsing');
-      });
-
-      process.nextTick(() => {
-        routeHandler(req, res);
-      });
-    });
-
-    it('sends timing information and route with each standard request', (done) => {
-      const timingKey = 'http.get./about.response_time';
-
-      req.url = '/about';
-
-      events.once('route:/about:get', (connection) => {
-        assert.isObject(connection);
-
-        connection.res.once('finish', () => {
-          assert.strictEqual(statsd.store.timing, timingKey);
-
-          done();
-        });
-
-        connection.res.end();
-      });
-
-      events.once('error:404', () => {
-        throw new Error('bad route parsing');
-      });
-
-      process.nextTick(() => {
-        routeHandler(req, res);
-      });
-    });
+  events.once('error:404', () => {
+    throw new Error('bad route parsing');
   });
 
-  describe('when not configured', () => {
-    beforeEach(() => {
-      routeStore.clear();
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
 
-      routeHandler = router(routeObject, {
-        publicPath: path.join(process.cwd(), './test_stubs/deletes')
-        , routePath: path.join(process.cwd(), './test_stubs')
-        , compression: 'none'
-        , statsd: false
-      });
+test.cb('when configured sends route and route status to statsd for each request', (t) => {
+  const sendKey = 'http.get./about.status_code.200';
+
+  req.url = '/about';
+
+  events.once('route:/about:get', (connection) => {
+    t.is(typeof connection, 'object');
+
+    connection.res.once('finish', () => {
+      t.is(statsd.store.send, sendKey);
+
+      t.end();
     });
 
-    it('does not send anything to statsd for each standard request', (done) => {
-      req.url = '/about';
+    connection.res.end();
+  });
 
-      events.once('route:/about:get', (connection) => {
-        assert.isObject(connection);
+  events.once('error:404', () => {
+    throw new Error('bad route parsing');
+  });
 
-        connection.res.once('finish', () => {
-          assert.strictEqual(statsd.store.send, '');
-          assert.strictEqual(statsd.store.timing, '');
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
 
-          done();
-        });
+test.cb('when configured sends timing information and route with each wildcard request', (t) => {
+  const timingKey = 'http.get./api/articles/1234/links/daniel.response_time';
 
-        connection.res.end();
-      });
+  req.url = '/api/articles/1234/links/daniel';
 
-      events.once('error:404', () => {
-        throw new Error('bad route parsing');
-      });
+  events.once('route:/api/articles/:id/links/:item:get', (connection) => {
+    t.is(typeof connection, 'object');
 
-      process.nextTick(() => {
-        routeHandler(req, res);
-      });
+    connection.res.once('finish', () => {
+      t.is(statsd.store.timing, timingKey);
+
+      t.end();
     });
 
-    it('does not send anything to statsd for each wildcard request', (done) => {
-      req.url = '/api/articles/1234';
+    connection.res.end();
+  });
 
-      events.once('route:/api/articles/:id:get', (connection) => {
-        assert.isObject(connection);
+  events.once('error:404', () => {
+    throw new Error('bad route parsing');
+  });
 
-        connection.res.once('finish', () => {
-          assert.strictEqual(statsd.store.send, '');
-          assert.strictEqual(statsd.store.timing, '');
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
 
-          done();
-        });
+test.cb('when configured sends timing information and route with each standard request', (t) => {
+  const timingKey = 'http.get./about.response_time';
 
-        connection.res.end();
-      });
+  req.url = '/about';
 
-      events.once('error:404', () => {
-        throw new Error('bad route parsing');
-      });
+  events.once('route:/about:get', (connection) => {
+    t.is(typeof connection, 'object');
 
-      process.nextTick(() => {
-        routeHandler(req, res);
-      });
+    connection.res.once('finish', () => {
+      t.is(statsd.store.timing, timingKey);
+
+      t.end();
     });
+
+    connection.res.end();
+  });
+
+  events.once('error:404', () => {
+    throw new Error('bad route parsing');
+  });
+
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
+
+test.cb('when not configured does not send anything to statsd for each standard request', (t) => {
+  routeHandler = router(routeObject, {
+    publicPath: path.join(process.cwd(), './test_stubs/deletes')
+    , routePath: path.join(process.cwd(), './test_stubs')
+    , compression: 'none'
+    , statsd: false
+  });
+
+  req.url = '/about';
+
+  events.once('route:/about:get', (connection) => {
+    t.is(typeof connection, 'object');
+
+    connection.res.once('finish', () => {
+      t.is(statsd.store.send, '');
+      t.is(statsd.store.timing, '');
+
+      t.end();
+    });
+
+    connection.res.end();
+  });
+
+  events.once('error:404', () => {
+    throw new Error('bad route parsing');
+  });
+
+  process.nextTick(() => {
+    routeHandler(req, res);
+  });
+});
+
+test.cb('when not configured does not send anything to statsd for each wildcard request', (t) => {
+  routeHandler = router(routeObject, {
+    publicPath: path.join(process.cwd(), './test_stubs/deletes')
+    , routePath: path.join(process.cwd(), './test_stubs')
+    , compression: 'none'
+    , statsd: false
+  });
+
+  req.url = '/api/articles/1234';
+
+  events.once('route:/api/articles/:id:get', (connection) => {
+    t.is(typeof connection, 'object');
+
+    connection.res.once('finish', () => {
+      t.is(statsd.store.send, '');
+      t.is(statsd.store.timing, '');
+
+      t.end();
+    });
+
+    connection.res.end();
+  });
+
+  events.once('error:404', () => {
+    throw new Error('bad route parsing');
+  });
+
+  process.nextTick(() => {
+    routeHandler(req, res);
   });
 });

@@ -29,7 +29,7 @@ test('should not emit events for data event messages', (t) => {
     data: '{ "event": "data:get:test" }'
   });
 
-  t.is(events.listeners('data:set:test').length, 0);
+  t.is(typeof events.listeners('data:set:test'), 'undefined');
 });
 
 test.cb('should emit events for non-data event messages', (t) => {
