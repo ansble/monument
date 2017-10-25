@@ -1,40 +1,38 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , poweredByHeader = require('./poweredByHeader')
       , res = {}
       , config = {};
 
-describe('Security Headers: x-powered-by Tests', () => {
-  beforeEach(() => {
-    res.headers = {};
 
-    res.setHeader = function (key, value) {
-      this.headers[key] = value;
-    };
+test.beforeEach(() => {
+  res.headers = {};
 
-    config.security = {};
-  });
+  res.setHeader = function (key, value) {
+    this.headers[key] = value;
+  };
 
-  it('should return a function', () => {
-    assert.isFunction(poweredByHeader);
-  });
+  config.security = {};
+});
 
-  it('should not set a header if there is no option to in config', () => {
-    poweredByHeader(config, res);
+test('should return a function', (t) => {
+  t.is(typeof poweredByHeader, 'function');
+});
 
-    assert.isUndefined(res.headers['X-Powered-By']);
-  });
+test('should not set a header if there is no option to in config', (t) => {
+  poweredByHeader(config, res);
 
-  it('should set a header if a value for one is in config', () => {
-    config.security.poweredBy = 'bacon';
-    poweredByHeader(config, res);
+  t.is(typeof res.headers['X-Powered-By'], 'undefined');
+});
 
-    assert.strictEqual(res.headers['X-Powered-By'], 'bacon');
-  });
+test('should set a header if a value for one is in config', (t) => {
+  config.security.poweredBy = 'bacon';
+  poweredByHeader(config, res);
 
-  it('should return res when executed', () => {
-    assert.strictEqual(res, poweredByHeader(config, res));
-  });
+  t.is(res.headers['X-Powered-By'], 'bacon');
+});
+
+test('should return res when executed', (t) => {
+  t.is(res, poweredByHeader(config, res));
 });

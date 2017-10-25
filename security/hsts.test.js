@@ -1,152 +1,149 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , hsts = require('./hsts')
       , res = {}
       , config = {};
 
-describe('Security Headers: Strict-Transport-Security Tests', () => {
-  beforeEach(() => {
-    res.headers = {};
-    res.setHeader = function (key, value) {
-      this.headers[key] = value;
-    };
+test.beforeEach(() => {
+  res.headers = {};
+  res.setHeader = function (key, value) {
+    this.headers[key] = value;
+  };
 
-    config.security = {};
-  });
+  config.security = {};
+});
 
-  it('should return a function', () => {
-    assert.isFunction(hsts);
-  });
+test('should return a function', (t) => {
+  t.is(typeof hsts, 'function');
+});
 
-  it('should set a header if there is no option in config', () => {
+test('should set a header if there is no option in config', (t) => {
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=86400; includeSubdomains; preload');
+});
+
+test('should set a header if the config is true', (t) => {
+  config.security.hsts = true;
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=86400; includeSubdomains; preload');
+});
+
+test('should set a header with a different max age if passed in', (t) => {
+  config.security.hsts = {
+    maxAge: 100
+  };
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=100; includeSubdomains; preload');
+});
+
+test('should set a header with a different max age and no includeSubdomains if passed in', (t) => {
+  config.security.hsts = {
+    maxAge: 100
+    , includeSubDomains: false
+  };
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=100; preload');
+});
+
+test('should set a header with no includeSubdomains if passed in', (t) => {
+  config.security.hsts = {
+    includeSubDomains: false
+  };
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=86400; preload');
+});
+
+test('should set a header with no preload if passed in', (t) => {
+  config.security.hsts = {
+    preload: false
+  };
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=86400; includeSubdomains');
+});
+
+test('should set a header with a different max age and no preloads if passed in', (t) => {
+  config.security.hsts = {
+    maxAge: 100
+    , preload: false
+  };
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=100; includeSubdomains');
+});
+
+test('should set a header with a different max age and other options off if passed in', (t) => {
+  config.security.hsts = {
+    maxAge: 100
+    , includeSubDomains: false
+    , preload: false
+  };
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=100');
+});
+
+test('should set a header with a default max age and other options off if passed in', (t) => {
+  config.security.hsts = {
+    includeSubDomains: false
+    , preload: false
+  };
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(result, 'max-age=86400');
+});
+
+test('should not set a header if the config is false', (t) => {
+  config.security.hsts = false;
+  hsts(config, res);
+
+  const result = res.headers['Strict-Transport-Security'];
+
+  t.is(typeof result, 'undefined');
+});
+
+test('should throw an error if a bad value for maxAge is passed in', (t) => {
+  config.security.hsts = {
+    maxAge: -1000
+  };
+
+  t.throws(() => {
     hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=86400; includeSubdomains; preload');
   });
 
-  it('should set a header if the config is true', () => {
-    config.security.hsts = true;
+  config.security.hsts = {
+    maxAge: 'Sam I am'
+  };
+
+  t.throws(() => {
     hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=86400; includeSubdomains; preload');
   });
+});
 
-  it('should set a header with a different max age if passed in', () => {
-    config.security.hsts = {
-      maxAge: 100
-    };
-    hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=100; includeSubdomains; preload');
-  });
-
-  it('should set a header with a different max age and no includeSubdomains if passed in', () => {
-    config.security.hsts = {
-      maxAge: 100
-      , includeSubDomains: false
-    };
-    hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=100; preload');
-  });
-
-  it('should set a header with no includeSubdomains if passed in', () => {
-    config.security.hsts = {
-      includeSubDomains: false
-    };
-    hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=86400; preload');
-  });
-
-  it('should set a header with no preload if passed in', () => {
-    config.security.hsts = {
-      preload: false
-    };
-    hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=86400; includeSubdomains');
-  });
-
-  it('should set a header with a different max age and no preloads if passed in', () => {
-    config.security.hsts = {
-      maxAge: 100
-      , preload: false
-    };
-    hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=100; includeSubdomains');
-  });
-
-  it('should set a header with a different max age and other options off if passed in', () => {
-    config.security.hsts = {
-      maxAge: 100
-      , includeSubDomains: false
-      , preload: false
-    };
-    hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=100');
-  });
-
-  it('should set a header with a default max age and other options off if passed in', () => {
-    config.security.hsts = {
-      includeSubDomains: false
-      , preload: false
-    };
-    hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.strictEqual(result, 'max-age=86400');
-  });
-
-  it('should not set a header if the config is false', () => {
-    config.security.hsts = false;
-    hsts(config, res);
-
-    const result = res.headers['Strict-Transport-Security'];
-
-    assert.isUndefined(result);
-  });
-
-  it('should throw an error if a bad value for maxAge is passed in', () => {
-    config.security.hsts = {
-      maxAge: -1000
-    };
-
-    assert.throws(() => {
-      hsts(config, res);
-    });
-
-    config.security.hsts = {
-      maxAge: 'Sam I am'
-    };
-
-    assert.throws(() => {
-      hsts(config, res);
-    });
-  });
-
-  it('should return res when executed', () => {
-    assert.strictEqual(res, hsts(config, res));
-  });
+test('should return res when executed', (t) => {
+  t.is(res, hsts(config, res));
 });

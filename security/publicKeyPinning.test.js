@@ -1,160 +1,157 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , publicKeyPinning = require('./publicKeyPinning')
       , res = {}
       , config = {};
 
-describe('Security Headers: Public-Key-Pin/Public-Key-Pin-Report-Only Tests', () => {
-  beforeEach(() => {
-    res.headers = {};
+test.beforeEach(() => {
+  res.headers = {};
 
-    res.setHeader = function (key, value) {
-      this.headers[key] = value;
-    };
+  res.setHeader = function (key, value) {
+    this.headers[key] = value;
+  };
 
-    config.security = {};
+  config.security = {};
+});
+
+test('should return a function', (t) => {
+  t.is(typeof publicKeyPinning, 'function');
+});
+
+test('should not set a header if there is no option to in config', (t) => {
+  publicKeyPinning(config, res, true);
+
+  t.is(typeof res.headers['Public-Key-Pin'], 'undefined');
+  t.is(typeof res.headers['Public-Key-Pin-Report-Only'], 'undefined');
+});
+
+test('should throw if empty config is passed in', (t) => {
+  config.security.publicKeyPin = {};
+  t.throws(() => {
+    publicKeyPinning(config, res);
   });
 
-  it('should return a function', () => {
-    assert.isFunction(publicKeyPinning);
+  config.security.publicKeyPin = {
+    sha256s: []
+  };
+  t.throws(() => {
+    publicKeyPinning(config, res);
   });
 
-  it('should not set a header if there is no option to in config', () => {
-    publicKeyPinning(config, res, true);
-
-    assert.isUndefined(res.headers['Public-Key-Pin']);
-    assert.isUndefined(res.headers['Public-Key-Pin-Report-Only']);
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone' ]
+  };
+  t.throws(() => {
+    publicKeyPinning(config, res);
   });
 
-  it('should throw if empty config is passed in', () => {
-    config.security.publicKeyPin = {};
-    assert.throws(() => {
-      publicKeyPinning(config, res);
-    });
-
-    config.security.publicKeyPin = {
-      sha256s: []
-    };
-    assert.throws(() => {
-      publicKeyPinning(config, res);
-    });
-
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone' ]
-    };
-    assert.throws(() => {
-      publicKeyPinning(config, res);
-    });
-
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone', 'keynumbertwo' ]
-    };
-    assert.throws(() => {
-      publicKeyPinning(config, res);
-    });
-
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone', 'keynumbertwo' ]
-      , maxAge: 0
-    };
-    assert.throws(() => {
-      publicKeyPinning(config, res);
-    });
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone', 'keynumbertwo' ]
+  };
+  t.throws(() => {
+    publicKeyPinning(config, res);
   });
 
-  it('should return a header if correct config passed in', () => {
-    const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
-
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone', 'keynumbertwo' ]
-      , maxAge: 100
-    };
-
-    publicKeyPinning(config, res, true);
-
-    assert.strictEqual(res.headers['Public-Key-Pins'], expected);
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone', 'keynumbertwo' ]
+    , maxAge: 0
+  };
+  t.throws(() => {
+    publicKeyPinning(config, res);
   });
+});
 
-  it('should return a header if correct config + includeSubdomains passed in', () => {
-    const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo";'
-                        + ' max-age=100; includeSubdomains';
+test('should return a header if correct config passed in', (t) => {
+  const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
 
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone', 'keynumbertwo' ]
-      , maxAge: 100
-      , includeSubdomains: true
-    };
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone', 'keynumbertwo' ]
+    , maxAge: 100
+  };
 
-    publicKeyPinning(config, res, true);
+  publicKeyPinning(config, res, true);
 
-    assert.strictEqual(res.headers['Public-Key-Pins'], expected);
-  });
+  t.is(res.headers['Public-Key-Pins'], expected);
+});
 
-  it('should return a header if correct config + includeSubdomains = false passed in', () => {
-    const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
+test('should return a header if correct config + includeSubdomains passed in', (t) => {
+  const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo";'
+                      + ' max-age=100; includeSubdomains';
 
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone', 'keynumbertwo' ]
-      , maxAge: 100
-      , includeSubdomains: false
-    };
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone', 'keynumbertwo' ]
+    , maxAge: 100
+    , includeSubdomains: true
+  };
 
-    publicKeyPinning(config, res, true);
+  publicKeyPinning(config, res, true);
 
-    assert.strictEqual(res.headers['Public-Key-Pins'], expected);
-  });
+  t.is(res.headers['Public-Key-Pins'], expected);
+});
 
-  it('should return a header if correct config + reportUri passed in', () => {
-    const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo";'
-                        + ' max-age=100; report-uri="http://ansble.com"';
+test('should return a header if correct config + includeSubdomains = false passed in', (t) => {
+  const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
 
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone', 'keynumbertwo' ]
-      , maxAge: 100
-      , reportUri: 'http://ansble.com'
-    };
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone', 'keynumbertwo' ]
+    , maxAge: 100
+    , includeSubdomains: false
+  };
 
-    publicKeyPinning(config, res, true);
+  publicKeyPinning(config, res, true);
 
-    assert.isUndefined(res.headers['Public-Key-Pins']);
-    assert.strictEqual(res.headers['Public-Key-Pins-Report-Only'], expected);
-  });
+  t.is(res.headers['Public-Key-Pins'], expected);
+});
 
-  it('should return a header if correct config + reportUri and reportOnly is passed in', () => {
-    const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; '
-                        + 'max-age=100; report-uri="http://ansble.com"';
+test('should return a header if correct config + reportUri passed in', (t) => {
+  const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo";'
+                      + ' max-age=100; report-uri="http://ansble.com"';
 
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone', 'keynumbertwo' ]
-      , maxAge: 100
-      , reportUri: 'http://ansble.com'
-      , reportOnly: false
-    };
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone', 'keynumbertwo' ]
+    , maxAge: 100
+    , reportUri: 'http://ansble.com'
+  };
 
-    publicKeyPinning(config, res, true);
+  publicKeyPinning(config, res, true);
 
-    assert.isUndefined(res.headers['Public-Key-Pins-Report-Only']);
-    assert.strictEqual(res.headers['Public-Key-Pins'], expected);
-  });
+  t.is(typeof res.headers['Public-Key-Pins'], 'undefined');
+  t.is(res.headers['Public-Key-Pins-Report-Only'], expected);
+});
 
-  it('should return a header if correct config + reportUri = false passed in', () => {
-    const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
+test('should return a header if correct config + reportUri and reportOnly is passed in', (t) => {
+  const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; '
+                      + 'max-age=100; report-uri="http://ansble.com"';
 
-    config.security.publicKeyPin = {
-      sha256s: [ 'keynumberone', 'keynumbertwo' ]
-      , maxAge: 100
-      , reportUri: false
-    };
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone', 'keynumbertwo' ]
+    , maxAge: 100
+    , reportUri: 'http://ansble.com'
+    , reportOnly: false
+  };
 
-    publicKeyPinning(config, res, true);
+  publicKeyPinning(config, res, true);
 
-    assert.isUndefined(res.headers['Public-Key-Pins-Report-Only']);
-    assert.strictEqual(res.headers['Public-Key-Pins'], expected);
-  });
+  t.is(typeof res.headers['Public-Key-Pins-Report-Only'], 'undefined');
+  t.is(res.headers['Public-Key-Pins'], expected);
+});
 
-  it('should return res when executed', () => {
-    assert.strictEqual(res, publicKeyPinning(config, res));
-  });
+test('should return a header if correct config + reportUri = false passed in', (t) => {
+  const expected = 'pin-sha256="keynumberone"; pin-sha256="keynumbertwo"; max-age=100';
+
+  config.security.publicKeyPin = {
+    sha256s: [ 'keynumberone', 'keynumbertwo' ]
+    , maxAge: 100
+    , reportUri: false
+  };
+
+  publicKeyPinning(config, res, true);
+
+  t.is(typeof res.headers['Public-Key-Pins-Report-Only'], 'undefined');
+  t.is(res.headers['Public-Key-Pins'], expected);
+});
+
+test('should return res when executed', (t) => {
+  t.is(res, publicKeyPinning(config, res));
 });

@@ -1,65 +1,62 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , noCache = require('./noCache')
       , res = {}
       , config = {};
 
-describe('Security Headers: no cache!', () => {
-  beforeEach(() => {
-    res.headers = {};
-    res.setHeader = function (key, value) {
-      this.headers[key] = value;
-    };
+test.beforeEach(() => {
+  res.headers = {};
+  res.setHeader = function (key, value) {
+    this.headers[key] = value;
+  };
 
-    res.removeHeader = function (key) {
-      this.headers[key] = undefined;
-    };
+  res.removeHeader = function (key) {
+    this.headers[key] = undefined;
+  };
 
-    config.security = {};
-  });
+  config.security = {};
+});
 
-  it('should return a function', () => {
-    assert.isFunction(noCache);
-  });
+test('should return a function', (t) => {
+  t.is(typeof noCache, 'function');
+});
 
-  it('should not set a header if there is no option in config', () => {
-    noCache(config, res);
+test('should not set a header if there is no option in config', (t) => {
+  noCache(config, res);
 
-    assert.isUndefined(res.headers['Cache-Control']);
-  });
+  t.is(typeof res.headers['Cache-Control'], 'undefined');
+});
 
-  it('should set all the headers if the config is true', () => {
-    config.security.noCache = true;
-    noCache(config, res);
+test('should set all the headers if the config is true', (t) => {
+  config.security.noCache = true;
+  noCache(config, res);
 
-    assert.isDefined(res.headers['Cache-Control']);
-    assert.isDefined(res.headers['Surrogate-Control']);
-    assert.isDefined(res.headers.Pragma);
-    assert.isDefined(res.headers.Expires);
-  });
+  t.not(typeof res.headers['Cache-Control'], 'undefined');
+  t.not(typeof res.headers['Surrogate-Control'], 'undefined');
+  t.not(typeof res.headers.Pragma, 'undefined');
+  t.not(typeof res.headers.Expires, 'undefined');
+});
 
-  it('should kill the etag and set all headers if the config.etag is true', () => {
-    config.security.noCache = { noEtag: true };
-    res.headers.ETag = 'someEtagString';
+test('should kill the etag and set all headers if the config.etag is true', (t) => {
+  config.security.noCache = { noEtag: true };
+  res.headers.ETag = 'someEtagString';
 
-    noCache(config, res);
+  noCache(config, res);
 
-    assert.isDefined(res.headers['Cache-Control']);
-    assert.isDefined(res.headers['Surrogate-Control']);
-    assert.isDefined(res.headers.Pragma);
-    assert.isDefined(res.headers.Expires);
-    assert.isUndefined(res.headers.etag);
-  });
+  t.not(typeof res.headers['Cache-Control'], 'undefined');
+  t.not(typeof res.headers['Surrogate-Control'], 'undefined');
+  t.not(typeof res.headers.Pragma, 'undefined');
+  t.not(typeof res.headers.Expires, 'undefined');
+  t.is(typeof res.headers.etag, 'undefined');
+});
 
-  it('should return res when executed', () => {
-    assert.strictEqual(res, noCache(config, res));
-  });
+test('should return res when executed', (t) => {
+  t.is(res, noCache(config, res));
+});
 
-  it('should add a noCache function to res when executed', () => {
-    noCache(config, res);
-    assert.isDefined(res.noCache);
-    assert.isFunction(res.noCache);
-  });
+test('should add a noCache function to res when executed', (t) => {
+  noCache(config, res);
+  t.not(typeof res.noCache, 'undefined');
+  t.is(typeof res.noCache, 'function');
 });

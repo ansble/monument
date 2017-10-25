@@ -1,46 +1,43 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test =  require('ava')
       , noOpen = require('./noOpen')
       , res = {}
       , config = {};
 
-describe('Security Headers: X-Download-Options Tests', () => {
-  beforeEach(() => {
-    res.headers = {};
-    res.setHeader = function (key, value) {
-      this.headers[key] = value;
-    };
+test.beforeEach(() => {
+  res.headers = {};
+  res.setHeader = function (key, value) {
+    this.headers[key] = value;
+  };
 
-    config.security = {};
-  });
+  config.security = {};
+});
 
-  it('should return a function', () => {
-    assert.isFunction(noOpen);
-  });
+test('should return a function', (t) => {
+  t.is(typeof noOpen, 'function');
+});
 
-  it('should set a header if there is no option in config', () => {
-    noOpen(config, res);
+test('should set a header if there is no option in config', (t) => {
+  noOpen(config, res);
 
-    assert.strictEqual(res.headers['X-Download-Options'], 'noopen');
-  });
+  t.is(res.headers['X-Download-Options'], 'noopen');
+});
 
-  it('should set a header if the config is true', () => {
-    config.security.noOpen = true;
-    noOpen(config, res);
+test('should set a header if the config is true', (t) => {
+  config.security.noOpen = true;
+  noOpen(config, res);
 
-    assert.strictEqual(res.headers['X-Download-Options'], 'noopen');
-  });
+  t.is(res.headers['X-Download-Options'], 'noopen');
+});
 
-  it('should not set a header if the config is false', () => {
-    config.security.noOpen = false;
-    noOpen(config, res);
+test('should not set a header if the config is false', (t) => {
+  config.security.noOpen = false;
+  noOpen(config, res);
 
-    assert.isUndefined(res.headers['X-Download-Options']);
-  });
+  t.is(typeof res.headers['X-Download-Options'], 'undefined');
+});
 
-  it('should return res when executed', () => {
-    assert.strictEqual(res, noOpen(config, res));
-  });
+test('should return res when executed', (t) => {
+  t.is(res, noOpen(config, res));
 });

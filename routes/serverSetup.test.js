@@ -1,26 +1,23 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , setup = require('./serverSetup');
 
-describe('The Setup tests', () => {
+test('should be correctly defined', (t) => {
+  t.is(typeof setup, 'function');
+});
 
-  it('should be correctly defined', () => {
-    assert.isFunction(setup);
-  });
+test('should return the list of public folders', (t) => {
+  t.true(Array.isArray(setup('./test_stubs', './test_stubs/templates')));
+});
 
-  it('should return the list of public folders', () => {
-    assert.isArray(setup('./test_stubs', './test_stubs/templates'));
-  });
-
-  it('should throw if an invalid value for routePath is passed', () => {
-    assert.throws(setup, 'TypeError: path must be a string or Buffer', TypeError);
-    assert.throws(() => {
-      setup('somewhere', 'else');
-    }, 'Error: ENOENT: no such file or directory, scandir \'somewhere\'');
-    assert.throws(() => {
-      setup('./test_stubs/routes_stub.json', 'else');
-    }, 'Error: ENOTDIR: not a directory, scandir \'./test_stubs/routes_stub.json\'');
-  });
+test('should throw if an invalid value for routePath is passed', (t) => {
+  t.throws(setup, 'TypeError: path must be a string or Buffer', TypeError);
+  t.throws(() => {
+    setup('somewhere', 'else');
+  }, 'Error: ENOENT: no such file or directory, scandir \'somewhere\'');
+  t.throws(() => {
+    setup('./test_stubs/routes_stub.json', 'else');
+  }, 'Error: ENOTDIR: not a directory, scandir \'./test_stubs/routes_stub.json\'');
 });

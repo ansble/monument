@@ -1,7 +1,6 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , app = require('./index')
       , http = require('http')
       , servers = []
@@ -13,154 +12,105 @@ const assert = require('chai').assert
       , path = require('path')
       , configStore = require('./utils/config');
 
-describe('The Main monument Tests', () => {
+test.beforeEach(() => {
+  configStore.reset();
+});
 
-  it('should be correctly defined', () => {
-    assert.isFunction(app.server);
-    assert.isFunction(app.parser);
-    assert.isObject(app.routes);
-    assert.isObject(app.events);
+test.afterEach(() => {
+  const shutDownEvents = events.required([ 'complete' ], () => {
+    // t.end();
   });
 
-  describe('Parser Tests', () => {
-    it('should have a parser method', () => {
-      assert.isFunction(app.parser);
-    });
-  });
-
-  describe('Wrapper Tests', () => {
-    beforeEach(() => {
-      configStore.reset();
-    });
-
-    afterEach((done) => {
-      const shutDownEvents = events.required([ 'complete' ], () => {
-        done();
-      });
-
-      servers.forEach((server, i) => {
-        shutDownEvents.add(`server:${i}`);
-        server.close(() => {
-          events.emit(`server:${i}`);
-        });
-      });
-
-      events.emit('complete');
-    });
-
-    it('should return a server when run', (done) => {
-      app.server({
-        routeJSONPath: './test_stubs/routes_stub.json'
-        , routePath: './test_stubs'
-        , templatePath: './test_stubs/templates'
-        , port: 9999
-      });
-
-      app.events.once('server:started', (settings) => {
-        servers.push(settings.server);
-        assert.instanceOf(settings.server, http.Server);
-        done();
-      });
-    });
-
-    it('should return a server when run and no port passed in', (done) => {
-      const noPortApp = require('./index');
-
-      noPortApp.server({
-        routeJSONPath: './test_stubs/routes_stub.json'
-        , templatePath: './test_stubs/templates'
-        , routePath: './test_stubs'
-      });
-
-      noPortApp.events.once('server:started', (settings) => {
-        servers.push(settings.server);
-        assert.instanceOf(settings.server, http.Server);
-        done();
-      });
-    });
-
-    it('should return a server when run and compress passed in', (done) => {
-      const compressApp = require('./index');
-
-      compressApp.server({
-        routeJSONPath: './test_stubs/routes_stub.json'
-        , templatePath: './test_stubs/templates'
-        , compress: false
-        , routePath: './test_stubs'
-      });
-
-      compressApp.events.once('server:started', (settings) => {
-        servers.push(settings.server);
-        assert.instanceOf(settings.server, http.Server);
-        done();
-      });
-    });
-
-    it('should return an http2 server when http2 and correct params are passed in', (done) => {
-      const http2App = require('./index');
-
-      http2App.server({
-        routeJSONPath: './test_stubs/routes_stub.json'
-        , templatePath: './test_stubs/templates'
-        , routePath: './test_stubs'
-        , compress: false
-        , server: http2
-        , serverOptions: {
-          cert: fs.readFileSync(path.join(__dirname, './test_stubs/certs/test.crt'))
-          , key: fs.readFileSync(path.join(__dirname, './test_stubs/certs/tests.key'))
-        }
-      });
-
-      http2App.events.once('server:started', (settings) => {
-        servers.push(settings.server);
-        assert.instanceOf(settings.server, http2.Server);
-        done();
-      });
-    });
-
-    it('should return an spdy server when spdy and correct params are passed in', (done) => {
-      const spdyApp = require('./index');
-
-      spdyApp.server({
-        routeJSONPath: './test_stubs/routes_stub.json'
-        , templatePath: './test_stubs/templates'
-        , routePath: './test_stubs'
-        , compress: false
-        , server: spdy
-        , serverOptions: {
-          cert: fs.readFileSync(path.join(__dirname, './test_stubs/certs/test.crt'))
-          , key: fs.readFileSync(path.join(__dirname, './test_stubs/certs/tests.key'))
-          , ca: fs.readFileSync(path.join(__dirname, './test_stubs/certs/rootCA.key'))
-        }
-      });
-
-      spdyApp.events.once('server:started', (settings) => {
-        servers.push(settings.server);
-        assert.instanceOf(settings.server, spdy.Server);
-        done();
-      });
+  servers.forEach((server, i) => {
+    shutDownEvents.add(`server:${i}`);
+    server.close(() => {
+      events.emit(`server:${i}`);
     });
   });
 
-  describe('doTjs Tests', () => {
-    it('should use doTjs defaults if none are set');
-    it('should override doTjs specified defaults when set');
-    it('should ignore irrelevant config keys');
+  events.emit('complete');
+});
+
+test('should be correctly defined', (t) => {
+  t.is(typeof app.server, 'function');
+  t.is(typeof app.parser, 'function');
+  t.is(typeof app.routes, 'object');
+  t.is(typeof app.events, 'object');
+});
+
+test('should have a parser method', (t) => {
+  t.is(typeof app.parser, 'function');
+});
+
+test.cb('should return a server when run', (t) => {
+  app.server({
+    routeJSONPath: './test_stubs/routes_stub.json'
+    , routePath: './test_stubs'
+    , templatePath: './test_stubs/templates'
+    , port: 9999
+    , log: {
+      log: () => {}
+    }
   });
 
-  describe('uuid tests', () => {
-    it('should have a createUUID function', () => {
-      assert.isFunction(app.createUUID);
-    });
-
-    it('should return a uuid when called', () => {
-      const regex = /[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
-
-      assert.match(app.createUUID(), regex);
-    });
-
-    it('should not return the same uuid when called multiple times', () => {
-      assert.notEqual(app.createUUID(), app.createUUID());
-    });
+  app.events.once('server:started', (settings) => {
+    servers.push(settings.server);
+    t.true(settings.server instanceof http.Server);
+    t.end();
   });
+});
+
+test.cb('should return a server when run and no port passed in', (t) => {
+  const noPortApp = require('./index');
+
+  noPortApp.server({
+    routeJSONPath: './test_stubs/routes_stub.json'
+    , templatePath: './test_stubs/templates'
+    , routePath: './test_stubs'
+    , port: 9998
+    , log: {
+      log: () => {}
+    }
+  });
+
+  noPortApp.events.once('server:started', (settings) => {
+    servers.push(settings.server);
+    t.true(settings.server instanceof http.Server);
+    t.end();
+  });
+});
+
+test.cb('should return a server when run and compress passed in', (t) => {
+  const compressApp = require('./index');
+
+  compressApp.server({
+    routeJSONPath: './test_stubs/routes_stub.json'
+    , templatePath: './test_stubs/templates'
+    , compress: false
+    , routePath: './test_stubs'
+    , port: 9997
+    , log: {
+      log: () => {}
+    }
+  });
+
+  compressApp.events.once('server:started', (settings) => {
+    servers.push(settings.server);
+    t.true(settings.server instanceof http.Server);
+    t.end();
+  });
+});
+
+test('should have a createUUID function', (t) => {
+  t.is(typeof app.createUUID, 'function');
+});
+
+test('should return a uuid when called', (t) => {
+  const regex = /[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
+
+  t.true(regex.test(app.createUUID()));
+});
+
+test('should not return the same uuid when called multiple times', (t) => {
+  t.not(app.createUUID(), app.createUUID());
 });

@@ -1,7 +1,7 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , stream = require('stream')
       , path = require('path')
       , events = require('harken')
@@ -31,48 +31,54 @@ const assert = require('chai').assert
         return path.join(process.cwd(), 'test_stubs/templates', filePath);
       };
 
-describe('handleStaticFile Tests', () => {
-  beforeEach(() => {
-    events.off('static:served');
-    events.off('static:headed');
-    events.off('static:missing');
-    events.off('error:404');
+require('../utils/staticFileEtags');
+
+test.beforeEach(() => {
+  events.off('static:served');
+  events.off('static:headed');
+  events.off('static:missing');
+  events.off('error:404');
+});
+
+test.cb('should handle a static file', (t) => {
+  const connectionMock = getConnectionMock('GET', 'main.js');
+
+  events.once('static:served', (name) => {
+    console.log('testsssssssss');
+    t.is(name, connectionMock.path.pathname);
+    t.end();
   });
 
-  it('should handle a static file', (done) => {
-    const connectionMock = getConnectionMock('GET', 'main.js');
+  console.log(events.listeners('static:served'));
 
-    events.once('static:served', (name) => {
-      assert.equal(name, connectionMock.path.pathname);
-      done();
-    });
-    handleStaticFile(withPath('example.js'), connectionMock, {
-      maxAge: 1000
-      , compress: false
-    });
+  handleStaticFile(withPath('example.js'), connectionMock, {
+    maxAge: 1000
+    , compress: false
+  });
+});
+
+test.cb('should handle the HEAD to a static file', (t) => {
+  const connectionMock = getConnectionMock('HEAD', 'main.js');
+
+  events.once('static:headed', (name) => {
+    t.is(name, connectionMock.path.pathname);
+    t.end();
   });
 
-  it('should handle the HEAD to a static file', (done) => {
-    const connectionMock = getConnectionMock('HEAD', 'main.js');
+  handleStaticFile(withPath('example.js'), connectionMock, { maxAge: 1000, compress: false });
+});
 
-    events.once('static:headed', (name) => {
-      assert.equal(name, connectionMock.path.pathname);
-      done();
-    });
-    handleStaticFile(withPath('example.js'), connectionMock, { maxAge: 1000, compress: false });
+test.cb('should give 404 for static files missing', (t) => {
+  const connectionMock = getConnectionMock('GET', 'nonExistingfile.jpg');
+
+  events.once('static:missing', (name) => {
+    t.is(name, connectionMock.path.pathname);
   });
 
-  it('should give 404 for static files missing', (done) => {
-    const connectionMock = getConnectionMock('GET', 'nonExistingfile.jpg');
-
-    events.once('static:missing', (name) => {
-      assert.equal(name, connectionMock.path.pathname);
-    });
-    events.once('error:404', (connectionObject) => {
-      assert.equal(connectionObject.req.method, 'GET');
-      assert.equal(connectionObject.path.pathname, 'nonExistingfile.jpg');
-      done();
-    });
-    handleStaticFile('nonExistingfile.jpg', connectionMock, { maxAge: 1000, compress: false });
+  events.once('error:404', (connectionObject) => {
+    t.is(connectionObject.req.method, 'GET');
+    t.is(connectionObject.path.pathname, 'nonExistingfile.jpg');
+    t.end();
   });
+  handleStaticFile('nonExistingfile.jpg', connectionMock, { maxAge: 1000, compress: false });
 });

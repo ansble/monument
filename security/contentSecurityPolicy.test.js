@@ -1,7 +1,6 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , csp = require('./contentSecurityPolicy')
       , config = {}
 
@@ -39,366 +38,363 @@ const assert = require('chai').assert
 let res = {}
     , req = {};
 
-describe('content security policy', () => {
+test.beforeEach(() => {
+  req = {
+    headers: {}
+  };
 
-  beforeEach(() => {
-    req = {
-      headers: {}
-    };
+  res = {};
+  res.headers = {};
+  res.setHeader = function (key, value) {
+    this.headers[key] = value;
+  };
 
-    res = {};
-    res.headers = {};
-    res.setHeader = function (key, value) {
-      this.headers[key] = value;
-    };
+  config.security = {};
 
-    config.security = {};
+  csp.flushCache();
+});
 
-    csp.flushCache();
-  });
+test('returns a function', (t) => {
+  t.is(typeof csp, 'function');
+});
 
-  it('returns a function', () => {
-    assert.isFunction(csp);
-  });
+test('should have a flushCache function', (t) => {
+  t.is(typeof csp.flushCache, 'function');
+});
 
-  it('should have a flushCache function', () => {
-    assert.isFunction(csp.flushCache);
-  });
+test('sets headers by string', (t) => {
+  config.security.contentSecurity = { defaultSrc: 'a.com b.biz' };
 
-  it('sets headers by string', () => {
-    config.security.contentSecurity = { defaultSrc: 'a.com b.biz' };
+  csp(config, req, res);
 
+  t.is(res.headers['Content-Security-Policy'], 'default-src a.com b.biz');
+});
+
+test('is turned off by passing false', (t) => {
+  config.security.contentSecurity = false;
+
+  csp(config, req, res);
+
+  t.is(typeof res.headers['Content-Security-Policy'], 'undefined');
+});
+
+test('sets default-src to self by default', (t) => {
+  csp(config, req, res);
+
+  t.is(res.headers['Content-Security-Policy'], "default-src 'self'");
+
+  config.security = undefined;
+
+  csp(config, req, res);
+
+  t.is(res.headers['Content-Security-Policy'], "default-src 'self'");
+});
+
+test('sets all the headers if you tell it to', (t) => {
+  const expected = "default-src 'self' domain.com";
+
+  req.headers['user-agent'] = AGENTS['Firefox 23'].string;
+
+  config.security.contentSecurity = {
+    defaultSrc: [ "'self'", 'domain.com' ]
+    , setAllHeaders: true
+  };
+
+  csp(config, req, res);
+
+  t.is(res.headers['X-Content-Security-Policy'], expected);
+  t.is(res.headers['Content-Security-Policy'], expected);
+  t.is(res.headers['X-WebKit-CSP'], expected);
+});
+
+test('sets all the headers if you provide an unknown user-agent', (t) => {
+  const expected = "default-src 'self' domain.com";
+
+  req.headers['user-agent'] = 'Some Crazy Fake Browser';
+
+  config.security.contentSecurity = {
+    defaultSrc: [ '\'self\'', 'domain.com' ]
+  };
+
+  csp(config, req, res);
+  t.is(res.headers['X-Content-Security-Policy'], expected);
+  t.is(res.headers['Content-Security-Policy'], expected);
+  t.is(res.headers['X-WebKit-CSP'], expected);
+
+  res.headers = {};
+
+  // unknown browser shouldn't effect a subsequent request
+  req.headers['user-agent'] = AGENTS['Chrome 27'].string;
+
+  csp(config, req, res);
+  t.is(typeof res.headers['X-Content-Security-Policy'], 'undefined');
+  t.is(res.headers['Content-Security-Policy'], expected);
+  t.is(typeof res.headers['X-WebKit-CSP'], 'undefined');
+});
+
+test('sets the report-only headers', (t) => {
+  const expected = 'default-src \'self\'; report-uri /reporter';
+
+  config.security.contentSecurity = {
+    reportOnly: true
+    , setAllHeaders: true
+    , defaultSrc: [ "'self'" ]
+    , reportUri: '/reporter'
+  };
+
+  req.headers['user-agent'] = AGENTS['Firefox 23'].string;
+
+  csp(config, req, res);
+
+  t.is(res.headers['X-Content-Security-Policy-Report-Only'], expected);
+  t.is(res.headers['Content-Security-Policy-Report-Only'], expected);
+  t.is(res.headers['X-WebKit-CSP-Report-Only'], expected);
+});
+
+test('can set empty directives', (t) => {
+  config.security.contentSecurity = {
+    scriptSrc: []
+    , sandbox: [ '' ]
+  };
+
+  req.headers['user-agent'] = AGENTS['Firefox 23'].string;
+
+  csp(config, req, res);
+
+
+  const header = res.headers['Content-Security-Policy']
+        , split = header.split(';').map((str) => {
+          return str.trim();
+        }).sort();
+
+  t.is(split[0], 'sandbox');
+  t.is(split[1], 'script-src');
+});
+
+test('throws an error when directives need quotes', (t) => {
+  t.throws(() => {
+    config.security.contentSecurity = { defaultSrc: [ 'none' ] };
     csp(config, req, res);
-
-    assert.strictEqual(res.headers['Content-Security-Policy'], 'default-src a.com b.biz');
-  });
-
-  it('is turned off by passing false', () => {
-    config.security.contentSecurity = false;
-
+  }, Error);
+  t.throws(() => {
+    config.security.contentSecurity = { defaultSrc: [ 'self' ] };
     csp(config, req, res);
-
-    assert.isUndefined(res.headers['Content-Security-Policy']);
-  });
-
-  it('sets default-src to self by default', () => {
+  }, Error);
+  t.throws(() => {
+    config.security.contentSecurity = { 'script-src': [ 'unsafe-inline' ] };
     csp(config, req, res);
-
-    assert.strictEqual(res.headers['Content-Security-Policy'], "default-src 'self'");
-
-    config.security = undefined;
-
+  }, Error);
+  t.throws(() => {
+    config.security.contentSecurity = { scriptSrc: 'unsafe-eval' };
     csp(config, req, res);
-
-    assert.strictEqual(res.headers['Content-Security-Policy'], "default-src 'self'");
-  });
-
-  it('sets all the headers if you tell it to', () => {
-    const expected = "default-src 'self' domain.com";
-
-    req.headers['user-agent'] = AGENTS['Firefox 23'].string;
-
-    config.security.contentSecurity = {
-      defaultSrc: [ "'self'", 'domain.com' ]
-      , setAllHeaders: true
-    };
-
+  }, Error);
+  t.throws(() => {
+    config.security.contentSecurity = { 'style-src': [ 'unsafe-inline' ] };
     csp(config, req, res);
-
-    assert.strictEqual(res.headers['X-Content-Security-Policy'], expected);
-    assert.strictEqual(res.headers['Content-Security-Policy'], expected);
-    assert.strictEqual(res.headers['X-WebKit-CSP'], expected);
-  });
-
-  it('sets all the headers if you provide an unknown user-agent', () => {
-    const expected = "default-src 'self' domain.com";
-
-    req.headers['user-agent'] = 'Some Crazy Fake Browser';
-
-    config.security.contentSecurity = {
-      defaultSrc: [ '\'self\'', 'domain.com' ]
-    };
-
+  }, Error);
+  t.throws(() => {
+    config.security.contentSecurity = { styleSrc: 'unsafe-eval' };
     csp(config, req, res);
-    assert.strictEqual(res.headers['X-Content-Security-Policy'], expected);
-    assert.strictEqual(res.headers['Content-Security-Policy'], expected);
-    assert.strictEqual(res.headers['X-WebKit-CSP'], expected);
-
-    res.headers = {};
-
-    // unknown browser shouldn't effect a subsequent request
-    req.headers['user-agent'] = AGENTS['Chrome 27'].string;
-
+  }, Error);
+  t.throws(() => {
+    config.security.contentSecurity = { defaultSrc: 'self' };
     csp(config, req, res);
-    assert.isUndefined(res.headers['X-Content-Security-Policy']);
-    assert.strictEqual(res.headers['Content-Security-Policy'], expected);
-    assert.isUndefined(res.headers['X-WebKit-CSP']);
-  });
-
-  it('sets the report-only headers', () => {
-    const expected = 'default-src \'self\'; report-uri /reporter';
-
-    config.security.contentSecurity = {
-      reportOnly: true
-      , setAllHeaders: true
-      , defaultSrc: [ "'self'" ]
-      , reportUri: '/reporter'
-    };
-
-    req.headers['user-agent'] = AGENTS['Firefox 23'].string;
-
+  }, Error);
+  t.throws(() => {
+    config.security.contentSecurity = { defaultSrc: 'self unsafe-inline' };
     csp(config, req, res);
+  }, Error);
+});
 
-    assert.strictEqual(res.headers['X-Content-Security-Policy-Report-Only'], expected);
-    assert.strictEqual(res.headers['Content-Security-Policy-Report-Only'], expected);
-    assert.strictEqual(res.headers['X-WebKit-CSP-Report-Only'], expected);
-  });
-
-  it('can set empty directives', () => {
-    config.security.contentSecurity = {
-      scriptSrc: []
-      , sandbox: [ '' ]
-    };
-
-    req.headers['user-agent'] = AGENTS['Firefox 23'].string;
-
+test('throws an error reportOnly is true and there is no report-uri', (t) => {
+  t.throws(() => {
+    config.security.contentSecurity = { reportOnly: true };
     csp(config, req, res);
+  }, Error);
+});
 
+Object.keys(AGENTS).forEach((key) => {
+  const agent = AGENTS[key];
 
-    const header = res.headers['Content-Security-Policy']
-          , split = header.split(';').map((str) => {
-            return str.trim();
-          }).sort();
+  if (agent.special) {
+    return;
+  }
 
-    assert.strictEqual(split[0], 'sandbox');
-    assert.strictEqual(split[1], 'script-src');
-  });
-
-  it('throws an error when directives need quotes', () => {
-    assert.throws(() => {
-      config.security.contentSecurity = { defaultSrc: [ 'none' ] };
-      csp(config, req, res);
-    }, Error);
-    assert.throws(() => {
-      config.security.contentSecurity = { defaultSrc: [ 'self' ] };
-      csp(config, req, res);
-    }, Error);
-    assert.throws(() => {
-      config.security.contentSecurity = { 'script-src': [ 'unsafe-inline' ] };
-      csp(config, req, res);
-    }, Error);
-    assert.throws(() => {
-      config.security.contentSecurity = { scriptSrc: 'unsafe-eval' };
-      csp(config, req, res);
-    }, Error);
-    assert.throws(() => {
-      config.security.contentSecurity = { 'style-src': [ 'unsafe-inline' ] };
-      csp(config, req, res);
-    }, Error);
-    assert.throws(() => {
-      config.security.contentSecurity = { styleSrc: 'unsafe-eval' };
-      csp(config, req, res);
-    }, Error);
-    assert.throws(() => {
-      config.security.contentSecurity = { defaultSrc: 'self' };
-      csp(config, req, res);
-    }, Error);
-    assert.throws(() => {
-      config.security.contentSecurity = { defaultSrc: 'self unsafe-inline' };
-      csp(config, req, res);
-    }, Error);
-  });
-
-  it('throws an error reportOnly is true and there is no report-uri', () => {
-    assert.throws(() => {
-      config.security.contentSecurity = { reportOnly: true };
-      csp(config, req, res);
-    }, Error);
-  });
-
-  Object.keys(AGENTS).forEach((key) => {
-    const agent = AGENTS[key];
-
-    if (agent.special) {
-      return;
-    }
-
-    it(`sets the header properly for ${key}`, () => {
-      config.security.contentSecurity = POLICY;
-      req.headers['user-agent'] = agent.string;
-
-      csp(config, req, res);
-
-      assert.strictEqual(res.headers[agent.header], EXPECTED_POLICY);
-    });
-  });
-
-  it('sets the header properly for Firefox 22', () => {
-    const header = 'X-Content-Security-Policy';
-
+  test(`sets the header properly for ${key}`, (t) => {
     config.security.contentSecurity = POLICY;
-    req.headers['user-agent'] = AGENTS['Firefox 22'].string;
+    req.headers['user-agent'] = agent.string;
 
     csp(config, req, res);
 
-    assert.include(res.headers[header], "default-src 'self'");
-    assert.include(res.headers[header], 'xhr-src connect.com');
+    t.is(res.headers[agent.header], EXPECTED_POLICY);
   });
+});
 
-  it('sets the header properly for Firefox 4.0', () => {
-    const header = 'X-Content-Security-Policy';
+test('sets the header properly for Firefox 22', (t) => {
+  const header = 'X-Content-Security-Policy';
 
+  config.security.contentSecurity = POLICY;
+  req.headers['user-agent'] = AGENTS['Firefox 22'].string;
+
+  csp(config, req, res);
+
+  t.true(res.headers[header].includes("default-src 'self'"));
+  t.true(res.headers[header].includes('xhr-src connect.com'));
+});
+
+test('sets the header properly for Firefox 4.0', (t) => {
+  const header = 'X-Content-Security-Policy';
+
+  config.security.contentSecurity = POLICY;
+  req.headers['user-agent'] = AGENTS['Firefox 4.0b8'].string;
+
+  csp(config, req, res);
+
+  // t.is(res.headers[header], EXPECTED_POLICY);
+  t.true(res.headers[header].includes("'eval-script' scripts.com"));
+  t.true(res.headers[header].includes('style-src styles.com;'));
+  t.true(res.headers[header].includes('xhr-src connect.com;'));
+  t.true(res.headers[header].includes("allow 'self'"));
+
+});
+
+[
+  'Safari 4.1'
+  , 'Safari 5.1 on OS X'
+  , 'Safari 5.1 on Windows Server 2008'
+  , 'Chrome 13'
+  , 'Firefox 3'
+  , 'Android Browser 4.0.3'
+  , 'Opera 12.16'
+].forEach((browser) => {
+  test(`does not set the property for ${browser} by default`, (t) => {
     config.security.contentSecurity = POLICY;
-    req.headers['user-agent'] = AGENTS['Firefox 4.0b8'].string;
+    req.headers['user-agent'] = AGENTS[browser].string;
 
     csp(config, req, res);
 
-    // assert.strictEqual(res.headers[header], EXPECTED_POLICY);
-    assert.include(res.headers[header], "'eval-script' scripts.com");
-    assert.include(res.headers[header], 'style-src styles.com;');
-    assert.include(res.headers[header], 'xhr-src connect.com;');
-    assert.include(res.headers[header], "allow 'self'");
-
+    t.is(typeof res.headers['X-WebKit-CSP'], 'undefined');
+    t.is(typeof res.headers['X-Content-Security-Policy'], 'undefined');
+    t.is(typeof res.headers['Content-Security-Policy'], 'undefined');
   });
+});
 
-  [
-    'Safari 4.1'
-    , 'Safari 5.1 on OS X'
-    , 'Safari 5.1 on Windows Server 2008'
-    , 'Chrome 13'
-    , 'Firefox 3'
-    , 'Android Browser 4.0.3'
-    , 'Opera 12.16'
-  ].forEach((browser) => {
-    it(`does not set the property for ${browser} by default`, () => {
-      config.security.contentSecurity = POLICY;
-      req.headers['user-agent'] = AGENTS[browser].string;
+test('sets the header for Safari 4.1 if you force it', (t) => {
+  config.security.contentSecurity = {
+    safari5: true
+    , defaultSrc: 'a.com'
+  };
 
-      csp(config, req, res);
+  req.headers['user-agent'] = AGENTS['Safari 4.1'].string;
 
-      assert.isUndefined(res.headers['X-WebKit-CSP']);
-      assert.isUndefined(res.headers['X-Content-Security-Policy']);
-      assert.isUndefined(res.headers['Content-Security-Policy']);
-    });
-  });
+  csp(config, req, res);
 
-  it('sets the header for Safari 4.1 if you force it', () => {
-    config.security.contentSecurity = {
-      safari5: true
-      , defaultSrc: 'a.com'
-    };
+  t.is(res.headers['X-WebKit-CSP'], 'default-src a.com');
+});
 
-    req.headers['user-agent'] = AGENTS['Safari 4.1'].string;
+test('sets the header for Safari 5.1 if you force it', (t) => {
+  config.security.contentSecurity = {
+    safari5: true
+    , defaultSrc: 'a.com'
+  };
 
-    csp(config, req, res);
+  req.headers['user-agent'] = AGENTS['Safari 5.1 on OS X'].string;
 
-    assert.strictEqual(res.headers['X-WebKit-CSP'], 'default-src a.com');
-  });
+  csp(config, req, res);
 
-  it('sets the header for Safari 5.1 if you force it', () => {
-    config.security.contentSecurity = {
-      safari5: true
-      , defaultSrc: 'a.com'
-    };
+  t.is(res.headers['X-WebKit-CSP'], 'default-src a.com');
+});
 
-    req.headers['user-agent'] = AGENTS['Safari 5.1 on OS X'].string;
+test('lets you disable Android', (t) => {
+  config.security.contentSecurity = {
+    disableAndroid: true
+    , defaultSrc: 'a.com'
+  };
 
-    csp(config, req, res);
+  req.headers['user-agent'] = AGENTS['Android 4.4.3'].string;
 
-    assert.strictEqual(res.headers['X-WebKit-CSP'], 'default-src a.com');
-  });
+  t.is(typeof res.headers['X-Webkit-CSP'], 'undefined');
+  t.is(typeof res.headers['Content-Security-Policy'], 'undefined');
+  t.is(typeof res.headers['X-Content-Security-Policy'], 'undefined');
+});
 
-  it('lets you disable Android', () => {
-    config.security.contentSecurity = {
-      disableAndroid: true
-      , defaultSrc: 'a.com'
-    };
+test('appends connect-src \'self\' in iOS Chrome when connect-src is already defined', (t) => {
+  const iosChrome = AGENTS['iOS Chrome 40']
+        , iosChromeRegex = /connect-src (?:'self' connect.com)|(?:connect.com 'self')/;
 
-    req.headers['user-agent'] = AGENTS['Android 4.4.3'].string;
+  config.security.contentSecurity = POLICY;
+  req.headers['user-agent'] = iosChrome.string;
 
-    assert.isUndefined(res.headers['X-Webkit-CSP']);
-    assert.isUndefined(res.headers['Content-Security-Policy']);
-    assert.isUndefined(res.headers['X-Content-Security-Policy']);
-  });
+  csp(config, req, res);
 
-  it('appends connect-src \'self\' in iOS Chrome when connect-src is already defined', () => {
-    const iosChrome = AGENTS['iOS Chrome 40']
-          , iosChromeRegex = /connect-src (?:'self' connect.com)|(?:connect.com 'self')/;
+  t.true(iosChromeRegex.test(res.headers[iosChrome.header]));
+});
 
-    config.security.contentSecurity = POLICY;
-    req.headers['user-agent'] = iosChrome.string;
+test('adds connect-src \'self\' in iOS Chrome when connect-src is undefined', (t) => {
+  const iosChrome = AGENTS['iOS Chrome 40'];
 
-    csp(config, req, res);
+  config.security.contentSecurity = { styleSrc: [ "'self'" ] };
+  req.headers['user-agent'] = iosChrome.string;
 
-    assert.match(res.headers[iosChrome.header], iosChromeRegex);
-  });
+  csp(config, req, res);
 
-  it('adds connect-src \'self\' in iOS Chrome when connect-src is undefined', () => {
-    const iosChrome = AGENTS['iOS Chrome 40'];
+  t.true(/connect-src 'self'/.test(res.headers[iosChrome.header]));
+});
 
-    config.security.contentSecurity = { styleSrc: [ "'self'" ] };
-    req.headers['user-agent'] = iosChrome.string;
+test('does nothing in iOS Chrome if connect-src \'self\' is defined', (t) => {
+  const iosChrome = AGENTS['iOS Chrome 40'];
 
-    csp(config, req, res);
+  config.security.contentSecurity = { connectSrc: [ 'somedomain.com', "'self'" ] };
+  req.headers['user-agent'] = iosChrome.string;
 
-    assert.match(res.headers[iosChrome.header], /connect-src 'self'/);
-  });
+  csp(config, req, res);
 
-  it('does nothing in iOS Chrome if connect-src \'self\' is defined', () => {
-    const iosChrome = AGENTS['iOS Chrome 40'];
+  t.is(res.headers[iosChrome.header], "connect-src somedomain.com 'self'");
+});
 
-    config.security.contentSecurity = { connectSrc: [ 'somedomain.com', "'self'" ] };
-    req.headers['user-agent'] = iosChrome.string;
+test('doesn\'t splice the original array', (t) => {
+  const chrome = AGENTS['Chrome 27']
+        , ff = AGENTS['Firefox 22'];
 
-    csp(config, req, res);
+  config.security.contentSecurity = {
+    styleSrc: [
+      "'self'"
+      , "'unsafe-inline'"
+    ]
+  };
 
-    assert.strictEqual(res.headers[iosChrome.header], "connect-src somedomain.com 'self'");
-  });
+  req.headers['user-agent'] = chrome.string;
+  csp(config, req, res);
+  t.true(/style-src 'self' 'unsafe-inline'/.test(res.headers[chrome.header]));
 
-  it('doesn\'t splice the original array', () => {
-    const chrome = AGENTS['Chrome 27']
-          , ff = AGENTS['Firefox 22'];
+  res.headers = {};
 
-    config.security.contentSecurity = {
-      styleSrc: [
-        "'self'"
-        , "'unsafe-inline'"
-      ]
-    };
+  req.headers['user-agent'] = ff.string;
+  csp(config, req, res);
+  t.true(/style-src 'self'/.test(res.headers['X-Content-Security-Policy']));
 
-    req.headers['user-agent'] = chrome.string;
-    csp(config, req, res);
-    assert.match(res.headers[chrome.header], /style-src 'self' 'unsafe-inline'/);
+  res.headers = {};
 
-    res.headers = {};
+  req.headers['user-agent'] = chrome.string;
+  csp(config, req, res);
+  t.true(/style-src 'self' 'unsafe-inline'/.test(res.headers[chrome.header]));
+});
 
-    req.headers['user-agent'] = ff.string;
-    csp(config, req, res);
-    assert.match(res.headers['X-Content-Security-Policy'], /style-src 'self'/);
+test('should not blow up if a string is passed instead of an array of options', (t) => {
+  const ff = AGENTS['Firefox 22']
+        , contentSecurityRegex = /style-src 'self' cdn-images.mailchimp.com/;
 
-    res.headers = {};
+  config.security.contentSecurity = {
+    defaultSrc: "'self'" // optional. This is the default setting and is very strict
+    , styleSrc: "'self' cdn-images.mailchimp.com 'unsafe-inline'"
+    , imgSrc: "'self' maps.googleapis.com images.vivintcdn.com www.masteryconnect.com"
+                      + ' smartrhinolabs.com cdn.hacknightslc.com cdn.sqhk.co *.cloudfront.net'
+                      + ' www.google-analytics.com data:'
+    , scriptSrc: "'self' 'sha256-ZmBLMRsmRpaF/hQbWKT9xhd6Ql2Wf2a1WXhO2tdH6Xg='"
+                      + ' www.google-analytics.com'
+  };
 
-    req.headers['user-agent'] = chrome.string;
-    csp(config, req, res);
-    assert.match(res.headers[chrome.header], /style-src 'self' 'unsafe-inline'/);
-  });
-
-  it('should not blow up if a string is passed instead of an array of options', () => {
-    const ff = AGENTS['Firefox 22']
-          , contentSecurityRegex = /style-src 'self' cdn-images.mailchimp.com/;
-
-    config.security.contentSecurity = {
-      defaultSrc: "'self'" // optional. This is the default setting and is very strict
-      , styleSrc: "'self' cdn-images.mailchimp.com 'unsafe-inline'"
-      , imgSrc: "'self' maps.googleapis.com images.vivintcdn.com www.masteryconnect.com"
-                        + ' smartrhinolabs.com cdn.hacknightslc.com cdn.sqhk.co *.cloudfront.net'
-                        + ' www.google-analytics.com data:'
-      , scriptSrc: "'self' 'sha256-ZmBLMRsmRpaF/hQbWKT9xhd6Ql2Wf2a1WXhO2tdH6Xg='"
-                        + ' www.google-analytics.com'
-    };
-
-    req.headers['user-agent'] = ff.string;
-    csp(config, req, res);
-    assert.match(res.headers['X-Content-Security-Policy'], contentSecurityRegex);
-  });
+  req.headers['user-agent'] = ff.string;
+  csp(config, req, res);
+  t.true(contentSecurityRegex.test(res.headers['X-Content-Security-Policy']));
 });

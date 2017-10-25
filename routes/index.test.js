@@ -1,26 +1,16 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , server = require('./index');
 
+test('Routing Tests::should return a function that starts a server', (t) => {
+  t.is(typeof server.server, 'function');
+});
 
-describe('Routing Tests', () => {
-  // let routeObject;
+test('Routing Tests::should have a parseWildCardRoute function', (t) => {
+  t.is(typeof server.parseWildCardRoute, 'function');
+});
 
-  // beforeEach(() => {
-  //     routeObject = require('../test_stubs/routes_stub.json');
-  // });
-
-  it('should return a function that starts a server', () => {
-    assert.isFunction(server.server);
-  });
-
-  it('should have a parseWildCardRoute function', () => {
-    assert.isFunction(server.parseWildCardRoute);
-  });
-
-  it('should have a isWildCardRoute function', () => {
-    assert.isFunction(server.isWildCardRoute);
-  });
+test('Routing Tests::should have a isWildCardRoute function', (t) => {
+  t.is(typeof server.isWildCardRoute, 'function');
 });

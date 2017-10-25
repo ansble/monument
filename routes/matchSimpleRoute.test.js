@@ -1,41 +1,39 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , matchSimpleRoute = require('./matchSimpleRoute')
       , parseRoutes = require('./parseRoutes')
       , stubRoutes = parseRoutes(require('../test_stubs/routes_stub.json'));
 
-describe('matchSimpleRoute Tests', () => {
-  it('should return a function', () => {
-    assert.isFunction(matchSimpleRoute);
-  });
+test('should return a function', (t) => {
+  t.is(typeof matchSimpleRoute, 'function');
+});
 
-  it('should return null for a simple route', () => {
-    assert.isNotNull(matchSimpleRoute('/api/search', 'get', stubRoutes.standard));
-  });
+test('should return null for a simple route', (t) => {
+  t.not(matchSimpleRoute('/api/search', 'get', stubRoutes.standard), null);
+});
 
-  it('should return null for a non-simple route', () => {
-    assert.isNull(matchSimpleRoute('/api/article/1234', 'get', stubRoutes.standard));
-  });
+test('should return null for a non-simple route', (t) => {
+  t.is(matchSimpleRoute('/api/article/1234', 'get', stubRoutes.standard), null);
+});
 
-  it('should return null for a simple route and wrong verb', () => {
-    assert.isNull(matchSimpleRoute('/api/search', 'post', stubRoutes.standard));
-  });
+test('should return null for a simple route and wrong verb', (t) => {
+  t.is(matchSimpleRoute('/api/search', 'post', stubRoutes.standard), null);
+});
 
-  it('should return true for /about', () => {
-    assert.ok(matchSimpleRoute('/about', 'get', stubRoutes.standard));
-  });
+test('should return true for /about', (t) => {
+  t.truthy(matchSimpleRoute('/about', 'get', stubRoutes.standard));
+});
 
-  it('should return true for /', () => {
-    assert.ok(matchSimpleRoute('/', 'get', stubRoutes.standard));
-  });
+test('should return true for /', (t) => {
+  t.truthy(matchSimpleRoute('/', 'get', stubRoutes.standard));
+});
 
-  it('should not match for /:id', () => {
-    assert.notOk(matchSimpleRoute('/1234', 'get', stubRoutes.standard));
-  });
+test('should not match for /:id', (t) => {
+  t.falsy(matchSimpleRoute('/1234', 'get', stubRoutes.standard));
+});
 
-  it('should return true for /about/ handling trailing slash', () => {
-    assert.ok(matchSimpleRoute('/about/', 'get', stubRoutes.standard));
-  });
+test('should return true for /about/ handling trailing slash', (t) => {
+  t.truthy(matchSimpleRoute('/about/', 'get', stubRoutes.standard));
 });
