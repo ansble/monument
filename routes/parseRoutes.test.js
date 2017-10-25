@@ -1,54 +1,51 @@
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , parseRoutes = require('./parseRoutes')
       , stubRoutes = require('../test_stubs/routes_stub.json');
 
-describe('parseRoutes tests', () => {
-  it('should export a function', () => {
-    assert.isFunction(parseRoutes);
-  });
+test('should export a function', (t) => {
+  t.is(typeof parseRoutes, 'function');
+});
 
-  it('should return an object containing wildcard and standard routes', () => {
-    const routes = parseRoutes(stubRoutes);
+test('should return an object containing wildcard and standard routes', (t) => {
+  const routes = parseRoutes(stubRoutes);
 
-    assert.isObject(routes);
-    assert.isObject(routes.wildcard);
-    assert.isObject(routes.standard);
-  });
+  t.is(typeof routes, 'object');
+  t.is(typeof routes.wildcard, 'object');
+  t.is(typeof routes.standard, 'object');
+});
 
-  it('should return an object containing 2 wildcard routes', () => {
-    const routes = parseRoutes(stubRoutes);
+test('should return an object containing 2 wildcard routes', (t) => {
+  const routes = parseRoutes(stubRoutes);
 
-    assert.isObject(routes);
-    assert.isObject(routes.wildcard['/:id']);
-    assert.isObject(routes.wildcard['/api/articles/:id']);
-  });
+  t.is(typeof routes, 'object');
+  t.is(typeof routes.wildcard['/:id'], 'object');
+  t.is(typeof routes.wildcard['/api/articles/:id'], 'object');
+});
 
-  it('should return a properly formatted route object for /:id', () => {
-    const routes = parseRoutes(stubRoutes)
-          , idRoute = routes.wildcard['/:id'];
+test('should return a properly formatted route object for /:id', (t) => {
+  const routes = parseRoutes(stubRoutes)
+        , idRoute = routes.wildcard['/:id'];
 
-    assert.isObject(routes);
-    assert.isObject(idRoute);
-    assert.isArray(idRoute.verbs);
-    assert.isArray(idRoute.variables);
-    assert.strictEqual(idRoute.eventId, '/:id');
-    assert.typeOf(new RegExp(idRoute.regex), 'regexp');
-  });
+  t.is(typeof routes, 'object');
+  t.is(typeof idRoute, 'object');
+  t.true(Array.isArray(idRoute.verbs));
+  t.true(Array.isArray(idRoute.variables));
+  t.is(idRoute.eventId, '/:id');
+  t.true(new RegExp(idRoute.regex) instanceof RegExp);
+});
 
-  it('should return an object containing 8 standard routes', () => {
-    const routes = parseRoutes(stubRoutes);
+test('should return an object containing 8 standard routes', (t) => {
+  const routes = parseRoutes(stubRoutes);
 
-    assert.isObject(routes);
-    assert.isArray(routes.standard['/']);
-    assert.isArray(routes.standard['/api/articles']);
-    assert.isArray(routes.standard['/api']);
-    assert.isArray(routes.standard['/api/search']);
-    assert.isArray(routes.standard['/rss']);
-    assert.isArray(routes.standard['/stuff']);
-    assert.isArray(routes.standard['/search']);
-    assert.isArray(routes.standard['/about']);
-  });
+  t.is(typeof routes, 'object');
+  t.true(Array.isArray(routes.standard['/']));
+  t.true(Array.isArray(routes.standard['/api/articles']));
+  t.true(Array.isArray(routes.standard['/api']));
+  t.true(Array.isArray(routes.standard['/api/search']));
+  t.true(Array.isArray(routes.standard['/rss']));
+  t.true(Array.isArray(routes.standard['/stuff']));
+  t.true(Array.isArray(routes.standard['/search']));
+  t.true(Array.isArray(routes.standard['/about']));
 });

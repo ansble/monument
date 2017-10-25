@@ -1,21 +1,19 @@
 /* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
       , parseWildCardRoute = require('./parseWildCardRoute')
       , parseRoutes = require('./parseRoutes')
       , stubRoutes = parseRoutes(require('../test_stubs/routes_stub.json'));
 
-describe('Wildcard route parsing tests', () => {
-  it('should export a function', () => {
-    assert.isFunction(parseWildCardRoute);
-  });
+test('should export a function', (t) => {
+  t.is(typeof parseWildCardRoute, 'function');
+});
 
-  it('should properly parse a wildcard route', () => {
-    const routeObj = parseWildCardRoute('/1234', stubRoutes.wildcard);
+test('should properly parse a wildcard route', (t) => {
+  const routeObj = parseWildCardRoute('/1234', stubRoutes.wildcard);
 
-    assert.isObject(routeObj);
-    assert.strictEqual(routeObj.values.id, '1234');
-    assert.isObject(routeObj.route);
-  });
+  t.is(typeof routeObj, 'object');
+  t.is(routeObj.values.id, '1234');
+  t.is(typeof routeObj.route, 'object');
 });
