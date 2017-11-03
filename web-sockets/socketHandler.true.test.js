@@ -3,16 +3,17 @@
 const test = require('ava')
       , subject = require('./socketHandler')
       , events = require('harken')
-      , handler = subject(true);
+      , handler = subject(true, events);
 
 // NOTE: These test cover the moving parts of the web socket setup
 //  they don't cover the actual web socket server itself, that module
 //  is maintained outside the code base and should be tested independently
 //  but this is a nice comprimise.
 
-test.afterEach(() => {
+test.after(() => {
   events.off('data:set:test');
   events.off('data:get:test');
+  events.off('data:get:test2');
 });
 
 test('should be a function and return a function', (t) => {
@@ -23,7 +24,7 @@ test('should be a function and return a function', (t) => {
 test.cb('should emit events for data event messages', (t) => {
   const socket = {};
 
-  events.once('data:get:test', (testObj) => {
+  events.once('data:get:test2', (testObj) => {
     t.is(typeof testObj, 'undefined');
     t.end();
   });
@@ -31,7 +32,7 @@ test.cb('should emit events for data event messages', (t) => {
   handler(socket);
 
   socket.onmessage({
-    data: '{ "event": "data:get:test" }'
+    data: '{ "event": "data:get:test2" }'
   });
 });
 
@@ -94,9 +95,10 @@ test.cb('should emit error:ws when error is occuring', (t) => {
     send: (message, callback) => {
       callback('Some error');
       t.is(events.listeners('error:ws').length, 1);
-      t.end();
     }
   };
+
+  t.plan(2);
 
   handler(socket);
 
@@ -110,5 +112,6 @@ test.cb('should emit error:ws when error is occuring', (t) => {
 
   events.once('error:ws', (message) => {
     t.is(typeof message, 'object');
+    t.end();
   });
 });

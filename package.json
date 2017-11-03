@@ -4,7 +4,7 @@
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
-    "mocha": "ava bin/*.test.js utils/*.test.js",
+    "ava": "ava *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
     "start": "node app.js",
     "test": "npm run lint && istanbul cover _mocha -- *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
     "codeship": "npm test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
@@ -81,5 +81,12 @@
   "optionalDependencies": {
     "bufferutil": "3.0.2",
     "utf-8-validate": "3.0.3"
+  },
+  "ava": {
+    "concurrency": 5,
+    "failFast": true,
+    "require": [
+      "harken"
+    ]
   }
 }
