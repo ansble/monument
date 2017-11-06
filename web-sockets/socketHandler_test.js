@@ -236,6 +236,48 @@ describe('WebSocket handler Tests', () => {
         data: '{ "event": "data:get:test" }'
       });
     });
+
+    it('should handle errors for none passthrough events', (done) => {
+      const socket = {};
+
+      socket.send = (str, cb) => {
+        cb(true);
+      };
+
+      handler(socket);
+
+      socket.onmessage({
+        data: '{ "event": "data:get:test" }'
+      });
+
+      events.once('error:ws', (err) => {
+        assert.isObject(err);
+        done();
+      });
+
+      events.emit('data:set:test', 'data');
+    });
+
+    it('should skip error handling when no error for none passthrough events', (done) => {
+      const socket = {};
+
+      socket.send = (str, cb) => {
+        cb();
+      };
+
+      handler(socket);
+
+      socket.onmessage({
+        data: '{ "event": "data:get:test" }'
+      });
+
+      events.once('error:ws', () => {
+        Error('error handling triggered');
+        done();
+      });
+
+      events.emit('data:set:test', 'data');
+    });
   });
 
   describe('Web Socket Handler Type: passthrough tests', () => {

@@ -18,7 +18,6 @@ const etag = require('etag')
             });
           } else {
             files[fileIn] = etag(data);
-            console.log('ETAG: ', files[fileIn]);
             events.emit(`etag:get:${fileIn}`, files[fileIn]);
           }
         });

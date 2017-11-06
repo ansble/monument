@@ -5,7 +5,6 @@ const assert = require('chai').assert
       , router = require('./router')
       , events = require('harken')
       , routeObject = require('../test_stubs/routes_stub.json')
-      , path = require('path')
       , stream = require('stream')
       , routerStore = require('./routeStore')
       , config = require('../utils/config')
@@ -25,11 +24,11 @@ describe('Route Handler Tests', () => {
     config.reset();
     routerStore.clear();
 
-    routeHandler = router(routeObject, {
-      publicPath: path.join(process.cwd(), './test_stubs/deletes')
-      , routePath: path.join(process.cwd(), './test_stubs')
+    routeHandler = router(routeObject, config.set({
+      publicPath: './test_stubs/deletes'
+      , routePath: './test_stubs'
       , compression: 'none'
-    });
+    }));
 
     res = new stream.Writable();
 
@@ -37,7 +36,7 @@ describe('Route Handler Tests', () => {
       this.headers[name] = value;
     };
 
-    res.writeHead = function (status, headers) {
+    res.writeHead = function (status, headers = {}) {
       this.statusCode = status;
       this.headers = Object.keys(headers).reduce((prevIn, key) => {
         const prev = prevIn;
