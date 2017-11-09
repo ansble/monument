@@ -81,5 +81,12 @@
   "optionalDependencies": {
     "bufferutil": "3.0.2",
     "utf-8-validate": "3.0.3"
+  },
+  "ava": {
+    "concurrency": 5,
+    "failFast": true,
+    "require": [
+      "harken"
+    ]
   }
 }
