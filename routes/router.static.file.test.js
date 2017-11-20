@@ -5,7 +5,6 @@ const test = require('ava')
       , events = require('harken')
       , routeObject = require('../test_stubs/routes_stub.json')
       , createRes = require('../test_stubs/utils/createRes')
-      , stream = require('stream')
       , routerStore = require('./routeStore')
       , config = require('../utils/config')
       , req = {

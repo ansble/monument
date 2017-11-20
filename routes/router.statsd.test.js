@@ -34,11 +34,9 @@ const test = require('ava')
 
       , statsd = require('../utils/statsd')
       , router = require('./router')
-      , routeStore = require('./routeStore')
       , events = require('harken')
       , routeObject = require('../test_stubs/routes_stub.json')
       , path = require('path')
-      , stream = require('stream')
       , routerStore = require('./routeStore')
       , config = require('../utils/config')
       , req = {

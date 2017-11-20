@@ -5,11 +5,6 @@ const test = require('ava')
       , http = require('http')
       , servers = []
       , events = require('harken')
-
-      , http2 = require('http2')
-      , spdy = require('spdy')
-      , fs = require('fs')
-      , path = require('path')
       , configStore = require('./utils/config');
 
 test.beforeEach(() => {

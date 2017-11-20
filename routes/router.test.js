@@ -43,8 +43,7 @@ const test = require('ava')
         , headers: {}
       };
 
-let res
-    , routeHandler;
+let routeHandler;
 
 require('../utils/staticFileEtags');
 
@@ -86,6 +85,7 @@ test.cb('should return x-powered-by only if it is set', (t) => {
     , routePath: './test_stubs'
     , routesJSONPath: './test_stubs/routes_stub.json'
     , security: { poweredBy: 'waffles' }
+    , statsd: false
   });
 
   events.once('route:/about:get', (connection) => {
@@ -95,7 +95,9 @@ test.cb('should return x-powered-by only if it is set', (t) => {
     t.end();
   });
 
-  tempHandler(req, res);
+  process.nextTick(() => {
+    tempHandler(req, createRes());
+  });
 });
 
 test.cb('should by default not return x-powered-by ', (t) => {

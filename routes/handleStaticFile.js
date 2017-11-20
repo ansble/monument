@@ -57,6 +57,7 @@ module.exports = (file, connection, config) => {
         , compression = getCompression(req.headers['accept-encoding'], config)
         , expires = new Date().getTime()
         , maxAge = config.maxAge;
+
   fs.stat(file, (err, exists) => {
     if (!err && exists.isFile()) {
       events.required([ `etag:check:${file}`, `etag:get:${file}` ], (valid) => {

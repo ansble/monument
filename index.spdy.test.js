@@ -1,12 +1,9 @@
 'use strict';
 
 const test = require('ava')
-      , app = require('./index')
-      , http = require('http')
       , servers = []
       , events = require('harken')
 
-      , http2 = require('http2')
       , spdy = require('spdy')
       , fs = require('fs')
       , path = require('path')

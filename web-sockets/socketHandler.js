@@ -30,7 +30,7 @@ module.exports = (type, events) => {
 
       if (type && type !== 'passthrough' && isDataEvent(message.event, setEvent)) {
         events.on(setEvent, (data) => {
-          console.log('HERE WE GOOOOOOOOOO', socket.send)
+          console.log('HERE WE GOOOOOOOOOO', socket.send);
           socket.send(JSON.stringify({ event: setEvent, data: data }), (err) => {
             if (err) {
               events.emit('error:ws', { inboundMessage: message, error: err });

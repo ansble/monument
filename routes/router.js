@@ -91,17 +91,14 @@ module.exports = (routesJson, config) => {
     let routeInfo
         , res = resIn;
 
-    // set up the statsd timing listeners
+
     setupStatsdListeners(res, sendStatsd, cleanupStatsd);
 
-    // add .setStatus to response
     res.setStatus = setStatus;
-
-    // add .send to the response
     res.send = send(req, config);
     res.redirect = redirect(req);
     res = setSecurityHeaders(config, req, res);
-
+    console.log(pathname);
     // match the first part of the url... for public stuff
     if (contains(publicFolders, pathname.split('/')[1])) {
       // this header allows proxies to cache different version based on
@@ -112,6 +109,7 @@ module.exports = (routesJson, config) => {
       handleStaticFile(path.join(publicPath, pathname), connection, config);
 
     } else if (simpleRoute !== null) {
+      console.log(simpleRoute, `route:${simpleRoute}:${method}`);
       // matches a route in the routes.json
       events.emit(`route:${simpleRoute}:${method}`, connection);
 
