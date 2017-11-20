@@ -1,6 +1,7 @@
 'use strict';
 
 const test = require('ava')
+      , events = require('harken')
       , subject = require('./socketHandler');
 
 // NOTE: These test cover the moving parts of the web socket setup
@@ -9,8 +10,6 @@ const test = require('ava')
 //  but this is a nice comprimise.
 
 test.afterEach(() => {
-  const events = require('harken');
-
   events.removeAllListeners();
 });
 
@@ -21,9 +20,8 @@ test('should be a function and return a function', (t) => {
 
 test.cb('should emit events for data event messages', (t) => {
   const socket = {
-          send: () => {}
-        }
-        , events = require('harken');
+    send: () => {}
+  };
 
   events.once('data:get:test', (testObj) => {
     t.is(typeof testObj, 'undefined');
@@ -39,9 +37,8 @@ test.cb('should emit events for data event messages', (t) => {
 
 test('should not emit events for non-data event messages', (t) => {
   const socket = {
-          send: () => {}
-        }
-        , events = require('harken');
+    send: () => {}
+  };
 
   subject('data', events)(socket);
 
@@ -54,9 +51,8 @@ test('should not emit events for non-data event messages', (t) => {
 
 test('should not emit events for invalid JSON data', (t) => {
   const socket = {
-          send: () => {}
-        }
-        , events = require('harken');
+    send: () => {}
+  };
 
   subject('data', events)(socket);
 
@@ -69,21 +65,19 @@ test('should not emit events for invalid JSON data', (t) => {
 
 test.cb('should return a string when responding to a socket', (t) => {
   const socket = {
-          send: (message) => {
-            t.is(typeof message, 'string');
-            t.end();
-          }
-        }
-        , events = require('harken');
+    send: (message) => {
+      t.is(typeof message, 'string');
+      t.end();
+    }
+  };
 
   subject('data', events)(socket);
 
-  events.once('data:get:test', () => {
-    console.log('>>>>>>>>>>>>><<<<<<<<<<<<');
-    events.emit('data:set:test', { test: true });
+  events.once('data:get:test2', () => {
+    events.emit('data:set:test2', { test: true });
   });
 
   socket.onmessage({
-    data: '{ "event": "data:get:test" }'
+    data: '{ "event": "data:get:test2" }'
   });
 });

@@ -1,7 +1,7 @@
 if [[ -z "$1" ]]; then
-  com="npm run mocha"
+  com="npm run ava"
 else
-  com="mocha $1"
+  com="ava $1"
 fi
 
 for run in {1..50}

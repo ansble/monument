@@ -3,7 +3,7 @@
 const test = require('ava')
       , subject = require('./socketHandler')
       , events = require('harken')
-      , handler = subject(false);
+      , handler = subject(false, events);
 
 // NOTE: These test cover the moving parts of the web socket setup
 //  they don't cover the actual web socket server itself, that module
