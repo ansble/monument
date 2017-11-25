@@ -88,7 +88,7 @@ test.cb('should return x-powered-by only if it is set', (t) => {
     , statsd: false
   });
 
-  events.once('route:/about:get', (connection) => {
+  events.once('route:/about-id:get', (connection) => {
     t.is(typeof connection.res.headers, 'object');
     t.is(connection.res.headers['X-Powered-By'], 'waffles');
     t.is(typeof connection, 'object');

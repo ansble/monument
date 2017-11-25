@@ -25,6 +25,10 @@ const test = require('ava')
 
         mock.res.writeHead = () => {};
         mock.res.setHeader = () => {};
+        /* eslint-disable no-underscore-dangle */
+        mock.res._write = () => {};
+        /* eslint-enable no-underscore-dangle */
+
         return mock;
       }
       , withPath = (filePath) => {
@@ -33,23 +37,13 @@ const test = require('ava')
 
 require('../utils/staticFileEtags');
 
-test.beforeEach(() => {
-  events.off('static:served');
-  events.off('static:headed');
-  events.off('static:missing');
-  events.off('error:404');
-});
-
 test.cb('should handle a static file', (t) => {
   const connectionMock = getConnectionMock('GET', 'main.js');
 
   events.once('static:served', (name) => {
-    console.log('testsssssssss');
     t.is(name, connectionMock.path.pathname);
     t.end();
   });
-
-  console.log(events.listeners('static:served'));
 
   handleStaticFile(withPath('example.js'), connectionMock, {
     maxAge: 1000
@@ -65,7 +59,7 @@ test.cb('should handle the HEAD to a static file', (t) => {
     t.end();
   });
 
-  handleStaticFile(withPath('example.js'), connectionMock, { maxAge: 1000, compress: false });
+  handleStaticFile(withPath('default.js'), connectionMock, { maxAge: 1000, compress: false });
 });
 
 test.cb('should give 404 for static files missing', (t) => {

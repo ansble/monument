@@ -67,7 +67,7 @@ module.exports = (file, connection, config) => {
         }
         // No match...
         res.setHeader('ETag', valid[1]); // the etag is item 2 in the array
-        console.log('THE METHOD: ', req.method);
+
         if (req.method.toLowerCase() === 'head') {
           res.writeHead(succesStatus, {
             'Content-Type': mime.getType(pathname)
@@ -97,15 +97,11 @@ module.exports = (file, connection, config) => {
             , 'Cache-Control': `maxage=${maxAge}`
             , Expires: new Date(expires + maxAge).toUTCString()
           });
-          fs.createReadStream(file).pipe(res);
-          events.once('static:served', (pn) => {
-            console.log('THE PATH: ', pn);
-          });
 
+          fs.createReadStream(file).pipe(res);
           events.emit('static:served', pathname);
         }
       });
-
       events.emit('etag:check', { file: file, etag: req.headers['if-none-match'] });
     } else {
       events.emit('static:missing', pathname);
