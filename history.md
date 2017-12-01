@@ -1,4 +1,18 @@
-### - 3.2.8 * 10/17/2017, 8:32:53 AM *
+### - 3.2.9 * 11/8/2017, 8:54:58 PM *
+
+   - yarn added
+  - Merge pull request #491 from ansble/greenkeeper/ws-3.3.1
+  - fix(package): update ws to version 3.3.1
+  - Merge pull request #482 from zberwaldt/patch-1
+  - Rephrased words about documentation
+  - Included the requested link to documentation
+  - Update documentation for connection.path
+  - Merge pull request #479 from ansble/greenkeeper/chalk-2.2.0
+  - chore(package): update chalk to version 2.2.0
+  - Merge pull request #478 from ansble/Bretagne-Classic-3.2.x 
+
+
+ ### - 3.2.8 * 10/17/2017, 8:32:53 AM *
 
    - Merge pull request #477 from ansble/feature/travis-ci
   - trying to use coveralls
