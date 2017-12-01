@@ -4,8 +4,9 @@
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && nyc ava *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
-    "ava": "ava *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
+    "test": "npm run lint && nyc ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
+    "ava": "ava *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js",
+    "router-tests": "ava -s routes/**/*.test.js",
     "start": "node app.js",
     "lint": "bin/lint.js",
     "release": "npm test && echo ' => releasing' && bin/release.js",

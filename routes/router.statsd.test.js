@@ -4,7 +4,6 @@
 const test = require('ava')
       , mock = require('mock-require')
       , createRes = require('../test_stubs/utils/createRes')
-      , routeStore = require('./routeStore')
       /* eslint-disable no-unused-vars */
       , statsdReq = mock('../utils/statsd', {
         store: {
@@ -22,7 +21,6 @@ const test = require('ava')
         , create: function () {
           return {
             send: (message) => {
-              console.log('mocked statsd send!');
               this.store.send = message;
             }
             , timing: (message) => {
@@ -86,7 +84,7 @@ test.cb('when configured sends route and route status to statsd for each request
         });
 
   req.url = '/api/articles/1234/links/daniel';
-  console.log('first: ', routeStore.get());
+
   events.once('route:/api/articles/:id/links/:item:get', (connection) => {
     t.is(typeof connection, 'object');
 
@@ -126,8 +124,6 @@ test.cb('when configured sends timing information and route with each wildcard r
         });
 
   req.url = '/api/articles/1234/links/daniel';
-
-  console.log(routeStore.get());
 
   events.once('route:/api/articles/:id/links/:item:get', (connection) => {
     t.is(typeof connection, 'object');

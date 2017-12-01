@@ -88,12 +88,14 @@ test.cb('should return x-powered-by only if it is set', (t) => {
     , statsd: false
   });
 
-  events.once('route:/about-id:get', (connection) => {
+  events.once('route:/api/articles/:id:get', (connection) => {
     t.is(typeof connection.res.headers, 'object');
     t.is(connection.res.headers['X-Powered-By'], 'waffles');
     t.is(typeof connection, 'object');
     t.end();
   });
+
+  req.url = '/api/articles/1235';
 
   process.nextTick(() => {
     tempHandler(req, createRes());
@@ -106,6 +108,8 @@ test.cb('should by default not return x-powered-by ', (t) => {
     t.is(typeof connection, 'object');
     t.end();
   });
+
+  req.url = '/about';
 
   process.nextTick(() => {
     routeHandler(req, createRes());

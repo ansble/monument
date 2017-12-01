@@ -98,6 +98,7 @@ module.exports = (routesJson, config) => {
     res.send = send(req, config);
     res.redirect = redirect(req);
     res = setSecurityHeaders(config, req, res);
+    console.log('testing...', req.url, isWildCardRoute(pathname, method, routeStore.getWildcard()));
     // match the first part of the url... for public stuff
     if (contains(publicFolders, pathname.split('/')[1])) {
       // this header allows proxies to cache different version based on

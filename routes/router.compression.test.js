@@ -97,7 +97,7 @@ test.cb('should have a content-encoding:gzip header for gzip compression', (t) =
 test.cb('should serve a file as a response with gzip compression', (t) => {
   events.once('response', (input) => {
     t.is(typeof input, 'string');
-    t.is(input.length > 0);
+    t.true(input.length > 0);
     t.end();
   });
 
@@ -146,7 +146,7 @@ test.cb('should have a content-encoding:deflate header for deflate compression',
 test.cb('should serve a file as a response with deflate compression', (t) => {
   events.once('response', (input) => {
     t.is(typeof input, 'string');
-    t.is(input.length > 0);
+    t.true(input.length > 0);
     t.end();
   });
 
@@ -184,7 +184,7 @@ test.cb('should serve a file as a response with brötli compression', (t) => {
 
   events.once('response', (input) => {
     t.is(typeof input, 'string');
-    t.is(input.length > 0);
+    t.true(input.length > 0);
     t.end();
   });
 
