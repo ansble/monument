@@ -60,7 +60,6 @@ module.exports = (file, connection, config) => {
 
   fs.stat(file, (err, exists) => {
     if (!err && exists.isFile()) {
-
       events.required([ `etag:check:${file}`, `etag:get:${file}` ], (valid) => {
         if (valid[0]) { // does the etag match? YES
           res.statusCode = unmodifiedStatus;
@@ -68,7 +67,7 @@ module.exports = (file, connection, config) => {
         }
         // No match...
         res.setHeader('ETag', valid[1]); // the etag is item 2 in the array
-
+        console.log('THE METHOD: ', req.method);
         if (req.method.toLowerCase() === 'head') {
           res.writeHead(succesStatus, {
             'Content-Type': mime.getType(pathname)
@@ -99,12 +98,15 @@ module.exports = (file, connection, config) => {
             , Expires: new Date(expires + maxAge).toUTCString()
           });
           fs.createReadStream(file).pipe(res);
+          events.once('static:served', (pn) => {
+            console.log('THE PATH: ', pn);
+          });
+
           events.emit('static:served', pathname);
         }
       });
 
       events.emit('etag:check', { file: file, etag: req.headers['if-none-match'] });
-
     } else {
       events.emit('static:missing', pathname);
       events.emit('error:404', connection);

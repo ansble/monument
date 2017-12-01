@@ -205,9 +205,11 @@ The structure of a route event is: 'route:/path/to/resource:http-verb'. The rout
   res: response,
   req: request,
   params: the url parameters as an object,
-  query: the queryparams as an object
+  query: the queryparams as an object,
+  path: the pathParsed as an object
 }
 ```
+To learn more about what to expect in the pathParsed object. Read about Node's path.parse method [here](https://nodejs.org/api/path.html#path_path_parse_path)
 
 #### Adding new routes
 
