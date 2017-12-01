@@ -13,7 +13,9 @@ const platform = require('platform')
       , browserHandlers = require('./contentSecurityPolicyBrowserHandlers.js')
       , pick = require('lodash.pick')
 
-      , checkOptions = (options) => {
+      , checkOptions = (optionsIn) => {
+        const options = optionsIn;
+
         if (options.reportOnly && !options.reportUri) {
           throw new Error('Please remove reportOnly or add a report-uri.');
         }
@@ -75,7 +77,9 @@ const platform = require('platform')
       }
 
       , splitDirectives = (directivesIn) => {
-        return Object.keys(directivesIn).reduce((prev, current) => {
+        return Object.keys(directivesIn).reduce((prevIn, current) => {
+          const prev = prevIn;
+
           if (Array.isArray(directivesIn[current])) {
             prev[current] = directivesIn[current];
           } else {

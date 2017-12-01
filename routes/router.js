@@ -3,11 +3,13 @@
 const path = require('path')
       , events = require('harken')
       , mime = require('mime')
+      , onHeader = require('on-headers')
       , routeStore = require('./routeStore')
       , matchSimpleRoute = require('./matchSimpleRoute')
       , isWildCardRoute = require('./isWildCardRoute')
       , parseWildCardRoute = require('./parseWildCardRoute')
       , setupStaticRoutes = require('./serverSetup')
+      , performanceHeaders = require('./performanceHeaders')
       , setSecurityHeaders = require('../security')
       , handleStaticFile = require('./handleStaticFile')
 
@@ -86,11 +88,11 @@ module.exports = (routesJson, config) => {
             });
 
             cleanupStatsd();
-          };
+          }
+          , timers = {};
 
     let routeInfo
         , res = resIn;
-
 
     setupStatsdListeners(res, sendStatsd, cleanupStatsd);
 
