@@ -43,20 +43,12 @@ const test = require('ava')
         , headers: {}
       };
 
-let routeHandler;
-
 require('../utils/staticFileEtags');
 
 
 test.beforeEach(() => {
   config.reset();
   routerStore.clear();
-
-  routeHandler = router(routeObject, config.set({
-    publicPath: './test_stubs/deletes'
-    , routePath: './test_stubs'
-    , compression: 'none'
-  }));
 
   events.off('error:404');
   events.off('static:served');
@@ -103,6 +95,12 @@ test.cb('should return x-powered-by only if it is set', (t) => {
 });
 
 test.cb('should by default not return x-powered-by ', (t) => {
+  const routeHandler = router(routeObject, config.set({
+    publicPath: './test_stubs/deletes'
+    , routePath: './test_stubs'
+    , compression: 'none'
+  }));
+
   events.once('route:/about:get', (connection) => {
     t.is(connection.res.headers['X-Powered-By'], undefined);
     t.is(typeof connection, 'object');
@@ -117,6 +115,12 @@ test.cb('should by default not return x-powered-by ', (t) => {
 });
 
 test.cb('should emit the correct route event for a wildcard route', (t) => {
+  const routeHandler = router(routeObject, config.set({
+    publicPath: './test_stubs/deletes'
+    , routePath: './test_stubs'
+    , compression: 'none'
+  }));
+
   req.url = '/api/articles/1234';
 
   events.once('route:/api/articles/:id:get', (connection) => {
@@ -130,6 +134,12 @@ test.cb('should emit the correct route event for a wildcard route', (t) => {
 });
 
 test.cb('should pass variables on the connection.params from the url', (t) => {
+  const routeHandler = router(routeObject, config.set({
+    publicPath: './test_stubs/deletes'
+    , routePath: './test_stubs'
+    , compression: 'none'
+  }));
+
   req.url = '/api/articles/1234/links/daniel';
 
   events.once('route:/api/articles/:id/links/:item:get', (connection) => {
@@ -149,6 +159,12 @@ test.cb('should pass variables on the connection.params from the url', (t) => {
 });
 
 test.cb('should emit the 404 route event for a 404 route', (t) => {
+  const routeHandler = router(routeObject, config.set({
+    publicPath: './test_stubs/deletes'
+    , routePath: './test_stubs'
+    , compression: 'none'
+  }));
+
   req.url = '/about/daniel';
 
   events.once('error:404', (connection) => {
@@ -162,6 +178,12 @@ test.cb('should emit the 404 route event for a 404 route', (t) => {
 });
 
 test.cb('should return the routes.json file when the router route is requested', (t) => {
+  const routeHandler = router(routeObject, config.set({
+    publicPath: './test_stubs/deletes'
+    , routePath: './test_stubs'
+    , compression: 'none'
+  }));
+
   req.url = '/test_stubs';
 
   events.once('response', (result) => {
@@ -175,5 +197,4 @@ test.cb('should return the routes.json file when the router route is requested',
   process.nextTick(() => {
     routeHandler(req, createRes());
   });
-
 });

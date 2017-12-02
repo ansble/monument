@@ -21,7 +21,6 @@ const test = require('ava')
 
 let fakeRes;
 
-// describe('setStatus function of response object', (t) => {
 test.beforeEach(() => {
   fakeRes = {
     setStatus: setStatus
