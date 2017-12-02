@@ -7,6 +7,7 @@ const test = require('ava')
       , http2 = require('http2')
       , fs = require('fs')
       , path = require('path')
+      , semver = require('semver')
       , configStore = require('./utils/config');
 
 test.beforeEach(() => {
@@ -49,7 +50,13 @@ test.cb('should return an http2 server when http2 and correct params are passed 
 
   http2App.events.once('server:started', (settings) => {
     servers.push(settings.server);
-    t.true(settings.server instanceof http2.Server);
+
+    if (semver.lt(process.versions.node, '8.8.0')) {
+      t.true(settings.server instanceof http2.Server);
+    } else {
+      t.is(settings.server.constructor.name, 'Http2Server');
+    }
+
     t.end();
   });
 });
