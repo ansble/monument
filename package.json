@@ -78,6 +78,6 @@
   },
   "optionalDependencies": {
     "bufferutil": "3.0.2",
-    "utf-8-validate": "3.0.3"
+    "utf-8-validate": "4.0.0"
   }
 }
