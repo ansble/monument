@@ -1,41 +1,25 @@
 'use strict';
-const events = require('harken')
-      , isUndefined = require('../utils').isUndefined
+const isUndefined = require('../utils').isUndefined
+      , socketUtils = require('./utils')
+      , logger = require('../utils/config').get('log');
 
-      , isDataEvent = (event, setEvent) => {
-        return event !== setEvent;
-      }
-
-      , getMessage = (dataIn) => {
-        try {
-          return JSON.parse(dataIn);
-        } catch (err) {
-          return {};
-        }
-      }
-      , getSetEventString = (message) => {
-        const shouldReplace = message.event && message.event.replace;
-
-        return shouldReplace ? message.event.replace(':get:', ':set:') : '';
-      };
-
-module.exports = (type) => {
+module.exports = (type, events) => {
   return (socket) => {
     socket.onmessage = (messageIn) => {
-      const message = getMessage(messageIn.data)
-            , setEvent = getSetEventString(message);
+      const message = socketUtils.getMessage(messageIn.data)
+            , setEvent = socketUtils.getSetEventString(message);
+
 
       if (!type || isUndefined(message.event)) {
-        // no event then we can't really do anything...
         return;
       }
 
-      if (type && type !== 'passthrough' && isDataEvent(message.event, setEvent)) {
+      if (type && type !== 'passthrough' && socketUtils.isDataEvent(message.event, setEvent)) {
         events.on(setEvent, (data) => {
           socket.send(JSON.stringify({ event: setEvent, data: data }), (err) => {
             if (err) {
               events.emit('error:ws', { inboundMessage: message, error: err });
-              console.warn(err);
+              logger.warn(err);
             }
           });
         });

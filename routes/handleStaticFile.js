@@ -60,7 +60,6 @@ module.exports = (file, connection, config) => {
 
   fs.stat(file, (err, exists) => {
     if (!err && exists.isFile()) {
-
       events.required([ `etag:check:${file}`, `etag:get:${file}` ], (valid) => {
         if (valid[0]) { // does the etag match? YES
           res.statusCode = unmodifiedStatus;
@@ -98,13 +97,12 @@ module.exports = (file, connection, config) => {
             , 'Cache-Control': `maxage=${maxAge}`
             , Expires: new Date(expires + maxAge).toUTCString()
           });
+
           fs.createReadStream(file).pipe(res);
           events.emit('static:served', pathname);
         }
       });
-
       events.emit('etag:check', { file: file, etag: req.headers['if-none-match'] });
-
     } else {
       events.emit('static:missing', pathname);
       events.emit('error:404', connection);
