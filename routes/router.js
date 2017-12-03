@@ -40,7 +40,6 @@ module.exports = (routesJson, config) => {
         };
 
   routeStore.parse(routesJson);
-
   // the route handler... pulled out here for easier testing
   return (req, resIn) => {
     const method = req.method.toLowerCase()
@@ -110,21 +109,15 @@ module.exports = (routesJson, config) => {
       res.setHeader('Server-Timing', mapping);
     });
 
-    // set up the statsd timing listeners
     setupStatsdListeners(res, sendStatsd, cleanupStatsd);
 
-    // add .setStatus to response
     res.setStatus = setStatus;
-
-    // add .send to the response
     res.send = send(req, config);
     res.redirect = redirect(req);
     res = setSecurityHeaders(config, req, res);
 
     // match the first part of the url... for public stuff
     if (contains(publicFolders, pathname.split('/')[1])) {
-      // static assets y'all
-
       // this header allows proxies to cache different version based on
       //  the accept-encoding header. So (gzip/deflate/no compression)
       res.setHeader('Vary', 'Accept-Encoding');

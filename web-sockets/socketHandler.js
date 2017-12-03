@@ -1,19 +1,16 @@
 'use strict';
-const events = require('harken')
-      , isUndefined = require('../utils').isUndefined
+const isUndefined = require('../utils').isUndefined
       , socketUtils = require('./utils')
       , logger = require('../utils/config').get('log');
 
-module.exports = (type) => {
-  return (socketIn) => {
-    const socket = socketIn;
-
+module.exports = (type, events) => {
+  return (socket) => {
     socket.onmessage = (messageIn) => {
       const message = socketUtils.getMessage(messageIn.data)
             , setEvent = socketUtils.getSetEventString(message);
 
+
       if (!type || isUndefined(message.event)) {
-        // no event then we can't really do anything...
         return;
       }
 

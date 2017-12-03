@@ -4,3 +4,4 @@ coverage/
 .coveralls.yml
 **/.DS_Store
 test_stubs/templates/*.js
+.nyc_output

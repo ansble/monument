@@ -3,7 +3,7 @@
 const contains = require('../utils').contains
       , isWildCardRoute = (pathname, method, routesJson) => {
         const matchedRoutes = Object.keys(routesJson).find((route) => {
-          return !!pathname.match(routesJson[route].regex);
+          return routesJson[route].regex.test(pathname);
         });
 
         let matchesVerb;
