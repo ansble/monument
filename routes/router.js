@@ -3,11 +3,13 @@
 const path = require('path')
       , events = require('harken')
       , mime = require('mime')
+      , onHeader = require('on-headers')
       , routeStore = require('./routeStore')
       , matchSimpleRoute = require('./matchSimpleRoute')
       , isWildCardRoute = require('./isWildCardRoute')
       , parseWildCardRoute = require('./parseWildCardRoute')
       , setupStaticRoutes = require('./serverSetup')
+      , performanceHeaders = require('./performanceHeaders')
       , setSecurityHeaders = require('../security')
       , handleStaticFile = require('./handleStaticFile')
 
@@ -38,7 +40,6 @@ module.exports = (routesJson, config) => {
         };
 
   routeStore.parse(routesJson);
-
   // the route handler... pulled out here for easier testing
   return (req, resIn) => {
     const method = req.method.toLowerCase()
@@ -87,26 +88,36 @@ module.exports = (routesJson, config) => {
             });
 
             cleanupStatsd();
-          };
+          }
+          , timers = {};
 
     let routeInfo
         , res = resIn;
 
-    // set up the statsd timing listeners
+    res.timers = performanceHeaders(timers);
+
+    res.timers.start('Request');
+
+
+    onHeader(res, () => {
+      const mapping = Object.keys(timers).map((key, i) => {
+        const delta = timers[key].delta || res.timers.end(key);
+
+        return `${i}=${delta}; "${key}"`;
+      }).join(', ');
+
+      res.setHeader('Server-Timing', mapping);
+    });
+
     setupStatsdListeners(res, sendStatsd, cleanupStatsd);
 
-    // add .setStatus to response
     res.setStatus = setStatus;
-
-    // add .send to the response
     res.send = send(req, config);
     res.redirect = redirect(req);
     res = setSecurityHeaders(config, req, res);
 
     // match the first part of the url... for public stuff
     if (contains(publicFolders, pathname.split('/')[1])) {
-      // static assets y'all
-
       // this header allows proxies to cache different version based on
       //  the accept-encoding header. So (gzip/deflate/no compression)
       res.setHeader('Vary', 'Accept-Encoding');

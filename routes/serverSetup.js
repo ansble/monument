@@ -27,13 +27,17 @@ const path = require('path')
         }
 
         // load in all the static routes
-        fs.stat(publicPathIn, (err, exists) => {
-          if (!err && exists.isDirectory()) {
+        try {
+          const dir = fs.statSync(publicPathIn);
+
+          if (dir.isDirectory()) {
             fs.readdirSync(publicPathIn).forEach((file) => {
               publicFolders.push(file);
             });
           }
-        });
+        } catch (err) {
+          // do nothing... there will be no static files
+        }
 
         return publicFolders;
       };
