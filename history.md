@@ -1,4 +1,16 @@
-### - 3.3.0 * 2017-12-4 20:57:20 *
+### - 3.3.1 * 2017-12-5 05:49:37 *
+
+   - Merge pull request #499 from ansble/greenkeeper/harken-1.2.6
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/harken-1.2.6
+  - fix(package): update harken to version 1.2.6
+  - Merge pull request #498 from ansble/greenkeeper/harken-1.2.5
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/harken-1.2.5
+  - Merge pull request #466 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - fixing a bad release
+  - fix(package): update harken to version 1.2.5 
+
+
+ ### - 3.3.0 * 2017-12-4 20:57:20 *
 
    - Updates documentation on testing
   - Merge pull request #497 from ansble/greenkeeper/utf-8-validate-4.0.0
