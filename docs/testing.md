@@ -8,7 +8,7 @@ This guide will get you up and running with unit tests in `monument`. This is on
 
 If you are using the [CLI](https://www.npmjs.com/package/monument-cli) all of this is very very simple. Everytime it lays down new files (routes, data, project) it lays down working tests for you! They are stub tests essentially but they show you how to test the code it generated for you.
 
-All the examples that will follow here willl be using [mocha](https://mochajs.org/) and [chai](http://chaijs.com/). So if you are doing this by hand without the CLI then the first thing to do is `npm install --save-dev mocha chai`.
+All the examples that will follow here willl be using [ava](https://github.com/avajs/ava). So if you are doing this by hand without the CLI then the first thing to do is `npm install --save-dev ava`.
 
 ## Testing routes
 
@@ -17,10 +17,9 @@ Routes define your applications outward facing API so it is important to make su
 So what does it look like?
 
 ```js
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
     , events = require('monument').events
     , fakeConnection = require('../test_stubs/connectionStub')
 
@@ -29,15 +28,16 @@ const assert = require('chai').assert
 // initialize the code to be tested
 require('./main');
 
-describe('main route file tests', () => {
-    beforeEach(() => {
-        fakeConnection.reset();
-    });
+test.beforeEach(() => {
+    fakeConnection.reset();
+});
 
-    it('should respond to route:/:get', () => {
-        events.emit('route:/:get', fakeConnection);
+test.cb('should respond to route:/:get', (t) => {
+    events.emit('route:/:get', fakeConnection);
 
-        assert.strictEqual(fakeConnection.out().response, response);
+    process.nextTick(() => {
+        t.is(fakeConnection.out().response, response);
+        t.end();
     });
 });
 ```
@@ -45,10 +45,9 @@ describe('main route file tests', () => {
 Okay, let's take a closer look at what is going on.
 
 ```js
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
     , events = require('monument').events
     , fakeConnection = require('../test_stubs/connectionStub')
 
@@ -65,15 +64,16 @@ The other is the fakeConnection object. This contains a bunch of stubs for testi
 The more interesting stuff is the actual test:
 
 ```js
-describe('main route file tests', () => {
-    beforeEach(() => {
-        fakeConnection.reset();
-    });
+test.beforeEach(() => {
+    fakeConnection.reset();
+});
 
-    it('should respond to route:/:get', () => {
-        events.emit('route:/:get', fakeConnection);
+test.cb('should respond to route:/:get', (t) => {
+    events.emit('route:/:get', fakeConnection);
 
-        assert.strictEqual(fakeConnection.out().response, response);
+    process.nextTick(() => {
+        t.is(fakeConnection.out().response, response);
+        t.end();
     });
 });
 ```
@@ -99,23 +99,20 @@ The basic pattern here is: 1) listen for the event that the data module will res
 
 In a simple module this looks like:
 ```js
-/* eslint-env node, mocha */
 'use strict';
 
-const assert = require('chai').assert
+const test = require('ava')
     , events = require('monument').events;
 
 require('./new.js');
 
-describe('new Handler tests', () => {
-    it('should respond to data:get:new', (done) => {
-        events.once('data:set:new', (data) => {
-            assert.isObject(data);
-            done();
-        });
-
-        events.emit('data:get:new');
+test.cb('should respond to data:get:new', (t) => {
+    events.once('data:set:new', (data) => {
+        t.is(typeof data, 'object');
+        t.end();
     });
+
+    events.emit('data:get:new');
 });
 ```
 
@@ -123,7 +120,7 @@ The top part should look familiar, though we aren't using the fakeConnection her
 
 We setup the test with `events.once` so that it will receive the response of the data module, and then emit the data event that our module is listening too.
 
-Once we receive our response we check to see that it is the correct data and then call `done()` letting mocha know that the test has completed.
+Once we receive our response we check to see that it is the correct data and then call `t.end()` letting ava know that the test has completed.
 
 The one thing that gets tricky here is that you may need to insert stubs or initial data into your module so that it doesn't make database/network calls. How you do this is largely up to you. You could export a function for recieving stub data from your data module for instance. We are working to find a consistent way to make this easy, and will have more information once we nail it down.
 
@@ -148,22 +145,23 @@ I have no idea why it cares about `data:myModel` and `data:myOtherModel` but it 
 So in our test we need to do this:
 
 ```js
-describe('main route file tests', () => {
-    beforeEach(() => {
-        fakeConnection.reset();
-    });
+test.beforeEach(() => {
+    fakeConnection.reset();
+});
 
-    it('should respond to route:/:get', () => {
-        const fakePkg = {version: '1.0.0'};
+test.cb('should respond to route:/:get', (t) => {
+    const fakePkg = {version: '1.0.0'};
 
-        events.emit('route:/:get', fakeConnection);
-        events.emit('data:myModel');
-        events.emit('data:myOtherModel');
-        events.emit('data:pkg', fakePkg);
+    events.emit('route:/:get', fakeConnection);
+    events.emit('data:myModel');
+    events.emit('data:myOtherModel');
+    events.emit('data:pkg', fakePkg);
 
-        assert.strictEqual(fakeConnection.out().response, response);
-        assert.contains(fakeConnection.out().response, fakePkg.version);
-    });
+    process.nextTick(() => {
+      t.is(fakeConnection.out().response, response);
+      t.true(fakeConnection.out().response.includes(fakePkg.version));
+      t.end();
+    })
 });
 ```
 

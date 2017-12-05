@@ -1,4 +1,63 @@
-### - 3.2.9 * 11/8/2017, 8:54:58 PM *
+### - 3.3.0 * 2017-12-4 20:57:20 *
+
+   - Updates documentation on testing
+  - Merge pull request #497 from ansble/greenkeeper/utf-8-validate-4.0.0
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/utf-8-validate-4.0.0
+  - chore(package): update utf-8-validate to version 4.0.0
+  - Merge pull request #488 from ansble/feature/stabilize-tests-more
+  - Merge pull request #496 from ansble/greenkeeper/iltorb-2.0.3
+  - Merge branch 'feature/stabilize-tests-more' into greenkeeper/iltorb-2.0.3
+  - fixes http2 test to work with new internal http2
+  - fix(package): update iltorb to version 2.0.3
+  - tweaked the package.json scripts for better flaky hunts in the future
+  - gets all tests passing and improves coverage a bit
+  - remove files again
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into feature/stabilize-tests-more
+  - Serialize tests and get the last one passing
+  - Merge branch 'feature/stabilize-tests-more' of https://github.com/ansble/monument into feature/stabilize-tests-more
+  - updated deps and more test work
+  - Merge pull request #485 from ansble/greenkeeper/bufferutil-3.0.3
+  - Merge branch 'feature/stabilize-tests-more' into greenkeeper/bufferutil-3.0.3
+  - Merge pull request #486 from ansble/greenkeeper/utf-8-validate-3.0.4
+  - Merge branch 'feature/stabilize-tests-more' into greenkeeper/utf-8-validate-3.0.4
+  - Merge pull request #495 from ansble/greenkeeper/eslint-4.12.1
+  - chore(package): update eslint to version 4.12.1
+  - Making the switch to ava final
+  - Merge branch 'feature/stabilize-tests-more' of https://github.com/ansble/monument into feature/stabilize-tests-more
+  - Merge pull request #492 from ansble/Bretagne-Classic-3.2.x
+  - working on finishing the test stabilization
+  - Merge pull request #487 from ansble/greenkeeper/harken-1.2.4
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/harken-1.2.4
+  - Merge branch 'feature/stabilize-tests-more' of https://github.com/ansble/monument into feature/stabilize-tests-more
+  - fixes problems with tests
+  - fix(package): update harken to version 1.2.4
+  - chore(package): update utf-8-validate to version 3.0.4
+  - chore(package): update bufferutil to version 3.0.3
+  - Merge pull request #484 from ansble/greenkeeper/eslint-4.10.0
+  - chore(package): update eslint to version 4.10.0
+  - Merge pull request #481 from ansble/greenkeeper/iltorb-2.0.2
+  - Merge pull request #483 from ansble/greenkeeper/chalk-2.3.0
+  - Merge branch 'feature/stabilize-tests-more' of https://github.com/ansble/monument into feature/stabilize-tests-more
+  - Merge branch 'feature/stabilize-tests-more' of https://github.com/ansble/monument into feature/stabilize-tests-more
+  - working on the rewrite of the tests
+  - working on the rewrite of the tests
+  - fix(package): update iltorb to version 2.0.2
+  - Refactor work on moving all the tests into ava
+  - Breaks out router tests into smaller files
+  - chore(package): update chalk to version 2.3.0
+  - Merge pull request #469 from ansble/master
+  - Merge branch 'master' into Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge pull request #413 from ansble/feature/timing-headers
+  - Improves testing for webs sockets
+  - refactored out some private functions for easy testing
+  - Fixed broken tests by augmenting the stub functions
+  - Merge branch 'master' into feature/timing-headers
+  - Base implementation is working in browser
+  - Merge branch 'Bretagne-Classic-3.2.x' into feature/timing-headers
+  - Adds performance timing headers 
+
+
+ ### - 3.2.9 * 11/8/2017, 8:54:58 PM *
 
    - yarn added
   - Merge pull request #491 from ansble/greenkeeper/ws-3.3.1
