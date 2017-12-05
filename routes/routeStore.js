@@ -1,25 +1,6 @@
 'use strict';
 const pareseRoutes = require('./parseRoutes')
-
-      , shallowMerge = (a = {}, b = {}) => {
-        return Object.keys(b).reduce((result, key) => {
-          const accum = result;
-
-          if (Array.isArray(accum[key])) {
-            accum[key] = [].concat(accum[key], b[key].filter((route) => {
-              return accum[key].indexOf(route) < 0;
-            }));
-          } else if (typeof accum[key] === 'object') {
-            accum[key].verbs = [].concat(accum[key].verbs, b[key].verbs).filter((route) => {
-              return accum[key].verbs.indexOf(route) < 0;
-            });
-          } else {
-            accum[key] = b[key];
-          }
-
-          return accum;
-        }, a);
-      }
+      , shallowMerge = require('./shallowMerge')
 
       , mergeRoutes = (routeObj, newRoutesObj) => {
         const parsed = pareseRoutes(newRoutesObj);
@@ -42,7 +23,9 @@ const pareseRoutes = require('./parseRoutes')
                typeof routes.standard[route] === 'undefined';
       }
 
-      , cleanupRoute = (route, routes) => {
+      , cleanupRoute = (route, routesIn) => {
+        const routes = routesIn;
+
         if (routes.wildcard[route] && routes.wildcard[route].verbs.length === 0) {
           routes.wildcard[route] = undefined;
         } else if (routes.standard[route] && routes.standard[route].length === 0) {
@@ -120,8 +103,6 @@ module.exports = {
   }
 
   , parse: (routeObj) => {
-    routes = mergeRoutes(routes, routeObj);
-
-    return routes;
+    return mergeRoutes(routes, routeObj);
   }
 };
