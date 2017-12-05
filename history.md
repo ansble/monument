@@ -1,4 +1,9 @@
-### - 3.2.10 * 2017-12-4 20:55:22 *
+### - 3.3.0 * 2017-12-4 20:57:20 *
+
+  
+
+
+ ### - 3.2.10 * 2017-12-4 20:55:22 *
 
    - Updates documentation on testing
   - Merge pull request #497 from ansble/greenkeeper/utf-8-validate-4.0.0
