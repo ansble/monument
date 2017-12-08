@@ -1,4 +1,11 @@
-### - 3.3.1 * 2017-12-5 05:49:37 *
+### - 3.3.2 * 2017-12-7 21:39:36 *
+
+   - Merge pull request #501 from ansble/feature/improve-content-security-policy-browser-handlers-coverage
+  - Adds browser handler tests
+  - Merge pull request #500 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.1 * 2017-12-5 05:49:37 *
 
    - Merge pull request #499 from ansble/greenkeeper/harken-1.2.6
   - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/harken-1.2.6
