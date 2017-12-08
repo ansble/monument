@@ -12,7 +12,6 @@ const config = require('./contentSecurityPolicyConfig')
         const index = policyStringIn.indexOf("'unsafe-inline'")
               , policyString = policyStringIn;
 
-
         if (index >= 0) {
           if (key === 'scriptSrc') {
             policyString[index] = "'inline-script'";
@@ -130,7 +129,7 @@ handlers.Opera = function (browser) {
   }
 };
 
-handlers['Android Browser'] = function (browser, directives, options) {
+handlers['Android Browser'] = function (browser, directives, options = {}) {
   const FOURPOINTFOUR = 4.4;
 
   if (parseFloat(browser.os.version) < FOURPOINTFOUR || options.disableAndroid) {
@@ -143,7 +142,7 @@ handlers['Android Browser'] = function (browser, directives, options) {
 handlers['Chrome Mobile'] = function (browser, directives) {
   if (browser.os.family === 'iOS') {
     const result = { headers: [ 'Content-Security-Policy' ] }
-          , connect = directives.connectSrc || directives.connectSrc;
+          , connect = directives.connectSrc;
 
     if (!connect) {
       result.directives = shallowCopy(directives);
