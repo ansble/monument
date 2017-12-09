@@ -2,16 +2,20 @@
   "name": "monument",
   "version": "3.3.4",
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
-  "main": "index.js",
+  "main": "built/index.js",
   "scripts": {
-    "test": "npm run lint && nyc ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
-    "ava": "ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
-    "ava-parralel": "ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js",
-    "router-tests": "ava -s routes/**/*.test.js",
+    "test": "npm run flow && npm run lint && npm run ava",
+    "ava": "nyc ava -s src/*.test.js bin/*.test.js src/utils/**/*.test.js src/web-sockets/**/*.test.js src/security/**/*.test.js src/routes/**/*.test.js",
+    "ava-no-cov": "ava -s src/*.test.js bin/*.test.js src/utils/**/*.test.js src/web-sockets/**/*.test.js src/security/**/*.test.js src/routes/**/*.test.js",
+    "ava-parralel": "ava src/*.test.js src/bin/*.test.js src/utils/**/*.test.js src/web-sockets/**/*.test.js src/security/**/*.test.js",
+    "flow": "flow",
+    "router-tests": "ava -s src/routes/**/*.test.js",
     "start": "node app.js",
     "lint": "bin/lint.js",
     "release": "npm test && echo ' => releasing' && bin/release.js",
-    "report": "nyc report --reporter=html"
+    "report": "nyc report --reporter=html",
+    "build": "babel src/ -d built/",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,6 +24,9 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
+  "files": [
+    "built/**"
+  ],
   "bugs": {
     "url": "https://github.com/designfrontier/monumentjs/issues"
   },
@@ -64,10 +71,16 @@
   },
   "devDependencies": {
     "ava": "^0.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.3",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
     "chai": "4.1.2",
     "chalk": "2.3.0",
     "coveralls": "3.0.0",
     "eslint": "4.13.0",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "flow-bin": "^0.61.0",
     "form-data": "2.3.1",
     "http2": "3.3.7",
     "istanbul": "0.4.5",
@@ -92,6 +105,7 @@
     "failFast": false,
     "require": [
       "harken"
-    ]
+    ],
+    "babel": "inherit"
   }
 }

@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-'use strict';
 
 const eslint = require('eslint')
       , CLIEngine = eslint.CLIEngine
@@ -7,17 +6,17 @@ const eslint = require('eslint')
         useEslintrc: true,
       })
       , report = linter.executeOnFiles([
-        './utils/**/*.js'
-        , '!./utils/**/*_test.js'
-        , './routes/**/*.js'
-        , '!./routes/**/*_test.js'
-        , './security/**/*.js'
-        , '!./security/**/*_test.js'
-        , './web-sockets/**/*.js'
-        , '!./web-sockets/**/*_test.js'
-        , '*.js'
-        , '!*_test.js'
-        , '!gulpfile.js' ])
+        './src/utils/**/*.js'
+        , '!./src/utils/**/*.test.js'
+        , './src/routes/**/*.js'
+        , '!./src/routes/**/*.test.js'
+        , './src/security/**/*.js'
+        , '!./src/security/**/*.test.js'
+        , './src/web-sockets/**/*.js'
+        , '!./src/web-sockets/**/*.test.js'
+        , './src/*.js'
+        , '!./src/*.test.js'
+      ])
       , formatter = linter.getFormatter()
       , errorCheck = (errorCount, file) => {
         return errorCount + file.errorCount;
