@@ -1,4 +1,9 @@
-### - 3.3.3 * 2017-12-8 18:32:32 *
+### - 3.3.4 * 2017-12-8 18:33:29 *
+
+   - updates package lock file 
+
+
+ ### - 3.3.3 * 2017-12-8 18:32:32 *
 
    - Merge pull request #503 from ansble/greenkeeper/eslint-4.13.0
   - chore(package): update eslint to version 4.13.0
