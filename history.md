@@ -1,4 +1,11 @@
-### - 3.3.4 * 2017-12-8 18:33:29 *
+### - 3.3.5 * 2017-12-11 06:55:28 *
+
+   - Merge pull request #507 from ansble/greenkeeper/harken-1.2.7
+  - fix(package): update harken to version 1.2.7
+  - Merge pull request #504 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.4 * 2017-12-8 18:33:29 *
 
    - updates package lock file 
 
