@@ -1,4 +1,11 @@
-### - 3.3.5 * 2017-12-11 06:55:28 *
+### - 3.3.6 * 2017-12-12 07:07:39 *
+
+   - Merge pull request #509 from ansble/greenkeeper/eslint-4.13.1
+  - chore(package): update eslint to version 4.13.1
+  - Merge pull request #508 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.5 * 2017-12-11 06:55:28 *
 
    - Merge pull request #507 from ansble/greenkeeper/harken-1.2.7
   - fix(package): update harken to version 1.2.7
