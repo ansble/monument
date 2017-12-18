@@ -1,4 +1,11 @@
-### - 3.3.6 * 2017-12-12 07:07:39 *
+### - 3.3.7 * 2017-12-18 07:45:34 *
+
+   - Merge pull request #511 from ansble/greenkeeper/ws-3.3.3
+  - fix(package): update ws to version 3.3.3
+  - Merge pull request #510 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.6 * 2017-12-12 07:07:39 *
 
    - Merge pull request #509 from ansble/greenkeeper/eslint-4.13.1
   - chore(package): update eslint to version 4.13.1
