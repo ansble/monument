@@ -125,6 +125,8 @@ module.exports = (config, req, res) => {
   return res;
 };
 
+module.exports.policyStringCache = policyStringCache;
+
 module.exports.flushCache = () => {
   Object.keys(policyStringCache).forEach((key) => {
     policyStringCache[key] = undefined;

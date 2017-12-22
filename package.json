@@ -76,8 +76,7 @@
     "mock-require": "2.0.2",
     "nyc": "^11.3.0",
     "semver": "^5.4.1",
-    "spdy": "3.4.7",
-    "v8-profiler": "5.7.0"
+    "spdy": "3.4.7"
   },
   "engines": {
     "node": ">4.0.0",
