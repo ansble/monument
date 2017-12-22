@@ -1,4 +1,14 @@
-### - 3.3.8 * 2017-12-22 06:45:20 *
+### - 3.3.9 * 2017-12-22 12:42:08 *
+
+   - Merge pull request #516 from ansble/greenkeeper/mime-2.0.5
+  - fix(package): update mime to version 2.0.5
+  - Merge pull request #515 from ansble/master
+  - Merge pull request #514 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge branch 'master' into Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge pull request #512 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.8 * 2017-12-22 06:45:20 *
 
    - Merge pull request #513 from ansble/debt/remove-unused-deps-bump-coverage
   - removed a dep used for troubleshooting and improved test coverage 
