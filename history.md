@@ -1,4 +1,10 @@
-### - 3.3.7 * 2017-12-18 07:45:34 *
+### - 3.3.8 * 2017-12-22 06:45:20 *
+
+   - Merge pull request #513 from ansble/debt/remove-unused-deps-bump-coverage
+  - removed a dep used for troubleshooting and improved test coverage 
+
+
+ ### - 3.3.7 * 2017-12-18 07:45:34 *
 
    - Merge pull request #511 from ansble/greenkeeper/ws-3.3.3
   - fix(package): update ws to version 3.3.3
