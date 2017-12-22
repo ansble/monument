@@ -62,6 +62,10 @@ test('should have a flushCache function', (t) => {
   t.is(typeof csp.flushCache, 'function');
 });
 
+test('should expose the policyStringCache', (t) => {
+  t.is(typeof csp.policyStringCache, 'object');
+});
+
 test('sets headers by string', (t) => {
   config.security.contentSecurity = { defaultSrc: 'a.com b.biz' };
 
@@ -240,6 +244,19 @@ test('sets the header properly for Firefox 22', (t) => {
 
   t.true(res.headers[header].includes("default-src 'self'"));
   t.true(res.headers[header].includes('xhr-src connect.com'));
+});
+
+test('returns from the cache if there is something in it', (t) => {
+  const header = 'X-Content-Security-Policy';
+
+  config.security.contentSecurity = POLICY;
+  req.headers['user-agent'] = AGENTS['Firefox 22'].string;
+
+  csp.policyStringCache.Firefox = 'this is a test';
+
+  csp(config, req, res);
+
+  t.is(res.headers[header], 'this is a test');
 });
 
 test('sets the header properly for Firefox 4.0', (t) => {
