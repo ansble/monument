@@ -1,4 +1,13 @@
-### - 3.3.9 * 2017-12-22 12:42:08 *
+### - 3.3.10 * 2017-12-23 17:55:26 *
+
+   - Merge pull request #519 from ansble/greenkeeper/eslint-4.14.0
+  - Merge pull request #518 from ansble/greenkeeper/mime-2.1.0
+  - chore(package): update eslint to version 4.14.0
+  - fix(package): update mime to version 2.1.0
+  - Merge pull request #517 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.9 * 2017-12-22 12:42:08 *
 
    - Merge pull request #516 from ansble/greenkeeper/mime-2.0.5
   - fix(package): update mime to version 2.0.5
