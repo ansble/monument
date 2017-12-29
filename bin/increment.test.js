@@ -1,6 +1,4 @@
-/* eslint-env node, mocha */
 'use strict';
-
 
 const increment = require('./increment')
       , test = require('ava');

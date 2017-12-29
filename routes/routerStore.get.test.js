@@ -1,4 +1,3 @@
-/* eslint-env node, mocha */
 'use strict';
 
 const test = require('ava')
@@ -7,7 +6,6 @@ const test = require('ava')
 test.afterEach(() => {
   routeStore.clear();
 });
-
 
 test('should return the current route object', (t) => {
   routeStore.parse(require('../test_stubs/routes_stub.json'));

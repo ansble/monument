@@ -1,4 +1,11 @@
-### - 3.3.11 * 2017-12-27 07:38:09 *
+### - 3.3.12 * 2017-12-29 07:08:12 *
+
+   - Merge pull request #524 from ansble/feature/remove-mocha
+  - removed chai
+  - removes mocha 
+
+
+ ### - 3.3.11 * 2017-12-27 07:38:09 *
 
    - Merge pull request #521 from ansble/greenkeeper/harken-1.2.8
   - fix(package): update harken to version 1.2.8
