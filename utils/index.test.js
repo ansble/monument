@@ -1,9 +1,7 @@
-/* eslint-env node, mocha */
 'use strict';
 
 const test = require('ava')
       , utils = require('./index');
-
 
 test('should return an object that has a send and getCompression functions', (t) => {
   t.is(typeof utils.send, 'function');
