@@ -1,4 +1,3 @@
-/* eslint-env node, mocha */
 'use strict';
 
 const test = require('ava')
@@ -7,7 +6,6 @@ const test = require('ava')
 test.afterEach(() => {
   routeStore.clear();
 });
-
 
 test.beforeEach(() => {
   routeStore.add('/test', [ 'get', 'put' ]);
