@@ -1,4 +1,71 @@
-### - 3.3.12 * 2017-12-29 07:08:12 *
+### - 3.3.13 * 2018-1-2 09:55:20 *
+
+   - Merge pull request #527 from ansble/greenkeeper/harken-1.2.9
+  - fix(package): update harken to version 1.2.9
+  - Merge pull request #526 from ansble/master
+  - Merge pull request #525 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge branch 'master' into Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.12
+  - preparing for release of v3.3.12
+  - Merge pull request #524 from ansble/feature/remove-mocha
+  - removed chai
+  - removes mocha
+  - Merge pull request #522 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.11
+  - preparing for release of v3.3.11
+  - Merge pull request #521 from ansble/greenkeeper/harken-1.2.8
+  - fix(package): update harken to version 1.2.8
+  - Merge pull request #520 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.10
+  - preparing for release of v3.3.10
+  - Merge pull request #519 from ansble/greenkeeper/eslint-4.14.0
+  - Merge pull request #518 from ansble/greenkeeper/mime-2.1.0
+  - chore(package): update eslint to version 4.14.0
+  - fix(package): update mime to version 2.1.0
+  - Merge pull request #517 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.9
+  - preparing for release of v3.3.9
+  - Merge pull request #516 from ansble/greenkeeper/mime-2.0.5
+  - fix(package): update mime to version 2.0.5
+  - Merge pull request #515 from ansble/master
+  - Merge pull request #514 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge branch 'master' into Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.8
+  - preparing for release of v3.3.8
+  - Merge pull request #513 from ansble/debt/remove-unused-deps-bump-coverage
+  - removed a dep used for troubleshooting and improved test coverage
+  - Merge pull request #512 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.7
+  - preparing for release of v3.3.7
+  - Merge pull request #511 from ansble/greenkeeper/ws-3.3.3
+  - fix(package): update ws to version 3.3.3
+  - Merge pull request #510 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.6
+  - preparing for release of v3.3.6
+  - Merge pull request #509 from ansble/greenkeeper/eslint-4.13.1
+  - chore(package): update eslint to version 4.13.1
+  - Merge pull request #508 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.5
+  - preparing for release of v3.3.5
+  - Merge pull request #507 from ansble/greenkeeper/harken-1.2.7
+  - fix(package): update harken to version 1.2.7
+  - Merge pull request #504 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.4
+  - preparing for release of v3.3.4
+  - updates package lock file
+  - 3.3.3
+  - preparing for release of v3.3.3
+  - Merge pull request #503 from ansble/greenkeeper/eslint-4.13.0
+  - chore(package): update eslint to version 4.13.0
+  - Merge pull request #502 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.2
+  - preparing for release of v3.3.2
+  - Merge pull request #501 from ansble/feature/improve-content-security-policy-browser-handlers-coverage
+  - Adds browser handler tests
+  - Merge pull request #500 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.12 * 2017-12-29 07:08:12 *
 
    - Merge pull request #524 from ansble/feature/remove-mocha
   - removed chai
