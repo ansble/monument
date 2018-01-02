@@ -1,6 +1,6 @@
 {
   "name": "monument",
-  "version": "3.3.12",
+  "version": "3.3.13",
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
@@ -49,7 +49,7 @@
     "dot": "1.1.2",
     "etag": "1.8.1",
     "glob": "7.1.2",
-    "harken": "1.2.8",
+    "harken": "1.2.9",
     "iltorb": "2.0.3",
     "lodash.clonedeep": "4.5.0",
     "lodash.pick": "4.4.0",
