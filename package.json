@@ -71,7 +71,7 @@
     "http2": "3.3.7",
     "istanbul": "0.4.5",
     "minimist": "1.2.0",
-    "mock-require": "2.0.2",
+    "mock-require": "3.0.1",
     "nyc": "^11.3.0",
     "semver": "^5.4.1",
     "spdy": "3.4.7"
