@@ -45,7 +45,7 @@
   ],
   "dependencies": {
     "busboy": "0.2.14",
-    "content-security-policy-builder": "1.1.0",
+    "content-security-policy-builder": "2.0.0",
     "dot": "1.1.2",
     "etag": "1.8.1",
     "glob": "7.1.2",
