@@ -1,4 +1,16 @@
-### - 3.3.15 * 2018-1-23 06:03:22 *
+### - 3.3.16 * 2018-1-24 06:41:24 *
+
+   - Merge pull request #541 from ansble/greenkeeper/harken-1.2.12
+  - Merge pull request #542 from ansble/greenkeeper/platform-1.3.5
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/harken-1.2.12
+  - Merge pull request #543 from ansble/greenkeeper/content-security-policy-builder-2.0.0
+  - fix(package): update content-security-policy-builder to version 2.0.0
+  - fix(package): update platform to version 1.3.5
+  - Merge pull request #540 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - fix(package): update harken to version 1.2.12 
+
+
+ ### - 3.3.15 * 2018-1-23 06:03:22 *
 
    - Merge pull request #538 from ansble/greenkeeper/harken-1.2.11
   - Merge pull request #539 from ansble/greenkeeper/eslint-4.16.0
