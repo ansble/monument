@@ -1,4 +1,11 @@
-### - 3.3.16 * 2018-1-24 06:41:24 *
+### - 3.3.17 * 2018-1-27 07:15:00 *
+
+   - Merge branch 'master' into Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge pull request #545 from ansble/greenkeeper/ava-0.25.0
+  - chore(package): update ava to version 0.25.0 
+
+
+ ### - 3.3.16 * 2018-1-24 06:41:24 *
 
    - Merge pull request #541 from ansble/greenkeeper/harken-1.2.12
   - Merge pull request #542 from ansble/greenkeeper/platform-1.3.5
