@@ -3,12 +3,14 @@
 // replacement for node's built-in 'url.parse' that safely removes the square brackets
 // supports only parseQueryString = true therefore does not accept that argument
 const url = require('url')
+      , striptags = require('striptags')
       , tools = require('./tools')
+      , Entities = require('html-entities').XmlEntities
+      , entities = new Entities()
 
       , parse = (urlStr, slashesDenoteHost) => {
         const urlObject = url.parse(urlStr, true, slashesDenoteHost)
               , query = urlObject.query
-              , isDefined = tools.isDefined
               , isUndefined = tools.isUndefined
 
               , tempQuery = Object.keys(urlObject.query).reduce((prevIn, key) => {
@@ -31,11 +33,13 @@ const url = require('url')
           const prev = prevIn;
 
           if (Array.isArray(tempQuery[key])) {
-            prev[key] = tempQuery[key].filter((element) => {
-              return isDefined(element);
+            prev[key] = tempQuery[key].map((element) => {
+              return entities.encode(striptags(element));
+            }).filter((element) => {
+              return element !== '';
             });
           } else {
-            prev[key] = tempQuery[key];
+            prev[key] = entities.encode(striptags(tempQuery[key]));
           }
 
           return prev;
