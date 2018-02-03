@@ -8,7 +8,7 @@ const url = require('url')
       , Entities = require('html-entities').XmlEntities
       , entities = new Entities()
 
-      , parse = ({ urlStr, slashesDenoteHost, unsafeQuery }) => {
+      , parse = ({ urlStr, slashesDenoteHost, unsafeQuery = false }) => {
         const urlObject = url.parse(urlStr, true, slashesDenoteHost)
               , query = urlObject.query
               , isUndefined = tools.isUndefined
