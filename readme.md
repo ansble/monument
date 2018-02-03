@@ -101,6 +101,7 @@ When you create your server it takes a config object that allows you to pass in 
         , contentSecurity: {
             defaultSrc: `'self'` // optional. This is the default setting and is very strict
         }
+        , unsafeQuery: false // optional. This is the default setting and we recommend that you leave it alone :-)
     }
 
     , server: spdy //an http API compliant server module. See below for more info [optional]

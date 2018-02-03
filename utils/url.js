@@ -8,10 +8,11 @@ const url = require('url')
       , Entities = require('html-entities').XmlEntities
       , entities = new Entities()
 
-      , parse = (urlStr, slashesDenoteHost) => {
+      , parse = ({ urlStr, slashesDenoteHost, unsafeQuery }) => {
         const urlObject = url.parse(urlStr, true, slashesDenoteHost)
               , query = urlObject.query
               , isUndefined = tools.isUndefined
+              , isDefined = tools.isDefined
 
               , tempQuery = Object.keys(urlObject.query).reduce((prevIn, key) => {
                 const newKey = key.replace(/\[\]$/, '')
@@ -33,13 +34,15 @@ const url = require('url')
           const prev = prevIn;
 
           if (Array.isArray(tempQuery[key])) {
-            prev[key] = tempQuery[key].map((element) => {
+            prev[key] = unsafeQuery ? tempQuery[key].filter((element) => {
+              return isDefined(element);
+            }) : tempQuery[key].map((element) => {
               return entities.encode(striptags(element));
             }).filter((element) => {
               return element !== '';
             });
           } else {
-            prev[key] = entities.encode(striptags(tempQuery[key]));
+            prev[key] = unsafeQuery ? tempQuery[key] : entities.encode(striptags(tempQuery[key]));
           }
 
           return prev;
