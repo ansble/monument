@@ -1,4 +1,74 @@
-### - 3.3.13 * 2018-1-2 09:55:20 *
+### - 3.3.17 * 2018-1-27 07:15:00 *
+
+   - Merge branch 'master' into Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge pull request #545 from ansble/greenkeeper/ava-0.25.0
+  - chore(package): update ava to version 0.25.0 
+
+
+ ### - 3.3.16 * 2018-1-24 06:41:24 *
+
+   - Merge pull request #541 from ansble/greenkeeper/harken-1.2.12
+  - Merge pull request #542 from ansble/greenkeeper/platform-1.3.5
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/harken-1.2.12
+  - Merge pull request #543 from ansble/greenkeeper/content-security-policy-builder-2.0.0
+  - fix(package): update content-security-policy-builder to version 2.0.0
+  - fix(package): update platform to version 1.3.5
+  - Merge pull request #540 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - fix(package): update harken to version 1.2.12 
+
+
+ ### - 3.3.15 * 2018-1-23 06:03:22 *
+
+   - Merge pull request #538 from ansble/greenkeeper/harken-1.2.11
+  - Merge pull request #539 from ansble/greenkeeper/eslint-4.16.0
+  - chore(package): update eslint to version 4.16.0
+  - fix(package): update harken to version 1.2.11
+  - Merge pull request #537 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.14
+  - preparing for release of v3.3.14
+  - Merge pull request #536 from ansble/greenkeeper/uuid-3.2.1
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/uuid-3.2.1
+  - Merge pull request #534 from ansble/greenkeeper/mock-require-3.0.0
+  - Merge pull request #533 from ansble/greenkeeper/harken-1.2.10
+  - fix(package): update uuid to version 3.2.1
+  - chore(package): update mock-require to version 3.0.0
+  - fix(package): update harken to version 1.2.10
+  - Merge pull request #532 from ansble/greenkeeper/eslint-4.15.0
+  - chore(package): update eslint to version 4.15.0
+  - Merge pull request #531 from ansble/greenkeeper/ws-4.0.0
+  - Merge pull request #530 from ansble/greenkeeper/mime-2.2.0
+  - fix(package): update ws to version 4.0.0
+  - fix(package): update mime to version 2.2.0
+  - Merge pull request #528 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - 3.3.13
+  - preparing for release of v3.3.13
+  - Merge pull request #527 from ansble/greenkeeper/harken-1.2.9
+  - fix(package): update harken to version 1.2.9
+  - Merge pull request #526 from ansble/master
+  - Merge pull request #525 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge branch 'master' into Grand-Prix-Cycliste-de-Québec-3.3.x
+  - Merge pull request #522 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.14 * 2018-1-17 09:43:35 *
+
+   - Merge pull request #536 from ansble/greenkeeper/uuid-3.2.1
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/uuid-3.2.1
+  - Merge pull request #534 from ansble/greenkeeper/mock-require-3.0.0
+  - Merge pull request #533 from ansble/greenkeeper/harken-1.2.10
+  - fix(package): update uuid to version 3.2.1
+  - chore(package): update mock-require to version 3.0.0
+  - fix(package): update harken to version 1.2.10
+  - Merge pull request #532 from ansble/greenkeeper/eslint-4.15.0
+  - chore(package): update eslint to version 4.15.0
+  - Merge pull request #531 from ansble/greenkeeper/ws-4.0.0
+  - Merge pull request #530 from ansble/greenkeeper/mime-2.2.0
+  - fix(package): update ws to version 4.0.0
+  - fix(package): update mime to version 2.2.0
+  - Merge pull request #528 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x 
+
+
+ ### - 3.3.13 * 2018-1-2 09:55:20 *
 
    - Merge pull request #527 from ansble/greenkeeper/harken-1.2.9
   - fix(package): update harken to version 1.2.9
