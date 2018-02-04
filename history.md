@@ -1,4 +1,18 @@
-### - 3.3.17 * 2018-1-27 07:15:00 *
+### - 4.0.0 * 2018-2-3 16:00:53 *
+
+   - Merge pull request #547 from ansble/greenkeeper/mock-require-3.0.1
+  - Merge pull request #548 from ansble/bug/xss-prevention-in-params
+  - fixed broken test
+  - adding a flag to turn off the xss protection
+  - Merge pull request #546 from ansble/greenkeeper/eslint-4.17.0
+  - Merge branch 'Grand-Prix-Cycliste-de-Québec-3.3.x' into greenkeeper/mock-require-3.0.1
+  - removes the xss vector from queryparams
+  - chore(package): update eslint to version 4.17.0
+  - Merge pull request #544 from ansble/Grand-Prix-Cycliste-de-Québec-3.3.x
+  - chore(package): update mock-require to version 3.0.1 
+
+
+ ### - 3.3.17 * 2018-1-27 07:15:00 *
 
    - Merge branch 'master' into Grand-Prix-Cycliste-de-Québec-3.3.x
   - Merge pull request #545 from ansble/greenkeeper/ava-0.25.0

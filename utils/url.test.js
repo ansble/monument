@@ -23,8 +23,8 @@ test('should return a parse function', (t) => {
 });
 
 test('should behave itself without request parameters', (t) => {
-  const query = parseUrl(urlStr).query
-        , errString = `expected an empty query object: ${parseUrl(urlStr)}`;
+  const query = parseUrl({ urlStr: urlStr }).query
+        , errString = `expected an empty query object: ${parseUrl({ urlStr })}`;
 
   t.is(typeof query, 'object');
   t.is(Object.keys(query).length, 0, errString);
@@ -33,7 +33,7 @@ test('should behave itself without request parameters', (t) => {
 test('should not dork with single value query parms that don\'t have square brackets', (t) => {
   const thisValue = 'money'
         , queryStr = `?stuff=${thisValue}`
-        , query = parseUrl(urlStr + queryStr).query;
+        , query = parseUrl({ urlStr: urlStr + queryStr }).query;
 
   t.is(query.stuff, thisValue, 'query param value of "stuff" got dorked');
 });
@@ -41,12 +41,12 @@ test('should not dork with single value query parms that don\'t have square brac
 test('should combine query params and remove square brackets', (t) => {
   const queryStr = '?stuff[]=money&stuff[]=1000';
 
-  validateStuffMoney1000(parseUrl(urlStr + queryStr).query, t);
+  validateStuffMoney1000(parseUrl({ urlStr: urlStr + queryStr }).query, t);
 });
 
 test('should create a single element array even when only a single value exists', (t) => {
   const queryStr = '?stuff[]=money'
-        , query = parseUrl(urlStr + queryStr).query
+        , query = parseUrl({ urlStr: urlStr + queryStr }).query
         , definedError = '"stuff[]" should not be defined on the query object'
         , arrayError = `"stuff" should be an array even though only one value was present,
             because of the deliberate square brackets`;
@@ -61,7 +61,7 @@ test('should create a single element array even when only a single value exists'
 test('should remove square brackets on a single parm with a comma delimited value', (t) => {
   // NOTE: comma delimited values are not parsed into an array!
   const queryStr = '?stuff[]=one,two,three'
-        , query = parseUrl(urlStr + queryStr).query
+        , query = parseUrl({ urlStr: urlStr + queryStr }).query
         , jsonStuff = JSON.stringify(query.stuff)
         , correctJson = JSON.stringify([ 'one,two,three' ])
 
@@ -77,24 +77,24 @@ test('should remove square brackets on a single parm with a comma delimited valu
 test('should combine query parms that are not using square brackets', (t) => {
   const queryStr = '?stuff=money&stuff=1000';
 
-  validateStuffMoney1000(parseUrl(urlStr + queryStr).query, t);
+  validateStuffMoney1000(parseUrl({ urlStr: urlStr + queryStr }).query, t);
 });
 
 test('should combine query parms that inconsistently use [] convention with [] last', (t) => {
   const queryStr = '?stuff=money&stuff[]=1000';
 
-  validateStuffMoney1000(parseUrl(urlStr + queryStr).query, t);
+  validateStuffMoney1000(parseUrl({ urlStr: urlStr + queryStr }).query, t);
 });
 
 test('should combine query parms that inconsistently use [] convention with [] first', (t) => {
   const queryStr = '?stuff[]=money&stuff=1000';
 
-  validateStuffMoney1000(parseUrl(urlStr + queryStr).query, t);
+  validateStuffMoney1000(parseUrl({ urlStr: urlStr + queryStr }).query, t);
 });
 
 test('should combine multiple query parms that use comma delimited values', (t) => {
   const queryStr = '?stuff=one,two,three&stuff=four,five,six&stuff=seven,eight,nine,ten'
-        , query = parseUrl(urlStr + queryStr).query
+        , query = parseUrl({ urlStr: urlStr + queryStr }).query
         , jsonStuff = JSON.stringify(query.stuff)
         , correctJson = JSON.stringify([
           'one,two,three'
