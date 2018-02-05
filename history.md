@@ -1,4 +1,11 @@
-### - 4.0.0 * 2018-2-3 16:00:53 *
+### - 4.0.1 * 2018-2-4 21:23:54 *
+
+   - Merge pull request #550 from ansble/greenkeeper/harken-1.2.13
+  - fix(package): update harken to version 1.2.13
+  - Merge pull request #549 from ansble/Grand-Prix-Cycliste-de-Montréal-4.0.x 
+
+
+ ### - 4.0.0 * 2018-2-3 16:00:53 *
 
    - Merge pull request #547 from ansble/greenkeeper/mock-require-3.0.1
   - Merge pull request #548 from ansble/bug/xss-prevention-in-params
