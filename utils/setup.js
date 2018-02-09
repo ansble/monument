@@ -3,7 +3,6 @@
 const glob = require('glob')
       , fs = require('fs')
       , events = require('harken')
-      , dot = require('dot')
 
       , deleteCompressed = (config) => {
         // run through and delete all the compressed files in the file system
@@ -35,20 +34,6 @@ const glob = require('glob')
         events.emit('cleanup:compressed:start');
       }
 
-      , compileTemplates = (config) => {
-        // configure dotjs
-        if (config.dotjs) {
-          Object.keys(config.dotjs).forEach((opt) => {
-            dot.templateSettings[opt] = config.dotjs[opt];
-          });
-        }
-
-        // compile the templates
-        dot.process({ path: config.templatePath });
-
-        events.emit('setup:templates');
-      }
-
       , etagSetup = () => {
         // set up the etag listeners and emitters
         require('./staticFileEtags');
@@ -59,6 +44,5 @@ const glob = require('glob')
 
 module.exports = {
   compressed: deleteCompressed
-  , templates: compileTemplates
   , etags: etagSetup
 };
