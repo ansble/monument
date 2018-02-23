@@ -43,7 +43,8 @@ module.exports = (routesJson, config) => {
   // the route handler... pulled out here for easier testing
   return (req, resIn) => {
     const method = req.method.toLowerCase()
-          , pathParsed = parsePath({ urlStr: req.url, unsafeQuery: config.security && config.security.unsafeQuery })
+          , unsafeQuery = config.security && config.security.unsafeQuery
+          , pathParsed = parsePath({ urlStr: req.url, unsafeQuery: unsafeQuery })
           , pathname = pathParsed.pathname
           , simpleRoute = matchSimpleRoute(pathname, method, routeStore.getStandard())
           , connection = {
