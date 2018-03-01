@@ -49,11 +49,6 @@ When you create your server it takes a config object that allows you to pass in 
     port: 3000 // the port for the server to run on
     , compress: true // turns on or off compression (deflate/gzip/br)
     , routePath: './routes' // the folder your routes live in
-    , templatePath: './templates' // the folder where your templates live
-    , dotjs: {
-        //dotjs defaults
-        // see [doT.js documentation](https://olado.github.io/doT/index.html) for available options.
-    }
     , publicPath: './public' // the folder where your static files live
     , maxAge: 31536000 // time to cache static files client side in milliseconds
     , etags: true // turns on or off etag generation and headers
@@ -448,4 +443,4 @@ monument.server({
 We just require `pino`, then pass it as a logger to the configuration object. Pino has the same API as our default logger, so can be directly dropped in. That's the same with bunyan.
 
 ## Template Language
-The templates right now default to [dot](http://olado.github.io/doT/index.html) it's documentation is pretty good... though there is definitely room for improvement there. It is still the best place to learn about templating at the moment though.
+monument is template language agnostic! You can use whatever your prefered template system is but you will need to do the setup and usage yourself in your application.
