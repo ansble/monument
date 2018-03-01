@@ -443,4 +443,4 @@ monument.server({
 We just require `pino`, then pass it as a logger to the configuration object. Pino has the same API as our default logger, so can be directly dropped in. That's the same with bunyan.
 
 ## Template Language
-monument is template language agnostic! You can use whatever your prefered template system is but you will need to do the setup and usage yourself in your application.
+monument is template language agnostic! You can use whatever your prefered template system is but you will need to do the setup and usage yourself in your application. The CLI support handlebars and dot for now, and the handlebars system gives you a really great example of how to integrate your template language of choice.
