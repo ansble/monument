@@ -1,4 +1,27 @@
-### - 4.0.1 * 2018-2-4 21:23:54 *
+### - 5.0.0 * 2018-2-28 21:59:55 *
+
+   - Merge pull request #552 from ansble/feature/remove-dotjs
+  - Merge branch 'Paris–Brussels-5.x.x' into feature/remove-dotjs
+  - install new deps
+  - Merge pull request #560 from ansble/greenkeeper/harken-1.2.14
+  - fix(package): update harken to version 1.2.14
+  - cleaned up lint warnings a bunch
+  - updated lock file
+  - Merge branch 'Paris–Brussels-5.x.x' of https://github.com/ansble/monument into Paris–Brussels-5.x.x
+  - update lockfile
+  - Merge pull request #557 from ansble/greenkeeper/form-data-2.3.2
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/form-data-2.3.2
+  - Merge pull request #558 from ansble/greenkeeper/eslint-4.18.0
+  - Merge pull request #555 from ansble/greenkeeper/chalk-2.3.1
+  - Merge pull request #559 from ansble/greenkeeper/ws-4.1.0
+  - fix(package): update ws to version 4.1.0
+  - chore(package): update eslint to version 4.18.0
+  - chore(package): update form-data to version 2.3.2
+  - chore(package): update chalk to version 2.3.1
+  - Merge pull request #551 from ansble/Grand-Prix-Cycliste-de-Montréal-4.0.x 
+
+
+ ### - 4.0.1 * 2018-2-4 21:23:54 *
 
    - Merge pull request #550 from ansble/greenkeeper/harken-1.2.13
   - fix(package): update harken to version 1.2.13
