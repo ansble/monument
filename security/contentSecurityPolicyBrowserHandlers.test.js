@@ -70,11 +70,11 @@ test('returns the correct header for Safari >= 7', (t) => {
 });
 
 test('returns the correct header for Safari = 6 or options.safari5', (t) => {
-  const browser = 'Safari';
+  const handler = handlers.Safari;
 
-  t.deepEqual(handlers[browser]({ version: 6 }, [], { safari5: false }).headers, [ 'X-WebKit-CSP' ]);
-  t.deepEqual(handlers[browser]({ version: 5 }, [], { safari5: true }).headers, [ 'X-WebKit-CSP' ]);
-  t.deepEqual(handlers[browser]({ version: 4 }, [], { safari5: true }).headers, [ 'X-WebKit-CSP' ]);
+  t.deepEqual(handler({ version: 6 }, [], { safari5: false }).headers, [ 'X-WebKit-CSP' ]);
+  t.deepEqual(handler({ version: 5 }, [], { safari5: true }).headers, [ 'X-WebKit-CSP' ]);
+  t.deepEqual(handler({ version: 4 }, [], { safari5: true }).headers, [ 'X-WebKit-CSP' ]);
 });
 
 test('returns the correct header for Safari < 6', (t) => {
@@ -110,26 +110,33 @@ test('returns correct header for Android Browser < 4.4', (t) => {
 });
 
 test('returns correct header for Android Browser >= 4.4', (t) => {
-  const browser = 'Android Browser';
+  const handler = handlers['Android Browser']
+        , expected = [ 'Content-Security-Policy' ];
 
   for (let i = 4.4; i < 12; i = i + 0.1) {
-    t.deepEqual(handlers[browser]({ os: { version: i.toPrecision(2) } }, [], {}).headers, [ 'Content-Security-Policy' ]);
+    t.deepEqual(handler({ os: { version: i.toPrecision(2) } }, [], {}).headers, expected);
   }
 });
 
 test('returns correct header for Android Browser >= 4.4 and disabledAndroid', (t) => {
-  const browser = 'Android Browser';
+  const handler = handlers['Android Browser']
+        , expected = [ 'Content-Security-Policy' ];
 
   for (let i = 4.4; i < 12; i = i + 0.1) {
-    t.deepEqual(handlers[browser]({ os: { version: i.toPrecision(2) } }, [], { disabledAndroid: true }).headers, [ 'Content-Security-Policy' ]);
+    const version = { version: i.toPrecision(2) };
+
+    t.deepEqual(handler({ os: version }, [], { disabledAndroid: true }).headers, expected);
   }
 });
 
 test('returns correct header for Chrome Mobile Browser >= 4.4', (t) => {
-  const browser = 'Chrome Mobile';
+  const handler = handlers['Chrome Mobile']
+        , expected = [ 'Content-Security-Policy' ];
 
   for (let i = 4.4; i < 30; i = i + 0.1) {
-    t.deepEqual(handlers[browser]({ os: { version: i.toPrecision(2) } }, [], { disabledAndroid: true }).headers, [ 'Content-Security-Policy' ]);
+    const version = { version: i.toPrecision(2) };
+
+    t.deepEqual(handler({ os: version }, [], { disabledAndroid: true }).headers, expected);
   }
 });
 
@@ -145,7 +152,9 @@ test('returns correct header for Chrome Mobile >= 4.4', (t) => {
   const browser = 'Chrome Mobile';
 
   for (let i = 4.4; i < 12; i = i + 0.1) {
-    t.deepEqual(handlers[browser]({ os: { version: i.toPrecision(2) } }, {}).headers, [ 'Content-Security-Policy' ]);
+    const version = { version: i.toPrecision(2) };
+
+    t.deepEqual(handlers[browser]({ os: version }, {}).headers, [ 'Content-Security-Policy' ]);
   }
 });
 
@@ -153,8 +162,10 @@ test('returns correct headers for Chrome Mobile >= 4.4 and iOS', (t) => {
   const browser = 'Chrome Mobile';
 
   for (let i = 4.4; i < 12; i = i + 0.1) {
-    t.deepEqual(handlers[browser]({ os: { family: 'iOS', version: i.toPrecision(2) } }, {}).headers, [ 'Content-Security-Policy' ]);
-    t.deepEqual(handlers[browser]({ os: { family: 'iOS', version: i.toPrecision(2) } }, {}).directives.connectSrc, [ "'self'" ]);
+    const os = { family: 'iOS', version: i.toPrecision(2) };
+
+    t.deepEqual(handlers[browser]({ os: os }, {}).headers, [ 'Content-Security-Policy' ]);
+    t.deepEqual(handlers[browser]({ os: os }, {}).directives.connectSrc, [ "'self'" ]);
   }
 });
 
@@ -162,8 +173,11 @@ test('returns correct headers for Chrome Mobile >= 4.4 and iOS and connectSrc di
   const browser = 'Chrome Mobile';
 
   for (let i = 4.4; i < 12; i = i + 0.1) {
-    t.deepEqual(handlers[browser]({ os: { family: 'iOS', version: i.toPrecision(2) } }, { connectSrc: [ 'test' ] }).headers, [ 'Content-Security-Policy' ]);
-    t.deepEqual(handlers[browser]({ os: { family: 'iOS', version: i.toPrecision(2) } }, { connectSrc: [ 'test' ] }).directives.connectSrc, [ 'test', "'self'" ]);
+    const os = { family: 'iOS', version: i.toPrecision(2) }
+          , connect = { connectSrc: [ 'test' ] };
+
+    t.deepEqual(handlers[browser]({ os: os }, connect).headers, [ 'Content-Security-Policy' ]);
+    t.deepEqual(handlers[browser]({ os: os }, connect).directives.connectSrc, [ 'test', "'self'" ]);
   }
 });
 
@@ -196,67 +210,74 @@ test('returns correct headers for Firefox >= 5 and < 23', (t) => {
   const browser = 'Firefox';
 
   for (let i = 5; i < 23; i++) {
-    t.deepEqual(handlers[browser]({ version: i }, {}).headers, [ 'X-Content-Security-Policy' ]);
-    t.deepEqual(handlers[browser]({ version: i }, {}).directives.defaultSrc, [ '*' ]);
-    t.is(Object.keys(handlers[browser]({ version: i }, {}).directives).length, 1);
-    t.deepEqual(handlers[browser]({ version: i }, { test: [ 'test' ] }).directives.test, [ 'test' ]);
-    t.is(Object.keys(handlers[browser]({ version: i }, { test: [ 'test' ] }).directives).length, 2);
+    const version = { version: i };
+
+    t.deepEqual(handlers[browser](version, {}).headers, [ 'X-Content-Security-Policy' ]);
+    t.deepEqual(handlers[browser](version, {}).directives.defaultSrc, [ '*' ]);
+    t.is(Object.keys(handlers[browser](version, {}).directives).length, 1);
+    t.deepEqual(handlers[browser](version, { test: [ 'test' ] }).directives.test, [ 'test' ]);
+    t.is(Object.keys(handlers[browser](version, { test: [ 'test' ] }).directives).length, 2);
   }
 });
 
 test('returns correct headers for Firefox >= 5 and < 23 and connectSrc', (t) => {
-  const browser = 'Firefox';
+  const handler = handlers.Firefox
+        , connect = { connectSrc: [ 'test' ], test: [ 'test' ] };
 
   for (let i = 5; i < 23; i++) {
-    t.deepEqual(handlers[browser]({ version: i }, { connectSrc: [ 'test' ], test: [ 'test' ] }).headers, [ 'X-Content-Security-Policy' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { connectSrc: [ 'test' ], test: [ 'test' ] }).directives.defaultSrc, [ '*' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { connectSrc: [ 'test' ], test: [ 'test' ] }).directives.connectSrc, [ 'test' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { connectSrc: [ 'test' ], test: [ 'test' ] }).directives.xhrSrc, [ 'test' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { connectSrc: [ 'test' ], test: [ 'test' ] }).directives.test, [ 'test' ]);
-    t.is(Object.keys(handlers[browser]({ version: i }, { connectSrc: [ 'test' ], test: [ 'test' ] }).directives).length, 4);
+    t.deepEqual(handler({ version: i }, connect).headers, [ 'X-Content-Security-Policy' ]);
+    t.deepEqual(handler({ version: i }, connect).directives.defaultSrc, [ '*' ]);
+    t.deepEqual(handler({ version: i }, connect).directives.connectSrc, [ 'test' ]);
+    t.deepEqual(handler({ version: i }, connect).directives.xhrSrc, [ 'test' ]);
+    t.deepEqual(handler({ version: i }, connect).directives.test, [ 'test' ]);
+    t.is(Object.keys(handler({ version: i }, connect).directives).length, 4);
   }
 });
 
 test('returns correct headers for Firefox >= 5 and < 23 and unsafe-inline for scriptSrc', (t) => {
-  const browser = 'Firefox';
+  const handler = handlers.Firefox
+        , options = { scriptSrc: [ "'unsafe-inline'" ] };
 
   for (let i = 5; i < 23; i++) {
-    t.deepEqual(handlers[browser]({ version: i }, { scriptSrc: [ "'unsafe-inline'" ] }).headers, [ 'X-Content-Security-Policy' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { scriptSrc: [ "'unsafe-inline'" ] }).directives.defaultSrc, [ '*' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { scriptSrc: [ "'unsafe-inline'" ] }).directives.scriptSrc, [ "'inline-script'" ]);
-    t.is(Object.keys(handlers[browser]({ version: i }, { scriptSrc: [ "'unsafe-inline'" ] }).directives).length, 2);
+    t.deepEqual(handler({ version: i }, options).headers, [ 'X-Content-Security-Policy' ]);
+    t.deepEqual(handler({ version: i }, options).directives.defaultSrc, [ '*' ]);
+    t.deepEqual(handler({ version: i }, options).directives.scriptSrc, [ "'inline-script'" ]);
+    t.is(Object.keys(handler({ version: i }, options).directives).length, 2);
   }
 });
 
 test('returns correct headers for Firefox >= 5 and < 23 and unsafe-eval for scriptSrc', (t) => {
-  const browser = 'Firefox';
+  const handler = handlers.Firefox
+        , options = { scriptSrc: [ "'unsafe-eval'" ] };
 
   for (let i = 5; i < 23; i++) {
-    t.deepEqual(handlers[browser]({ version: i }, { scriptSrc: [ "'unsafe-eval'" ] }).headers, [ 'X-Content-Security-Policy' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { scriptSrc: [ "'unsafe-eval'" ] }).directives.defaultSrc, [ '*' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { scriptSrc: [ "'unsafe-eval'" ] }).directives.scriptSrc, [ "'eval-script'" ]);
-    t.is(Object.keys(handlers[browser]({ version: i }, { scriptSrc: [ "'unsafe-eval'" ] }).directives).length, 2);
+    t.deepEqual(handler({ version: i }, options).headers, [ 'X-Content-Security-Policy' ]);
+    t.deepEqual(handler({ version: i }, options).directives.defaultSrc, [ '*' ]);
+    t.deepEqual(handler({ version: i }, options).directives.scriptSrc, [ "'eval-script'" ]);
+    t.is(Object.keys(handler({ version: i }, options).directives).length, 2);
   }
 });
 
 test('returns correct headers for Firefox >= 5 and < 23 and unsafe-inline', (t) => {
-  const browser = 'Firefox';
+  const handler = handlers.Firefox
+        , options = { test: [ "'unsafe-inline'" ] };
 
   for (let i = 5; i < 23; i++) {
-    t.deepEqual(handlers[browser]({ version: i }, { test: [ "'unsafe-inline'" ] }).headers, [ 'X-Content-Security-Policy' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { test: [ "'unsafe-inline'" ] }).directives.defaultSrc, [ '*' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { test: [ "'unsafe-inline'" ] }).directives.test, []);
-    t.is(Object.keys(handlers[browser]({ version: i }, { test: [ "'unsafe-inline'" ] }).directives).length, 2);
+    t.deepEqual(handler({ version: i }, options).headers, [ 'X-Content-Security-Policy' ]);
+    t.deepEqual(handler({ version: i }, options).directives.defaultSrc, [ '*' ]);
+    t.deepEqual(handler({ version: i }, options).directives.test, []);
+    t.is(Object.keys(handler({ version: i }, options).directives).length, 2);
   }
 });
 
 test('returns correct headers for Firefox >= 5 and < 23 and unsafe-eval', (t) => {
-  const browser = 'Firefox';
+  const handler = handlers.Firefox
+        , options = { test: [ "'unsafe-eval'" ] };
 
   for (let i = 5; i < 23; i++) {
-    t.deepEqual(handlers[browser]({ version: i }, { test: [ "'unsafe-eval'" ] }).headers, [ 'X-Content-Security-Policy' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { test: [ "'unsafe-eval'" ] }).directives.defaultSrc, [ '*' ]);
-    t.deepEqual(handlers[browser]({ version: i }, { test: [ "'unsafe-eval'" ] }).directives.test, []);
-    t.is(Object.keys(handlers[browser]({ version: i }, { test: [ "'unsafe-eval'" ] }).directives).length, 2);
+    t.deepEqual(handler({ version: i }, options).headers, [ 'X-Content-Security-Policy' ]);
+    t.deepEqual(handler({ version: i }, options).directives.defaultSrc, [ '*' ]);
+    t.deepEqual(handler({ version: i }, options).directives.test, []);
+    t.is(Object.keys(handler({ version: i }, options).directives).length, 2);
   }
 });

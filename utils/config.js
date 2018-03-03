@@ -17,7 +17,6 @@ const path = require('path')
         , routePath: path.join(process.cwd(), './routes.json')
         , routeJSONPath: path.join(process.cwd(), './routes.json')
         , publicPath: path.join(process.cwd(), './public')
-        , templatePath: path.join(process.cwd(), './templates')
 
         , log: {
           debug: (payload) => {
@@ -73,7 +72,6 @@ const path = require('path')
           'routeJSONPath'
           , 'routePath'
           , 'publicPath'
-          , 'templatePath'
         ];
 
         if (typeof key === 'object') {
