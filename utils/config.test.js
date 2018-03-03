@@ -28,7 +28,6 @@ test('should set smart defaults', (t) => {
   t.is(configObj.publicPath, path.join(process.cwd(), './public'));
   t.is(configObj.compress, true);
   t.is(configObj.webSockets, false);
-  t.is(configObj.templatePath, path.join(process.cwd(), './templates'));
   t.is(configObj.maxAge, 31536000);
   t.is(configObj.etags, true);
   t.is(typeof configObj.security, 'object');

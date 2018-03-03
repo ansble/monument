@@ -41,7 +41,6 @@ test.cb('should return a server when run', (t) => {
   app.server({
     routeJSONPath: './test_stubs/routes_stub.json'
     , routePath: './test_stubs'
-    , templatePath: './test_stubs/templates'
     , port: 9999
     , log: {
       log: () => {}
@@ -60,7 +59,6 @@ test.cb('should return a server when run and no port passed in', (t) => {
 
   noPortApp.server({
     routeJSONPath: './test_stubs/routes_stub.json'
-    , templatePath: './test_stubs/templates'
     , routePath: './test_stubs'
     , port: 9998
     , log: {
@@ -80,7 +78,6 @@ test.cb('should return a server when run and compress passed in', (t) => {
 
   compressApp.server({
     routeJSONPath: './test_stubs/routes_stub.json'
-    , templatePath: './test_stubs/templates'
     , compress: false
     , routePath: './test_stubs'
     , port: 9997

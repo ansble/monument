@@ -31,7 +31,7 @@ test('getCompression tests::should return gzip if both gzip and deflate are in t
   t.is(utils.getCompression('deflate gzip', { compress: true }), 'gzip');
 });
 
-test('getCompression tests::should return brotli if brotli, gzip and deflate are in the header', (t) => {
+test('getCompression tests::should return brotli if brotli, gzip & deflate in the header', (t) => {
   t.is(utils.getCompression('deflate gzip br', { compress: true }), 'br');
 });
 
@@ -45,11 +45,11 @@ test('getCompression tests::should return none if an empty header is passed in',
   t.is(utils.getCompression('', { compress: true }), 'none');
 });
 
-test('getCompression tests::should return none if compression is turned off no matter what the header is', (t) => {
+test('getCompression tests::should return none if compression is off for all headers', (t) => {
   t.is(utils.getCompression('gzip', { compress: false }), 'none');
 });
 
-test('getCompression tests::should return correct compression if compression is not in the config', (t) => {
+test('getCompression tests::should return correct compression if not in the config', (t) => {
   t.is(utils.getCompression('gzip', {}), 'gzip');
 });
 

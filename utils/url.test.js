@@ -6,6 +6,8 @@ const test = require('ava')
       , port = '9090'
       , path = '/path1/path2/'
       , urlStr = `http://${host}:${port}${path}`
+      , moneyCheckString = '"stuff[]" should not be defined on the query object'
+
 
       , validateStuffMoney1000 = (query, t) => {
         const jsonStuff = JSON.stringify(query.stuff)
@@ -13,7 +15,7 @@ const test = require('ava')
 
         t.not(query.stuff, 'undefined', '"stuff" should be defined on the query object');
         t.true(Array.isArray(query.stuff), '"stuff" should be an array');
-        t.is(typeof query['stuff[]'], 'undefined', '"stuff[]" should not be defined on the query object');
+        t.is(typeof query['stuff[]'], 'undefined', moneyCheckString);
         t.is(query.stuff.length, 2, `should be a two element array: ${query}`);
         t.deepEqual(jsonStuff, correctJson, 'query param value of "stuff" got dorked');
       };

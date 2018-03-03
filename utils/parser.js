@@ -18,6 +18,7 @@ const getRawBody = require('raw-body')
               // , saveFile = options ? options.saveFile : true
               , busboy = new Busboy({ headers: connection.req.headers });
 
+        // eslint-disable-next-line max-params
         busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
 
           file.pipe(fs.createWriteStream(path.join(os.tmpdir(), filename)));

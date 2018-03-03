@@ -34,7 +34,6 @@ test.cb('should return an http2 server when http2 and correct params are passed 
 
   http2App.server({
     routeJSONPath: './test_stubs/routes_stub.json'
-    , templatePath: './test_stubs/templates'
     , routePath: './test_stubs'
     , compress: false
     , server: http2
