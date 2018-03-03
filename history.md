@@ -1,4 +1,9 @@
-### - 5.0.2 * 2018-3-3 14:40:18 *
+### - 5.0.3 * 2018-3-3 15:29:19 *
+
+   - docker for linux testing 
+
+
+ ### - 5.0.2 * 2018-3-3 14:40:18 *
 
    - updated lock file
   - Merge pull request #562 from ansble/greenkeeper/chalk-2.3.2
