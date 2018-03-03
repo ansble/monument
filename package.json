@@ -1,16 +1,16 @@
 {
   "name": "monument",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && nyc ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
-    "ava": "ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
-    "ava-parralel": "ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js",
+    "test": "npm run lint && nyc ava -s *.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
+    "ava": "ava -s *.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
+    "ava-parralel": "ava -s *.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js",
     "router-tests": "ava -s routes/**/*.test.js",
     "start": "node app.js",
     "lint": "bin/lint.js",
-    "release": "npm test && echo ' => releasing' && bin/release.js",
+    "release": "npm test && echo ' => releasing' && tom",
     "report": "nyc report --reporter=html"
   },
   "repository": {
@@ -60,6 +60,7 @@
     "platform": "1.3.5",
     "raw-body": "2.3.2",
     "striptags": "^3.1.1",
+    "tom-sawyer": "^0.1.2",
     "uuid": "3.2.1",
     "ws": "4.1.0"
   },
