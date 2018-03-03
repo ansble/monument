@@ -206,6 +206,7 @@ test.cb('when not configured does not send anything to statsd for each standard 
   });
 });
 
+// eslint-disable-next-line max-len
 // test.cb('when not configured does not send anything to statsd for each wildcard request', (t) => {
 //   routeHandler = router(routeObject, {
 //     publicPath: path.join(process.cwd(), './test_stubs/deletes')

@@ -33,7 +33,6 @@ test.cb('should return an spdy server when spdy and correct params are passed in
 
   spdyApp.server({
     routeJSONPath: './test_stubs/routes_stub.json'
-    , templatePath: './test_stubs/templates'
     , routePath: './test_stubs'
     , compress: false
     , server: spdy
