@@ -1,4 +1,15 @@
-### - 5.0.1 * 2018-2-28 22:09:02 *
+### - 5.0.2 * 2018-3-3 14:40:18 *
+
+   - updated lock file
+  - Merge pull request #562 from ansble/greenkeeper/chalk-2.3.2
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/chalk-2.3.2
+  - Merge pull request #563 from ansble/greenkeeper/eslint-4.18.2
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/eslint-4.18.2
+  - chore(package): update eslint to version 4.18.2
+  - chore(package): update chalk to version 2.3.2 
+
+
+ ### - 5.0.1 * 2018-2-28 22:09:02 *
 
   
 
