@@ -1,4 +1,10 @@
-### - 5.0.3 * 2018-3-3 15:29:19 *
+### - 5.0.4 * 2018-3-3 15:45:46 *
+
+   - Merge pull request #564 from ansble/feature/switch-to-tom
+  - removes release script and switched to tom-sawyer which is just the extracted version of it 
+
+
+ ### - 5.0.3 * 2018-3-3 15:29:19 *
 
    - docker for linux testing 
 
