@@ -62,7 +62,7 @@
     "striptags": "^3.1.1",
     "tom-sawyer": "^0.1.2",
     "uuid": "3.2.1",
-    "ws": "4.1.0"
+    "ws": "5.0.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
