@@ -1,4 +1,25 @@
-### - 5.0.2 * 2018-3-3 14:40:18 *
+### - 5.0.5 * 2018-3-7 22:02:18 *
+
+   - Merge pull request #567 from ansble/greenkeeper/ws-5.0.0
+  - Merge pull request #566 from ansble/greenkeeper/harken-1.2.15
+  - fix(package): update ws to version 5.0.0
+  - fix(package): update harken to version 1.2.15
+  - Merge branch 'master' into Paris–Brussels-5.x.x
+  - Merge pull request #561 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.0.4 * 2018-3-3 15:45:46 *
+
+   - Merge pull request #564 from ansble/feature/switch-to-tom
+  - removes release script and switched to tom-sawyer which is just the extracted version of it 
+
+
+ ### - 5.0.3 * 2018-3-3 15:29:19 *
+
+   - docker for linux testing 
+
+
+ ### - 5.0.2 * 2018-3-3 14:40:18 *
 
    - updated lock file
   - Merge pull request #562 from ansble/greenkeeper/chalk-2.3.2
