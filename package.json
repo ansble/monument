@@ -1,27 +1,27 @@
 {
   "name": "monument",
-  "version": "5.0.2",
+  "version": "5.0.7",
   "description": "evented routing for nodejs for use on the server and in the client. Isomorphic!",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && nyc ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
-    "ava": "ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
-    "ava-parralel": "ava -s *.test.js bin/*.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js",
+    "test": "npm run lint && nyc ava -s *.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
+    "ava": "ava -s *.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js routes/**/*.test.js",
+    "ava-parralel": "ava -s *.test.js utils/**/*.test.js web-sockets/**/*.test.js security/**/*.test.js",
     "router-tests": "ava -s routes/**/*.test.js",
     "start": "node app.js",
     "lint": "bin/lint.js",
-    "release": "npm test && echo ' => releasing' && bin/release.js",
+    "release": "npm test && echo ' => releasing' && tom",
     "report": "nyc report --reporter=html"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/designfrontier/monumentjs"
+    "url": "https://github.com/ansble/monumentjs"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
   "bugs": {
-    "url": "https://github.com/designfrontier/monumentjs/issues"
+    "url": "https://github.com/ansble/monumentjs/issues"
   },
   "author": "Daniel Sellers <daniel@designfrontier.net>",
   "license": "MIT",
@@ -48,9 +48,9 @@
     "content-security-policy-builder": "2.0.0",
     "etag": "1.8.1",
     "glob": "7.1.2",
-    "harken": "1.2.14",
+    "harken": "1.2.16",
     "html-entities": "^1.2.1",
-    "iltorb": "2.0.3",
+    "iltorb": "2.0.6",
     "lodash.clonedeep": "4.5.0",
     "lodash.pick": "4.4.0",
     "media-typer": "0.3.0",
@@ -61,13 +61,13 @@
     "raw-body": "2.3.2",
     "striptags": "^3.1.1",
     "uuid": "3.2.1",
-    "ws": "4.1.0"
+    "ws": "5.1.0"
   },
   "devDependencies": {
     "ava": "^0.25.0",
     "chalk": "2.3.2",
     "coveralls": "3.0.0",
-    "eslint": "4.18.2",
+    "eslint": "4.19.1",
     "form-data": "2.3.2",
     "http2": "3.3.7",
     "istanbul": "0.4.5",
@@ -75,7 +75,8 @@
     "mock-require": "3.0.1",
     "nyc": "^11.3.0",
     "semver": "^5.4.1",
-    "spdy": "3.4.7"
+    "spdy": "3.4.7",
+    "tom-sawyer": "^0.1.2"
   },
   "engines": {
     "node": ">4.0.0",

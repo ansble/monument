@@ -1,4 +1,51 @@
-### - 5.0.2 * 2018-3-3 14:40:18 *
+### - 5.0.7 * 2018-3-23 07:05:33 *
+
+   - Merge pull request #573 from ansble/greenkeeper/ws-5.1.0
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/ws-5.1.0
+  - Merge pull request #575 from ansble/greenkeeper/eslint-4.19.1
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/eslint-4.19.1
+  - Merge pull request #572 from ansble/greenkeeper/iltorb-2.0.6
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/iltorb-2.0.6
+  - chore(package): update eslint to version 4.19.1
+  - fix(package): update ws to version 5.1.0
+  - fix(package): update iltorb to version 2.0.6 
+
+
+ ### - 5.0.6 * 2018-3-16 21:59:33 *
+
+   - Merge pull request #571 from ansble/greenkeeper/harken-1.2.16
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/harken-1.2.16
+  - fix(package): update harken to version 1.2.16
+  - Merge pull request #570 from ansble/greenkeeper/eslint-4.19.0
+  - chore(package): update eslint to version 4.19.0
+  - fresh install
+  - Merge pull request #569 from ansble/greenkeeper/iltorb-2.0.5
+  - moved a dependency and changed the URLs for things
+  - fix(package): update iltorb to version 2.0.5 
+
+
+ ### - 5.0.5 * 2018-3-7 22:02:18 *
+
+   - Merge pull request #567 from ansble/greenkeeper/ws-5.0.0
+  - Merge pull request #566 from ansble/greenkeeper/harken-1.2.15
+  - fix(package): update ws to version 5.0.0
+  - fix(package): update harken to version 1.2.15
+  - Merge branch 'master' into Paris–Brussels-5.x.x
+  - Merge pull request #561 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.0.4 * 2018-3-3 15:45:46 *
+
+   - Merge pull request #564 from ansble/feature/switch-to-tom
+  - removes release script and switched to tom-sawyer which is just the extracted version of it 
+
+
+ ### - 5.0.3 * 2018-3-3 15:29:19 *
+
+   - docker for linux testing 
+
+
+ ### - 5.0.2 * 2018-3-3 14:40:18 *
 
    - updated lock file
   - Merge pull request #562 from ansble/greenkeeper/chalk-2.3.2
