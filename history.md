@@ -1,4 +1,17 @@
-### - 5.0.6 * 2018-3-16 21:59:33 *
+### - 5.0.7 * 2018-3-23 07:05:33 *
+
+   - Merge pull request #573 from ansble/greenkeeper/ws-5.1.0
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/ws-5.1.0
+  - Merge pull request #575 from ansble/greenkeeper/eslint-4.19.1
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/eslint-4.19.1
+  - Merge pull request #572 from ansble/greenkeeper/iltorb-2.0.6
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/iltorb-2.0.6
+  - chore(package): update eslint to version 4.19.1
+  - fix(package): update ws to version 5.1.0
+  - fix(package): update iltorb to version 2.0.6 
+
+
+ ### - 5.0.6 * 2018-3-16 21:59:33 *
 
    - Merge pull request #571 from ansble/greenkeeper/harken-1.2.16
   - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/harken-1.2.16
