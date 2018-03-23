@@ -11,4 +11,4 @@ ENV PORT=1337
 EXPOSE 1337
 
 WORKDIR /src
-CMD ["npm", "run", "lint"]
+CMD ["npm", "test"]
