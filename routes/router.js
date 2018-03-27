@@ -19,7 +19,7 @@ const path = require('path')
       , redirect = require('../utils').redirect
       , contains = require('../utils').contains
 
-      , statsd = require('../utils/statsd')
+      , statsdClient = require('../index').statsd
 
       , succesStatus = 200;
 
@@ -28,7 +28,6 @@ module.exports = (routesJson, config) => {
         , routePath = config.routePath
         , publicFolders = setupStaticRoutes(routePath, publicPath)
         , logger = config.log
-        , statsdClient = config.statsd === false ? false : statsd.create(config.statsd)
 
         , setupStatsdListeners = (res, sendStatsd, cleanup) => {
           if (statsdClient) {
