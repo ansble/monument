@@ -8,7 +8,7 @@ const events = require('harken')
       , config = require('./utils/config')
       , setup = require('./utils').setup
       , routeStore = require('./routes/routeStore')
-      , statsd = require('../utils/statsd')
+      , statsd = require('./utils/statsd')
 
       , statsdClient = config.statsd === false ? false : statsd.create(config.statsd)
 
