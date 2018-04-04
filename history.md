@@ -1,4 +1,11 @@
-### - 5.0.9 * 2018-3-31 21:45:34 *
+### - 5.0.10 * 2018-4-3 20:55:13 *
+
+   - Merge pull request #583 from ansble/greenkeeper/ws-5.1.1
+  - fix(package): update ws to version 5.1.1
+  - Merge pull request #582 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.0.9 * 2018-3-31 21:45:34 *
 
    - Merge pull request #579 from ansble/greenkeeper/iltorb-2.2.0
   - Merge pull request #581 from ansble/greenkeeper/mime-2.2.2
