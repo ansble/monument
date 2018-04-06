@@ -50,7 +50,7 @@
     "glob": "7.1.2",
     "harken": "1.2.16",
     "html-entities": "^1.2.1",
-    "iltorb": "2.2.0",
+    "iltorb": "2.3.0",
     "lodash.clonedeep": "4.5.0",
     "lodash.pick": "4.4.0",
     "media-typer": "0.3.0",
