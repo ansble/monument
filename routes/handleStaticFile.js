@@ -106,6 +106,7 @@ module.exports = (file, connection, config) => {
       });
       events.emit('etag:check', { file: file, etag: req.headers['if-none-match'] });
     } else {
+      console.log('hey this file doesnt exist');
       events.emit('static:missing', pathname);
       events.emit('error:404', connection);
     }
