@@ -31,7 +31,7 @@ const test = require('ava')
         return mock;
       }
       , withPath = (filePath) => {
-        return path.join(process.cwd(), 'test_stubs/templates', filePath);
+        return path.join(process.cwd(), 'test_stubs/static', filePath);
       };
 
 require('../utils/staticFileEtags');
