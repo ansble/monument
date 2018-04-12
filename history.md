@@ -1,4 +1,23 @@
-### - 5.0.10 * 2018-4-3 20:55:13 *
+### - 5.0.11 * 2018-4-12 06:39:46 *
+
+   - Merge pull request #585 from ansble/greenkeeper/bufferutil-3.0.4
+  - Merge pull request #587 from ansble/greenkeeper/iltorb-2.3.0
+  - Merge pull request #589 from ansble/bug/fix-broken-tests
+  - Merge pull request #590 from ansble/greenkeeper/mime-2.3.1
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/bufferutil-3.0.4
+  - Merge pull request #586 from ansble/greenkeeper/utf-8-validate-4.0.1
+  - removed debugging messages
+  - Aha!
+  - maybe?
+  - tracking down issues with the build
+  - fix(package): update mime to version 2.3.1
+  - fix(package): update iltorb to version 2.3.0
+  - chore(package): update utf-8-validate to version 4.0.1
+  - chore(package): update bufferutil to version 3.0.4
+  - Merge pull request #584 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.0.10 * 2018-4-3 20:55:13 *
 
    - Merge pull request #583 from ansble/greenkeeper/ws-5.1.1
   - fix(package): update ws to version 5.1.1
