@@ -84,7 +84,7 @@
   },
   "optionalDependencies": {
     "bufferutil": "3.0.4",
-    "utf-8-validate": "4.0.0"
+    "utf-8-validate": "4.0.1"
   },
   "ava": {
     "concurrency": 10,
