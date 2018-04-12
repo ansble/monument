@@ -80,6 +80,7 @@ module.exports = (file, connection, config) => {
           events.emit('static:headed', pathname);
         } else if (not(compression === 'none')) {
           // we have compression!
+          console.log('we have compression!');
           res.writeHead(succesStatus, {
             'Content-Type': mime.getType(pathname)
             , 'Cache-Control': `maxage=${maxAge}`
@@ -92,6 +93,7 @@ module.exports = (file, connection, config) => {
         } else {
           // no compression carry on...
           // return with the correct heders for the file type
+          console.log('we no have compression!');
           res.writeHead(succesStatus, {
             'Content-Type': mime.getType(pathname)
             , 'Cache-Control': `maxage=${maxAge}`
