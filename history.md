@@ -1,4 +1,66 @@
-### - 5.0.11 * 2018-4-12 06:39:46 *
+### - 5.0.12 * 2018-4-16 14:17:37 *
+
+   - adds the lock file
+  - update harken
+  - 5.0.11
+  - preparing for release of v5.0.11
+  - Merge pull request #585 from ansble/greenkeeper/bufferutil-3.0.4
+  - Merge pull request #587 from ansble/greenkeeper/iltorb-2.3.0
+  - Merge pull request #589 from ansble/bug/fix-broken-tests
+  - Merge pull request #590 from ansble/greenkeeper/mime-2.3.1
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/bufferutil-3.0.4
+  - Merge pull request #586 from ansble/greenkeeper/utf-8-validate-4.0.1
+  - removed debugging messages
+  - Aha!
+  - maybe?
+  - tracking down issues with the build
+  - fix(package): update mime to version 2.3.1
+  - fix(package): update iltorb to version 2.3.0
+  - chore(package): update utf-8-validate to version 4.0.1
+  - chore(package): update bufferutil to version 3.0.4
+  - Merge pull request #584 from ansble/Paris–Brussels-5.x.x
+  - 5.0.10
+  - preparing for release of v5.0.10
+  - Merge pull request #583 from ansble/greenkeeper/ws-5.1.1
+  - fix(package): update ws to version 5.1.1
+  - Merge pull request #582 from ansble/Paris–Brussels-5.x.x
+  - 5.0.9
+  - preparing for release of v5.0.9
+  - Merge pull request #579 from ansble/greenkeeper/iltorb-2.2.0
+  - Merge pull request #581 from ansble/greenkeeper/mime-2.2.2
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/iltorb-2.2.0
+  - fix(package): update mime to version 2.2.2
+  - fix(package): update iltorb to version 2.2.0
+  - 5.0.8
+  - preparing for release of v5.0.8
+  - Merge pull request #578 from ansble/greenkeeper/iltorb-2.1.0
+  - fix(package): update iltorb to version 2.1.0
+  - Merge pull request #565 from ansble/Paris–Brussels-5.x.x
+  - 5.0.7
+  - preparing for release of v5.0.7
+  - Merge pull request #573 from ansble/greenkeeper/ws-5.1.0
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/ws-5.1.0
+  - Merge pull request #575 from ansble/greenkeeper/eslint-4.19.1
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/eslint-4.19.1
+  - Merge pull request #572 from ansble/greenkeeper/iltorb-2.0.6
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/iltorb-2.0.6
+  - chore(package): update eslint to version 4.19.1
+  - fix(package): update ws to version 5.1.0
+  - fix(package): update iltorb to version 2.0.6
+  - 5.0.6
+  - preparing for release of v5.0.6
+  - Merge pull request #571 from ansble/greenkeeper/harken-1.2.16
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/harken-1.2.16
+  - fix(package): update harken to version 1.2.16
+  - Merge pull request #570 from ansble/greenkeeper/eslint-4.19.0
+  - chore(package): update eslint to version 4.19.0
+  - fresh install
+  - Merge pull request #569 from ansble/greenkeeper/iltorb-2.0.5
+  - moved a dependency and changed the URLs for things
+  - fix(package): update iltorb to version 2.0.5 
+
+
+ ### - 5.0.11 * 2018-4-12 06:39:46 *
 
    - Merge pull request #585 from ansble/greenkeeper/bufferutil-3.0.4
   - Merge pull request #587 from ansble/greenkeeper/iltorb-2.3.0
