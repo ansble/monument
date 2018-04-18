@@ -1,4 +1,19 @@
-### - 5.0.12 * 2018-4-16 14:17:37 *
+### - 5.0.13 * 2018-4-17 21:00:16 *
+
+   - Merge pull request #593 from ansble/greenkeeper/chalk-2.4.0
+  - Merge pull request #594 from ansble/greenkeeper/harken-1.2.18
+  - fix(package): update harken to version 1.2.18
+  - chore(package): update chalk to version 2.4.0
+  - Merge pull request #592 from ansble/Paris–Brussels-5.x.x
+  - Merge branch 'master' into Paris–Brussels-5.x.x
+  - 5.0.12
+  - preparing for release of v5.0.12
+  - adds the lock file
+  - update harken
+  - Merge pull request #591 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.0.12 * 2018-4-16 14:17:37 *
 
    - adds the lock file
   - update harken
