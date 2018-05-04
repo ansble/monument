@@ -107,11 +107,18 @@ When you create your server it takes a config object that allows you to pass in 
     }
 
     // options for hooking into the statsd internal to monument
+    //  The sendXxx all default to false which means that if you want timers for your
+    //  non 200 codes then you will need to turn on the range or ranges you would
+    //  like to see. This is to reduce the chattiness to the statsd server and the
+    //  noise in your stats to a more useful level.
     , statsd: {
         host: 'server-address'
         , port: 'port'
         , prefix: 'string prefix'
         , suffix: 'string suffix'
+        , send3xx: false // this prevents sending timers for 3xx status codes
+        , send4xx: false // this prevents sending timers for 4xx status codes
+        , send5xx: false // this prevents sending timers for 5xx status codes
     }
 }
 ```
