@@ -11,6 +11,8 @@
     "start": "node app.js",
     "lint": "bin/lint.js",
     "release": "npm test && echo ' => releasing' && tom",
+    "release:minor": "npm test && echo ' => releasing' && tom --type=minor",
+    "release:major": "npm test && echo ' => releasing' && tom --type=major",
     "report": "nyc report --reporter=html"
   },
   "repository": {
