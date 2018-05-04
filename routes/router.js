@@ -74,19 +74,21 @@ module.exports = (routesJson, config) => {
                     , pathname.replace(/[.]/g, '_')
                   ].join('.');
 
-            // Status Code
-            statsdClient.send(`${key}.status_code.${statusCode}`, 1, 'c', 1, [], (err) => {
-              if (err) {
-                logger.error(`[statsd] request count send error: ${err}`);
-              }
-            });
+            if (statsd.shouldSendTimer(config, statusCode)) {
+              // Status Code
+              statsdClient.send(`${key}.status_code.${statusCode}`, 1, 'c', 1, [], (err) => {
+                if (err) {
+                  logger.error(`[statsd] request count send error: ${err}`);
+                }
+              });
 
-            // Response Time
-            statsdClient.timing(`${key}.response_time`, duration, (err) => {
-              if (err) {
-                logger.error(`[statsd] timing send error: ${err}`);
-              }
-            });
+              // Response Time
+              statsdClient.timing(`${key}.response_time`, duration, (err) => {
+                if (err) {
+                  logger.error(`[statsd] timing send error: ${err}`);
+                }
+              });
+            }
 
             cleanupStatsd();
           }
