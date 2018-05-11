@@ -67,7 +67,7 @@ test('should return resonse Object if values are set by status message string', 
   t.is(fakeRes.setStatus('Testing Not Found'), fakeRes);
 });
 
-test('should return response object if values are set by status message code', (t) => {
+test('should return response object if values are set by status message code for weird codes', (t) => {
   t.is(fakeRes.setStatus(4040), fakeRes);
 });
 

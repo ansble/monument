@@ -1,4 +1,9 @@
-### - 5.1.1 * 2018-5-10 22:33:56 *
+### - 5.1.2 * 2018-5-10 22:50:15 *
+
+   - update deps 
+
+
+ ### - 5.1.1 * 2018-5-10 22:33:56 *
 
    - fix broken test
   - Merge pull request #603 from ansble/greenkeeper/raw-body-2.3.3
