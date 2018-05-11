@@ -17,6 +17,10 @@ const test = require('ava')
           };
         }
 
+        , shouldSendTimer: function () {
+          return true;
+        }
+
         , create: function () {
           return {
             send: (message) => {

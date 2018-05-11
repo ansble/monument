@@ -1,4 +1,33 @@
-### - 5.0.13 * 2018-4-17 21:00:16 *
+### - 5.1.2 * 2018-5-10 22:50:15 *
+
+   - update deps 
+
+
+ ### - 5.1.1 * 2018-5-10 22:33:56 *
+
+   - fix broken test
+  - Merge pull request #603 from ansble/greenkeeper/raw-body-2.3.3
+  - Merge pull request #602 from ansble/greenkeeper/utf-8-validate-4.0.2
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/utf-8-validate-4.0.2
+  - Merge pull request #601 from ansble/greenkeeper/bufferutil-3.0.5
+  - fix(package): update raw-body to version 2.3.3
+  - chore(package): update utf-8-validate to version 4.0.2
+  - chore(package): update bufferutil to version 3.0.5 
+
+
+ ### - 5.1.0 * 2018-5-4 08:33:32 *
+
+   - Merge pull request #599 from ansble/feature/limit-statsd-timers
+  - adds in fix for broken test in node 10
+  - Merge branch 'Paris–Brussels-5.x.x' into feature/limit-statsd-timers
+  - fixes broken test
+  - Merge pull request #597 from ansble/greenkeeper/coveralls-3.0.1
+  - removes 300-500 status codes from the default statsd
+  - chore(package): update coveralls to version 3.0.1
+  - Merge pull request #595 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.0.13 * 2018-4-17 21:00:16 *
 
    - Merge pull request #593 from ansble/greenkeeper/chalk-2.4.0
   - Merge pull request #594 from ansble/greenkeeper/harken-1.2.18

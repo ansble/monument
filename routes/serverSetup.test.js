@@ -12,7 +12,10 @@ test('should return the list of public folders', (t) => {
 });
 
 test('should throw if an invalid value for routePath is passed', (t) => {
-  t.throws(setup, 'TypeError: path must be a string or Buffer', TypeError);
+  const invalidPathString = '(\[ERR_INVALID_ARG_TYPE\])' +
+    '| (TypeError: path must be a string or Buffer)';
+
+  t.throws(setup, new RegExp(invalidPathString), TypeError);
   t.throws(() => {
     setup('somewhere', 'else');
   }, 'Error: ENOENT: no such file or directory, scandir \'somewhere\'');
