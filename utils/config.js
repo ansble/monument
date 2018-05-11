@@ -9,6 +9,9 @@ const path = require('path')
         cacheDns: true
         , port: 8125
         , host: 'localhost'
+        , send500: false
+        , send400: false
+        , send300: false
       }
       , defaults = {
         port: 3000

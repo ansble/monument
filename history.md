@@ -1,4 +1,16 @@
-### - 5.0.13 * 2018-4-17 21:00:16 *
+### - 5.1.0 * 2018-5-4 08:33:32 *
+
+   - Merge pull request #599 from ansble/feature/limit-statsd-timers
+  - adds in fix for broken test in node 10
+  - Merge branch 'Paris–Brussels-5.x.x' into feature/limit-statsd-timers
+  - fixes broken test
+  - Merge pull request #597 from ansble/greenkeeper/coveralls-3.0.1
+  - removes 300-500 status codes from the default statsd
+  - chore(package): update coveralls to version 3.0.1
+  - Merge pull request #595 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.0.13 * 2018-4-17 21:00:16 *
 
    - Merge pull request #593 from ansble/greenkeeper/chalk-2.4.0
   - Merge pull request #594 from ansble/greenkeeper/harken-1.2.18
