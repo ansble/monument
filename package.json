@@ -78,7 +78,7 @@
     "nyc": "^11.3.0",
     "semver": "^5.4.1",
     "spdy": "3.4.7",
-    "tom-sawyer": "^0.1.2"
+    "tom-sawyer": "^0.1.5"
   },
   "engines": {
     "node": ">4.0.0",
