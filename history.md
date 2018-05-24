@@ -1,4 +1,11 @@
-### - 5.1.2 * 2018-5-10 22:50:15 *
+### - 5.1.3 * 2018-5-23 22:02:31 *
+
+   - Merge pull request #605 from ansble/greenkeeper/ws-5.2.0
+  - fix(package): update ws to version 5.2.0
+  - Merge pull request #604 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.1.2 * 2018-5-10 22:50:15 *
 
    - update deps 
 
