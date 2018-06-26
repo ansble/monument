@@ -66,7 +66,7 @@
     "ws": "5.2.1"
   },
   "devDependencies": {
-    "ava": "1.0.0-beta.4",
+    "ava": "^1.0.0-beta.6",
     "chalk": "2.4.0",
     "coveralls": "3.0.1",
     "eslint": "5.0.0",
@@ -78,7 +78,7 @@
     "nyc": "^12.0.1",
     "semver": "^5.4.1",
     "spdy": "3.4.7",
-    "tom-sawyer": "^0.1.5"
+    "tom-sawyer": "^0.1.6"
   },
   "engines": {
     "node": ">4.0.0",
