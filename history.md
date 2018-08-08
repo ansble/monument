@@ -1,4 +1,11 @@
-### - 5.1.3 * 2018-5-23 22:02:31 *
+### - 5.1.4 * 2018-6-9 14:35:59 *
+
+   - Merge pull request #608 from ansble/greenkeeper/nyc-12.0.1
+  - chore(package): update nyc to version 12.0.1
+  - Merge pull request #607 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.1.3 * 2018-5-23 22:02:31 *
 
    - Merge pull request #605 from ansble/greenkeeper/ws-5.2.0
   - fix(package): update ws to version 5.2.0
