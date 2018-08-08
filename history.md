@@ -1,4 +1,33 @@
-### - 5.1.3 * 2018-5-23 22:02:31 *
+### - 5.2.0 * 2018-8-7 22:44:47 *
+
+   - updated lock
+  - Merge pull request #619 from ansble/greenkeeper/utf-8-validate-5.0.1
+  - fixes broken tests
+  - Merge pull request #614 from ansble/greenkeeper/uuid-3.3.2
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/uuid-3.3.2
+  - chore(package): update utf-8-validate to version 5.0.1
+  - fix(package): update uuid to version 3.3.2
+  - Merge pull request #612 from ansble/greenkeeper/eslint-5.0.1
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/eslint-5.0.1
+  - Merge pull request #613 from ansble/greenkeeper/uuid-3.3.0
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/uuid-3.3.0
+  - fix(package): update uuid to version 3.3.0
+  - chore(package): update eslint to version 5.0.1
+  - security updates
+  - Merge pull request #610 from ansble/greenkeeper/eslint-5.0.0
+  - Merge pull request #611 from ansble/greenkeeper/ws-5.2.1
+  - fix(package): update ws to version 5.2.1
+  - chore(package): update eslint to version 5.0.0 
+
+
+ ### - 5.1.4 * 2018-6-9 14:35:59 *
+
+   - Merge pull request #608 from ansble/greenkeeper/nyc-12.0.1
+  - chore(package): update nyc to version 12.0.1
+  - Merge pull request #607 from ansble/Paris–Brussels-5.x.x 
+
+
+ ### - 5.1.3 * 2018-5-23 22:02:31 *
 
    - Merge pull request #605 from ansble/greenkeeper/ws-5.2.0
   - fix(package): update ws to version 5.2.0
