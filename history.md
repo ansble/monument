@@ -1,4 +1,19 @@
-### - 5.2.0 * 2018-8-7 22:44:47 *
+### - 5.3.0 * 2018-8-7 23:28:12 *
+
+   - update lock file
+  - Merge pull request #621 from ansble/greenkeeper/ws-6.0.0
+  - Merge branch 'master' into greenkeeper/ws-6.0.0
+  - Merge pull request #615 from ansble/greenkeeper/bufferutil-4.0.0
+  - Merge branch 'Paris–Brussels-5.x.x' into greenkeeper/bufferutil-4.0.0
+  - Merge pull request #618 from ansble/greenkeeper/iltorb-2.4.0
+  - updated the lock
+  - Merge pull request #609 from ansble/Paris–Brussels-5.x.x
+  - fix(package): update iltorb to version 2.4.0
+  - fix(package): update ws to version 6.0.0
+  - chore(package): update bufferutil to version 4.0.0 
+
+
+ ### - 5.2.0 * 2018-8-7 22:44:47 *
 
    - updated lock
   - Merge pull request #619 from ansble/greenkeeper/utf-8-validate-5.0.1
