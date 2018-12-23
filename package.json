@@ -85,7 +85,7 @@
     "npm": ">5.0.0"
   },
   "optionalDependencies": {
-    "bufferutil": "4.0.0",
+    "bufferutil": "4.0.1",
     "utf-8-validate": "5.0.1"
   },
   "ava": {
