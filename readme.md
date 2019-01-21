@@ -36,7 +36,8 @@
 
 The easiest way to get started with monument is to use the CLI tool which does project lay down. `npm install -g monument-cli` From there a simple `monument new <path to project>` will get you up and running with stubbed tests, basic error handlers and an index route and everything you need to knock out an application fast.
 
-![getting started with monument gif](http://g.recordit.co/EwbTO7xDgy.gif) or the [slightly longer video version](http://recordit.co/EwbTO7xDgy)
+![getting started with monument gif](http://g.recordit.co/EwbTO7xDgy.gif) 
+or the [slightly longer video version](http://recordit.co/EwbTO7xDgy)
 
 It is also the easiest way to add routes and data handlers!
 
