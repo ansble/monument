@@ -76,7 +76,7 @@
     "minimist": "1.2.0",
     "mock-require": "3.0.1",
     "nyc": "^12.0.1",
-    "semver": "^5.4.1",
+    "semver": "^6.1.1",
     "spdy": "3.4.7",
     "tom-sawyer": "^0.1.6"
   },
