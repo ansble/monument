@@ -8,7 +8,7 @@ const statusCodes = require('http').STATUS_CODES
       , redirect = (req) => {
         return function (url, status) {
           if (typeof url === 'undefined') {
-            events.emit('error:500', 'you must pass an URL to the redirect method');
+            events.emit('error:500', 'You must pass an URL to the redirect method.');
             return;
           }
 
