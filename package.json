@@ -49,7 +49,7 @@
     "busboy": "0.2.14",
     "content-security-policy-builder": "2.0.0",
     "etag": "1.8.1",
-    "glob": "7.1.2",
+    "glob": "7.1.6",
     "harken": "1.2.19",
     "html-entities": "^1.2.1",
     "iltorb": "2.4.0",
