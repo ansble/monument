@@ -9,8 +9,8 @@ test('should return a function', (t) => {
   t.is(typeof matchSimpleRoute, 'function');
 });
 
-test('should return null for a simple route', (t) => {
-  t.not(matchSimpleRoute('/api/search', 'get', stubRoutes.standard), null);
+test('should return true for a simple route', (t) => {
+  t.not(matchSimpleRoute('/api/search', 'get', stubRoutes.standard));
 });
 
 test('should return null for a non-simple route', (t) => {
@@ -25,6 +25,10 @@ test('should return true for /about', (t) => {
   t.truthy(matchSimpleRoute('/about', 'get', stubRoutes.standard));
 });
 
+test('should return true for /search', (t) => {
+  t.truthy(matchSimpleRoute('/search', 'get', stubRoutes.standard));
+});
+
 test('should return true for /', (t) => {
   t.truthy(matchSimpleRoute('/', 'get', stubRoutes.standard));
 });
@@ -35,4 +39,8 @@ test('should not match for /:id', (t) => {
 
 test('should return true for /about/ handling trailing slash', (t) => {
   t.truthy(matchSimpleRoute('/about/', 'get', stubRoutes.standard));
+});
+
+test('should return true for /search/ handling trailing slash', (t) => {
+  t.truthy(matchSimpleRoute('/search/', 'get', stubRoutes.standard));
 });
