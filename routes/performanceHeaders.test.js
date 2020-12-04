@@ -74,3 +74,14 @@ test('.end should return undefined if timer does not have start', (t) => {
 
   t.is(typeof perfTimers.end('run'), 'undefined');
 });
+
+test('.start should return undefined if timer is already going ', (t) => {
+  const timers = {}
+        , perfTimers = performanceHeaders(timers);
+
+  perfTimers.start('run');
+
+  timers.run = {};
+
+  t.is(typeof perfTimers.start('run'), 'undefined');
+});
