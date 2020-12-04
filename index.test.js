@@ -66,6 +66,18 @@ test.cb('should return a server when run and no port passed in', (t) => {
     }
   });
 
+  test.cb('should return a server when run with wrong port passed in', (t) => {
+    const noPortApp = require('./index');
+  
+    t.not(noPortApp.server({
+      routeJSONPath: './test_stubs/routes_stub.json'
+      , routePath: './test_stubs'
+      , port: 'qwerty'
+      , log: {
+        log: () => {}
+      }
+    }));
+
   noPortApp.events.once('server:started', (settings) => {
     servers.push(settings.server);
     t.true(settings.server instanceof http.Server);
@@ -85,6 +97,19 @@ test.cb('should return a server when run and compress passed in', (t) => {
       log: () => {}
     }
   });
+
+  test.cb('should return a server when run and compress passed in', (t) => {
+    const compressApp = require('./index');
+  
+    compressApp.server({
+      routeJSONPath: './test_stubs/routes_stub.json'
+      , compress: true
+      , routePath: './test_stubs'
+      , port: 9997
+      , log: {
+        log: () => {}
+      }
+    });
 
   compressApp.events.once('server:started', (settings) => {
     servers.push(settings.server);

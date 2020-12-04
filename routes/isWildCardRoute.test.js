@@ -14,6 +14,10 @@ test('should return true if a wildcard route is passed in', (t) => {
   t.true(isWildCardRoute('/api/articles/1234', 'get', stubRoutes.wildcard));
 });
 
+test('should return false if the route does match a pattern but variables are invalid', (t) => {
+  t.false(isWildCardRoute('/api/articles/1234/links/stuff/32', 'get', stubRoutes.wildcard));
+});
+
 test('should return false if a wildcard route is passed in but the verb mismatches', (t) => {
   t.false(isWildCardRoute('/john-wayne', 'post', stubRoutes.wildcard));
 });

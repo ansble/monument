@@ -75,3 +75,33 @@ test.cb('should give 404 for static files missing', (t) => {
   });
   handleStaticFile('nonExistingfile.jpg', connectionMock, { maxAge: 1000, compress: false });
 });
+
+test.cb('should give 404 for root route to page given for static files', (t) => {
+  const connectionMock = getConnectionMock('GET', '/');
+
+  events.once('static:missing', (name) => {
+    t.is(name, connectionMock.path.pathname);
+  });
+
+  events.once('error:404', (connectionObject) => {
+    t.is(connectionObject.req.method, 'GET');
+    t.is(connectionObject.path.pathname, '/');
+    t.end();
+  });
+  handleStaticFile('/', connectionMock, { maxAge: 1000, compress: false });
+});
+
+test.cb('should give 404 for pathname to website given for static files', (t) => {
+  const connectionMock = getConnectionMock('GET', '/index.html');
+
+  events.once('static:missing', (name) => {
+    t.is(name, connectionMock.path.pathname);
+  });
+
+  events.once('error:404', (connectionObject) => {
+    t.is(connectionObject.req.method, 'GET');
+    t.is(connectionObject.path.pathname, '/index.html');
+    t.end();
+  });
+  handleStaticFile('/index.html', connectionMock, { maxAge: 1000, compress: false });
+});
