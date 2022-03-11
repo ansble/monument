@@ -157,7 +157,7 @@ In addition to the server `monument` exposes the following:
 ```js
 monument.uuid
 ```
-a v4 UUID generator which return a UUID when called with no paramters
+a v4 UUID generator which return a UUID when called with no parameters
 
 ```js
 monument.events
